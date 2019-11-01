@@ -1,0 +1,101 @@
+/* You can add global styles to this file, and also import other style files */
+
+@import "~@angular/material/prebuilt-themes/indigo-pink.css";
+
+@import "~ng-pick-datetime/assets/style/picker.min.css";
+
+
+* {
+    font-family: 'Open Sans', sans-serif;
+}
+
+.shadowed {
+    text-shadow: 4px 4px 6px #aaa;
+}
+
+.shadowed-dark{
+	text-shadow: 4px 4px 6px #513838;
+}
+
+.universal-tooltip {
+    font-size: .9rem;
+    width: 450px;
+}
+
+mat-form-field.white-background .mat-form-field-wrapper .mat-form-field-flex .mat-form-field-outline {
+    background-color: #fff;
+    border-radius: 5px
+}
+
+.card.card-paper {
+    border-radius: 12px;
+    box-shadow: 0 6px 10px -4px rgba(0,0,0,.15);
+    background-color: #fff;
+    color: #252422;
+    margin-bottom: 20px;
+    position: relative;
+    border: 0;
+    transition: box-shadow .2s ease,-webkit-transform .3s cubic-bezier(.34,2,.6,1);
+    transition: transform .3s cubic-bezier(.34,2,.6,1),box-shadow .2s ease;
+    transition: transform .3s cubic-bezier(.34,2,.6,1),box-shadow .2s ease,-webkit-transform .3s cubic-bezier(.34,2,.6,1);
+}
+
+.card.card-paper .card-header {
+    // padding: 15px 15px 0;
+    padding: 15px;
+    // border: 0;
+}
+
+.card.card-paper .card-body {
+    padding: 15px 15px 0px;
+}
+
+.card.card-paper .card-footer {
+    padding: 0px 15px 15px;
+    border: 0;
+    background: transparent;
+}
+
+.card-stats {
+    font-size: .9rem;
+}
+
+.card-stats i {
+    font-size: .8em;
+}
+
+.filter-container mat-form-field.mat-form-field-appearance-outline .mat-form-field-wrapper {
+    padding: 0;
+}
+
+.table.table-generic {
+    margin-bottom: 0;
+    // border: 1px solid #ddd;
+    // font-family:inherit;
+}
+
+.table.table-generic th {
+    padding: .5rem;
+    font-weight: 600;
+    font-size: 0.9rem;
+}
+
+.table.table-generic td {
+    vertical-align: middle;
+    padding: .5rem
+}
+
+.mat-paginator {
+    font-weight: 600;
+}
+
+
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+@media screen and (min-width: 576px) {
+    .jumbotron.jumbotron-small {
+        padding: 2rem;
+    }
+  }

@@ -1,0 +1,88 @@
+import { Component, OnInit, ViewChild } from '@angular/core';
+
+import { MatTableDataSource, MatSort, MatPaginator, MatDialog } from '@angular/material';
+
+import { ServiceCatalogService } from 'src/app/openApis/ServiceCatalogManagement/services';
+import { ServiceCatalog } from 'src/app/openApis/ServiceCatalogManagement/models';
+import { EditServiceCatalogsComponent } from '../edit-service-catalogs/edit-service-catalogs.component';
+import { DeleteServiceCatalogComponent } from '../delete-service-catalog/delete-service-catalog.component';
+
+@Component({
+  selector: 'app-list-service-catalogs',
+  templateUrl: './list-service-catalogs.component.html',
+  styleUrls: ['./list-service-catalogs.component.scss']
+})
+export class ListServiceCatalogsComponent implements OnInit {
+
+  constructor(private catalogService: ServiceCatalogService, public dialog: MatDialog) { }
+
+  displayedColumns = ['id', 'name', 'description', 'version', 'lastUpdate',  'lifestyleStatus', 'actions']
+  dataSource  = new MatTableDataSource<ServiceCatalog>()
+
+  serviceCatalogs: ServiceCatalog[]
+
+
+  @ViewChild(MatSort, {static: true}) sort: MatSort;
+  @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
+
+  ngOnInit() {
+    this.retrieveCatalogsList()
+  }
+
+  retrieveCatalogsList() {
+    this.catalogService.listServiceCatalog({}).subscribe(
+      data => { this.serviceCatalogs = data },
+      error => { console.error(error) },
+      () => {
+        this.dataSource.data = this.serviceCatalogs
+        this.dataSource.sort = this.sort
+        this.dataSource.paginator = this.paginator;
+        this.dataSource.sortingDataAccessor = (item, property): string | number => {
+          switch (property) {
+            case 'date_created': return new Date(item.lastUpdate).getTime();
+            default: return item[property];
+          }
+        }
+      }
+    )
+  }
+
+  // openCatalogCreationDialog() {
+  //   const dialogRef = this.dialog.open(CreateServiceCatalogsComponent)
+
+  //   dialogRef.afterClosed().subscribe (
+  //     result => { 
+  //       console.log(result)
+  //       this.retrieveCatalogsList()
+  //     }
+  //   )
+  // }
+
+  openCatalogUpdateDialog(element: ServiceCatalog) {
+    const dialogRef = this.dialog.open(EditServiceCatalogsComponent, {data: element, disableClose: true})
+
+    dialogRef.afterClosed().subscribe (
+      result => { 
+        if (result) this.retrieveCatalogsList() 
+      }
+    )
+  }
+
+  openCatalogDeleteDialog(element: ServiceCatalog) {
+    const dialogRef = this.dialog.open(DeleteServiceCatalogComponent, {data: element})
+
+    dialogRef.afterClosed().subscribe (
+      result => {
+        if (result) this.retrieveCatalogsList()
+      }
+    )
+  }
+
+
+  applyFilter(filterValue: string) {
+    filterValue = filterValue.trim();
+    filterValue = filterValue.toLowerCase();
+    this.dataSource.filter = filterValue;
+  }
+
+}

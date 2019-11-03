@@ -1,0 +1,35 @@
+<section class="section_signup">
+	<div  class="container">
+		<div class="row shadowed-dark align-items-center" >
+			<div class="col-xs-12 col-sm-8 col-md-8 col-lg-8 ">
+				
+				<h2>
+					Welcome to the openslice {{config.TITLE}}!
+				</h2>
+				<h4>Use the fields on the right to login
+					to {{config.TITLE}} and easily deploy an experiment over 
+					the {{config.TITLE}} infrastructure!</h4>
+				<h4>Check our <strong><a style="color:#FFFFFF;" href="{{config.WIKI}}">wiki</a></strong> for further documenation</h4>
+				<h4>Report platform issues at our <strong><a style="color:#FFFFFF;" href="{{config.BUGZILLA}}">Bugzilla</a></strong></h4>
+				<h4>Check the <strong><a style="color:#FFFFFF;" href="{{config.STATUS}}">Health Status</a></strong> of our infrastructure</h4>
+				
+			</div>
+			<div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
+				<h1>Sign In</h1>
+				<button type="submit" class="btn btn-light"  (click)="showOauth2OsapiPopup()" >Sign In</button> or <a style="color: white;" href="#!/signup" ><b>Sign up</b> for the {{config.TITLE}}!</a>				
+			</div>
+		</div>
+	</div>
+</section>
+
+<section *ngIf="!loggedIn" class="section_info" >
+	<div  class="container">
+        <div class="row align-items-center">
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                <h1 class="shadowed">Deploy {{config.TITLE}} experiments!</h1>
+                <p class="mb-0">Access, create
+                    and share experiments over the {{config.TITLE}} infrastructure!</p>
+            </div>          
+        </div>
+	</div>
+</section>

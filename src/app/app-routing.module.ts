@@ -8,6 +8,7 @@ import { ListServiceCatalogsComponent } from './admin/services/list-service-cata
 import { ListServiceCategoriesComponent } from './admin/services/list-service-categories/list-service-categories.component';
 import { ListServiceSpecsComponent } from './admin/services/list-service-specs/list-service-specs.component';
 import { EditServiceSpecsComponent } from './admin/services/edit-service-specs/edit-service-specs.component';
+import { EditServiceCategoriesComponent } from './admin/services/edit-service-categories/edit-service-categories.component';
 
 
 const routes: Routes = [
@@ -17,6 +18,8 @@ const routes: Routes = [
   { path: 'vxf_marketplace', component: VxfsMarketplaceComponent },
   { path: 'service_catalogs', component: ListServiceCatalogsComponent },
   { path: 'service_categories', component: ListServiceCategoriesComponent },
+  { path: 'service_categories_update/:id', component: EditServiceCategoriesComponent },
+  { path: 'service_categories_update', component: EditServiceCategoriesComponent },
   { path: 'service_specs', component: ListServiceSpecsComponent },
   { path: 'service_spec_update/:id', component: EditServiceSpecsComponent },
   { path: 'service_spec_update', component: EditServiceSpecsComponent },

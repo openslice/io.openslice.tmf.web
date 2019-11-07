@@ -19,7 +19,7 @@ export class ListServiceCategoriesComponent implements OnInit {
     public dialog: MatDialog
     ) { }
 
-  displayedColumns = ['id', 'name', 'description', 'version', 'lastUpdate',  'lifestyleStatus', 'actions']
+  displayedColumns = ['name', 'description', 'version', 'lastUpdate',  'lifestyleStatus', 'isRoot', 'parent', 'actions']
   dataSource  = new MatTableDataSource<ServiceCategory>()
 
   serviceCategories: ServiceCategory[]
@@ -36,12 +36,16 @@ export class ListServiceCategoriesComponent implements OnInit {
       data => { this.serviceCategories = data },
       error => { console.error(error) },
       () => {
+        this.serviceCategories.forEach( cat => {
+          if (cat.parentId) cat['parentName'] = this.serviceCategories.find( el =>  el.id === cat.parentId).name
+        })
+
         this.dataSource.data = this.serviceCategories
         this.dataSource.sort = this.sort
         this.dataSource.paginator = this.paginator;
         this.dataSource.sortingDataAccessor = (item, property): string | number => {
           switch (property) {
-            case 'date_created': return new Date(item.lastUpdate).getTime();
+            case 'lastUpdate': return new Date(item.lastUpdate).getTime();
             default: return item[property];
           }
         }
@@ -49,15 +53,15 @@ export class ListServiceCategoriesComponent implements OnInit {
     )
   }
 
-  openCategoryUpdateDialog(element: ServiceCategory) {
-    const dialogRef = this.dialog.open(EditServiceCategoriesComponent, {data: element, disableClose: true})
+  // openCategoryUpdateDialog(element: ServiceCategory) {
+  //   const dialogRef = this.dialog.open(EditServiceCategoriesComponent, {data: element, disableClose: true})
 
-    dialogRef.afterClosed().subscribe (
-      result => { 
-        if (result) this.retrieveCategoriesList() 
-      }
-    )
-  }
+  //   dialogRef.afterClosed().subscribe (
+  //     result => { 
+  //       if (result) this.retrieveCategoriesList() 
+  //     }
+  //   )
+  // }
 
 
   openCategoryDeleteDialog(element: ServiceCategory) {

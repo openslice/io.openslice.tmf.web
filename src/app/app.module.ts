@@ -30,7 +30,9 @@ import {
   MatTooltipModule,
   MatButtonModule,
   MatAutocompleteModule,
-  MatChipsModule
+  MatChipsModule,
+  MatExpansionModule,
+  MatToolbarModule
 } from '@angular/material'
 
 
@@ -59,6 +61,7 @@ import { DeleteServiceSpecCharacteristicsComponent } from './admin/services/edit
 import { DeleteServiceCatalogComponent } from './admin/services/delete-service-catalog/delete-service-catalog.component';
 import { DeleteServiceCategoryComponent } from './admin/services/delete-service-category/delete-service-category.component';
 import { DeleteServiceSpecComponent } from './admin/services/delete-service-spec/delete-service-spec.component';
+import { CreateServiceCategoryChildrenComponent } from './admin/services/edit-service-categories/create-service-category-children/create-service-category-children.component';
 
 
 
@@ -88,7 +91,8 @@ export function initializeApp(bootstrap: BootstrapService) {
     DeleteServiceSpecCharacteristicsComponent,
     DeleteServiceCatalogComponent,
     DeleteServiceCategoryComponent,
-    DeleteServiceSpecComponent
+    DeleteServiceSpecComponent,
+    CreateServiceCategoryChildrenComponent
   ],
   imports: [
     BrowserModule,
@@ -112,6 +116,8 @@ export function initializeApp(bootstrap: BootstrapService) {
     MatButtonModule,
     MatAutocompleteModule,
     MatChipsModule,
+    MatExpansionModule,
+    MatToolbarModule,
     MatNativeDateModule,
     MatDatepickerModule,  
     NgProgressModule,
@@ -122,6 +128,7 @@ export function initializeApp(bootstrap: BootstrapService) {
   entryComponents : [
     EditServiceCatalogsComponent,
     EditServiceCategoriesComponent,
+    CreateServiceCategoryChildrenComponent,
     EditServiceSpecCharacteristicsComponent,
     DeleteServiceCatalogComponent,
     DeleteServiceCategoryComponent,

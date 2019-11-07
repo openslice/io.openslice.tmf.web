@@ -8,13 +8,15 @@ import { Observable } from 'rxjs';
 import { MatAutocomplete, MatChipInputEvent, MatAutocompleteSelectedEvent, MatAutocompleteTrigger, MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
 import { startWith, map } from 'rxjs/operators';
 
+const today = new Date()
+
 @Component({
   selector: 'app-edit-service-catalogs',
   templateUrl: './edit-service-catalogs.component.html',
   styleUrls: ['./edit-service-catalogs.component.scss']
 })
-export class EditServiceCatalogsComponent implements OnInit {
 
+export class EditServiceCatalogsComponent implements OnInit {
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: ServiceCatalog,
     private catalogService: ServiceCatalogService,
@@ -29,12 +31,12 @@ export class EditServiceCatalogsComponent implements OnInit {
     // categoryIDs: new FormControl([]),
     category: new FormControl([]),
     description: new FormControl(),
-    lifecycleStatus: new FormControl(),
+    lifecycleStatus: new FormControl("In design"),
     name: new FormControl(),
     relatedParty: new FormControl(),
     validFor: new FormGroup({
-      endDateTime: new FormControl(),
-      startDateTime: new FormControl()
+      endDateTime: new FormControl(new Date(new Date().setFullYear(today.getFullYear()+20))),
+      startDateTime: new FormControl(new Date())
     }),
     version: new FormControl()
   })
@@ -56,10 +58,12 @@ export class EditServiceCatalogsComponent implements OnInit {
   // allCategories: string[] = ['Apple', 'Lemon', 'Lime', 'Orange', 'Strawberry'];
   
   nonSelectedCategories: ServiceCategory[] = []
+  nonSelectedRootCategories: ServiceCategory[] = []
 
-  @ViewChild('fruitInput', {static: false}) fruitInput: ElementRef<HTMLInputElement>;
+
+  @ViewChild('categoryInput', {static: false}) categoryInput: ElementRef<HTMLInputElement>;
   
-  @ViewChild('fruitInput', {static: false, read: MatAutocompleteTrigger}) matAutocompleteTrigger: MatAutocompleteTrigger;
+  @ViewChild('categoryInput', {static: false, read: MatAutocompleteTrigger}) matAutocompleteTrigger: MatAutocompleteTrigger;
   
   @ViewChild('auto', {static: false}) matAutocomplete: MatAutocomplete;
 
@@ -84,9 +88,11 @@ export class EditServiceCatalogsComponent implements OnInit {
       data =>  this.nonSelectedCategories = data,
       error =>  console.error(error),
       () => {
+        this.nonSelectedRootCategories = this.nonSelectedCategories.filter(cat => cat.isRoot === true)
+        
         this.filteredCategories = this.categoryInputCtrl.valueChanges.pipe(
           startWith(null),
-          map( (category: string | ServiceCategory) => typeof(category) === 'string' ? this._filter(category) : this.nonSelectedCategories.slice() ));
+          map( (category: string | ServiceCategory) => typeof(category) === 'string' ? this._filter(category) : this.nonSelectedRootCategories.slice() ));
     
         // console.log(this.nonSelectedCategories)
       }
@@ -100,7 +106,7 @@ export class EditServiceCatalogsComponent implements OnInit {
       () => {
         this.editForm.patchValue(this.catalog)
         this.categories = this.catalog.category
-        this.categories.forEach(cat => this.nonSelectedCategories.splice(this.nonSelectedCategories.findIndex((el) => el.id === cat.id), 1))
+        this.categories.forEach(cat => this.nonSelectedRootCategories.splice(this.nonSelectedRootCategories.findIndex((el) => el.id === cat.id), 1))
       }
     )
   }
@@ -110,13 +116,13 @@ export class EditServiceCatalogsComponent implements OnInit {
     // Add category only when MatAutocomplete is not open
     // To make sure this does not conflict with OptionSelected Event
     
-    if (!this.matAutocomplete.isOpen && this.nonSelectedCategories.includes(event.input)) {
+    if (!this.matAutocomplete.isOpen && this.nonSelectedRootCategories.includes(event.input)) {
       const input = event.input;
       const value = event.value;
       
       // Add category
       if ((value || '').trim()) {
-        this.categories.push(this.nonSelectedCategories.find( el => el.name === value.trim()));
+        this.categories.push(this.nonSelectedRootCategories.find( el => el.name === value.trim()));
       }
       
       // Reset the input value
@@ -135,7 +141,7 @@ export class EditServiceCatalogsComponent implements OnInit {
     
     if (index >= 0) {
       this.categories.splice(index, 1);
-      this.nonSelectedCategories.push(category);
+      this.nonSelectedRootCategories.push(category);
       this.editForm.get('category').setValue(this.categories)
 
       this.categoryInputCtrl.setValue(null);
@@ -146,22 +152,19 @@ export class EditServiceCatalogsComponent implements OnInit {
     this.categories.push(event.option.value);
     this.editForm.get('category').setValue(this.categories)
     
-    this.nonSelectedCategories = this.nonSelectedCategories.filter(el =>  el.name != event.option.value.name)
+    this.nonSelectedRootCategories = this.nonSelectedRootCategories.filter(el =>  el.name != event.option.value.name)
 
-    this.fruitInput.nativeElement.value = '';
+    this.categoryInput.nativeElement.value = '';
     this.categoryInputCtrl.setValue(null);
   }
 
   private _filter(value: string): ServiceCategory[] {
-      console.log(value)
       const filterValue = value.toLowerCase();
-      return this.nonSelectedCategories.filter(cat => cat.name.toLowerCase().indexOf(filterValue) !== -1);
+      return this.nonSelectedRootCategories.filter(cat => cat.name.toLowerCase().indexOf(filterValue) !== -1);
   }
 
   openList() {
     this.categoryInputCtrl.setValue(null);
-    console.log(this.categoryInputCtrl)
-    console.log(typeof(this.categoryInputCtrl.value))
     if (!this.matAutocomplete.isOpen) this.matAutocompleteTrigger.openPanel()
   }
 

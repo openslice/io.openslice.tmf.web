@@ -16,11 +16,10 @@ export class ListServiceCatalogsComponent implements OnInit {
 
   constructor(private catalogService: ServiceCatalogService, public dialog: MatDialog) { }
 
-  displayedColumns = ['id', 'name', 'description', 'version', 'lastUpdate',  'lifestyleStatus', 'actions']
+  displayedColumns = ['name', 'description', 'version', 'lastUpdate',  'lifestyleStatus', 'actions']
   dataSource  = new MatTableDataSource<ServiceCatalog>()
 
   serviceCatalogs: ServiceCatalog[]
-
 
   @ViewChild(MatSort, {static: true}) sort: MatSort;
   @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
@@ -39,24 +38,13 @@ export class ListServiceCatalogsComponent implements OnInit {
         this.dataSource.paginator = this.paginator;
         this.dataSource.sortingDataAccessor = (item, property): string | number => {
           switch (property) {
-            case 'date_created': return new Date(item.lastUpdate).getTime();
+            case 'lastUpdate': return new Date(item.lastUpdate).getTime();
             default: return item[property];
           }
         }
       }
     )
   }
-
-  // openCatalogCreationDialog() {
-  //   const dialogRef = this.dialog.open(CreateServiceCatalogsComponent)
-
-  //   dialogRef.afterClosed().subscribe (
-  //     result => { 
-  //       console.log(result)
-  //       this.retrieveCatalogsList()
-  //     }
-  //   )
-  // }
 
   openCatalogUpdateDialog(element: ServiceCatalog) {
     const dialogRef = this.dialog.open(EditServiceCatalogsComponent, {data: element, disableClose: true})
@@ -77,7 +65,6 @@ export class ListServiceCatalogsComponent implements OnInit {
       }
     )
   }
-
 
   applyFilter(filterValue: string) {
     filterValue = filterValue.trim();

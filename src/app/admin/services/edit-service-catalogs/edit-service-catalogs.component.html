@@ -47,13 +47,13 @@
                                 </mat-select>
                             </mat-form-field> -->
                 <mat-form-field appearance="" class="col-md-12">
-                    <mat-chip-list #chipList aria-label="Fruit selection" formControlName="category">
+                    <mat-chip-list #chipList aria-label="Category selection" formControlName="category">
                         <mat-chip *ngFor="let category of categories" [selectable]="selectable" [removable]="removable"
                             (removed)="removeChip(category)">
                             {{category.name}}
                             <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
                         </mat-chip>
-                        <input placeholder="Categories" #fruitInput [formControl]="categoryInputCtrl"
+                        <input placeholder="Categories" #categoryInput [formControl]="categoryInputCtrl"
                             [matAutocomplete]="auto" matInput [matChipInputFor]="chipList"
                             [matChipInputAddOnBlur]="addOnBlur" (matChipInputTokenEnd)="addChip($event)"
                             (click)="openList(matAutocomplete)">

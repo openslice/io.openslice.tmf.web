@@ -1,26 +1,32 @@
-import { Component, OnInit, Inject } from '@angular/core';
+import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
 
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 
-import { MatAutocomplete, MatChipInputEvent, MatAutocompleteSelectedEvent, MatAutocompleteTrigger, MAT_DIALOG_DATA, MatDialogRef, MatCheckboxChange } from '@angular/material';
-import { ServiceCategory, ServiceCategoryUpdate, ServiceCategoryCreate } from 'src/app/openApis/ServiceCatalogManagement/models';
-import { ServiceCategoryService } from 'src/app/openApis/ServiceCatalogManagement/services';
-import { Observable } from 'rxjs';
-import { startWith, map } from 'rxjs/operators';
+import { ActivatedRoute, Router, ActivationEnd } from '@angular/router';
 
+import { MatCheckboxChange, MatDialog, MatTableDataSource, MatSort } from '@angular/material';
+import { ServiceCategory, ServiceCategoryUpdate, ServiceCategoryCreate, ServiceCategoryRef } from 'src/app/openApis/ServiceCatalogManagement/models';
+import { ServiceCategoryService, ServiceCandidateService } from 'src/app/openApis/ServiceCatalogManagement/services';
+import { Observable, Subscription, Subject } from 'rxjs';
+import { startWith, map, filter } from 'rxjs/operators';
+import { CreateServiceCategoryChildrenComponent } from './create-service-category-children/create-service-category-children.component';
+import { DeleteServiceCategoryComponent } from '../delete-service-category/delete-service-category.component';
 
+const today = new Date()
 
 @Component({
   selector: 'app-edit-service-categories',
   templateUrl: './edit-service-categories.component.html',
   styleUrls: ['./edit-service-categories.component.scss']
 })
-export class EditServiceCategoriesComponent implements OnInit {
+export class EditServiceCategoriesComponent implements OnInit, OnDestroy {
 
   constructor(
-    @Inject(MAT_DIALOG_DATA) public data: ServiceCategory,
     private categoryService: ServiceCategoryService,
-    private dialogRef: MatDialogRef<EditServiceCategoriesComponent>
+    private candidateService: ServiceCandidateService,
+    private activatedRoute: ActivatedRoute,
+    private dialog: MatDialog,
+    private router: Router
   ) { }
 
   category: ServiceCategory
@@ -32,12 +38,12 @@ export class EditServiceCategoriesComponent implements OnInit {
     category: new FormControl([]),
     isRoot: new FormControl(),
     description: new FormControl(),
-    lifecycleStatus: new FormControl(),
+    lifecycleStatus: new FormControl("In design"),
     name: new FormControl(),
     parentId: new FormControl(),
     validFor: new FormGroup({
-      endDateTime: new FormControl(),
-      startDateTime: new FormControl()
+      endDateTime: new FormControl(new Date(new Date().setFullYear(today.getFullYear()+20))),
+      startDateTime: new FormControl(new Date())
     }),
     serviceCandidate: new FormControl([]),
     version: new FormControl()
@@ -47,26 +53,48 @@ export class EditServiceCategoriesComponent implements OnInit {
 
   filteredCategories$: Observable<ServiceCategory[]>
 
+  displayedColumnsChildrenCatalogs = ['name', 'actions']
+  dataSource  = new MatTableDataSource<ServiceCategory>()
+
+  subscriptions = new Subscription()
+
+  childrenCategoryFilterCtrl = new FormControl();
+  filteredChildrenCategories$: Observable<ServiceCategoryRef[]>
+
+  serviceCandidatesFilterCtrl = new FormControl();
+  filteredServiceCandidates$: Observable<ServiceCandidateService[]>
+
+
+  @ViewChild(MatSort, {static: true}) sort: MatSort;
 
   newCategory: boolean = false
   ngOnInit() {
-    this.retrieveServiceCategories()
-    this.watcherInit()
+    this.retrieveServiceCategoryList()
+    this.subscriptionsInit()
 
-    if (this.data) 
+
+    if (this.activatedRoute.snapshot.params.id) 
     {
-      this.categoryID = this.data.id
+      this.categoryID = this.activatedRoute.snapshot.params.id
       this.retrieveServiceCategory()
-    }
+    } 
     else { this.newCategory = true }
-
 
   }
 
-  watcherInit() {
+  subscriptionsInit() {
+    this.subscriptions = this.router.events.subscribe(
+      (event) => {
+       if (event instanceof ActivationEnd) {
+         console.log(event.snapshot.params.id)
+         this.categoryID = event.snapshot.params.id
+         this.retrieveServiceCategory()
+       }
+      }
+    )
+
     this.editForm.get('isRoot').valueChanges.subscribe(
       (value: MatCheckboxChange) => {
-        console.log(value)
         this.editForm.get('parentId').reset()
         if (value) {
           this.editForm.get('parentId').disable()
@@ -86,33 +114,81 @@ export class EditServiceCategoriesComponent implements OnInit {
       error => console.error(error),
       () => {
         this.editForm.patchValue(this.category)
+        console.log(this.editForm)
+
+        if (this.category.parentId) {
+          this.editForm.get('isRoot').disable()
+          this.editForm.patchValue({parentId: this.allCategories.find(el => el.id === this.category.parentId)})
+          this.editForm.get('parentId').disable()
+        } else {
+          this.editForm.get('isRoot').enable()
+        }
+
+        // if (this.category.category.length) {
+          this.filteredChildrenCategories$ = this.childrenCategoryFilterCtrl.valueChanges.pipe( 
+            startWith(null),
+            map( (value:null | string) => value ? this._filterOnChildrenCategories(value) : this.category.category.slice() )
+          )
+        // } else {
+        //   this.dataSource.data = []
+        // }
+          
       }
     )
   }
 
-  retrieveServiceCategories() {
+  retrieveServiceCategoryList() {
     this.categoryService.listServiceCategory({}).subscribe(
       data =>  this.allCategories = data,
       error =>  console.error(error),
       () => {
-        console.log(null)
         this.filteredCategories$ = this.editForm.get('parentId').valueChanges.pipe(
           startWith(null),
-          map( (value: null | string | ServiceCategory) => typeof(value) === 'string' ? this._filter(value) : this.allCategories.slice() )
-        );
-        // console.log(this.nonSelectedCategories)
+          map( (value: null | string | ServiceCategory) => typeof(value) === 'string' ? this._filterParentCategories(value) : this.allCategories.slice() )
+        )
       }
     )
   }
 
-  private _filter(value: string): ServiceCategory[] {
-    console.log(value)
+  private _filterParentCategories(value: string): ServiceCategory[] {
     const filterValue = value.toLowerCase();
 
     return this.allCategories.filter(cat => cat.name.toLowerCase().includes(filterValue));
   }
 
-  submitDialog() {
+  displayFn(category?: ServiceCategory): string | undefined {
+    return category ? category.name : undefined;
+  }
+
+  private _filterOnChildrenCategories(filterValue: string) {
+    filterValue = filterValue.trim();
+    filterValue = filterValue.toLowerCase();
+    return this.category.category.filter( cat =>  cat.name.toLowerCase().includes(filterValue) )
+  }
+
+  openCategoryChildDialog() {
+    const dialogRef = this.dialog.open(CreateServiceCategoryChildrenComponent, {data: this.category, disableClose: true})
+
+    dialogRef.afterClosed().subscribe (
+      result => { 
+        console.log(result)
+        if (result) this.retrieveServiceCategory()
+      }
+    )
+  }
+
+  openCategoryDeleteDialog(element: ServiceCategory) {
+    const dialogRef = this.dialog.open(DeleteServiceCategoryComponent, {data: element})
+
+    dialogRef.afterClosed().subscribe (
+      result => {
+        if (result) this.retrieveServiceCategory()
+      }
+    )
+  }
+
+  
+  updateServiceCategory() {
 
     const updateObj: ServiceCategoryCreate | ServiceCategoryUpdate = {
       // category: this.editForm.value.category.map(el => {return {'id': el.id}}),
@@ -124,27 +200,37 @@ export class EditServiceCategoriesComponent implements OnInit {
       version: this.editForm.value.version
     }
 
-    if (!this.editForm.get('isRoot').value) updateObj.parentId = this.editForm.get('parentId').value
-    console.log(updateObj)
-    // if (this.newCategory) {
-    //   this.categoryService.createServiceCategory(updateObj).subscribe(
-    //     data => console.log(data),
-    //     error => console.error(error),
-    //     () => this.dialogRef.close('created')
-    //   )
-    // } 
+    if (!this.editForm.get('isRoot').value) updateObj.parentId = this.editForm.get('parentId').value.id
     
-    // else {
-    //   this.categoryService.patchServiceCategory({id: this.categoryID, serviceCategory: updateObj}).subscribe(
-    //     data => console.log(data),
-    //     error => console.error(error),
-    //     () => this.dialogRef.close('updated')
-    //   )
-    // }
+    let updatedCategory: ServiceCategory
+    console.log(updateObj)
+    if (this.newCategory) {
+      this.categoryService.createServiceCategory(updateObj).subscribe(
+        data => { updatedCategory = data },
+        error => console.error(error),
+        () => { 
+          this.newCategory = false 
+          this.refreshServiceCategory(updatedCategory)
+        }
+      )
+    }
+    else {
+      this.categoryService.patchServiceCategory({ id: this.categoryID, serviceCategory: updateObj }).subscribe(
+        data => { updatedCategory = data },
+        error => console.error(error),
+        () => { this.refreshServiceCategory(updatedCategory) }
+      )
+    }
   }
 
-  closeDialog() { 
-    this.dialogRef.close()
+  refreshServiceCategory(updatedCategory : ServiceCategory) {
+    this.categoryID = updatedCategory.id
+    this.retrieveServiceCategory()
   }
+
+  ngOnDestroy(): void {
+    this.subscriptions.unsubscribe()
+  }
+
 
 }

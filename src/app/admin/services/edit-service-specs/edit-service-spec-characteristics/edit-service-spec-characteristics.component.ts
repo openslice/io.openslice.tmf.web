@@ -1,7 +1,10 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
-import { ServiceSpecCharacteristic, ServiceSpecCharacteristicValue } from 'src/app/openApis/ServiceCatalogManagement/models';
+import { ServiceSpecCharacteristic, ServiceSpecCharacteristicValue, ServiceSpecification, ServiceSpecificationUpdate } from 'src/app/openApis/ServiceCatalogManagement/models';
 import { FormGroup, FormControl, FormArray } from '@angular/forms';
+import { ServiceSpecificationService } from 'src/app/openApis/ServiceCatalogManagement/services';
+
+const today = new Date()
 
 @Component({
   selector: 'app-edit-service-spec-characteristics',
@@ -11,8 +14,12 @@ import { FormGroup, FormControl, FormArray } from '@angular/forms';
 export class EditServiceSpecCharacteristicsComponent implements OnInit {
 
   constructor(
-    @Inject(MAT_DIALOG_DATA) public data: ServiceSpecCharacteristic,
-    private dialogRef: MatDialogRef<EditServiceSpecCharacteristicsComponent>
+    @Inject(MAT_DIALOG_DATA) public data: {
+      serviceSpec: ServiceSpecification,
+      specToBeUpdated: ServiceSpecCharacteristic,
+    },
+    private dialogRef: MatDialogRef<EditServiceSpecCharacteristicsComponent>,
+    private specService: ServiceSpecificationService
     ) { }
 
   editFormCharacteristic = new FormGroup({
@@ -20,46 +27,51 @@ export class EditServiceSpecCharacteristicsComponent implements OnInit {
     description: new FormControl(),
     configurable: new FormControl(),
     extensible: new FormControl(),
-    maxCardinality: new FormControl(),
-    minCardinality: new FormControl(),
+    maxCardinality: new FormControl(1),
+    minCardinality: new FormControl(0),
     validFor: new FormGroup({
-      endDateTime: new FormControl(),
-      startDateTime: new FormControl()
+      endDateTime: new FormControl(new Date(new Date().setFullYear(today.getFullYear()+20))),
+      startDateTime: new FormControl(new Date())
     }),
     valueType: new FormControl(),
     serviceSpecCharacteristicValue: new FormArray([])
   })
 
-  valueTypes = ['INTEGER', 'FLOAT', 'BINARY', 'ARRAY', 'ENUM']
+  valueTypes = ['INTEGER', 'FLOAT', 'SET', 'BINARY', 'ARRAY', 'ENUM']
+
+  // valueSubType = new FormControl()
 
   newSpec: boolean = false
   ngOnInit() {
-    if (this.data) {
-      console.log(this.data)
-      if (!this.data.validFor) this.data.validFor = {endDateTime:null, startDateTime:null}
-      this.editFormCharacteristic.patchValue(this.data)
+    console.log(this.data)
+    if (this.data.specToBeUpdated) {
+      if (!this.data.specToBeUpdated.validFor) this.data.specToBeUpdated.validFor = {endDateTime:null, startDateTime:null}
+      this.editFormCharacteristic.patchValue(this.data.specToBeUpdated)
       
       const formArray = this.editFormCharacteristic.get('serviceSpecCharacteristicValue') as FormArray
-      this.data.serviceSpecCharacteristicValue.forEach( val => {
+      this.data.specToBeUpdated.serviceSpecCharacteristicValue.forEach( val => {
         formArray.push(this.updateFormArrayItem(val))
       })
-
-      console.log(this.editFormCharacteristic)
     }
     
     else { this.newSpec = true }
 
     this.editFormCharacteristic.get('valueType').valueChanges.subscribe(
       val => {
+        // this.valueSubType.reset()
+        
+        // if (val !== 'ARRAY' && val !=='ENUM' && val !=='SET') {
+        //   this.valueSubType.setValue(this.editFormCharacteristic.get('valueType').value)
+        // } else {
+
+        // }
+
         this.editFormCharacteristic.setControl('serviceSpecCharacteristicValue', new FormArray([]))
         this.createFormArrayItem()
         console.log(this.editFormCharacteristic.value)
         const formArray = this.editFormCharacteristic.get('serviceSpecCharacteristicValue') as FormArray
         console.log(formArray)
-        if (val !== 'ARRAY' && val !=='ENUM') {
-          console.log(val)
-          console.log(formArray)
-          console.log(formArray[0])
+        if (val !== 'ARRAY' && val !=='ENUM' && val !=='SET') {          
           formArray.setControl(0,       
             new FormGroup({
             value: new FormGroup({
@@ -68,7 +80,7 @@ export class EditServiceSpecCharacteristicsComponent implements OnInit {
             }),
             unitOfMeasure: new FormControl(),
             isDefault: new FormControl(),
-            valueType: new FormControl({value: this.editFormCharacteristic.get('valueType').value, disabled: true})
+            valueType: new FormControl(this.editFormCharacteristic.get('valueType').value)
           }))
         } 
       }
@@ -90,6 +102,15 @@ export class EditServiceSpecCharacteristicsComponent implements OnInit {
   
   createFormArrayItem() {
     const formArray = this.editFormCharacteristic.get('serviceSpecCharacteristicValue') as FormArray
+    
+    // let isDisabled: boolean = true
+    let subType: string = this.editFormCharacteristic.get('valueType').value
+
+    if (['SET', 'ARRAY', 'ENUM'].includes(this.editFormCharacteristic.get('valueType').value)) {
+      // isDisabled = false
+      subType = null
+    }
+    
     formArray.push(
       new FormGroup({
         value: new FormGroup({
@@ -98,7 +119,7 @@ export class EditServiceSpecCharacteristicsComponent implements OnInit {
         }),
         unitOfMeasure: new FormControl(),
         isDefault: new FormControl(),
-        valueType: new FormControl()
+        valueType: new FormControl(subType)
       })
     )
   }
@@ -115,6 +136,23 @@ export class EditServiceSpecCharacteristicsComponent implements OnInit {
 
   submitDialog() {
     console.log('submit')
-  }
+    
+    if (this.newSpec) {
+      this.data.serviceSpec.serviceSpecCharacteristic.push(this.editFormCharacteristic.value)
+    } else {
+      const updateCharacteristIndex = this.data.serviceSpec.serviceSpecCharacteristic.findIndex(char => char.uuid === this.data.specToBeUpdated.uuid)
+      this.data.serviceSpec.serviceSpecCharacteristic[updateCharacteristIndex] = this.editFormCharacteristic.value
+    }
+
+    const updateCharacteristicObj: ServiceSpecificationUpdate = {
+      serviceSpecCharacteristic: this.data.serviceSpec.serviceSpecCharacteristic
+    }
+
+    this.specService.patchServiceSpecification({id: this.data.serviceSpec.id, serviceSpecification: updateCharacteristicObj}).subscribe(
+      data => console.log(data),
+      error => console.error(error),
+      () => this.dialogRef.close('updated')
+    )
+  }  
 
 }

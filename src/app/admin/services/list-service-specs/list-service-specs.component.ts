@@ -3,7 +3,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatTableDataSource, MatSort, MatPaginator, MatDialog } from '@angular/material';
 
 import { ServiceSpecificationService } from 'src/app/openApis/ServiceCatalogManagement/services';
-import { ServiceSpecification } from 'src/app/openApis/ServiceCatalogManagement/models';
+import { ServiceSpecification, ServiceSpecificationCreate } from 'src/app/openApis/ServiceCatalogManagement/models';
 import { DeleteServiceSpecComponent } from '../delete-service-spec/delete-service-spec.component';
 
 
@@ -19,7 +19,7 @@ export class ListServiceSpecsComponent implements OnInit {
     public dialog: MatDialog
   ) { }
 
-  displayedColumns = ['id', 'name', 'description', 'version', 'lastUpdate',  'lifestyleStatus', 'actions']
+  displayedColumns = ['name', 'description', 'version', 'lastUpdate',  'lifestyleStatus', 'actions']
   dataSource  = new MatTableDataSource<ServiceSpecification>()
 
   serviceSpecs: ServiceSpecification[]
@@ -41,8 +41,9 @@ export class ListServiceSpecsComponent implements OnInit {
         this.dataSource.sort = this.sort
         this.dataSource.paginator = this.paginator;
         this.dataSource.sortingDataAccessor = (item, property): string | number => {
+          console.log(property)
           switch (property) {
-            case 'date_created': return new Date(item.lastUpdate).getTime();
+            case 'lastUpdate': return new Date(item.lastUpdate).getTime();
             default: return item[property];
           }
         }
@@ -50,13 +51,39 @@ export class ListServiceSpecsComponent implements OnInit {
     )
   }
 
-  openCategoryDeleteDialog(element: ServiceSpecificationService) {
+  openSpecDeleteDialog(element: ServiceSpecification) {
     const dialogRef = this.dialog.open(DeleteServiceSpecComponent, {data: element})
 
     dialogRef.afterClosed().subscribe (
       result => {
         if (result) this.retrieveSpecsList()
       }
+    )
+  }
+
+  cloneServiceSpec(spec: ServiceSpecification) {
+    
+    const cloneObj: ServiceSpecificationCreate = {
+      name: `Copy of ${spec.name}`,
+      description: spec.description,
+      isBundle: spec.isBundle,
+      lifecycleStatus: spec.lifecycleStatus,
+      relatedParty: spec.relatedParty,
+      resourceSpecification: spec.resourceSpecification,
+      serviceLevelSpecification: spec.serviceLevelSpecification,
+      serviceSpecCharacteristic: spec.serviceSpecCharacteristic,
+      serviceSpecRelationship: spec.serviceSpecRelationship,
+      targetServiceSchema: spec.targetServiceSchema,
+      validFor: spec.validFor,
+      version: spec.version
+    }
+    console.log(cloneObj)
+    
+    this.specService.createServiceSpecification(cloneObj).subscribe(
+      data => console.log(data),
+      error => console.error(error),
+      () => this.retrieveSpecsList()
+      
     )
   }
 

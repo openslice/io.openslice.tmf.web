@@ -21,12 +21,12 @@ export interface ServiceSpecificationCreate {
   /**
    * When sub-classing, this defines the super-class
    */
-  "@baseType"?: string;
+  '@baseType'?: string;
 
   /**
    * When sub-classing, this defines the sub-class entity name
    */
-  "@type"?: string;
+  '@type'?: string;
 
   /**
    * A list of attachments (Attachment [*]). Complements the description of the specification through video, pictures...
@@ -56,7 +56,7 @@ export interface ServiceSpecificationCreate {
   /**
    * A URI to a JSON-Schema file that defines additional attributes and relationships
    */
-  "@schemaLocation"?: string;
+  '@schemaLocation'?: string;
 
   /**
    * A list of related party references (RelatedParty [*]). A related party defines party or party role linked to a specific entity.

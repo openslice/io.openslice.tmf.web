@@ -13,10 +13,10 @@ import { ImportJobCreate } from '../models/import-job-create';
   providedIn: 'root',
 })
 class ImportJobService extends __BaseService {
-  static readonly listImportJobPath = '/importJob';
-  static readonly createImportJobPath = '/importJob';
-  static readonly retrieveImportJobPath = '/importJob/{id}';
-  static readonly deleteImportJobPath = '/importJob/{id}';
+  static readonly listImportJob1Path = '/serviceCatalogManagement/v4/importJob';
+  static readonly createImportJob1Path = '/serviceCatalogManagement/v4/importJob';
+  static readonly retrieveImportJob1Path = '/serviceCatalogManagement/v4/importJob/{id}';
+  static readonly deleteImportJob1Path = '/serviceCatalogManagement/v4/importJob/{id}';
 
   constructor(
     config: __Configuration,
@@ -27,7 +27,7 @@ class ImportJobService extends __BaseService {
 
   /**
    * This operation list or find ImportJob entities
-   * @param params The `ImportJobService.ListImportJobParams` containing the following parameters:
+   * @param params The `ImportJobService.ListImportJob1Params` containing the following parameters:
    *
    * - `offset`: Requested index for start of resources to be provided in response
    *
@@ -37,7 +37,7 @@ class ImportJobService extends __BaseService {
    *
    * @return Success
    */
-  listImportJobResponse(params: ImportJobService.ListImportJobParams): __Observable<__StrictHttpResponse<Array<ImportJob>>> {
+  listImportJob1Response(params: ImportJobService.ListImportJob1Params): __Observable<__StrictHttpResponse<Array<ImportJob>>> {
     let __params = this.newParams();
     let __headers = new HttpHeaders();
     let __body: any = null;
@@ -46,7 +46,7 @@ class ImportJobService extends __BaseService {
     if (params.fields != null) __params = __params.set('fields', params.fields.toString());
     let req = new HttpRequest<any>(
       'GET',
-      this.rootUrl + `/importJob`,
+      this.rootUrl + `/serviceCatalogManagement/v4/importJob`,
       __body,
       {
         headers: __headers,
@@ -63,7 +63,7 @@ class ImportJobService extends __BaseService {
   }
   /**
    * This operation list or find ImportJob entities
-   * @param params The `ImportJobService.ListImportJobParams` containing the following parameters:
+   * @param params The `ImportJobService.ListImportJob1Params` containing the following parameters:
    *
    * - `offset`: Requested index for start of resources to be provided in response
    *
@@ -73,8 +73,8 @@ class ImportJobService extends __BaseService {
    *
    * @return Success
    */
-  listImportJob(params: ImportJobService.ListImportJobParams): __Observable<Array<ImportJob>> {
-    return this.listImportJobResponse(params).pipe(
+  listImportJob1(params: ImportJobService.ListImportJob1Params): __Observable<Array<ImportJob>> {
+    return this.listImportJob1Response(params).pipe(
       __map(_r => _r.body as Array<ImportJob>)
     );
   }
@@ -84,14 +84,14 @@ class ImportJobService extends __BaseService {
    * @param importJob The ImportJob to be created
    * @return OK or Created
    */
-  createImportJobResponse(importJob: ImportJobCreate): __Observable<__StrictHttpResponse<ImportJob | ImportJob>> {
+  createImportJob1Response(importJob: ImportJobCreate): __Observable<__StrictHttpResponse<ImportJob | ImportJob>> {
     let __params = this.newParams();
     let __headers = new HttpHeaders();
     let __body: any = null;
     __body = importJob;
     let req = new HttpRequest<any>(
       'POST',
-      this.rootUrl + `/importJob`,
+      this.rootUrl + `/serviceCatalogManagement/v4/importJob`,
       __body,
       {
         headers: __headers,
@@ -111,15 +111,15 @@ class ImportJobService extends __BaseService {
    * @param importJob The ImportJob to be created
    * @return OK or Created
    */
-  createImportJob(importJob: ImportJobCreate): __Observable<ImportJob | ImportJob> {
-    return this.createImportJobResponse(importJob).pipe(
+  createImportJob1(importJob: ImportJobCreate): __Observable<ImportJob | ImportJob> {
+    return this.createImportJob1Response(importJob).pipe(
       __map(_r => _r.body as ImportJob | ImportJob)
     );
   }
 
   /**
    * This operation retrieves a ImportJob entity. Attribute selection is enabled for all first level attributes.
-   * @param params The `ImportJobService.RetrieveImportJobParams` containing the following parameters:
+   * @param params The `ImportJobService.RetrieveImportJob1Params` containing the following parameters:
    *
    * - `id`: Identifier of the ImportJob
    *
@@ -127,7 +127,7 @@ class ImportJobService extends __BaseService {
    *
    * @return Success
    */
-  retrieveImportJobResponse(params: ImportJobService.RetrieveImportJobParams): __Observable<__StrictHttpResponse<ImportJob>> {
+  retrieveImportJob1Response(params: ImportJobService.RetrieveImportJob1Params): __Observable<__StrictHttpResponse<ImportJob>> {
     let __params = this.newParams();
     let __headers = new HttpHeaders();
     let __body: any = null;
@@ -135,7 +135,7 @@ class ImportJobService extends __BaseService {
     if (params.fields != null) __params = __params.set('fields', params.fields.toString());
     let req = new HttpRequest<any>(
       'GET',
-      this.rootUrl + `/importJob/${params.id}`,
+      this.rootUrl + `/serviceCatalogManagement/v4/importJob/${params.id}`,
       __body,
       {
         headers: __headers,
@@ -152,7 +152,7 @@ class ImportJobService extends __BaseService {
   }
   /**
    * This operation retrieves a ImportJob entity. Attribute selection is enabled for all first level attributes.
-   * @param params The `ImportJobService.RetrieveImportJobParams` containing the following parameters:
+   * @param params The `ImportJobService.RetrieveImportJob1Params` containing the following parameters:
    *
    * - `id`: Identifier of the ImportJob
    *
@@ -160,8 +160,8 @@ class ImportJobService extends __BaseService {
    *
    * @return Success
    */
-  retrieveImportJob(params: ImportJobService.RetrieveImportJobParams): __Observable<ImportJob> {
-    return this.retrieveImportJobResponse(params).pipe(
+  retrieveImportJob1(params: ImportJobService.RetrieveImportJob1Params): __Observable<ImportJob> {
+    return this.retrieveImportJob1Response(params).pipe(
       __map(_r => _r.body as ImportJob)
     );
   }
@@ -170,14 +170,14 @@ class ImportJobService extends __BaseService {
    * This operation deletes a ImportJob entity.
    * @param id Identifier of the ImportJob
    */
-  deleteImportJobResponse(id: string): __Observable<__StrictHttpResponse<null>> {
+  deleteImportJob1Response(id: string): __Observable<__StrictHttpResponse<null>> {
     let __params = this.newParams();
     let __headers = new HttpHeaders();
     let __body: any = null;
 
     let req = new HttpRequest<any>(
       'DELETE',
-      this.rootUrl + `/importJob/${id}`,
+      this.rootUrl + `/serviceCatalogManagement/v4/importJob/${id}`,
       __body,
       {
         headers: __headers,
@@ -196,8 +196,8 @@ class ImportJobService extends __BaseService {
    * This operation deletes a ImportJob entity.
    * @param id Identifier of the ImportJob
    */
-  deleteImportJob(id: string): __Observable<null> {
-    return this.deleteImportJobResponse(id).pipe(
+  deleteImportJob1(id: string): __Observable<null> {
+    return this.deleteImportJob1Response(id).pipe(
       __map(_r => _r.body as null)
     );
   }
@@ -206,9 +206,9 @@ class ImportJobService extends __BaseService {
 module ImportJobService {
 
   /**
-   * Parameters for listImportJob
+   * Parameters for listImportJob1
    */
-  export interface ListImportJobParams {
+  export interface ListImportJob1Params {
 
     /**
      * Requested index for start of resources to be provided in response
@@ -227,9 +227,9 @@ module ImportJobService {
   }
 
   /**
-   * Parameters for retrieveImportJob
+   * Parameters for retrieveImportJob1
    */
-  export interface RetrieveImportJobParams {
+  export interface RetrieveImportJob1Params {
 
     /**
      * Identifier of the ImportJob

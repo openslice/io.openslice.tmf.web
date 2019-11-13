@@ -9,15 +9,15 @@ import { TimePeriod } from './time-period';
 export interface ServiceCandidate {
 
   /**
-   * Unique identifier of the Entity
+   * Date and time of the last update
    */
-  id?: string;
+  lastUpdate?: string;
 
   /**
    * When sub-classing, this defines the super-class
    */
-  "@baseType"?: string;
-  "@type"?: string;
+  '@baseType'?: string;
+  '@type'?: string;
 
   /**
    * The category specification implied by this candidate
@@ -33,16 +33,12 @@ export interface ServiceCandidate {
    * Unique reference of the entity
    */
   href?: string;
+  id?: string;
 
   /**
    * A URI to a JSON-Schema file that defines additional attributes and relationships
    */
-  "@schemaLocation"?: string;
-
-  /**
-   * Date and time of the last update
-   */
-  lastUpdate?: string;
+  '@schemaLocation'?: string;
 
   /**
    * Used to indicate the current lifecycle status
@@ -58,6 +54,7 @@ export interface ServiceCandidate {
    * The service specification implied by this candidate
    */
   serviceSpecification?: ServiceSpecificationRef;
+  uuid?: string;
 
   /**
    * The period for which the entity is valid

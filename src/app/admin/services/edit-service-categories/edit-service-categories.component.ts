@@ -5,12 +5,14 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { ActivatedRoute, Router, ActivationEnd } from '@angular/router';
 
 import { MatCheckboxChange, MatDialog, MatTableDataSource, MatSort } from '@angular/material';
-import { ServiceCategory, ServiceCategoryUpdate, ServiceCategoryCreate, ServiceCategoryRef } from 'src/app/openApis/ServiceCatalogManagement/models';
-import { ServiceCategoryService, ServiceCandidateService } from 'src/app/openApis/ServiceCatalogManagement/services';
-import { Observable, Subscription, Subject } from 'rxjs';
-import { startWith, map, filter } from 'rxjs/operators';
+import { ServiceCategory, ServiceCategoryUpdate, ServiceCategoryCreate, ServiceCategoryRef, ServiceCandidateRef } from 'src/app/openApis/ServiceCatalogManagement/models';
+import { ServiceCategoryService } from 'src/app/openApis/ServiceCatalogManagement/services';
+import { Observable, Subscription } from 'rxjs';
+import { startWith, map } from 'rxjs/operators';
 import { CreateServiceCategoryChildrenComponent } from './create-service-category-children/create-service-category-children.component';
 import { DeleteServiceCategoryComponent } from '../delete-service-category/delete-service-category.component';
+import { AssignServiceCandidatesComponent } from './assign-service-candidates/assign-service-candidates.component';
+import { ToastrService } from 'ngx-toastr';
 
 const today = new Date()
 
@@ -23,10 +25,10 @@ export class EditServiceCategoriesComponent implements OnInit, OnDestroy {
 
   constructor(
     private categoryService: ServiceCategoryService,
-    private candidateService: ServiceCandidateService,
     private activatedRoute: ActivatedRoute,
     private dialog: MatDialog,
-    private router: Router
+    private router: Router,
+    private toast: ToastrService
   ) { }
 
   category: ServiceCategory
@@ -62,7 +64,7 @@ export class EditServiceCategoriesComponent implements OnInit, OnDestroy {
   filteredChildrenCategories$: Observable<ServiceCategoryRef[]>
 
   serviceCandidatesFilterCtrl = new FormControl();
-  filteredServiceCandidates$: Observable<ServiceCandidateService[]>
+  filteredServiceCandidates$: Observable<ServiceCandidateRef[]>
 
 
   @ViewChild(MatSort, {static: true}) sort: MatSort;
@@ -113,6 +115,7 @@ export class EditServiceCategoriesComponent implements OnInit, OnDestroy {
       data => this.category = data,
       error => console.error(error),
       () => {
+        if (!this.category.validFor) this.category.validFor = {endDateTime:null, startDateTime:null}
         this.editForm.patchValue(this.category)
         console.log(this.editForm)
 
@@ -124,14 +127,18 @@ export class EditServiceCategoriesComponent implements OnInit, OnDestroy {
           this.editForm.get('isRoot').enable()
         }
 
-        // if (this.category.category.length) {
-          this.filteredChildrenCategories$ = this.childrenCategoryFilterCtrl.valueChanges.pipe( 
-            startWith(null),
-            map( (value:null | string) => value ? this._filterOnChildrenCategories(value) : this.category.category.slice() )
-          )
-        // } else {
-        //   this.dataSource.data = []
-        // }
+
+        this.filteredChildrenCategories$ = this.childrenCategoryFilterCtrl.valueChanges.pipe( 
+          startWith(null),
+          map( (value:null | string) => value ? this._filterOnChildrenCategories(value) : this.category.category.slice() )
+        )
+
+        this.filteredServiceCandidates$ = this.serviceCandidatesFilterCtrl.valueChanges.pipe( 
+          startWith(null),
+          map( (value:null | string) => value ? this._filterOnServiceCandidates(value) : this.category.serviceCandidate.slice() )
+        )
+
+
           
       }
     )
@@ -166,13 +173,22 @@ export class EditServiceCategoriesComponent implements OnInit, OnDestroy {
     return this.category.category.filter( cat =>  cat.name.toLowerCase().includes(filterValue) )
   }
 
+  private _filterOnServiceCandidates(filterValue: string) {
+    filterValue = filterValue.trim();
+    filterValue = filterValue.toLowerCase();
+    return this.category.serviceCandidate.filter( cand =>  cand.name.toLowerCase().includes(filterValue) )
+  }
+
   openCategoryChildDialog() {
     const dialogRef = this.dialog.open(CreateServiceCategoryChildrenComponent, {data: this.category, disableClose: true})
 
     dialogRef.afterClosed().subscribe (
       result => { 
         console.log(result)
-        if (result) this.retrieveServiceCategory()
+        if (result){ 
+          this.toast.success("Children Categories list is successfully updated")
+          this.retrieveServiceCategory()
+        }
       }
     )
   }
@@ -182,7 +198,24 @@ export class EditServiceCategoriesComponent implements OnInit, OnDestroy {
 
     dialogRef.afterClosed().subscribe (
       result => {
-        if (result) this.retrieveServiceCategory()
+        if (result){ 
+          this.toast.success("Children Categories list is successfully updated")
+          this.retrieveServiceCategory()
+        }
+      }
+    )
+  }
+
+  openAssignCandidatesDialog(element: ServiceCategory) {
+    const dialogRef = this.dialog.open(AssignServiceCandidatesComponent, {data: element, disableClose: true})
+
+    dialogRef.afterClosed().subscribe (
+      result => {
+        console.log(result)
+        if (result) {
+          this.toast.success("Service Specifications list is successfully updated")
+          this.retrieveServiceCategory()
+        }
       }
     )
   }
@@ -209,7 +242,8 @@ export class EditServiceCategoriesComponent implements OnInit, OnDestroy {
         data => { updatedCategory = data },
         error => console.error(error),
         () => { 
-          this.newCategory = false 
+          this.newCategory = false
+          this.toast.success("Service Category is successfully created") 
           this.refreshServiceCategory(updatedCategory)
         }
       )
@@ -218,7 +252,10 @@ export class EditServiceCategoriesComponent implements OnInit, OnDestroy {
       this.categoryService.patchServiceCategory({ id: this.categoryID, serviceCategory: updateObj }).subscribe(
         data => { updatedCategory = data },
         error => console.error(error),
-        () => { this.refreshServiceCategory(updatedCategory) }
+        () => { 
+          this.toast.success("Service Category is successfully updated")
+          this.refreshServiceCategory(updatedCategory) 
+        }
       )
     }
   }

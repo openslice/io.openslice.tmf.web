@@ -8,7 +8,7 @@ import { Injectable } from '@angular/core';
   providedIn: 'root',
 })
 export class ApiConfiguration {
-  rootUrl: string = '//portal.openslice.io/tmf-api/serviceCatalogManagement/v4';
+  rootUrl: string = '//portal.openslice.io/tmf-api';
 }
 
 export interface ApiConfigurationInterface {

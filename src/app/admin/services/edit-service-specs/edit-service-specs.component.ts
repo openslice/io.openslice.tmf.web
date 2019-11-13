@@ -2,11 +2,14 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 
 import { ActivatedRoute } from '@angular/router';
 import { FormGroup, FormControl, FormArray } from '@angular/forms';
-import { ServiceSpecification, ServiceSpecCharacteristic, ServiceSpecificationUpdate, ServiceSpecificationCreate } from 'src/app/openApis/ServiceCatalogManagement/models';
+import { ServiceSpecification, ServiceSpecCharacteristic, ServiceSpecificationUpdate, ServiceSpecificationCreate, ServiceSpecRelationship } from 'src/app/openApis/ServiceCatalogManagement/models';
 import { ServiceSpecificationService } from 'src/app/openApis/ServiceCatalogManagement/services';
 import { MatTableDataSource, MatSort, MatPaginator, MatDialog } from '@angular/material';
 import { EditServiceSpecCharacteristicsComponent } from './edit-service-spec-characteristics/edit-service-spec-characteristics.component';
 import { DeleteServiceSpecCharacteristicsComponent } from './delete-service-spec-characteristics/delete-service-spec-characteristics.component';
+import { ToastrService } from 'ngx-toastr';
+import { Observable } from 'rxjs';
+import { startWith, map } from 'rxjs/operators';
 
 const today = new Date()
 
@@ -20,7 +23,8 @@ export class EditServiceSpecsComponent implements OnInit {
   constructor(
     private activatedRoute: ActivatedRoute,
     private specService: ServiceSpecificationService,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private toast: ToastrService
   ) { }
 
   specID: string
@@ -49,6 +53,9 @@ export class EditServiceSpecsComponent implements OnInit {
 
   newSpecification = false
 
+  serviceRelatedSpecsFilterCtrl = new FormControl();
+  filteredRelatedSpecs$: Observable<ServiceSpecRelationship[]>
+
   ngOnInit() {
     if (this.activatedRoute.snapshot.params.id) 
     {
@@ -69,9 +76,21 @@ export class EditServiceSpecsComponent implements OnInit {
         this.dataSource.data = this.spec.serviceSpecCharacteristic
         this.dataSource.sort = this.sort
         this.dataSource.paginator = this.paginator;
+
+        this.filteredRelatedSpecs$ = this.serviceRelatedSpecsFilterCtrl.valueChanges.pipe( 
+          startWith(null),
+          map( (value:null | string) => value ? this._filterOnRelatedSpecs(value) : this.spec.serviceSpecRelationship.slice() )
+        )
       }
     )
   }
+
+  private _filterOnRelatedSpecs(filterValue: string) {
+    filterValue = filterValue.trim();
+    filterValue = filterValue.toLowerCase();
+    return this.spec.serviceSpecRelationship.filter( relatedSpec =>  relatedSpec.name.toLowerCase().includes(filterValue) )
+  }
+
 
   applyFilter(filterValue: string) {
     filterValue = filterValue.trim();
@@ -91,19 +110,21 @@ export class EditServiceSpecsComponent implements OnInit {
     dialogRef.afterClosed().subscribe (
       result => { 
         console.log(result)
-        if (result) this.retrieveServiceSpec()
+        if (result) { 
+          this.toast.success("Service Specification Characteristics list was successfully updated")
+          this.retrieveServiceSpec() 
+        }
       }
     )
   }
 
   openCharacteristicDeleteDialog(characteristic: ServiceSpecCharacteristic) {
-    const specToBeDeletedIndex = this.spec.serviceSpecCharacteristic.findIndex(char => char.uuid === characteristic.uuid)
+    const specToBeDeletedIndex = this.spec.serviceSpecCharacteristic.findIndex(char => char.id === characteristic.id)
 
     const newSpecCharacteristicArray: ServiceSpecCharacteristic[] = this.spec.serviceSpecCharacteristic.slice()
     
     newSpecCharacteristicArray.splice(specToBeDeletedIndex, 1)
 
-    // this.spec.serviceSpecCharacteristic.splice(this.spe, 1)
     const dialogRef = this.dialog.open(DeleteServiceSpecCharacteristicsComponent, {
       data: {
         serviceSpec: this.spec,
@@ -115,7 +136,10 @@ export class EditServiceSpecsComponent implements OnInit {
     dialogRef.afterClosed().subscribe (
       result => { 
         console.log(result)
-        if (result) this.retrieveServiceSpec()
+        if (result){ 
+          this.toast.success("Service Specification Characteristics list was successfully updated")
+          this.retrieveServiceSpec()
+        }
       }
     )
   }
@@ -166,7 +190,8 @@ export class EditServiceSpecsComponent implements OnInit {
         data => { updatedSpec = data },
         error => console.error(error),
         () => { 
-          this.newSpecification = false 
+          this.newSpecification = false
+          this.toast.success("Service Specification was successfully created") 
           this.refreshServiceSpecification(updatedSpec)
         }
       )
@@ -175,10 +200,12 @@ export class EditServiceSpecsComponent implements OnInit {
       this.specService.patchServiceSpecification({ id: this.specID, serviceSpecification: updateObj }).subscribe(
         data => { updatedSpec = data },
         error => console.error(error),
-        () => { this.refreshServiceSpecification(updatedSpec) }
+        () => { 
+          this.toast.success("Service Specification was successfully updated") 
+          this.refreshServiceSpecification(updatedSpec) 
+        }
       )
     }
-
   }
 
   refreshServiceSpecification(updatedSpec : ServiceSpecification) {

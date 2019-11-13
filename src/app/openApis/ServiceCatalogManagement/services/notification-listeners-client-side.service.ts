@@ -25,19 +25,19 @@ import { ServiceSpecificationDeleteNotification } from '../models/service-specif
   providedIn: 'root',
 })
 class NotificationListenersClientSideService extends __BaseService {
-  static readonly listenToServiceCandidateChangeNotificationPath = '/listener/serviceCandidateChangeNotification';
-  static readonly listenToServiceCandidateCreateNotificationPath = '/listener/serviceCandidateCreateNotification';
-  static readonly listenToServiceCandidateDeleteNotificationPath = '/listener/serviceCandidateDeleteNotification';
-  static readonly listenToServiceCatalogBatchNotificationPath = '/listener/serviceCatalogBatchNotification';
-  static readonly listenToServiceCatalogChangeNotificationPath = '/listener/serviceCatalogChangeNotification';
-  static readonly listenToServiceCatalogCreateNotificationPath = '/listener/serviceCatalogCreateNotification';
-  static readonly listenToServiceCatalogDeleteNotificationPath = '/listener/serviceCatalogDeleteNotification';
-  static readonly listenToServiceCategoryChangeNotificationPath = '/listener/serviceCategoryChangeNotification';
-  static readonly listenToServiceCategoryCreateNotificationPath = '/listener/serviceCategoryCreateNotification';
-  static readonly listenToServiceCategoryDeleteNotificationPath = '/listener/serviceCategoryDeleteNotification';
-  static readonly listenToServiceSpecificationChangeNotificationPath = '/listener/serviceSpecificationChangeNotification';
-  static readonly listenToServiceSpecificationCreateNotificationPath = '/listener/serviceSpecificationCreateNotification';
-  static readonly listenToServiceSpecificationDeleteNotificationPath = '/listener/serviceSpecificationDeleteNotification';
+  static readonly listenToServiceCandidateChangeNotificationPath = '/serviceCatalogManagement/v4/listener/serviceCandidateChangeNotification';
+  static readonly listenToServiceCandidateCreateNotificationPath = '/serviceCatalogManagement/v4/listener/serviceCandidateCreateNotification';
+  static readonly listenToServiceCandidateDeleteNotificationPath = '/serviceCatalogManagement/v4/listener/serviceCandidateDeleteNotification';
+  static readonly listenToServiceCatalogBatchNotificationPath = '/serviceCatalogManagement/v4/listener/serviceCatalogBatchNotification';
+  static readonly listenToServiceCatalogChangeNotificationPath = '/serviceCatalogManagement/v4/listener/serviceCatalogChangeNotification';
+  static readonly listenToServiceCatalogCreateNotificationPath = '/serviceCatalogManagement/v4/listener/serviceCatalogCreateNotification';
+  static readonly listenToServiceCatalogDeleteNotificationPath = '/serviceCatalogManagement/v4/listener/serviceCatalogDeleteNotification';
+  static readonly listenToServiceCategoryChangeNotificationPath = '/serviceCatalogManagement/v4/listener/serviceCategoryChangeNotification';
+  static readonly listenToServiceCategoryCreateNotificationPath = '/serviceCatalogManagement/v4/listener/serviceCategoryCreateNotification';
+  static readonly listenToServiceCategoryDeleteNotificationPath = '/serviceCatalogManagement/v4/listener/serviceCategoryDeleteNotification';
+  static readonly listenToServiceSpecificationChangeNotificationPath = '/serviceCatalogManagement/v4/listener/serviceSpecificationChangeNotification';
+  static readonly listenToServiceSpecificationCreateNotificationPath = '/serviceCatalogManagement/v4/listener/serviceSpecificationCreateNotification';
+  static readonly listenToServiceSpecificationDeleteNotificationPath = '/serviceCatalogManagement/v4/listener/serviceSpecificationDeleteNotification';
 
   constructor(
     config: __Configuration,
@@ -58,7 +58,7 @@ class NotificationListenersClientSideService extends __BaseService {
     __body = data;
     let req = new HttpRequest<any>(
       'POST',
-      this.rootUrl + `/listener/serviceCandidateChangeNotification`,
+      this.rootUrl + `/serviceCatalogManagement/v4/listener/serviceCandidateChangeNotification`,
       __body,
       {
         headers: __headers,
@@ -96,7 +96,7 @@ class NotificationListenersClientSideService extends __BaseService {
     __body = data;
     let req = new HttpRequest<any>(
       'POST',
-      this.rootUrl + `/listener/serviceCandidateCreateNotification`,
+      this.rootUrl + `/serviceCatalogManagement/v4/listener/serviceCandidateCreateNotification`,
       __body,
       {
         headers: __headers,
@@ -134,7 +134,7 @@ class NotificationListenersClientSideService extends __BaseService {
     __body = data;
     let req = new HttpRequest<any>(
       'POST',
-      this.rootUrl + `/listener/serviceCandidateDeleteNotification`,
+      this.rootUrl + `/serviceCatalogManagement/v4/listener/serviceCandidateDeleteNotification`,
       __body,
       {
         headers: __headers,
@@ -172,7 +172,7 @@ class NotificationListenersClientSideService extends __BaseService {
     __body = data;
     let req = new HttpRequest<any>(
       'POST',
-      this.rootUrl + `/listener/serviceCatalogBatchNotification`,
+      this.rootUrl + `/serviceCatalogManagement/v4/listener/serviceCatalogBatchNotification`,
       __body,
       {
         headers: __headers,
@@ -210,7 +210,7 @@ class NotificationListenersClientSideService extends __BaseService {
     __body = data;
     let req = new HttpRequest<any>(
       'POST',
-      this.rootUrl + `/listener/serviceCatalogChangeNotification`,
+      this.rootUrl + `/serviceCatalogManagement/v4/listener/serviceCatalogChangeNotification`,
       __body,
       {
         headers: __headers,
@@ -248,7 +248,7 @@ class NotificationListenersClientSideService extends __BaseService {
     __body = data;
     let req = new HttpRequest<any>(
       'POST',
-      this.rootUrl + `/listener/serviceCatalogCreateNotification`,
+      this.rootUrl + `/serviceCatalogManagement/v4/listener/serviceCatalogCreateNotification`,
       __body,
       {
         headers: __headers,
@@ -286,7 +286,7 @@ class NotificationListenersClientSideService extends __BaseService {
     __body = data;
     let req = new HttpRequest<any>(
       'POST',
-      this.rootUrl + `/listener/serviceCatalogDeleteNotification`,
+      this.rootUrl + `/serviceCatalogManagement/v4/listener/serviceCatalogDeleteNotification`,
       __body,
       {
         headers: __headers,
@@ -324,7 +324,7 @@ class NotificationListenersClientSideService extends __BaseService {
     __body = data;
     let req = new HttpRequest<any>(
       'POST',
-      this.rootUrl + `/listener/serviceCategoryChangeNotification`,
+      this.rootUrl + `/serviceCatalogManagement/v4/listener/serviceCategoryChangeNotification`,
       __body,
       {
         headers: __headers,
@@ -362,7 +362,7 @@ class NotificationListenersClientSideService extends __BaseService {
     __body = data;
     let req = new HttpRequest<any>(
       'POST',
-      this.rootUrl + `/listener/serviceCategoryCreateNotification`,
+      this.rootUrl + `/serviceCatalogManagement/v4/listener/serviceCategoryCreateNotification`,
       __body,
       {
         headers: __headers,
@@ -400,7 +400,7 @@ class NotificationListenersClientSideService extends __BaseService {
     __body = data;
     let req = new HttpRequest<any>(
       'POST',
-      this.rootUrl + `/listener/serviceCategoryDeleteNotification`,
+      this.rootUrl + `/serviceCatalogManagement/v4/listener/serviceCategoryDeleteNotification`,
       __body,
       {
         headers: __headers,
@@ -438,7 +438,7 @@ class NotificationListenersClientSideService extends __BaseService {
     __body = data;
     let req = new HttpRequest<any>(
       'POST',
-      this.rootUrl + `/listener/serviceSpecificationChangeNotification`,
+      this.rootUrl + `/serviceCatalogManagement/v4/listener/serviceSpecificationChangeNotification`,
       __body,
       {
         headers: __headers,
@@ -476,7 +476,7 @@ class NotificationListenersClientSideService extends __BaseService {
     __body = data;
     let req = new HttpRequest<any>(
       'POST',
-      this.rootUrl + `/listener/serviceSpecificationCreateNotification`,
+      this.rootUrl + `/serviceCatalogManagement/v4/listener/serviceSpecificationCreateNotification`,
       __body,
       {
         headers: __headers,
@@ -514,7 +514,7 @@ class NotificationListenersClientSideService extends __BaseService {
     __body = data;
     let req = new HttpRequest<any>(
       'POST',
-      this.rootUrl + `/listener/serviceSpecificationDeleteNotification`,
+      this.rootUrl + `/serviceCatalogManagement/v4/listener/serviceSpecificationDeleteNotification`,
       __body,
       {
         headers: __headers,

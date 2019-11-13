@@ -8,17 +8,17 @@ export interface Error {
   /**
    * When sub-classing, this defines the super-class.
    */
-  "@baseType"?: string;
+  '@baseType'?: string;
 
   /**
    * A URI to a JSON-Schema file that defines additional attributes and relationships
    */
-  "@schemaLocation"?: string;
+  '@schemaLocation'?: string;
 
   /**
    * When sub-classing, this defines the sub-class entity name.
    */
-  "@type"?: string;
+  '@type'?: string;
 
   /**
    * Application relevant detail, defined in the API or a common list.
@@ -45,46 +45,3 @@ export interface Error {
    */
   status?: number;
 }
-
-// export interface Error {
-
-//   /**
-//    * When sub-classing, this defines the super-class.
-//    */
-//   @baseType?: string;
-
-//   /**
-//    * A URI to a JSON-Schema file that defines additional attributes and relationships
-//    */
-//   @schemaLocation?: string;
-
-//   /**
-//    * When sub-classing, this defines the sub-class entity name.
-//    */
-//   @type?: string;
-
-//   /**
-//    * Application relevant detail, defined in the API or a common list.
-//    */
-//   code: number;
-
-//   /**
-//    * More details and corrective actions related to the error which can be shown to a client user.
-//    */
-//   message?: string;
-
-//   /**
-//    * Explanation of the reason for the error which can be shown to a client user.
-//    */
-//   reason: string;
-
-//   /**
-//    * URI of documentation describing the error.
-//    */
-//   referenceError?: string;
-
-//   /**
-//    * HTTP Error code extension
-//    */
-//   status?: number;
-// }

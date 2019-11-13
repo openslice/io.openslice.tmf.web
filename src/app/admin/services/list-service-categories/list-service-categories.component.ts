@@ -5,7 +5,7 @@ import { MatTableDataSource, MatSort, MatPaginator, MatDialog } from '@angular/m
 import { ServiceCategory } from 'src/app/openApis/ServiceCatalogManagement/models';
 import { ServiceCategoryService } from 'src/app/openApis/ServiceCatalogManagement/services';
 import { DeleteServiceCategoryComponent } from '../delete-service-category/delete-service-category.component';
-import { EditServiceCategoriesComponent } from '../edit-service-categories/edit-service-categories.component';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-list-service-categories',
@@ -16,7 +16,8 @@ export class ListServiceCategoriesComponent implements OnInit {
 
   constructor(
     private categoryService: ServiceCategoryService,
-    public dialog: MatDialog
+    public dialog: MatDialog,
+    private toast: ToastrService
     ) { }
 
   displayedColumns = ['name', 'description', 'version', 'lastUpdate',  'lifestyleStatus', 'isRoot', 'parent', 'actions']
@@ -53,23 +54,16 @@ export class ListServiceCategoriesComponent implements OnInit {
     )
   }
 
-  // openCategoryUpdateDialog(element: ServiceCategory) {
-  //   const dialogRef = this.dialog.open(EditServiceCategoriesComponent, {data: element, disableClose: true})
-
-  //   dialogRef.afterClosed().subscribe (
-  //     result => { 
-  //       if (result) this.retrieveCategoriesList() 
-  //     }
-  //   )
-  // }
-
 
   openCategoryDeleteDialog(element: ServiceCategory) {
     const dialogRef = this.dialog.open(DeleteServiceCategoryComponent, {data: element})
 
     dialogRef.afterClosed().subscribe (
       result => {
-        if (result) this.retrieveCategoriesList()
+        if (result) {
+          this.toast.success("Service Categories list is successfully updated")
+          this.retrieveCategoriesList()
+        }
       }
     )
   }

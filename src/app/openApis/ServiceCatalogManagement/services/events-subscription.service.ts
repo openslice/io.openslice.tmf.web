@@ -13,8 +13,8 @@ import { EventSubscriptionInput } from '../models/event-subscription-input';
   providedIn: 'root',
 })
 class EventsSubscriptionService extends __BaseService {
-  static readonly registerListenerPath = '/hub';
-  static readonly unregisterListenerPath = '/hub/{id}';
+  static readonly registerListener2Path = '/serviceCatalogManagement/v4/hub';
+  static readonly unregisterListener2Path = '/serviceCatalogManagement/v4/hub/{id}';
 
   constructor(
     config: __Configuration,
@@ -28,14 +28,14 @@ class EventsSubscriptionService extends __BaseService {
    * @param data Data containing the callback endpoint to deliver the information
    * @return OK or Subscribed
    */
-  registerListenerResponse(data: EventSubscriptionInput): __Observable<__StrictHttpResponse<EventSubscription | EventSubscription>> {
+  registerListener2Response(data: EventSubscriptionInput): __Observable<__StrictHttpResponse<EventSubscription | EventSubscription>> {
     let __params = this.newParams();
     let __headers = new HttpHeaders();
     let __body: any = null;
     __body = data;
     let req = new HttpRequest<any>(
       'POST',
-      this.rootUrl + `/hub`,
+      this.rootUrl + `/serviceCatalogManagement/v4/hub`,
       __body,
       {
         headers: __headers,
@@ -55,8 +55,8 @@ class EventsSubscriptionService extends __BaseService {
    * @param data Data containing the callback endpoint to deliver the information
    * @return OK or Subscribed
    */
-  registerListener(data: EventSubscriptionInput): __Observable<EventSubscription | EventSubscription> {
-    return this.registerListenerResponse(data).pipe(
+  registerListener2(data: EventSubscriptionInput): __Observable<EventSubscription | EventSubscription> {
+    return this.registerListener2Response(data).pipe(
       __map(_r => _r.body as EventSubscription | EventSubscription)
     );
   }
@@ -65,14 +65,14 @@ class EventsSubscriptionService extends __BaseService {
    * Resets the communication endpoint address the service instance must use to deliver information about its health state, execution state, failures and metrics.
    * @param id The id of the registered listener
    */
-  unregisterListenerResponse(id: string): __Observable<__StrictHttpResponse<null>> {
+  unregisterListener2Response(id: string): __Observable<__StrictHttpResponse<null>> {
     let __params = this.newParams();
     let __headers = new HttpHeaders();
     let __body: any = null;
 
     let req = new HttpRequest<any>(
       'DELETE',
-      this.rootUrl + `/hub/${id}`,
+      this.rootUrl + `/serviceCatalogManagement/v4/hub/${id}`,
       __body,
       {
         headers: __headers,
@@ -91,8 +91,8 @@ class EventsSubscriptionService extends __BaseService {
    * Resets the communication endpoint address the service instance must use to deliver information about its health state, execution state, failures and metrics.
    * @param id The id of the registered listener
    */
-  unregisterListener(id: string): __Observable<null> {
-    return this.unregisterListenerResponse(id).pipe(
+  unregisterListener2(id: string): __Observable<null> {
+    return this.unregisterListener2Response(id).pipe(
       __map(_r => _r.body as null)
     );
   }

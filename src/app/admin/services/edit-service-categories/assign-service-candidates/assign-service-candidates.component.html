@@ -1,0 +1,61 @@
+<div class="container">
+    <h4 mat-dialog-title class="row shadowed mb-3">
+        <i class="row fas fa-cart-arrow-down mr-2"></i>
+        <span>Assign Service Specifications to Service Category</span>
+    </h4>
+
+    <mat-dialog-content>
+    <div cdkDropListGroup>
+            <div class="example-container">
+              <h5>Assigned</h5>
+          
+              <div
+                cdkDropList
+                #assignedList="cdkDropList"
+                [cdkDropListData]="assignedCandidates"
+                [cdkDropListConnectedTo]="[availableList]"
+                class="example-list"
+                cdkDropListSortingDisabled
+                (cdkDropListDropped)="drop($event)">
+                <div class="example-box" *ngFor="let item of assignedCandidates; let i = index" cdkDrag #assignedItem="cdkDrag" cdkDragBoundary=".container" (tap)="listItem_dblclicked(i, assignedList, availableList, $event)" (dblclick)="listItem_dblclicked(i, assignedList, availableList)">{{item.name}}
+                    <!-- <div *cdkDragPreview class="drag_description_container">
+                        <div>{{item.name}}</div>
+                        <div class="small">version: {{item.version}}</div>
+                    </div>
+ -->
+                </div>
+              </div>
+            </div>
+          
+            <div class="example-container">
+              <h5>Available</h5>
+          
+              <div
+                cdkDropList
+                #availableList="cdkDropList"
+                [cdkDropListData]="availableCandidates"
+                [cdkDropListConnectedTo]="[assignedList]"
+                class="example-list"
+                cdkDropListSortingDisabled
+                (cdkDropListDropped)="drop($event)">
+                <div class="example-box" *ngFor="let item of availableCandidates; let i = index" cdkDrag #availableItem="cdkDrag" cdkDragBoundary=".container" (tap)="listItem_dblclicked(i, availableList, assignedList, $event)" (dblclick)="listItem_dblclicked(i, availableList, assignedList)">{{item.name}}
+                    <!-- <div *cdkDragPreview class="drag_description_container">
+                        <div>{{item.name}}</div>
+                        <div class="small">version: {{item.version}}</div>
+                    </div> -->
+
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </mat-dialog-content>
+
+        <div class="container-fluid">
+            <div class="row justify-content-end">
+                <button type="button" class="btn btn-danger m-2" (click)="closeDialog()">Cancel</button>
+                <button type="submit" class="btn btn-success m-2" (click)="submitDialog()">Submit</button>
+            </div>
+        </div>
+
+</div>

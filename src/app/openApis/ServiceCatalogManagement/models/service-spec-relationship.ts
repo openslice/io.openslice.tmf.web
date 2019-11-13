@@ -9,22 +9,18 @@ export interface ServiceSpecRelationship {
   /**
    * When sub-classing, this defines the super-class
    */
-  "@baseType"?: string;
+  '@baseType'?: string;
 
   /**
    * A URI to a JSON-Schema file that defines additional attributes and relationships
    */
-  "@schemaLocation"?: string;
-  "@type"?: string;
+  '@schemaLocation'?: string;
+  '@type'?: string;
 
   /**
    * Unique reference of the entity
    */
   href?: string;
-
-  /**
-   * Unique identifier of the Entity
-   */
   id?: string;
 
   /**
@@ -41,6 +37,7 @@ export interface ServiceSpecRelationship {
    * The association role for this service specification
    */
   role?: string;
+  uuid?: string;
 
   /**
    * The period for which the serviceSpecRelationship is valid

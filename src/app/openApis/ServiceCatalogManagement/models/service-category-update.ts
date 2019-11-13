@@ -16,12 +16,12 @@ export interface ServiceCategoryUpdate {
   /**
    * When sub-classing, this defines the super-class
    */
-  "@baseType"?: string;
+  '@baseType'?: string;
 
   /**
    * When sub-classing, this defines the sub-class entity name
    */
-  "@type"?: string;
+  '@type'?: string;
 
   /**
    * List of child categories in the tree for in this category
@@ -41,7 +41,7 @@ export interface ServiceCategoryUpdate {
   /**
    * A URI to a JSON-Schema file that defines additional attributes and relationships
    */
-  "@schemaLocation"?: string;
+  '@schemaLocation'?: string;
 
   /**
    * Name of the category

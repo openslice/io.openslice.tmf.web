@@ -14,11 +14,11 @@ import { ServiceCatalogUpdate } from '../models/service-catalog-update';
   providedIn: 'root',
 })
 class ServiceCatalogService extends __BaseService {
-  static readonly listServiceCatalogPath = '/serviceCatalog';
-  static readonly createServiceCatalogPath = '/serviceCatalog';
-  static readonly retrieveServiceCatalogPath = '/serviceCatalog/{id}';
-  static readonly deleteServiceCatalogPath = '/serviceCatalog/{id}';
-  static readonly patchServiceCatalogPath = '/serviceCatalog/{id}';
+  static readonly listServiceCatalogPath = '/serviceCatalogManagement/v4/serviceCatalog';
+  static readonly createServiceCatalogPath = '/serviceCatalogManagement/v4/serviceCatalog';
+  static readonly retrieveServiceCatalogPath = '/serviceCatalogManagement/v4/serviceCatalog/{id}';
+  static readonly deleteServiceCatalogPath = '/serviceCatalogManagement/v4/serviceCatalog/{id}';
+  static readonly patchServiceCatalogPath = '/serviceCatalogManagement/v4/serviceCatalog/{id}';
 
   constructor(
     config: __Configuration,
@@ -48,7 +48,7 @@ class ServiceCatalogService extends __BaseService {
     if (params.fields != null) __params = __params.set('fields', params.fields.toString());
     let req = new HttpRequest<any>(
       'GET',
-      this.rootUrl + `/serviceCatalog`,
+      this.rootUrl + `/serviceCatalogManagement/v4/serviceCatalog`,
       __body,
       {
         headers: __headers,
@@ -93,7 +93,7 @@ class ServiceCatalogService extends __BaseService {
     __body = serviceCatalog;
     let req = new HttpRequest<any>(
       'POST',
-      this.rootUrl + `/serviceCatalog`,
+      this.rootUrl + `/serviceCatalogManagement/v4/serviceCatalog`,
       __body,
       {
         headers: __headers,
@@ -137,7 +137,7 @@ class ServiceCatalogService extends __BaseService {
     if (params.fields != null) __params = __params.set('fields', params.fields.toString());
     let req = new HttpRequest<any>(
       'GET',
-      this.rootUrl + `/serviceCatalog/${params.id}`,
+      this.rootUrl + `/serviceCatalogManagement/v4/serviceCatalog/${params.id}`,
       __body,
       {
         headers: __headers,
@@ -179,7 +179,7 @@ class ServiceCatalogService extends __BaseService {
 
     let req = new HttpRequest<any>(
       'DELETE',
-      this.rootUrl + `/serviceCatalog/${id}`,
+      this.rootUrl + `/serviceCatalogManagement/v4/serviceCatalog/${id}`,
       __body,
       {
         headers: __headers,
@@ -222,7 +222,7 @@ class ServiceCatalogService extends __BaseService {
 
     let req = new HttpRequest<any>(
       'PATCH',
-      this.rootUrl + `/serviceCatalog/${params.id}`,
+      this.rootUrl + `/serviceCatalogManagement/v4/serviceCatalog/${params.id}`,
       __body,
       {
         headers: __headers,

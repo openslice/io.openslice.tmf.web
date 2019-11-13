@@ -9,15 +9,15 @@ import { TimePeriod } from './time-period';
 export interface ServiceCategory {
 
   /**
-   * If true, this Boolean indicates that the category is a root of categories
+   * Date and time of the last update
    */
-  isRoot?: boolean;
+  lastUpdate?: string;
 
   /**
    * When sub-classing, this defines the super-class
    */
-  "@baseType"?: string;
-  "@type"?: string;
+  '@baseType'?: string;
+  '@type'?: string;
 
   /**
    * List of child categories in the tree for in this category
@@ -33,21 +33,17 @@ export interface ServiceCategory {
    * Unique reference of the entity
    */
   href?: string;
+  id?: string;
 
   /**
-   * Unique identifier of the Entity
+   * If true, this Boolean indicates that the category is a root of categories
    */
-  id?: string;
+  isRoot?: boolean;
 
   /**
    * A URI to a JSON-Schema file that defines additional attributes and relationships
    */
-  "@schemaLocation"?: string;
-
-  /**
-   * Date and time of the last update
-   */
-  lastUpdate?: string;
+  '@schemaLocation'?: string;
 
   /**
    * Used to indicate the current lifecycle status
@@ -68,6 +64,7 @@ export interface ServiceCategory {
    * List of service candidates associated with this category
    */
   serviceCandidate?: Array<ServiceCandidateRef>;
+  uuid?: string;
 
   /**
    * The period for which the entity is valid

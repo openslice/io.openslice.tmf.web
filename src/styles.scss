@@ -26,9 +26,13 @@ mat-form-field.white-background .mat-form-field-wrapper .mat-form-field-flex .ma
     border-radius: 5px
 }
 
-.table td {
-    border-top: 0 !important;
+.jumbotron.jumbotron-small.jumbotron-list-container {
+    min-height: 345px;
 }
+
+// .table td {
+//     border-top: 0 !important;
+// }
 
 .card.card-paper {
     border-radius: 12px;

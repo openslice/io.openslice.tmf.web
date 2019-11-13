@@ -16,13 +16,13 @@ export interface ServiceSpecCharacteristic {
   /**
    * When sub-classing, this defines the super-class
    */
-  "@baseType"?: string;
-  "@type"?: string;
+  '@baseType'?: string;
+  '@type'?: string;
 
   /**
    * This (optional) field provides a link to the schema describing the value type.
    */
-  "@valueSchemaLocation"?: string;
+  '@valueSchemaLocation'?: string;
 
   /**
    * If true, the Boolean indicates that the serviceSpecCharacteristic is configurable
@@ -43,16 +43,12 @@ export interface ServiceSpecCharacteristic {
    * Unique reference of the entity
    */
   href?: string;
-
-  /**
-   * Unique identifier of the Entity
-   */
   id?: string;
 
   /**
    * A URI to a JSON-Schema file that defines additional attributes and relationships
    */
-  "@schemaLocation"?: string;
+  '@schemaLocation'?: string;
 
   /**
    * The maximum number of instances a CharacteristicValue can take on. For example, zero to five phone numbers in a group calling plan, where five is the value for the maxCardinality.
@@ -83,6 +79,7 @@ export interface ServiceSpecCharacteristic {
    * A list of service spec characteristic values (ServiceSpecCharacteristicValue [*]). A ServiceSpecCharacteristicValue object is used to define a set of attributes, each of which can be assigned to a corresponding set of attributes in a ServiceSpecCharacteristic object. The values of the attributes in the ServiceSpecCharacteristicValue object describe the values of the attributes that a corresponding ServiceSpecCharacteristic object can take on.
    */
   serviceSpecCharacteristicValue?: Array<ServiceSpecCharacteristicValue>;
+  uuid?: string;
 
   /**
    * The period for which the serviceSpecCharacteristic is valid

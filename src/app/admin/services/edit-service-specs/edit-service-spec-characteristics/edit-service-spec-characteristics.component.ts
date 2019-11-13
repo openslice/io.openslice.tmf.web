@@ -3,6 +3,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
 import { ServiceSpecCharacteristic, ServiceSpecCharacteristicValue, ServiceSpecification, ServiceSpecificationUpdate } from 'src/app/openApis/ServiceCatalogManagement/models';
 import { FormGroup, FormControl, FormArray } from '@angular/forms';
 import { ServiceSpecificationService } from 'src/app/openApis/ServiceCatalogManagement/services';
+import { ToastrService } from 'ngx-toastr';
 
 const today = new Date()
 
@@ -19,7 +20,8 @@ export class EditServiceSpecCharacteristicsComponent implements OnInit {
       specToBeUpdated: ServiceSpecCharacteristic,
     },
     private dialogRef: MatDialogRef<EditServiceSpecCharacteristicsComponent>,
-    private specService: ServiceSpecificationService
+    private specService: ServiceSpecificationService,
+    private toast: ToastrService
     ) { }
 
   editFormCharacteristic = new FormGroup({
@@ -50,7 +52,9 @@ export class EditServiceSpecCharacteristicsComponent implements OnInit {
       
       const formArray = this.editFormCharacteristic.get('serviceSpecCharacteristicValue') as FormArray
       this.data.specToBeUpdated.serviceSpecCharacteristicValue.forEach( val => {
+        console.log(val)
         formArray.push(this.updateFormArrayItem(val))
+        console.log(formArray)
       })
     }
     
@@ -58,19 +62,10 @@ export class EditServiceSpecCharacteristicsComponent implements OnInit {
 
     this.editFormCharacteristic.get('valueType').valueChanges.subscribe(
       val => {
-        // this.valueSubType.reset()
-        
-        // if (val !== 'ARRAY' && val !=='ENUM' && val !=='SET') {
-        //   this.valueSubType.setValue(this.editFormCharacteristic.get('valueType').value)
-        // } else {
-
-        // }
-
         this.editFormCharacteristic.setControl('serviceSpecCharacteristicValue', new FormArray([]))
         this.createFormArrayItem()
-        console.log(this.editFormCharacteristic.value)
+
         const formArray = this.editFormCharacteristic.get('serviceSpecCharacteristicValue') as FormArray
-        console.log(formArray)
         if (val !== 'ARRAY' && val !=='ENUM' && val !=='SET') {          
           formArray.setControl(0,       
             new FormGroup({
@@ -90,8 +85,8 @@ export class EditServiceSpecCharacteristicsComponent implements OnInit {
   updateFormArrayItem(CharValue: ServiceSpecCharacteristicValue): FormGroup {
     return new FormGroup({
       value: new FormGroup({
-        alias: new FormControl(CharValue.value.value),
-        value: new FormControl(CharValue.value.alias),
+        alias: new FormControl(CharValue.value.alias),
+        value: new FormControl(CharValue.value.value),
       }),
       unitOfMeasure: new FormControl(CharValue.unitOfMeasure),
       isDefault: new FormControl(CharValue.isDefault),
@@ -140,7 +135,7 @@ export class EditServiceSpecCharacteristicsComponent implements OnInit {
     if (this.newSpec) {
       this.data.serviceSpec.serviceSpecCharacteristic.push(this.editFormCharacteristic.value)
     } else {
-      const updateCharacteristIndex = this.data.serviceSpec.serviceSpecCharacteristic.findIndex(char => char.uuid === this.data.specToBeUpdated.uuid)
+      const updateCharacteristIndex = this.data.serviceSpec.serviceSpecCharacteristic.findIndex(char => char.id === this.data.specToBeUpdated.id)
       this.data.serviceSpec.serviceSpecCharacteristic[updateCharacteristIndex] = this.editFormCharacteristic.value
     }
 
@@ -151,7 +146,7 @@ export class EditServiceSpecCharacteristicsComponent implements OnInit {
     this.specService.patchServiceSpecification({id: this.data.serviceSpec.id, serviceSpecification: updateCharacteristicObj}).subscribe(
       data => console.log(data),
       error => console.error(error),
-      () => this.dialogRef.close('updated')
+      () => {this.dialogRef.close('updated')}
     )
   }  
 

@@ -11,17 +11,17 @@ export interface ServiceCatalogUpdate {
   /**
    * When sub-classing, this defines the super-class
    */
-  "@baseType"?: string;
+  '@baseType'?: string;
 
   /**
    * A URI to a JSON-Schema file that defines additional attributes and relationships
    */
-  "@schemaLocation"?: string;
+  '@schemaLocation'?: string;
 
   /**
    * When sub-classing, this defines the sub-class entity name
    */
-  "@type"?: string;
+  '@type'?: string;
 
   /**
    * List of service categories associated with this catalog

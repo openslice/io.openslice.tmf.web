@@ -14,19 +14,15 @@ import { TimePeriod } from './time-period';
 export interface ServiceSpecification {
 
   /**
-   * Used to indicate the current lifecycle status
+   * Name of the entity
    */
-  lifecycleStatus?: string;
+  name?: string;
 
   /**
    * When sub-classing, this defines the super-class
    */
-  "@baseType"?: string;
-
-  /**
-   * When sub-classing, this defines the sub-class entity name
-   */
-  "@type"?: string;
+  '@baseType'?: string;
+  '@type'?: string;
 
   /**
    * A list of attachments (Attachment [*]). Complements the description of the specification through video, pictures...
@@ -42,10 +38,6 @@ export interface ServiceSpecification {
    * Unique reference of the entity
    */
   href?: string;
-
-  /**
-   * Unique identifier of the Entity
-   */
   id?: string;
 
   /**
@@ -59,14 +51,14 @@ export interface ServiceSpecification {
   lastUpdate?: string;
 
   /**
-   * A URI to a JSON-Schema file that defines additional attributes and relationships
+   * Used to indicate the current lifecycle status
    */
-  "@schemaLocation"?: string;
+  lifecycleStatus?: string;
 
   /**
-   * Name of the entity
+   * A URI to a JSON-Schema file that defines additional attributes and relationships
    */
-  name?: string;
+  '@schemaLocation'?: string;
 
   /**
    * A list of related party references (RelatedParty [*]). A related party defines party or party role linked to a specific entity.
@@ -97,6 +89,7 @@ export interface ServiceSpecification {
    * A target service schema reference (TargetServiceSchemaRef). The reference object to the schema and type of target service which is described by service specification.
    */
   targetServiceSchema?: TargetServiceSchema;
+  uuid?: string;
 
   /**
    * The period for which the entity is valid

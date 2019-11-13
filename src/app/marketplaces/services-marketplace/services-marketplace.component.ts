@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ServiceCatalogService, ServiceCategoryService, ServiceCandidateService } from 'src/app/openApis/ServiceCatalogManagement/services';
 import { ServiceCatalog, ServiceCategoryRef, ServiceCategory, ServiceCandidateRef, ServiceCandidate } from 'src/app/openApis/ServiceCatalogManagement/models';
+import { TreeServiceMarketPlaceService } from '../shared/services/tree-service-market-place.service';
+import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
 
 @Component({
   selector: 'app-services-marketplace',
@@ -12,11 +14,12 @@ export class ServicesMarketplaceComponent implements OnInit {
   constructor(
     private catalogService: ServiceCatalogService,
     private categoryService: ServiceCategoryService,
-    private candidateService: ServiceCandidateService
+    private candidateService: ServiceCandidateService,
+    private treeMarketPlaceService: TreeServiceMarketPlaceService
   ) { }
 
   serviceCatalogs: ServiceCatalog[]
-  isCatalogeCollapsed = false
+  isCatalogsCollapsed: Boolean[] = []
 
   selectedCategoryRef: ServiceCategoryRef
 
@@ -26,6 +29,19 @@ export class ServicesMarketplaceComponent implements OnInit {
 
   ngOnInit() {
     this.retrieveCatalogsList()
+    
+    // console.log(rootLevelNodes.map(name => new DynamicFlatNode(name, 0, true)))
+    this.treeMarketPlaceService.categorySelected$.subscribe(
+      category => {
+        console.log(category)
+        this.selectedCategory = category
+        this.serviceCandidates = []
+        category.serviceCandidate.forEach(candidateRef => {
+          this.retrieveCandidateFromRef(candidateRef)
+        })
+
+      }
+    )
   }
 
   retrieveCatalogsList() {
@@ -33,7 +49,10 @@ export class ServicesMarketplaceComponent implements OnInit {
       data => { this.serviceCatalogs = data },
       error => { console.error(error) },
       () => {
-        if (this.serviceCatalogs[0].category.length) this.selectCategory(this.serviceCatalogs[0].category[0])
+        this.treeMarketPlaceService.catalogs$.next(this.serviceCatalogs)
+        
+        this.isCatalogsCollapsed.fill(false, 0, this.serviceCatalogs.length - 1)
+        // if (this.serviceCatalogs[0].category.length) this.selectCategory(this.serviceCatalogs[0].category[0])
       }
     )
   }

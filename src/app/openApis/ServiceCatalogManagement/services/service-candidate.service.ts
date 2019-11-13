@@ -14,11 +14,11 @@ import { ServiceCandidateUpdate } from '../models/service-candidate-update';
   providedIn: 'root',
 })
 class ServiceCandidateService extends __BaseService {
-  static readonly listServiceCandidatePath = '/serviceCandidate';
-  static readonly createServiceCandidatePath = '/serviceCandidate';
-  static readonly retrieveServiceCandidatePath = '/serviceCandidate/{id}';
-  static readonly deleteServiceCandidatePath = '/serviceCandidate/{id}';
-  static readonly patchServiceCandidatePath = '/serviceCandidate/{id}';
+  static readonly listServiceCandidatePath = '/serviceCatalogManagement/v4/serviceCandidate';
+  static readonly createServiceCandidatePath = '/serviceCatalogManagement/v4/serviceCandidate';
+  static readonly retrieveServiceCandidatePath = '/serviceCatalogManagement/v4/serviceCandidate/{id}';
+  static readonly deleteServiceCandidatePath = '/serviceCatalogManagement/v4/serviceCandidate/{id}';
+  static readonly patchServiceCandidatePath = '/serviceCatalogManagement/v4/serviceCandidate/{id}';
 
   constructor(
     config: __Configuration,
@@ -48,7 +48,7 @@ class ServiceCandidateService extends __BaseService {
     if (params.fields != null) __params = __params.set('fields', params.fields.toString());
     let req = new HttpRequest<any>(
       'GET',
-      this.rootUrl + `/serviceCandidate`,
+      this.rootUrl + `/serviceCatalogManagement/v4/serviceCandidate`,
       __body,
       {
         headers: __headers,
@@ -93,7 +93,7 @@ class ServiceCandidateService extends __BaseService {
     __body = serviceCandidate;
     let req = new HttpRequest<any>(
       'POST',
-      this.rootUrl + `/serviceCandidate`,
+      this.rootUrl + `/serviceCatalogManagement/v4/serviceCandidate`,
       __body,
       {
         headers: __headers,
@@ -137,7 +137,7 @@ class ServiceCandidateService extends __BaseService {
     if (params.fields != null) __params = __params.set('fields', params.fields.toString());
     let req = new HttpRequest<any>(
       'GET',
-      this.rootUrl + `/serviceCandidate/${params.id}`,
+      this.rootUrl + `/serviceCatalogManagement/v4/serviceCandidate/${params.id}`,
       __body,
       {
         headers: __headers,
@@ -179,7 +179,7 @@ class ServiceCandidateService extends __BaseService {
 
     let req = new HttpRequest<any>(
       'DELETE',
-      this.rootUrl + `/serviceCandidate/${id}`,
+      this.rootUrl + `/serviceCatalogManagement/v4/serviceCandidate/${id}`,
       __body,
       {
         headers: __headers,
@@ -222,7 +222,7 @@ class ServiceCandidateService extends __BaseService {
 
     let req = new HttpRequest<any>(
       'PATCH',
-      this.rootUrl + `/serviceCandidate/${params.id}`,
+      this.rootUrl + `/serviceCatalogManagement/v4/serviceCandidate/${params.id}`,
       __body,
       {
         headers: __headers,

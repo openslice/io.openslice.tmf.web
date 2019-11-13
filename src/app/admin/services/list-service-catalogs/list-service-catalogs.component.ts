@@ -6,6 +6,7 @@ import { ServiceCatalogService } from 'src/app/openApis/ServiceCatalogManagement
 import { ServiceCatalog } from 'src/app/openApis/ServiceCatalogManagement/models';
 import { EditServiceCatalogsComponent } from '../edit-service-catalogs/edit-service-catalogs.component';
 import { DeleteServiceCatalogComponent } from '../delete-service-catalog/delete-service-catalog.component';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-list-service-catalogs',
@@ -14,7 +15,7 @@ import { DeleteServiceCatalogComponent } from '../delete-service-catalog/delete-
 })
 export class ListServiceCatalogsComponent implements OnInit {
 
-  constructor(private catalogService: ServiceCatalogService, public dialog: MatDialog) { }
+  constructor(private catalogService: ServiceCatalogService, public dialog: MatDialog, private toast: ToastrService) { }
 
   displayedColumns = ['name', 'description', 'version', 'lastUpdate',  'lifestyleStatus', 'actions']
   dataSource  = new MatTableDataSource<ServiceCatalog>()
@@ -51,7 +52,10 @@ export class ListServiceCatalogsComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe (
       result => { 
-        if (result) this.retrieveCatalogsList() 
+        if (result) {
+          this.toast.success("Service Catalogs list is successfully updated")
+          this.retrieveCatalogsList() 
+        }
       }
     )
   }
@@ -61,7 +65,10 @@ export class ListServiceCatalogsComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe (
       result => {
-        if (result) this.retrieveCatalogsList()
+        if (result) {
+          this.toast.success("Service Catalogs list is successfully updated")
+          this.retrieveCatalogsList()
+        }
       }
     )
   }

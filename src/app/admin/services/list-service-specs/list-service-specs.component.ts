@@ -63,27 +63,32 @@ export class ListServiceSpecsComponent implements OnInit {
 
   cloneServiceSpec(spec: ServiceSpecification) {
     
-    const cloneObj: ServiceSpecificationCreate = {
-      name: `Copy of ${spec.name}`,
-      description: spec.description,
-      isBundle: spec.isBundle,
-      lifecycleStatus: spec.lifecycleStatus,
-      relatedParty: spec.relatedParty,
-      resourceSpecification: spec.resourceSpecification,
-      serviceLevelSpecification: spec.serviceLevelSpecification,
-      serviceSpecCharacteristic: spec.serviceSpecCharacteristic,
-      serviceSpecRelationship: spec.serviceSpecRelationship,
-      targetServiceSchema: spec.targetServiceSchema,
-      validFor: spec.validFor,
-      version: spec.version
-    }
-    console.log(cloneObj)
+    // const cloneObj: ServiceSpecificationCreate = {
+    //   name: `Copy of ${spec.name}`,
+    //   description: spec.description,
+    //   isBundle: spec.isBundle,
+    //   lifecycleStatus: spec.lifecycleStatus,
+    //   // relatedParty: spec.relatedParty,
+    //   resourceSpecification: spec.resourceSpecification,
+    //   serviceLevelSpecification: spec.serviceLevelSpecification,
+    //   serviceSpecCharacteristic: spec.serviceSpecCharacteristic,
+    //   serviceSpecRelationship: spec.serviceSpecRelationship,
+    //   targetServiceSchema: spec.targetServiceSchema,
+    //   validFor: spec.validFor,
+    //   version: spec.version
+    // }
+    // console.log(cloneObj)
     
-    this.specService.createServiceSpecification(cloneObj).subscribe(
+    // this.specService.createServiceSpecification(cloneObj).subscribe(
+    //   data => console.log(data),
+    //   error => console.error(error),
+    //   () => this.retrieveSpecsList() 
+    // )
+
+    this.specService.cloneServiceSpecification(spec.id).subscribe(
       data => console.log(data),
       error => console.error(error),
-      () => this.retrieveSpecsList()
-      
+      () => this.retrieveSpecsList() 
     )
   }
 

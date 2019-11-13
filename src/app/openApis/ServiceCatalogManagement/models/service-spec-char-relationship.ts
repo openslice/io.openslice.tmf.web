@@ -5,31 +5,10 @@ import { TimePeriod } from './time-period';
  * An aggregation, migration, substitution, dependency or exclusivity relationship between/among serviceSpecCharacteristics.
  */
 export interface ServiceSpecCharRelationship {
-
-  /**
-   * When sub-classing, this defines the super-class
-   */
-  "@baseType"?: string;
-
-  /**
-   * A URI to a JSON-Schema file that defines additional attributes and relationships
-   */
-  "@schemaLocation"?: string;
-  "@type"?: string;
-
-  /**
-   * Unique reference of the entity
-   */
-  href?: string;
-
-  /**
-   * Unique identifier of the Entity
-   */
+  '@baseType'?: string;
+  '@schemaLocation'?: string;
+  '@type'?: string;
   id?: string;
-
-  /**
-   * Name of the entity
-   */
   name?: string;
 
   /**
@@ -41,6 +20,7 @@ export interface ServiceSpecCharRelationship {
    * The association role for this service specification
    */
   role?: string;
+  uuid?: string;
 
   /**
    * The period for which the serviceSpecCharRelationship is valid

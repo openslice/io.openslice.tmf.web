@@ -14,11 +14,14 @@ import { ServiceSpecificationUpdate } from '../models/service-specification-upda
   providedIn: 'root',
 })
 class ServiceSpecificationService extends __BaseService {
-  static readonly listServiceSpecificationPath = '/serviceSpecification';
-  static readonly createServiceSpecificationPath = '/serviceSpecification';
-  static readonly retrieveServiceSpecificationPath = '/serviceSpecification/{id}';
-  static readonly deleteServiceSpecificationPath = '/serviceSpecification/{id}';
-  static readonly patchServiceSpecificationPath = '/serviceSpecification/{id}';
+  static readonly listServiceSpecificationPath = '/serviceCatalogManagement/v4/serviceSpecification';
+  static readonly createServiceSpecificationPath = '/serviceCatalogManagement/v4/serviceSpecification';
+  static readonly retrieveServiceSpecificationPath = '/serviceCatalogManagement/v4/serviceSpecification/{id}';
+  static readonly deleteServiceSpecificationPath = '/serviceCatalogManagement/v4/serviceSpecification/{id}';
+  static readonly patchServiceSpecificationPath = '/serviceCatalogManagement/v4/serviceSpecification/{id}';
+  static readonly addAttachmentToServiceSpecificationPath = '/serviceCatalogManagement/v4/serviceSpecification/{id}/attachment';
+  static readonly cloneServiceSpecificationPath = '/serviceCatalogManagement/v4/serviceSpecification/{id}/clone';
+  static readonly retrieveServiceSpecificationDescriptorPath = '/serviceCatalogManagement/v4/serviceSpecification/{id}/sd';
 
   constructor(
     config: __Configuration,
@@ -48,7 +51,7 @@ class ServiceSpecificationService extends __BaseService {
     if (params.fields != null) __params = __params.set('fields', params.fields.toString());
     let req = new HttpRequest<any>(
       'GET',
-      this.rootUrl + `/serviceSpecification`,
+      this.rootUrl + `/serviceCatalogManagement/v4/serviceSpecification`,
       __body,
       {
         headers: __headers,
@@ -93,7 +96,7 @@ class ServiceSpecificationService extends __BaseService {
     __body = serviceSpecification;
     let req = new HttpRequest<any>(
       'POST',
-      this.rootUrl + `/serviceSpecification`,
+      this.rootUrl + `/serviceCatalogManagement/v4/serviceSpecification`,
       __body,
       {
         headers: __headers,
@@ -137,7 +140,7 @@ class ServiceSpecificationService extends __BaseService {
     if (params.fields != null) __params = __params.set('fields', params.fields.toString());
     let req = new HttpRequest<any>(
       'GET',
-      this.rootUrl + `/serviceSpecification/${params.id}`,
+      this.rootUrl + `/serviceCatalogManagement/v4/serviceSpecification/${params.id}`,
       __body,
       {
         headers: __headers,
@@ -179,7 +182,7 @@ class ServiceSpecificationService extends __BaseService {
 
     let req = new HttpRequest<any>(
       'DELETE',
-      this.rootUrl + `/serviceSpecification/${id}`,
+      this.rootUrl + `/serviceCatalogManagement/v4/serviceSpecification/${id}`,
       __body,
       {
         headers: __headers,
@@ -222,7 +225,7 @@ class ServiceSpecificationService extends __BaseService {
 
     let req = new HttpRequest<any>(
       'PATCH',
-      this.rootUrl + `/serviceSpecification/${params.id}`,
+      this.rootUrl + `/serviceCatalogManagement/v4/serviceSpecification/${params.id}`,
       __body,
       {
         headers: __headers,
@@ -249,6 +252,138 @@ class ServiceSpecificationService extends __BaseService {
    */
   patchServiceSpecification(params: ServiceSpecificationService.PatchServiceSpecificationParams): __Observable<ServiceSpecification> {
     return this.patchServiceSpecificationResponse(params).pipe(
+      __map(_r => _r.body as ServiceSpecification)
+    );
+  }
+
+  /**
+   * This operation adds an attachment to a ServiceSpecification and updates partially a ServiceSpecification entity
+   * @param params The `ServiceSpecificationService.AddAttachmentToServiceSpecificationParams` containing the following parameters:
+   *
+   * - `id`: Identifier of the ServiceSpecification
+   *
+   * - `attachment`: The Attachment object to be added
+   *
+   * - `afile`: The Attachment file to be added
+   *
+   * @return Success
+   */
+  addAttachmentToServiceSpecificationResponse(params: ServiceSpecificationService.AddAttachmentToServiceSpecificationParams): __Observable<__StrictHttpResponse<ServiceSpecification>> {
+    let __params = this.newParams();
+    let __headers = new HttpHeaders();
+    let __body: any = null;
+    let __formData = new FormData();
+    __body = __formData;
+
+    __body = params.attachment;
+    if (params.afile != null) { __formData.append('afile', params.afile as string | Blob);}
+    let req = new HttpRequest<any>(
+      'POST',
+      this.rootUrl + `/serviceCatalogManagement/v4/serviceSpecification/${params.id}/attachment`,
+      __body,
+      {
+        headers: __headers,
+        params: __params,
+        responseType: 'json'
+      });
+
+    return this.http.request<any>(req).pipe(
+      __filter(_r => _r instanceof HttpResponse),
+      __map((_r) => {
+        return _r as __StrictHttpResponse<ServiceSpecification>;
+      })
+    );
+  }
+  /**
+   * This operation adds an attachment to a ServiceSpecification and updates partially a ServiceSpecification entity
+   * @param params The `ServiceSpecificationService.AddAttachmentToServiceSpecificationParams` containing the following parameters:
+   *
+   * - `id`: Identifier of the ServiceSpecification
+   *
+   * - `attachment`: The Attachment object to be added
+   *
+   * - `afile`: The Attachment file to be added
+   *
+   * @return Success
+   */
+  addAttachmentToServiceSpecification(params: ServiceSpecificationService.AddAttachmentToServiceSpecificationParams): __Observable<ServiceSpecification> {
+    return this.addAttachmentToServiceSpecificationResponse(params).pipe(
+      __map(_r => _r.body as ServiceSpecification)
+    );
+  }
+
+  /**
+   * This operation clones a ServiceSpecification entity. The response is the cloned spec
+   * @param id Identifier of the ServiceSpecification to clone
+   * @return Cloned
+   */
+  cloneServiceSpecificationResponse(id: string): __Observable<__StrictHttpResponse<ServiceSpecification>> {
+    let __params = this.newParams();
+    let __headers = new HttpHeaders();
+    let __body: any = {};
+
+    let req = new HttpRequest<any>(
+      'POST',
+      this.rootUrl + `/serviceCatalogManagement/v4/serviceSpecification/${id}/clone`,
+      __body,
+      {
+        headers: __headers,
+        params: __params,
+        responseType: 'json'
+      });
+
+    return this.http.request<any>(req).pipe(
+      __filter(_r => _r instanceof HttpResponse),
+      __map((_r) => {
+        return _r as __StrictHttpResponse<ServiceSpecification>;
+      })
+    );
+  }
+  /**
+   * This operation clones a ServiceSpecification entity. The response is the cloned spec
+   * @param id Identifier of the ServiceSpecification to clone
+   * @return Cloned
+   */
+  cloneServiceSpecification(id: string): __Observable<ServiceSpecification> {
+    return this.cloneServiceSpecificationResponse(id).pipe(
+      __map(_r => _r.body as ServiceSpecification)
+    );
+  }
+
+  /**
+   * This operation retrieves a Service Descriptor entity. Attribute selection is enabled for all first level attributes.
+   * @param id Identifier of the ServiceSpecification
+   * @return Success
+   */
+  retrieveServiceSpecificationDescriptorResponse(id: string): __Observable<__StrictHttpResponse<ServiceSpecification>> {
+    let __params = this.newParams();
+    let __headers = new HttpHeaders();
+    let __body: any = null;
+
+    let req = new HttpRequest<any>(
+      'GET',
+      this.rootUrl + `/serviceCatalogManagement/v4/serviceSpecification/${id}/sd`,
+      __body,
+      {
+        headers: __headers,
+        params: __params,
+        responseType: 'json'
+      });
+
+    return this.http.request<any>(req).pipe(
+      __filter(_r => _r instanceof HttpResponse),
+      __map((_r) => {
+        return _r as __StrictHttpResponse<ServiceSpecification>;
+      })
+    );
+  }
+  /**
+   * This operation retrieves a Service Descriptor entity. Attribute selection is enabled for all first level attributes.
+   * @param id Identifier of the ServiceSpecification
+   * @return Success
+   */
+  retrieveServiceSpecificationDescriptor(id: string): __Observable<ServiceSpecification> {
+    return this.retrieveServiceSpecificationDescriptorResponse(id).pipe(
       __map(_r => _r.body as ServiceSpecification)
     );
   }
@@ -307,6 +442,27 @@ module ServiceSpecificationService {
      * Identifier of the ServiceSpecification
      */
     id: string;
+  }
+
+  /**
+   * Parameters for addAttachmentToServiceSpecification
+   */
+  export interface AddAttachmentToServiceSpecificationParams {
+
+    /**
+     * Identifier of the ServiceSpecification
+     */
+    id: string;
+
+    /**
+     * The Attachment object to be added
+     */
+    attachment?: string;
+
+    /**
+     * The Attachment file to be added
+     */
+    afile?: Blob;
   }
 }
 

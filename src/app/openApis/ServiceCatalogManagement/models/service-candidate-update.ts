@@ -11,17 +11,17 @@ export interface ServiceCandidateUpdate {
   /**
    * When sub-classing, this defines the super-class
    */
-  "@baseType"?: string;
+  '@baseType'?: string;
 
   /**
    * A URI to a JSON-Schema file that defines additional attributes and relationships
    */
-  "@schemaLocation"?: string;
+  '@schemaLocation'?: string;
 
   /**
    * When sub-classing, this defines the sub-class entity name
    */
-  "@type"?: string;
+  '@type'?: string;
 
   /**
    * List of categories for this candidate

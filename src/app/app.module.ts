@@ -15,6 +15,8 @@ import { NgProgressHttpModule } from '@ngx-progressbar/http';
 
 import { OwlDateTimeModule, OwlNativeDateTimeModule } from 'ng-pick-datetime';
 
+import { ToastrModule } from 'ngx-toastr';
+
 import {
   MatTableModule,
   MatSortModule,
@@ -32,9 +34,12 @@ import {
   MatAutocompleteModule,
   MatChipsModule,
   MatExpansionModule,
-  MatToolbarModule
+  MatToolbarModule,
+  MatTreeModule,
+  MatProgressBarModule
 } from '@angular/material'
 
+import {DragDropModule} from '@angular/cdk/drag-drop';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -62,6 +67,8 @@ import { DeleteServiceCatalogComponent } from './admin/services/delete-service-c
 import { DeleteServiceCategoryComponent } from './admin/services/delete-service-category/delete-service-category.component';
 import { DeleteServiceSpecComponent } from './admin/services/delete-service-spec/delete-service-spec.component';
 import { CreateServiceCategoryChildrenComponent } from './admin/services/edit-service-categories/create-service-category-children/create-service-category-children.component';
+import { TreeSidenavComponent } from './marketplaces/shared/tree-sidenav/tree-sidenav.component';
+import { AssignServiceCandidatesComponent } from './admin/services/edit-service-categories/assign-service-candidates/assign-service-candidates.component';
 
 
 
@@ -92,7 +99,9 @@ export function initializeApp(bootstrap: BootstrapService) {
     DeleteServiceCatalogComponent,
     DeleteServiceCategoryComponent,
     DeleteServiceSpecComponent,
-    CreateServiceCategoryChildrenComponent
+    CreateServiceCategoryChildrenComponent,
+    TreeSidenavComponent,
+    AssignServiceCandidatesComponent
   ],
   imports: [
     BrowserModule,
@@ -118,17 +127,22 @@ export function initializeApp(bootstrap: BootstrapService) {
     MatChipsModule,
     MatExpansionModule,
     MatToolbarModule,
+    MatTreeModule,
+    MatProgressBarModule,
+    DragDropModule,
     MatNativeDateModule,
     MatDatepickerModule,  
     NgProgressModule,
     NgProgressHttpModule,
     OwlDateTimeModule, 
-    OwlNativeDateTimeModule
+    OwlNativeDateTimeModule,
+    ToastrModule.forRoot({progressBar: true})
   ],
   entryComponents : [
     EditServiceCatalogsComponent,
     EditServiceCategoriesComponent,
     CreateServiceCategoryChildrenComponent,
+    AssignServiceCandidatesComponent,
     EditServiceSpecCharacteristicsComponent,
     DeleteServiceCatalogComponent,
     DeleteServiceCategoryComponent,

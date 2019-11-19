@@ -320,10 +320,10 @@ class ServiceSpecificationService extends __BaseService {
   cloneServiceSpecificationResponse(id: string): __Observable<__StrictHttpResponse<ServiceSpecification>> {
     let __params = this.newParams();
     let __headers = new HttpHeaders();
-    let __body: any = {};
+    let __body: any = null;
 
     let req = new HttpRequest<any>(
-      'POST',
+      'GET',
       this.rootUrl + `/serviceCatalogManagement/v4/serviceSpecification/${id}/clone`,
       __body,
       {

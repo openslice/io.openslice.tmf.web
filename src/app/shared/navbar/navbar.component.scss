@@ -9,3 +9,28 @@
 nav {
     z-index: 500;
 }
+
+.dropdown-submenu .dropdown-menu {
+    top: 0;
+    left: 100%;
+    margin-top: -1px;
+  }
+
+.dropdown-submenu .dropdown-toggle {
+    display: block;
+    width: 100%;
+    padding: 0.25rem 1.5rem;
+    clear: both;
+    font-weight: 400;
+    color: #212529;
+    text-align: inherit;
+    white-space: nowrap;
+    background-color: transparent;
+    border: 0;
+}
+
+.dropdown-submenu .dropdown-toggle:hover {
+    color: #16181b;
+    text-decoration: none;
+    background-color: #f8f9fa;
+}

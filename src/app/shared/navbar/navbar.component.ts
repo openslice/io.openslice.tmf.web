@@ -1,4 +1,6 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { ServiceSpecificationService } from 'src/app/openApis/ServiceCatalogManagement/services';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-navbar',
@@ -8,6 +10,8 @@ import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 export class NavbarComponent implements OnInit {
 
   constructor(
+    private specService: ServiceSpecificationService,
+    private router: Router
   ) { }
 
   loggedIn: boolean
@@ -15,6 +19,15 @@ export class NavbarComponent implements OnInit {
   
   ngOnInit() {
     this.loggedIn = false
+  }
+
+  onGSTtemplateClick() {
+    // this.specService.
+    this.router.navigate(['service_spec_update'])
+  }
+
+  onVINNItemplateClick() {
+    this.router.navigate(['service_spec_update'])
   }
 
 }

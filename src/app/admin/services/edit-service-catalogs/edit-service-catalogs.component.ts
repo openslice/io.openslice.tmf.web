@@ -38,7 +38,7 @@ export class EditServiceCatalogsComponent implements OnInit {
       endDateTime: new FormControl(new Date(new Date().setFullYear(today.getFullYear()+20))),
       startDateTime: new FormControl(new Date())
     }),
-    version: new FormControl()
+    version: new FormControl("0.1.0")
   })
 
   lifecycleStatuses = ["In study", "In design", "In test", "Active", "Launched", "Retired", "Obsolete", "Rejected"]

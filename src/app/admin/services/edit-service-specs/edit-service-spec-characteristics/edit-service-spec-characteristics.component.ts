@@ -1,9 +1,11 @@
 import { Component, OnInit, Inject } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
+import { MAT_DIALOG_DATA, MatDialogRef, MatCheckboxChange } from '@angular/material';
 import { ServiceSpecCharacteristic, ServiceSpecCharacteristicValue, ServiceSpecification, ServiceSpecificationUpdate } from 'src/app/openApis/ServiceCatalogManagement/models';
 import { FormGroup, FormControl, FormArray } from '@angular/forms';
 import { ServiceSpecificationService } from 'src/app/openApis/ServiceCatalogManagement/services';
 import { ToastrService } from 'ngx-toastr';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 const today = new Date()
 
@@ -39,48 +41,74 @@ export class EditServiceSpecCharacteristicsComponent implements OnInit {
     serviceSpecCharacteristicValue: new FormArray([])
   })
 
-  valueTypes = ['INTEGER', 'FLOAT', 'SET', 'BINARY', 'ARRAY', 'ENUM']
+  subValueTypeCtrl = new FormControl('INTEGER')
+
+  valueTypes = ['INTEGER', 'SMALLINT', 'LONGINT', 'FLOAT', 'BINARY', 'BOOLEAN', 'ARRAY', 'SET', 'TEXT', 'LONGTEXT', 'ENUM', 'TIMESTAMP']
+  subValueTypes = ['INTEGER', 'SMALLINT', 'LONGINT', 'FLOAT', 'BINARY', 'BOOLEAN', 'TEXT', 'LONGTEXT', 'TIMESTAMP']
 
   // valueSubType = new FormControl()
+  subTypeSelection: boolean = false
 
   newSpec: boolean = false
+
+  compDestroy$ = new Subject()
+
+
   ngOnInit() {
-    console.log(this.data)
     if (this.data.specToBeUpdated) {
       if (!this.data.specToBeUpdated.validFor) this.data.specToBeUpdated.validFor = {endDateTime:null, startDateTime:null}
       this.editFormCharacteristic.patchValue(this.data.specToBeUpdated)
       
       const formArray = this.editFormCharacteristic.get('serviceSpecCharacteristicValue') as FormArray
       this.data.specToBeUpdated.serviceSpecCharacteristicValue.forEach( val => {
-        console.log(val)
         formArray.push(this.updateFormArrayItem(val))
-        console.log(formArray)
       })
+      console.log(this.editFormCharacteristic)
     }
     
     else { this.newSpec = true }
 
-    this.editFormCharacteristic.get('valueType').valueChanges.subscribe(
+    this.editFormCharacteristic.get('valueType').valueChanges.pipe(
+      takeUntil(this.compDestroy$)
+    )
+    .subscribe(
       val => {
         this.editFormCharacteristic.setControl('serviceSpecCharacteristicValue', new FormArray([]))
         this.createFormArrayItem()
 
-        const formArray = this.editFormCharacteristic.get('serviceSpecCharacteristicValue') as FormArray
-        if (val !== 'ARRAY' && val !=='ENUM' && val !=='SET') {          
-          formArray.setControl(0,       
-            new FormGroup({
-            value: new FormGroup({
-              alias: new FormControl(),
-              value: new FormControl(),
-            }),
-            unitOfMeasure: new FormControl(),
-            isDefault: new FormControl(),
-            valueType: new FormControl(this.editFormCharacteristic.get('valueType').value)
-          }))
-        } 
+
+        if (['SET', 'ARRAY', 'ENUM'].includes(val)) {
+          this.subTypeSelection = true
+          this.subValueTypeCtrl.valueChanges.pipe(
+            takeUntil(this.compDestroy$)
+          )
+          .subscribe (
+            subVal => {
+              this.editFormCharacteristic.setControl('serviceSpecCharacteristicValue', new FormArray([]))
+              this.createFormArrayItem()
+            }
+          )
+        } else {
+          this.subTypeSelection = false
+        }
+        // const formArray = this.editFormCharacteristic.get('serviceSpecCharacteristicValue') as FormArray
+        // if (val !== 'ARRAY' && val !=='ENUM' && val !=='SET') {       
+        //   this.subTypeSelection = false   
+        //   formArray.setControl(0,       
+        //     new FormGroup({
+        //     value: new FormGroup({
+        //       alias: new FormControl(),
+        //       value: new FormControl(),
+        //     }),
+        //     unitOfMeasure: new FormControl(),
+        //     isDefault: new FormControl(),
+        //     valueType: new FormControl(this.editFormCharacteristic.get('valueType').value)
+        //   }))
+        // }
       }
     )
   }
+
 
   updateFormArrayItem(CharValue: ServiceSpecCharacteristicValue): FormGroup {
     return new FormGroup({
@@ -103,7 +131,7 @@ export class EditServiceSpecCharacteristicsComponent implements OnInit {
 
     if (['SET', 'ARRAY', 'ENUM'].includes(this.editFormCharacteristic.get('valueType').value)) {
       // isDisabled = false
-      subType = null
+      subType = this.subValueTypeCtrl.value
     }
     
     formArray.push(
@@ -122,6 +150,15 @@ export class EditServiceSpecCharacteristicsComponent implements OnInit {
   deleteFormArrayItem(index) {
     const formArray = this.editFormCharacteristic.get('serviceSpecCharacteristicValue') as FormArray
     formArray.removeAt(index)
+  }
+
+  isDefaultCheckboxChanged(index, event: MatCheckboxChange) {
+    if (this.editFormCharacteristic.get('valueType').value === "ENUM" && event.checked) {
+      const formArray = this.editFormCharacteristic.get('serviceSpecCharacteristicValue') as FormArray
+      for (let i = 0; i < formArray.controls.length; i++) {
+        if (i !== index) formArray.controls[i].get('isDefault').setValue(false)
+      }     
+    }
   }
 
 
@@ -143,11 +180,16 @@ export class EditServiceSpecCharacteristicsComponent implements OnInit {
       serviceSpecCharacteristic: this.data.serviceSpec.serviceSpecCharacteristic
     }
 
+    console.log(updateCharacteristicObj)
     this.specService.patchServiceSpecification({id: this.data.serviceSpec.id, serviceSpecification: updateCharacteristicObj}).subscribe(
       data => console.log(data),
       error => console.error(error),
       () => {this.dialogRef.close('updated')}
     )
-  }  
+  }
+  
+  ngOnDestroy(): void {
+    this.compDestroy$.next()    
+  }
 
 }

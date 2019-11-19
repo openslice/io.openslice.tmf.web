@@ -56,7 +56,7 @@
                         <input placeholder="Categories" #categoryInput [formControl]="categoryInputCtrl"
                             [matAutocomplete]="auto" matInput [matChipInputFor]="chipList"
                             [matChipInputAddOnBlur]="addOnBlur" (matChipInputTokenEnd)="addChip($event)"
-                            (click)="openList(matAutocomplete)">
+                            (click)="openList()">
                     </mat-chip-list>
                     <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)" autoActiveFirstOption>
                         <mat-option *ngFor="let category of filteredCategories | async" [value]="category">

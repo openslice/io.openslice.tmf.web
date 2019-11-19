@@ -48,7 +48,7 @@ export class EditServiceCategoriesComponent implements OnInit, OnDestroy {
       startDateTime: new FormControl(new Date())
     }),
     serviceCandidate: new FormControl([]),
-    version: new FormControl()
+    version: new FormControl("0.1.0")
   })
 
   lifecycleStatuses = ["In study", "In design", "In test", "Active", "Launched", "Retired", "Obsolete", "Rejected"]
@@ -127,7 +127,6 @@ export class EditServiceCategoriesComponent implements OnInit, OnDestroy {
           this.editForm.get('isRoot').enable()
         }
 
-
         this.filteredChildrenCategories$ = this.childrenCategoryFilterCtrl.valueChanges.pipe( 
           startWith(null),
           map( (value:null | string) => value ? this._filterOnChildrenCategories(value) : this.category.category.slice() )
@@ -137,9 +136,6 @@ export class EditServiceCategoriesComponent implements OnInit, OnDestroy {
           startWith(null),
           map( (value:null | string) => value ? this._filterOnServiceCandidates(value) : this.category.serviceCandidate.slice() )
         )
-
-
-          
       }
     )
   }

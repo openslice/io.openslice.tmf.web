@@ -4,7 +4,7 @@ import { ActivatedRoute } from '@angular/router';
 import { FormGroup, FormControl, FormArray } from '@angular/forms';
 import { ServiceSpecification, ServiceSpecCharacteristic, ServiceSpecificationUpdate, ServiceSpecificationCreate, ServiceSpecRelationship } from 'src/app/openApis/ServiceCatalogManagement/models';
 import { ServiceSpecificationService } from 'src/app/openApis/ServiceCatalogManagement/services';
-import { MatTableDataSource, MatSort, MatPaginator, MatDialog } from '@angular/material';
+import { MatTableDataSource, MatSort, MatPaginator, MatDialog, MatCheckboxChange, MatExpansionPanel } from '@angular/material';
 import { EditServiceSpecCharacteristicsComponent } from './edit-service-spec-characteristics/edit-service-spec-characteristics.component';
 import { DeleteServiceSpecCharacteristicsComponent } from './delete-service-spec-characteristics/delete-service-spec-characteristics.component';
 import { ToastrService } from 'ngx-toastr';
@@ -39,17 +39,21 @@ export class EditServiceSpecsComponent implements OnInit {
       endDateTime: new FormControl(new Date(new Date().setFullYear(today.getFullYear()+20))),
       startDateTime: new FormControl(new Date())
     }),
-    version: new FormControl('1.0.0')
+    version: new FormControl("0.1.0")
   })
 
   lifecycleStatuses = ["In study", "In design", "In test", "Active", "Launched", "Retired", "Obsolete", "Rejected"]
 
 
-  displayedColumnsCharacteristics = ['name', 'type', 'configurable', 'actions']
+  displayedColumnsCharacteristics = ['name', 'type', 'defaultValues', 'configurable', 'actions']
   dataSource  = new MatTableDataSource<ServiceSpecCharacteristic>()
 
+  specCharacteristicsTags: string[] = ["All"]
+
   @ViewChild(MatSort, {static: true}) sort: MatSort;
-  @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
+  // @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
+
+  @ViewChild('specRelationshipsPanel', {static: true}) specRelationshipsPanel: MatExpansionPanel
 
   newSpecification = false
 
@@ -73,9 +77,15 @@ export class EditServiceSpecsComponent implements OnInit {
       () => {
         if (!this.spec.validFor) this.spec.validFor = {endDateTime:null, startDateTime:null}
         this.editForm.patchValue(this.spec)
-        this.dataSource.data = this.spec.serviceSpecCharacteristic
+        this.dataSource.data = this.spec.serviceSpecCharacteristic.filter(specCharacteristic => specCharacteristic.valueType)
         this.dataSource.sort = this.sort
-        this.dataSource.paginator = this.paginator;
+        // this.dataSource.paginator = this.paginator;
+
+        console.log(this.spec)
+
+        this.specCharacteristicsTags = this.retrieveSpecCharaceristicTag(this.dataSource.data)
+
+        console.log(this.specCharacteristicsTags)
 
         this.filteredRelatedSpecs$ = this.serviceRelatedSpecsFilterCtrl.valueChanges.pipe( 
           startWith(null),
@@ -83,6 +93,20 @@ export class EditServiceSpecsComponent implements OnInit {
         )
       }
     )
+  }
+
+  retrieveSpecCharaceristicTag(dataSource: ServiceSpecCharacteristic[]) {
+    let tagsArray = this.specCharacteristicsTags
+    dataSource.forEach(char => {
+      char.serviceSpecCharRelationship.filter( e => e.relationshipType === "tag").forEach(rel => {
+        if (!tagsArray.includes(rel.name)) tagsArray.push(rel.name)
+      })
+    });
+    return tagsArray
+  }
+
+  bundleCheckboxChanged(event:MatCheckboxChange) {
+    if (!event.checked) this.specRelationshipsPanel.close()
   }
 
   private _filterOnRelatedSpecs(filterValue: string) {
@@ -96,6 +120,14 @@ export class EditServiceSpecsComponent implements OnInit {
     filterValue = filterValue.trim();
     filterValue = filterValue.toLowerCase();
     this.dataSource.filter = filterValue;
+  }
+  
+  filterCharacteristicsByTag(tagName) {
+    console.log(tagName)
+  }
+
+  openAssignSpecRelationshipDialog() {
+    
   }
 
   openCharacteristicDesignDialog(characteristic: ServiceSpecCharacteristic) {
@@ -169,7 +201,10 @@ export class EditServiceSpecsComponent implements OnInit {
     this.specService.patchServiceSpecification({id: this.spec.id, serviceSpecification: updateCharacteristicObj}).subscribe(
       data => console.log(data),
       error => console.error(error),
-      () => { this.retrieveServiceSpec() }
+      () => { 
+        this.toast.success("Service Specification Characteristics list was successfully updated")
+        this.retrieveServiceSpec() 
+      }
     )
   }
 

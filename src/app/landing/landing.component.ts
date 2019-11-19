@@ -14,9 +14,11 @@ export class LandingComponent implements OnInit {
   ) { }
 
   config: IAppConfig
+  loggedIn: false
 
   ngOnInit() {
     this.config = this.appService.config
   }
 
+  showOauth2OsapiPopup() {}
 }

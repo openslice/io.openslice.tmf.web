@@ -36,7 +36,8 @@ import {
   MatExpansionModule,
   MatToolbarModule,
   MatTreeModule,
-  MatProgressBarModule
+  MatProgressBarModule,
+  MatButtonToggleModule
 } from '@angular/material'
 
 import {DragDropModule} from '@angular/cdk/drag-drop';
@@ -129,6 +130,7 @@ export function initializeApp(bootstrap: BootstrapService) {
     MatToolbarModule,
     MatTreeModule,
     MatProgressBarModule,
+    MatButtonToggleModule,
     DragDropModule,
     MatNativeDateModule,
     MatDatepickerModule,  

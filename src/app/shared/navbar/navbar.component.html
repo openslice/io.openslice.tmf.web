@@ -33,14 +33,24 @@
                     <a class="nav-link" routerLink="/vxf_marketplace">VxFs</a>
                 </li> -->
                 <li class="nav-item dropdown" ngbDropdown>
-                <a class="nav-link dropdown-toggle" id="navbarDropdown" aria-haspopup="true" ngbDropdownToggle>Manage Services</a>
-                    <div class="dropdown-menu" aria-labelledby="navbarDropdown" ngbDropdownMenu>
-                        <a class="dropdown-item" routerLink="/service_catalogs">Service Catalogs</a>
-                        <a class="dropdown-item" routerLink="/service_categories">Service Categories</a>
-                        <a class="dropdown-item" routerLink="/service_specs">Service Specifications</a>
-                        <div class="dropdown-divider"></div>
-                        <a class="dropdown-item">More</a>
-                    </div>
+                    <a class="nav-link dropdown-toggle" id="navbarDropdown" aria-haspopup="true" ngbDropdownToggle tabindex="-1">Manage Services</a>
+                        <ul class="dropdown-menu" aria-labelledby="navbarDropdown" ngbDropdownMenu>
+                            <li><a class="dropdown-item" tabindex="-1" routerLink="/service_catalogs">Service Catalogs</a></li>
+                            <li><a class="dropdown-item" tabindex="-1" routerLink="/service_categories">Service Categories</a></li>
+                            <!-- <li><a class="dropdown-item" tabindex="-1" routerLink="/service_specs">Service Specifications</a></li> -->
+                            <li class="dropdown dropdown-submenu" ngbDropdown>
+                                <a class="dropdown-toggle" id="navbarDropdown1" aria-haspopup="true" ngbDropdownToggle tabindex="-1">Service Specifications</a>
+                                <ul class="dropdown-menu" aria-labelledby="navbarDropdown1" ngbDropdownMenu>
+                                        <li><a class="dropdown-item" tabindex="-1" routerLink="/service_specs">List Service Specifications</a></li>
+                                        <li><a class="dropdown-item" tabindex="-1" routerLink="/service_spec_update">New Service Specification</a></li>
+                                        <div class="dropdown-divider"></div>
+                                        <li><a class="dropdown-item" tabindex="-1" (click)="onGSTtemplateClick()">New GST External Template</a></li>
+                                        <li><a class="dropdown-item" tabindex="-1" (click)="onVINNItemplateClick()">New VINNI-SB Template</a></li>
+                                </ul>
+                            </li>
+                            <!-- <div class="dropdown-divider"></div> -->
+                            <!-- <a class="dropdown-item">More</a> -->
+                        </ul>
                 </li>
             </ul>
             <!-- <ul class="nav navbar-nav">

@@ -5,6 +5,8 @@ import { MatTableDataSource, MatSort, MatPaginator, MatDialog } from '@angular/m
 import { ServiceSpecificationService } from 'src/app/openApis/ServiceCatalogManagement/services';
 import { ServiceSpecification, ServiceSpecificationCreate } from 'src/app/openApis/ServiceCatalogManagement/models';
 import { DeleteServiceSpecComponent } from '../delete-service-spec/delete-service-spec.component';
+import { ToastrService } from 'ngx-toastr';
+import { HttpErrorResponse } from '@angular/common/http';
 
 
 @Component({
@@ -16,7 +18,8 @@ export class ListServiceSpecsComponent implements OnInit {
 
   constructor(
     private specService: ServiceSpecificationService,
-    public dialog: MatDialog
+    public dialog: MatDialog,
+    private toast: ToastrService
   ) { }
 
   displayedColumns = ['name', 'description', 'version', 'lastUpdate',  'lifestyleStatus', 'actions']
@@ -26,7 +29,7 @@ export class ListServiceSpecsComponent implements OnInit {
 
   @ViewChild(MatSort, {static: true}) sort: MatSort;
   @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
-
+  
 
   ngOnInit() {
     this.retrieveSpecsList()
@@ -56,7 +59,15 @@ export class ListServiceSpecsComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe (
       result => {
-        if (result) this.retrieveSpecsList()
+        console.log(result)
+        if (result) {
+          if (result instanceof HttpErrorResponse) {
+            this.toast.error("An error occured while attempting to delete Service Specification")
+          } else {
+            this.toast.success("Service Specification list is successfully updated")
+            this.retrieveSpecsList()
+          }
+        }
       }
     )
   }
@@ -87,8 +98,14 @@ export class ListServiceSpecsComponent implements OnInit {
 
     this.specService.cloneServiceSpecification(spec.id).subscribe(
       data => console.log(data),
-      error => console.error(error),
-      () => this.retrieveSpecsList() 
+      error => { 
+        console.error(error)
+        this.toast.error("An error occured while attempting to clone Service Specification") 
+      },
+      () => {
+        this.retrieveSpecsList()
+        this.toast.success("Service Specification is successfully cloned") 
+      }
     )
   }
 

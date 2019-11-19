@@ -8,12 +8,10 @@ WORKDIR /app
 ENV PATH /app/node_modules/.bin:$PATH
 
 # install and cache app dependencies
-COPY package.json /app/package.json
+ADD . /app
 RUN npm install
 RUN npm install -g @angular/cli@8.3.8
 
-# add app
-COPY . /app
-
 # generate build
-RUN ng build --output-path=dist
+RUN ng build --output-path=dist --prod
+

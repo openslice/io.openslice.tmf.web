@@ -16,6 +16,8 @@ import { ServiceSpecificationUpdate } from '../models/service-specification-upda
 class ServiceSpecificationService extends __BaseService {
   static readonly listServiceSpecificationPath = '/serviceCatalogManagement/v4/serviceSpecification';
   static readonly createServiceSpecificationPath = '/serviceCatalogManagement/v4/serviceSpecification';
+  static readonly cloneGSTServiceSpecificationPath = '/serviceCatalogManagement/v4/serviceSpecification/cloneGST';
+  static readonly cloneVINNIServiceSpecificationPath = '/serviceCatalogManagement/v4/serviceSpecification/cloneVINNI';
   static readonly retrieveServiceSpecificationPath = '/serviceCatalogManagement/v4/serviceSpecification/{id}';
   static readonly deleteServiceSpecificationPath = '/serviceCatalogManagement/v4/serviceSpecification/{id}';
   static readonly patchServiceSpecificationPath = '/serviceCatalogManagement/v4/serviceSpecification/{id}';
@@ -119,6 +121,138 @@ class ServiceSpecificationService extends __BaseService {
   createServiceSpecification(serviceSpecification: ServiceSpecificationCreate): __Observable<ServiceSpecification | ServiceSpecification> {
     return this.createServiceSpecificationResponse(serviceSpecification).pipe(
       __map(_r => _r.body as ServiceSpecification | ServiceSpecification)
+    );
+  }
+
+  /**
+   * This operation clones a ServiceSpecification GST entity. The response is the cloned spec
+   * @param serviceName A name of the cloned GST
+   * @return Cloned
+   */
+  cloneGSTServiceSpecificationResponse(serviceName?: string): __Observable<__StrictHttpResponse<ServiceSpecification>> {
+    let __params = this.newParams();
+    let __headers = new HttpHeaders();
+    let __body: any = null;
+    if (serviceName != null) __params = __params.set('serviceName', serviceName.toString());
+    let req = new HttpRequest<any>(
+      'GET',
+      this.rootUrl + `/serviceCatalogManagement/v4/serviceSpecification/cloneGST`,
+      __body,
+      {
+        headers: __headers,
+        params: __params,
+        responseType: 'json'
+      });
+
+    return this.http.request<any>(req).pipe(
+      __filter(_r => _r instanceof HttpResponse),
+      __map((_r) => {
+        return _r as __StrictHttpResponse<ServiceSpecification>;
+      })
+    );
+  }
+  /**
+   * This operation clones a ServiceSpecification GST entity. The response is the cloned spec
+   * @param serviceName A name of the cloned GST
+   * @return Cloned
+   */
+  cloneGSTServiceSpecification(serviceName?: string): __Observable<ServiceSpecification> {
+    return this.cloneGSTServiceSpecificationResponse(serviceName).pipe(
+      __map(_r => _r.body as ServiceSpecification)
+    );
+  }
+
+  /**
+   * This operation clones a ServiceSpecification 5G-VINNI entity. The response is the cloned spec
+   * @param params The `ServiceSpecificationService.CloneVINNIServiceSpecificationParams` containing the following parameters:
+   *
+   * - `serviceName`: A name of the cloned VINNI Template
+   *
+   * - `addServiceVNF`: If true adds a Service 3rd party VNF Spec in the Bundle
+   *
+   * - `addServiceTopology`: If true adds a Service Topology Spec in the Bundle
+   *
+   * - `addServiceTesting`: If true adds a Service Testing Spec in the Bundle
+   *
+   * - `addServiceRequirements`: If true adds a Service Requirements Spec in the Bundle
+   *
+   * - `addServiceNSD`: If true adds a Service 3rd party NSD Spec in the Bundle
+   *
+   * - `addServiceMonitoring`: If true adds a Service Monitoring Spec in the Bundle
+   *
+   * - `addServiceExposureLevel4`: If true adds a Service Exposure Level4 Spec in the Bundle
+   *
+   * - `addServiceExposureLevel3`: If true adds a Service Exposure Level3 Spec in the Bundle
+   *
+   * - `addServiceExposureLevel2`: If true adds a Service Exposure Level2 Spec in the Bundle
+   *
+   * - `addServiceExposureLevel1`: If true adds a Service Exposure Level1 Spec in the Bundle
+   *
+   * @return Cloned
+   */
+  cloneVINNIServiceSpecificationResponse(params: ServiceSpecificationService.CloneVINNIServiceSpecificationParams): __Observable<__StrictHttpResponse<ServiceSpecification>> {
+    let __params = this.newParams();
+    let __headers = new HttpHeaders();
+    let __body: any = null;
+    if (params.serviceName != null) __params = __params.set('serviceName', params.serviceName.toString());
+    if (params.addServiceVNF != null) __params = __params.set('addServiceVNF', params.addServiceVNF.toString());
+    if (params.addServiceTopology != null) __params = __params.set('addServiceTopology', params.addServiceTopology.toString());
+    if (params.addServiceTesting != null) __params = __params.set('addServiceTesting', params.addServiceTesting.toString());
+    if (params.addServiceRequirements != null) __params = __params.set('addServiceRequirements', params.addServiceRequirements.toString());
+    if (params.addServiceNSD != null) __params = __params.set('addServiceNSD', params.addServiceNSD.toString());
+    if (params.addServiceMonitoring != null) __params = __params.set('addServiceMonitoring', params.addServiceMonitoring.toString());
+    if (params.addServiceExposureLevel4 != null) __params = __params.set('addServiceExposureLevel4', params.addServiceExposureLevel4.toString());
+    if (params.addServiceExposureLevel3 != null) __params = __params.set('addServiceExposureLevel3', params.addServiceExposureLevel3.toString());
+    if (params.addServiceExposureLevel2 != null) __params = __params.set('addServiceExposureLevel2', params.addServiceExposureLevel2.toString());
+    if (params.addServiceExposureLevel1 != null) __params = __params.set('addServiceExposureLevel1', params.addServiceExposureLevel1.toString());
+    let req = new HttpRequest<any>(
+      'GET',
+      this.rootUrl + `/serviceCatalogManagement/v4/serviceSpecification/cloneVINNI`,
+      __body,
+      {
+        headers: __headers,
+        params: __params,
+        responseType: 'json'
+      });
+
+    return this.http.request<any>(req).pipe(
+      __filter(_r => _r instanceof HttpResponse),
+      __map((_r) => {
+        return _r as __StrictHttpResponse<ServiceSpecification>;
+      })
+    );
+  }
+  /**
+   * This operation clones a ServiceSpecification 5G-VINNI entity. The response is the cloned spec
+   * @param params The `ServiceSpecificationService.CloneVINNIServiceSpecificationParams` containing the following parameters:
+   *
+   * - `serviceName`: A name of the cloned VINNI Template
+   *
+   * - `addServiceVNF`: If true adds a Service 3rd party VNF Spec in the Bundle
+   *
+   * - `addServiceTopology`: If true adds a Service Topology Spec in the Bundle
+   *
+   * - `addServiceTesting`: If true adds a Service Testing Spec in the Bundle
+   *
+   * - `addServiceRequirements`: If true adds a Service Requirements Spec in the Bundle
+   *
+   * - `addServiceNSD`: If true adds a Service 3rd party NSD Spec in the Bundle
+   *
+   * - `addServiceMonitoring`: If true adds a Service Monitoring Spec in the Bundle
+   *
+   * - `addServiceExposureLevel4`: If true adds a Service Exposure Level4 Spec in the Bundle
+   *
+   * - `addServiceExposureLevel3`: If true adds a Service Exposure Level3 Spec in the Bundle
+   *
+   * - `addServiceExposureLevel2`: If true adds a Service Exposure Level2 Spec in the Bundle
+   *
+   * - `addServiceExposureLevel1`: If true adds a Service Exposure Level1 Spec in the Bundle
+   *
+   * @return Cloned
+   */
+  cloneVINNIServiceSpecification(params: ServiceSpecificationService.CloneVINNIServiceSpecificationParams): __Observable<ServiceSpecification> {
+    return this.cloneVINNIServiceSpecificationResponse(params).pipe(
+      __map(_r => _r.body as ServiceSpecification)
     );
   }
 
@@ -410,6 +544,67 @@ module ServiceSpecificationService {
      * Comma-separated properties to be provided in response
      */
     fields?: string;
+  }
+
+  /**
+   * Parameters for cloneVINNIServiceSpecification
+   */
+  export interface CloneVINNIServiceSpecificationParams {
+
+    /**
+     * A name of the cloned VINNI Template
+     */
+    serviceName?: string;
+
+    /**
+     * If true adds a Service 3rd party VNF Spec in the Bundle
+     */
+    addServiceVNF?: boolean;
+
+    /**
+     * If true adds a Service Topology Spec in the Bundle
+     */
+    addServiceTopology?: boolean;
+
+    /**
+     * If true adds a Service Testing Spec in the Bundle
+     */
+    addServiceTesting?: boolean;
+
+    /**
+     * If true adds a Service Requirements Spec in the Bundle
+     */
+    addServiceRequirements?: boolean;
+
+    /**
+     * If true adds a Service 3rd party NSD Spec in the Bundle
+     */
+    addServiceNSD?: boolean;
+
+    /**
+     * If true adds a Service Monitoring Spec in the Bundle
+     */
+    addServiceMonitoring?: boolean;
+
+    /**
+     * If true adds a Service Exposure Level4 Spec in the Bundle
+     */
+    addServiceExposureLevel4?: boolean;
+
+    /**
+     * If true adds a Service Exposure Level3 Spec in the Bundle
+     */
+    addServiceExposureLevel3?: boolean;
+
+    /**
+     * If true adds a Service Exposure Level2 Spec in the Bundle
+     */
+    addServiceExposureLevel2?: boolean;
+
+    /**
+     * If true adds a Service Exposure Level1 Spec in the Bundle
+     */
+    addServiceExposureLevel1?: boolean;
   }
 
   /**

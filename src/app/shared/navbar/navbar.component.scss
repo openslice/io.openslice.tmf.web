@@ -16,6 +16,10 @@ nav {
     margin-top: -1px;
   }
 
+.dropdown-toggle {
+    cursor: pointer;
+}
+
 .dropdown-submenu .dropdown-toggle {
     display: block;
     width: 100%;
@@ -33,4 +37,16 @@ nav {
     color: #16181b;
     text-decoration: none;
     background-color: #f8f9fa;
+}
+
+.dropdown-item.clone-item {
+    // font-weight: bold;
+    cursor: pointer;
+}
+
+.optgroup-label {
+    // font: 500 14px/24px Roboto,"Helvetica Neue",sans-serif;
+    font-weight: bold;
+    color: rgba(0,0,0,.75);
+    padding: 0.25rem 1rem;
 }

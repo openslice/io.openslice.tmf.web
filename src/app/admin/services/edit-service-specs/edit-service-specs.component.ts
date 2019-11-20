@@ -49,6 +49,7 @@ export class EditServiceSpecsComponent implements OnInit {
   dataSource  = new MatTableDataSource<ServiceSpecCharacteristic>()
 
   specCharacteristicsTags: string[] = ["All"]
+  tagFiltervalue:string = "All"
 
   @ViewChild(MatSort, {static: true}) sort: MatSort;
   // @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
@@ -85,7 +86,7 @@ export class EditServiceSpecsComponent implements OnInit {
 
         this.specCharacteristicsTags = this.retrieveSpecCharaceristicTag(this.dataSource.data)
 
-        console.log(this.specCharacteristicsTags)
+        this.retrieveServiceDesriptor(this.spec.id)
 
         this.filteredRelatedSpecs$ = this.serviceRelatedSpecsFilterCtrl.valueChanges.pipe( 
           startWith(null),
@@ -103,6 +104,13 @@ export class EditServiceSpecsComponent implements OnInit {
       })
     });
     return tagsArray
+  }
+
+  retrieveServiceDesriptor(specId) {
+    this.specService.retrieveServiceSpecificationDescriptor(specId).subscribe(
+      data => console.log(data),
+      error => console.error(error)
+    )
   }
 
   bundleCheckboxChanged(event:MatCheckboxChange) {
@@ -123,7 +131,13 @@ export class EditServiceSpecsComponent implements OnInit {
   }
   
   filterCharacteristicsByTag(tagName) {
-    console.log(tagName)
+    this.tagFiltervalue = tagName
+    if (tagName === "All") {
+      this.dataSource.data = this.spec.serviceSpecCharacteristic.filter(specCharacteristic => specCharacteristic.valueType)
+    } else {
+      this.dataSource.data = this.spec.serviceSpecCharacteristic.filter(specCharacteristic => specCharacteristic.valueType)
+      .filter(specChar => specChar.serviceSpecCharRelationship.some( rel => rel.name === tagName ))
+    }
   }
 
   openAssignSpecRelationshipDialog() {

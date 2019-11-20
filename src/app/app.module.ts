@@ -37,7 +37,8 @@ import {
   MatToolbarModule,
   MatTreeModule,
   MatProgressBarModule,
-  MatButtonToggleModule
+  MatButtonToggleModule,
+  MatRadioModule
 } from '@angular/material'
 
 import {DragDropModule} from '@angular/cdk/drag-drop';
@@ -70,6 +71,8 @@ import { DeleteServiceSpecComponent } from './admin/services/delete-service-spec
 import { CreateServiceCategoryChildrenComponent } from './admin/services/edit-service-categories/create-service-category-children/create-service-category-children.component';
 import { TreeSidenavComponent } from './marketplaces/shared/tree-sidenav/tree-sidenav.component';
 import { AssignServiceCandidatesComponent } from './admin/services/edit-service-categories/assign-service-candidates/assign-service-candidates.component';
+import { CloneGstTemplateComponent } from './admin/services/edit-service-specs/clone-gst-template/clone-gst-template.component';
+import { CloneVinniTemplateComponent } from './admin/services/edit-service-specs/clone-vinni-template/clone-vinni-template.component';
 
 
 
@@ -102,7 +105,9 @@ export function initializeApp(bootstrap: BootstrapService) {
     DeleteServiceSpecComponent,
     CreateServiceCategoryChildrenComponent,
     TreeSidenavComponent,
-    AssignServiceCandidatesComponent
+    AssignServiceCandidatesComponent,
+    CloneGstTemplateComponent,
+    CloneVinniTemplateComponent
   ],
   imports: [
     BrowserModule,
@@ -131,6 +136,7 @@ export function initializeApp(bootstrap: BootstrapService) {
     MatTreeModule,
     MatProgressBarModule,
     MatButtonToggleModule,
+    MatRadioModule,
     DragDropModule,
     MatNativeDateModule,
     MatDatepickerModule,  
@@ -149,7 +155,9 @@ export function initializeApp(bootstrap: BootstrapService) {
     DeleteServiceCatalogComponent,
     DeleteServiceCategoryComponent,
     DeleteServiceSpecComponent,
-    DeleteServiceSpecCharacteristicsComponent
+    DeleteServiceSpecCharacteristicsComponent,
+    CloneGstTemplateComponent,
+    CloneVinniTemplateComponent
   ],
   providers: [
     BootstrapService,

@@ -7,5 +7,5 @@
     "APIURL": "http://portal.openslice.io/osapi/", 
     "WEBURL": "http://portal.openslice.io",
     "APIOAUTHURL":  "http://portal.openslice.io/osapi-oauth-server",
-    "APITMFURL": "http://localhost:13082/tmf-api/serviceCatalogManagement/v4"
+    "APITMFURL": "http://portal.openslice.io/tmf-api"
 }

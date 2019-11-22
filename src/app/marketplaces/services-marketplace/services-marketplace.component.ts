@@ -3,6 +3,9 @@ import { ServiceCatalogService, ServiceCategoryService, ServiceCandidateService 
 import { ServiceCatalog, ServiceCategoryRef, ServiceCategory, ServiceCandidateRef, ServiceCandidate } from 'src/app/openApis/ServiceCatalogManagement/models';
 import { TreeServiceMarketPlaceService } from '../shared/services/tree-service-market-place.service';
 import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
+import { Observable } from 'rxjs';
+import { FormControl } from '@angular/forms';
+import { startWith, map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-services-marketplace',
@@ -25,17 +28,19 @@ export class ServicesMarketplaceComponent implements OnInit {
 
   selectedCategory: ServiceCategory
 
-  serviceCandidates: ServiceCandidate[]
+  serviceCandidates: ServiceCandidate[] = []
+
+  serviceCandidatesFilterCtrl = new FormControl();
+  filteredServiceCandidates$: Observable<ServiceCandidate[]>
 
   ngOnInit() {
     this.retrieveCatalogsList()
     
-    // console.log(rootLevelNodes.map(name => new DynamicFlatNode(name, 0, true)))
     this.treeMarketPlaceService.categorySelected$.subscribe(
       category => {
-        console.log(category)
         this.selectedCategory = category
         this.serviceCandidates = []
+        this.serviceCandidatesFilterCtrl.reset()
         category.serviceCandidate.forEach(candidateRef => {
           this.retrieveCandidateFromRef(candidateRef)
         })
@@ -49,40 +54,32 @@ export class ServicesMarketplaceComponent implements OnInit {
       data => { this.serviceCatalogs = data },
       error => { console.error(error) },
       () => {
-        this.treeMarketPlaceService.catalogs$.next(this.serviceCatalogs)
-        
-        this.isCatalogsCollapsed.fill(false, 0, this.serviceCatalogs.length - 1)
-        // if (this.serviceCatalogs[0].category.length) this.selectCategory(this.serviceCatalogs[0].category[0])
+        this.treeMarketPlaceService.catalogs$.next(this.serviceCatalogs)        
       }
     )
   }
 
-
-  selectCategory(categoryRef: ServiceCategoryRef) {
-    this.selectedCategoryRef = categoryRef
-    this.retrieveCategoryFromRef(categoryRef)
-  }
-
-
-  retrieveCategoryFromRef(categoryRef: ServiceCategoryRef) {
-    this.categoryService.retrieveServiceCategory({ id: categoryRef.id }).subscribe(
-      data => { this.selectedCategory = data },
-      error => { console.error(error) },
-      () => {
-        this.serviceCandidates = []
-        this.selectedCategory.serviceCandidate.forEach(cand => {
-          this.retrieveCandidateFromRef(cand)
-        })
-
-      }
-    )
-  }
 
   retrieveCandidateFromRef(candidateRef: ServiceCandidateRef) {
     this.candidateService.retrieveServiceCandidate({ id: candidateRef.id }).subscribe(
       data => { this.serviceCandidates.push(data) },
-      error => { console.error(error) }
+      error => { console.error(error) },
+      () => {
+        this.filteredServiceCandidates$ = this.serviceCandidatesFilterCtrl.valueChanges.pipe( 
+          startWith(null),
+          map( (value:null | string) => value ? this._filterOnServiceCandidates(value) : this.serviceCandidates.slice() )
+        )
+      }
     )
   }
+
+  private _filterOnServiceCandidates(filterValue: string) {
+    filterValue = filterValue.trim();
+    filterValue = filterValue.toLowerCase();
+    return this.serviceCandidates.filter( cand =>  cand.name.toLowerCase().includes(filterValue) )
+  }
+
+
+
 
 }

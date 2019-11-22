@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router, ActivationEnd } from '@angular/router';
 import { FormGroup, FormControl, FormArray } from '@angular/forms';
 import { ServiceSpecification, ServiceSpecCharacteristic, ServiceSpecificationUpdate, ServiceSpecificationCreate, ServiceSpecRelationship } from 'src/app/openApis/ServiceCatalogManagement/models';
 import { ServiceSpecificationService } from 'src/app/openApis/ServiceCatalogManagement/services';
@@ -8,8 +8,10 @@ import { MatTableDataSource, MatSort, MatPaginator, MatDialog, MatCheckboxChange
 import { EditServiceSpecCharacteristicsComponent } from './edit-service-spec-characteristics/edit-service-spec-characteristics.component';
 import { DeleteServiceSpecCharacteristicsComponent } from './delete-service-spec-characteristics/delete-service-spec-characteristics.component';
 import { ToastrService } from 'ngx-toastr';
-import { Observable } from 'rxjs';
+import { Observable, Subscription, timer } from 'rxjs';
 import { startWith, map } from 'rxjs/operators';
+import { delay } from 'q';
+import { AssignServiceRelationshipsComponent } from './assign-service-relationships/assign-service-relationships.component';
 
 const today = new Date()
 
@@ -24,7 +26,8 @@ export class EditServiceSpecsComponent implements OnInit {
     private activatedRoute: ActivatedRoute,
     private specService: ServiceSpecificationService,
     private dialog: MatDialog,
-    private toast: ToastrService
+    private toast: ToastrService,
+    private router: Router
   ) { }
 
   specID: string
@@ -51,6 +54,7 @@ export class EditServiceSpecsComponent implements OnInit {
   specCharacteristicsTags: string[] = ["All"]
   tagFiltervalue:string = "All"
 
+
   @ViewChild(MatSort, {static: true}) sort: MatSort;
   // @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
 
@@ -61,7 +65,11 @@ export class EditServiceSpecsComponent implements OnInit {
   serviceRelatedSpecsFilterCtrl = new FormControl();
   filteredRelatedSpecs$: Observable<ServiceSpecRelationship[]>
 
+  subscriptions = new Subscription()
+
   ngOnInit() {
+    this.initSubscriptions()
+    
     if (this.activatedRoute.snapshot.params.id) 
     {
       this.specID = this.activatedRoute.snapshot.params.id
@@ -69,6 +77,19 @@ export class EditServiceSpecsComponent implements OnInit {
     } else {
       this.newSpecification = true
     }
+
+  }
+
+  initSubscriptions() {
+    this.subscriptions = this.router.events.subscribe(
+      event => {
+        if (event instanceof ActivationEnd) {
+          console.log(event.snapshot.params.id)
+          this.specID = this.activatedRoute.snapshot.params.id
+          this.retrieveServiceSpec()
+        }
+      }
+    )
   }
 
   retrieveServiceSpec() {
@@ -76,27 +97,31 @@ export class EditServiceSpecsComponent implements OnInit {
       data => this.spec = data,
       error => console.error(error),
       () => {
+        //populate General Panel Info
         if (!this.spec.validFor) this.spec.validFor = {endDateTime:null, startDateTime:null}
         this.editForm.patchValue(this.spec)
-        this.dataSource.data = this.spec.serviceSpecCharacteristic.filter(specCharacteristic => specCharacteristic.valueType)
-        this.dataSource.sort = this.sort
-        // this.dataSource.paginator = this.paginator;
 
-        console.log(this.spec)
-
-        this.specCharacteristicsTags = this.retrieveSpecCharaceristicTag(this.dataSource.data)
-
-        this.retrieveServiceDesriptor(this.spec.id)
-
-        this.filteredRelatedSpecs$ = this.serviceRelatedSpecsFilterCtrl.valueChanges.pipe( 
+        //populate Specification Relationships Panel Info
+        this.filteredRelatedSpecs$ = this.serviceRelatedSpecsFilterCtrl.valueChanges.pipe(
           startWith(null),
           map( (value:null | string) => value ? this._filterOnRelatedSpecs(value) : this.spec.serviceSpecRelationship.slice() )
         )
+
+        //populate Specification Characteristic Panel Info
+        // filter Spec Characteristic that does not have defined Value Type (parent spec char)
+        this.dataSource.data = this.spec.serviceSpecCharacteristic.filter(specCharacteristic => specCharacteristic.valueType)
+        this.dataSource.sort = this.sort
+        // this.dataSource.paginator = this.paginator;
+        this.specCharacteristicsTags = this.retrieveSpecCharaceristicsTags(this.dataSource.data)
+
+
+        //populate Service Descriptor Panel Info
+        this.retrieveServiceDesriptor(this.spec.id)
       }
     )
   }
 
-  retrieveSpecCharaceristicTag(dataSource: ServiceSpecCharacteristic[]) {
+  retrieveSpecCharaceristicsTags(dataSource: ServiceSpecCharacteristic[]) {
     let tagsArray = this.specCharacteristicsTags
     dataSource.forEach(char => {
       char.serviceSpecCharRelationship.filter( e => e.relationshipType === "tag").forEach(rel => {
@@ -124,7 +149,7 @@ export class EditServiceSpecsComponent implements OnInit {
   }
 
 
-  applyFilter(filterValue: string) {
+  applySpecCharFilter(filterValue: string) {
     filterValue = filterValue.trim();
     filterValue = filterValue.toLowerCase();
     this.dataSource.filter = filterValue;
@@ -140,8 +165,24 @@ export class EditServiceSpecsComponent implements OnInit {
     }
   }
 
-  openAssignSpecRelationshipDialog() {
-    
+  openAssignSpecRelationshipDialog(characteristic: ServiceSpecCharacteristic) {
+    const dialogRef = this.dialog.open(AssignServiceRelationshipsComponent, {
+      data: {
+        serviceSpec: this.spec
+      },
+      autoFocus: false,
+      disableClose: true
+    })
+
+    dialogRef.afterClosed().subscribe (
+      result => { 
+        console.log(result)
+        if (result) { 
+          this.toast.success("Service Specification Relationship list was successfully updated")
+          this.retrieveServiceSpec() 
+        }
+      }
+    )
   }
 
   openCharacteristicDesignDialog(characteristic: ServiceSpecCharacteristic) {
@@ -260,6 +301,10 @@ export class EditServiceSpecsComponent implements OnInit {
   refreshServiceSpecification(updatedSpec : ServiceSpecification) {
     this.specID = updatedSpec.id
     this.retrieveServiceSpec()
+  }
+
+  ngOnDestroy() {
+    this.subscriptions.unsubscribe()
   }
 
 }

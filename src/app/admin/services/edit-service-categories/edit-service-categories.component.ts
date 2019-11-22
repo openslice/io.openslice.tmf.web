@@ -85,28 +85,32 @@ export class EditServiceCategoriesComponent implements OnInit, OnDestroy {
   }
 
   subscriptionsInit() {
-    this.subscriptions = this.router.events.subscribe(
-      (event) => {
-       if (event instanceof ActivationEnd) {
-         console.log(event.snapshot.params.id)
-         this.categoryID = event.snapshot.params.id
-         this.retrieveServiceCategory()
-       }
-      }
+    this.subscriptions.add(
+      this.router.events.subscribe(
+        (event) => {
+          if (event instanceof ActivationEnd) {
+            console.log(event.snapshot.params.id)
+            this.categoryID = event.snapshot.params.id
+            this.retrieveServiceCategory()
+          }
+        }
+      )
     )
 
-    this.editForm.get('isRoot').valueChanges.subscribe(
-      (value: MatCheckboxChange) => {
-        this.editForm.get('parentId').reset()
-        if (value) {
-          this.editForm.get('parentId').disable()
-          this.editForm.get('parentId').clearValidators()
-        } else {
-          this.editForm.get('parentId').enable()
-          this.editForm.get('parentId').setValidators(Validators.required)
-          this.editForm.get('parentId').updateValueAndValidity()
+    this.subscriptions.add(
+      this.editForm.get('isRoot').valueChanges.subscribe(
+        (value: MatCheckboxChange) => {
+          this.editForm.get('parentId').reset()
+          if (value) {
+            this.editForm.get('parentId').disable()
+            this.editForm.get('parentId').clearValidators()
+          } else {
+            this.editForm.get('parentId').enable()
+            this.editForm.get('parentId').setValidators(Validators.required)
+            this.editForm.get('parentId').updateValueAndValidity()
+          }
         }
-      }
+      )
     )
   }
 

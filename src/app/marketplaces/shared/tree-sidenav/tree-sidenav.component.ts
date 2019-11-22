@@ -7,7 +7,6 @@ import { TreeServiceMarketPlaceService } from '../services/tree-service-market-p
 import { ServiceCatalog, ServiceCategory } from 'src/app/openApis/ServiceCatalogManagement/models';
 import { ServiceCategoryService } from 'src/app/openApis/ServiceCatalogManagement/services';
 
-/** Flat node with expandable and level information */
 export class DynamicFlatNode {
   constructor(public item: string, public level = 1, public expandable = false,
               public info: ServiceCatalog|ServiceCategory,
@@ -15,13 +14,6 @@ export class DynamicFlatNode {
 }
 
 
-/**
- * File database, it can build a tree structured Json object from string.
- * Each node in Json object represents a file or a directory. For a file, it has filename and type.
- * For a directory, it has filename and children (a list of files or directories).
- * The input will be a json object string, and the output is a list of `FileNode` with nested
- * structure.
- */
 @Injectable()
 export class DynamicDataSource {
 
@@ -62,19 +54,12 @@ export class DynamicDataSource {
    */
   toggleNode(node: DynamicFlatNode, expand: boolean) {
 
-
-
-    console.log(this.data)
-    console.log(node)
-    console.log(expand)
     // const children = this._database.getChildren(node.item);
     const index = this.data.indexOf(node);
-
 
     if (node.info.category.length === 0 || index < 0) { // If no children, or cannot find the node, no op
       return;
     }
-
 
     if (expand) {
       let childrenCategoryRequests: Observable<ServiceCategory>[] = []
@@ -86,31 +71,25 @@ export class DynamicDataSource {
       forkJoin(childrenCategoryRequests).subscribe(
         children => {
           const nodes = children.map(category =>
-            new DynamicFlatNode(category.name, node.level + 1, category.category.length > 0, category));
+          new DynamicFlatNode(category.name, node.level + 1, category.category.length > 0, category));
           this.data.splice(index + 1, 0, ...nodes);
-
-        // notify the change
-        this.dataChange.next(this.data);
-        })
+          // notify the change
+          this.dataChange.next(this.data);
+        }
+      )
     } else {
       let count = 0;
       for (let i = index + 1; i < this.data.length
         && this.data[i].level > node.level; i++ , count++) { }
       this.data.splice(index + 1, count);
-
-        // notify the change
-        this.dataChange.next(this.data);
+      // notify the change
+      this.dataChange.next(this.data);
     }
   
         // // notify the change
         // this.dataChange.next(this.data);
         
-      
     
-
-
-
-
     // node.isLoading = true;
 
     // setTimeout(() => {
@@ -167,7 +146,6 @@ export class TreeSidenavComponent {
       data => {
         // this.initialDataObjArr = data
         const initialData = data.map(catalog => new DynamicFlatNode(catalog.name, 0, catalog.category.length > 0, catalog ))
-        console.log(initialData);
         this.dataSource.data = initialData
       }
     )

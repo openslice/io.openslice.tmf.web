@@ -33,6 +33,14 @@ nav {
     border: 0;
 }
 
+.dropdown-submenu .dropdown-toggle::after {
+    border-top: 0.3em solid transparent;
+    border-right: 0;
+    border-bottom: 0.3em solid transparent;
+    border-left: 0.3em solid;
+    vertical-align: 0;
+}
+
 .dropdown-submenu .dropdown-toggle:hover {
     color: #16181b;
     text-decoration: none;

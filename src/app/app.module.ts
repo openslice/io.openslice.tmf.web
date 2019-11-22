@@ -73,6 +73,8 @@ import { TreeSidenavComponent } from './marketplaces/shared/tree-sidenav/tree-si
 import { AssignServiceCandidatesComponent } from './admin/services/edit-service-categories/assign-service-candidates/assign-service-candidates.component';
 import { CloneGstTemplateComponent } from './admin/services/edit-service-specs/clone-gst-template/clone-gst-template.component';
 import { CloneVinniTemplateComponent } from './admin/services/edit-service-specs/clone-vinni-template/clone-vinni-template.component';
+import { PreviewServiceComponent } from './marketplaces/services-marketplace/preview-service/preview-service.component';
+import { AssignServiceRelationshipsComponent } from './admin/services/edit-service-specs/assign-service-relationships/assign-service-relationships.component';
 
 
 
@@ -107,7 +109,9 @@ export function initializeApp(bootstrap: BootstrapService) {
     TreeSidenavComponent,
     AssignServiceCandidatesComponent,
     CloneGstTemplateComponent,
-    CloneVinniTemplateComponent
+    CloneVinniTemplateComponent,
+    PreviewServiceComponent,
+    AssignServiceRelationshipsComponent
   ],
   imports: [
     BrowserModule,
@@ -157,7 +161,8 @@ export function initializeApp(bootstrap: BootstrapService) {
     DeleteServiceSpecComponent,
     DeleteServiceSpecCharacteristicsComponent,
     CloneGstTemplateComponent,
-    CloneVinniTemplateComponent
+    CloneVinniTemplateComponent,
+    AssignServiceRelationshipsComponent
   ],
   providers: [
     BootstrapService,

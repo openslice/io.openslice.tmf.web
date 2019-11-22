@@ -14,7 +14,7 @@
         <span *ngIf="node.level === 0" class="catalog-header" matTreeNodeToggle>{{node.item}}</span>
         <span *ngIf="node.level !== 0" [class.active]="selectedTreeNodeID === node.info.id" (click)="selectTreeNode(node)" matTreeNodeToggle>{{node.item}}</span>
 
-        <!-- <mat-progress-bar *ngIf="node.isLoading" mode="indeterminate" class="example-tree-progress-bar"> -->
-        <!-- </mat-progress-bar> -->
+        <!-- <mat-progress-bar *ngIf="node.isLoading" mode="indeterminate" class="example-tree-progress-bar">
+        </mat-progress-bar> -->
     </mat-tree-node>
 </mat-tree>

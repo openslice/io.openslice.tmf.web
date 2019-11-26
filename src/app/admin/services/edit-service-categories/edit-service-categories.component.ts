@@ -5,14 +5,15 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { ActivatedRoute, Router, ActivationEnd } from '@angular/router';
 
 import { MatCheckboxChange, MatDialog, MatTableDataSource, MatSort } from '@angular/material';
-import { ServiceCategory, ServiceCategoryUpdate, ServiceCategoryCreate, ServiceCategoryRef, ServiceCandidateRef } from 'src/app/openApis/ServiceCatalogManagement/models';
-import { ServiceCategoryService } from 'src/app/openApis/ServiceCatalogManagement/services';
+import { ServiceCategory, ServiceCategoryUpdate, ServiceCategoryCreate, ServiceCategoryRef, ServiceCandidateRef, ServiceCandidate } from 'src/app/openApis/ServiceCatalogManagement/models';
+import { ServiceCategoryService, ServiceCandidateService } from 'src/app/openApis/ServiceCatalogManagement/services';
 import { Observable, Subscription } from 'rxjs';
 import { startWith, map } from 'rxjs/operators';
 import { CreateServiceCategoryChildrenComponent } from './create-service-category-children/create-service-category-children.component';
 import { DeleteServiceCategoryComponent } from '../delete-service-category/delete-service-category.component';
 import { AssignServiceCandidatesComponent } from './assign-service-candidates/assign-service-candidates.component';
 import { ToastrService } from 'ngx-toastr';
+import { error } from 'protractor';
 
 const today = new Date()
 
@@ -25,6 +26,7 @@ export class EditServiceCategoriesComponent implements OnInit, OnDestroy {
 
   constructor(
     private categoryService: ServiceCategoryService,
+    private candidateService: ServiceCandidateService,
     private activatedRoute: ActivatedRoute,
     private dialog: MatDialog,
     private router: Router,
@@ -217,6 +219,17 @@ export class EditServiceCategoriesComponent implements OnInit, OnDestroy {
           this.retrieveServiceCategory()
         }
       }
+    )
+  }
+
+  navigateToServiceSpec(cand: ServiceCandidateRef) {
+    let serviceCandidate: ServiceCandidate
+    this.candidateService.retrieveServiceCandidate({id: cand.id}).subscribe(
+      data => serviceCandidate = data,
+      error => this.toast.error("An error occured while retrieving Service Specification Information"),
+      () => {
+        this.router.navigate(['service_spec_update', serviceCandidate.serviceSpecification.id])
+      }      
     )
   }
 

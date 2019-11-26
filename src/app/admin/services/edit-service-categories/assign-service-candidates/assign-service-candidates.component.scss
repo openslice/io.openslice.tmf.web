@@ -1,10 +1,26 @@
+.list-group-container {
+  max-height: inherit;
+  min-width: 50vw;
+}
+
 .example-container {
-    width: 400px;
+    // width: 100;
     max-width: 100%;
-    margin: 0 25px 25px 0;
+    margin: 25px 0 25px 0;
     display: inline-block;
     vertical-align: top;
   }
+
+
+
+@media (min-width: 768px) {
+  .example-list-container {
+    // width: 100;
+    max-height: calc(65vh - 82px);
+    overflow-y: auto;
+  }
+}
+
   
   .example-list {
     border: solid 1px #ccc;
@@ -61,12 +77,12 @@
   }
 
 
-//   .example-custom-placeholder {
-//     background: #ccc;
-//     border: dotted 3px #999;
-//     min-height: 60px;
-//     transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
-//   }
+  // .example-custom-placeholder {
+  //   background: #ccc;
+  //   border: dotted 3px #999;
+  //   min-height: 60px;
+  //   transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+  // }
 
 .drag_description_container {
     padding: .5rem;

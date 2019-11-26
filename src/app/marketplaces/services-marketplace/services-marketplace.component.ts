@@ -1,11 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-import { ServiceCatalogService, ServiceCategoryService, ServiceCandidateService } from 'src/app/openApis/ServiceCatalogManagement/services';
+import { ServiceCatalogService, ServiceCandidateService } from 'src/app/openApis/ServiceCatalogManagement/services';
 import { ServiceCatalog, ServiceCategoryRef, ServiceCategory, ServiceCandidateRef, ServiceCandidate } from 'src/app/openApis/ServiceCatalogManagement/models';
 import { TreeServiceMarketPlaceService } from '../shared/services/tree-service-market-place.service';
-import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
 import { Observable } from 'rxjs';
 import { FormControl } from '@angular/forms';
 import { startWith, map } from 'rxjs/operators';
+import { MatDialog } from '@angular/material';
+import { PreviewServiceComponent } from './preview-service/preview-service.component';
 
 @Component({
   selector: 'app-services-marketplace',
@@ -16,9 +17,10 @@ export class ServicesMarketplaceComponent implements OnInit {
 
   constructor(
     private catalogService: ServiceCatalogService,
-    private categoryService: ServiceCategoryService,
+    // private categoryService: ServiceCategoryService,
     private candidateService: ServiceCandidateService,
-    private treeMarketPlaceService: TreeServiceMarketPlaceService
+    private treeMarketPlaceService: TreeServiceMarketPlaceService,
+    private dialog: MatDialog
   ) { }
 
   serviceCatalogs: ServiceCatalog[]
@@ -77,6 +79,24 @@ export class ServicesMarketplaceComponent implements OnInit {
     filterValue = filterValue.trim();
     filterValue = filterValue.toLowerCase();
     return this.serviceCandidates.filter( cand =>  cand.name.toLowerCase().includes(filterValue) )
+  }
+
+  previewServiceSpec(candidate: ServiceCandidate) {
+    console.log(candidate);
+    const dialogRef = this.dialog.open(PreviewServiceComponent, {
+      data: {
+        serviceCandidate: candidate
+      },
+      autoFocus: false
+    })
+
+    dialogRef.afterClosed().subscribe(
+      result => {
+        console.log(result);
+        
+      }
+    )
+    
   }
 
 

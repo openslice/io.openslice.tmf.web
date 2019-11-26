@@ -75,6 +75,7 @@ import { CloneGstTemplateComponent } from './admin/services/edit-service-specs/c
 import { CloneVinniTemplateComponent } from './admin/services/edit-service-specs/clone-vinni-template/clone-vinni-template.component';
 import { PreviewServiceComponent } from './marketplaces/services-marketplace/preview-service/preview-service.component';
 import { AssignServiceRelationshipsComponent } from './admin/services/edit-service-specs/assign-service-relationships/assign-service-relationships.component';
+import { ConfigureServiceComponent } from './marketplaces/services-marketplace/preview-service/configure-service/configure-service.component';
 
 
 
@@ -111,7 +112,8 @@ export function initializeApp(bootstrap: BootstrapService) {
     CloneGstTemplateComponent,
     CloneVinniTemplateComponent,
     PreviewServiceComponent,
-    AssignServiceRelationshipsComponent
+    AssignServiceRelationshipsComponent,
+    ConfigureServiceComponent
   ],
   imports: [
     BrowserModule,
@@ -162,7 +164,8 @@ export function initializeApp(bootstrap: BootstrapService) {
     DeleteServiceSpecCharacteristicsComponent,
     CloneGstTemplateComponent,
     CloneVinniTemplateComponent,
-    AssignServiceRelationshipsComponent
+    AssignServiceRelationshipsComponent,
+    PreviewServiceComponent
   ],
   providers: [
     BootstrapService,

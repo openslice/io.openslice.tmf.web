@@ -53,6 +53,10 @@ export class AssignServiceRelationshipsComponent implements OnInit {
       data => this.nonSelectedSpecs = data,
       error => console.error(error),
       () => {
+        //remove self from available spec list as well as the allready assigned specs
+        this.nonSelectedSpecs.splice(this.nonSelectedSpecs.findIndex(el => el.id === this.data.serviceSpec.id), 1)
+        const initiallyAssignedSpecIDs: string[] = this.data.serviceSpec.serviceSpecRelationship.map(el => el.id)
+        this.nonSelectedSpecs = this.nonSelectedSpecs.filter(spec => !initiallyAssignedSpecIDs.includes(spec.id))
 
         this.selectedSpecs = this.data.serviceSpec.serviceSpecRelationship.slice()
         this.dataSource.data = this.selectedSpecs

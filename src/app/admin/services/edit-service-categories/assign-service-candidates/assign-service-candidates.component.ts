@@ -58,9 +58,9 @@ export class AssignServiceCandidatesComponent implements OnInit {
       data => allServiceCandidates = data,
       error => console.error(error),
       () => { 
-        console.log(allServiceCandidates.filter(cand => !this.serviceCategory.serviceCandidate.map(el => el.id).includes(cand.id)));
         
-        this.availableCandidates = allServiceCandidates.filter(cand => !this.serviceCategory.serviceCandidate.map(el => el.id).includes(cand.id))
+        const initiallyAssignedCandidatesIDs = this.serviceCategory.serviceCandidate.map(el => el.id)
+        this.availableCandidates = allServiceCandidates.filter(cand => !initiallyAssignedCandidatesIDs.includes(cand.id))
         // this.available = this.availableCandidates
       }
       

@@ -203,12 +203,10 @@
                                     </div>
                                 </div>
                             
-                                <div *ngFor="let candidate of filteredServiceCandidates$ | async" class="child-category-container pt-3 px-2">
+                                <div *ngFor="let candidate of filteredServiceCandidates$ | async" class="child-category-container pt-3">
                                     <div><b>{{candidate.name}}</b></div>
-                                    <!-- <div>
-                                        <button class="btn btn-danger btn-sm mr-1" (click)="openCategoryDeleteDialog(category)"><i
-                                                class="far fa-trash-alt"></i></button>
-                                    </div> -->
+                                    <button class="btn btn-warning btn-sm" (click)='navigateToServiceSpec(candidate)'><i
+                                        class="far fa-edit"></i></button>   
                             
                                 </div>
                             </mat-expansion-panel>

@@ -124,8 +124,10 @@
                                     </div>
                                 </div>
                                 
-                                <div *ngFor="let relatedSpec of filteredRelatedSpecs$ | async" class="child-category-container pt-3">
-                                    <div><b>{{relatedSpec.name}}</b></div>                                
+                                <div *ngFor="let relatedSpec of filteredRelatedSpecs$ | async" class="spec-relationship-container pt-3">
+                                    <div><b>{{relatedSpec.name}}</b></div>      
+                                    <button class="btn btn-warning btn-sm" routerLink='/service_spec_update/{{relatedSpec.id}}'><i
+                                        class="far fa-edit"></i></button>                          
                                 </div>
 
                             </mat-expansion-panel>

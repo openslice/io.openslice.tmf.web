@@ -112,8 +112,11 @@ export class EditServiceSpecsComponent implements OnInit {
         this.dataSource.data = this.spec.serviceSpecCharacteristic.filter(specCharacteristic => specCharacteristic.valueType)
         this.dataSource.sort = this.sort
         // this.dataSource.paginator = this.paginator;
-        this.specCharacteristicsTags = this.retrieveSpecCharaceristicsTags(this.dataSource.data)
 
+
+        this.specCharacteristicsTags = ["All"]
+        this.tagFiltervalue = "All"
+        this.specCharacteristicsTags = this.retrieveSpecCharaceristicsTags(this.dataSource.data)
 
         //populate Service Descriptor Panel Info
         this.retrieveServiceDesriptor(this.spec.id)

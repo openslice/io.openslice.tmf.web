@@ -168,7 +168,7 @@ export class EditServiceSpecsComponent implements OnInit {
     }
   }
 
-  openAssignSpecRelationshipDialog(characteristic: ServiceSpecCharacteristic) {
+  openAssignSpecRelationshipDialog() {
     const dialogRef = this.dialog.open(AssignServiceRelationshipsComponent, {
       data: {
         serviceSpec: this.spec

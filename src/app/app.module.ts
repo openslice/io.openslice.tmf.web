@@ -17,6 +17,8 @@ import { OwlDateTimeModule, OwlNativeDateTimeModule } from 'ng-pick-datetime';
 
 import { ToastrModule } from 'ngx-toastr';
 
+import { OAuthModule } from 'angular-oauth2-oidc'
+
 import {
   MatTableModule,
   MatSortModule,
@@ -150,7 +152,8 @@ export function initializeApp(bootstrap: BootstrapService) {
     NgProgressHttpModule,
     OwlDateTimeModule, 
     OwlNativeDateTimeModule,
-    ToastrModule.forRoot({progressBar: true})
+    ToastrModule.forRoot({progressBar: true}),
+    OAuthModule.forRoot()
   ],
   entryComponents : [
     EditServiceCatalogsComponent,

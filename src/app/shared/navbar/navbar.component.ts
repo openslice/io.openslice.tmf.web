@@ -6,6 +6,7 @@ import { CloneGstTemplateComponent } from 'src/app/admin/services/edit-service-s
 import { MatDialog } from '@angular/material';
 import { ToastrService } from 'ngx-toastr';
 import { CloneVinniTemplateComponent } from 'src/app/admin/services/edit-service-specs/clone-vinni-template/clone-vinni-template.component';
+import { OAuthService } from 'angular-oauth2-oidc';
 
 @Component({
   selector: 'app-navbar',
@@ -18,7 +19,8 @@ export class NavbarComponent implements OnInit {
     private specService: ServiceSpecificationService,
     private router: Router,
     private dialog: MatDialog,
-    private toast: ToastrService
+    private toast: ToastrService,
+    private authService: OAuthService
   ) { }
 
   loggedIn: boolean
@@ -56,7 +58,11 @@ export class NavbarComponent implements OnInit {
         }
       }
     )
+  }
 
+  logout() {
+    console.log(this.authService)
+    this.authService.logOut()
   }
 
 }

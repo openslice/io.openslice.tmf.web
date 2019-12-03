@@ -19,6 +19,8 @@ import { ToastrModule } from 'ngx-toastr';
 
 import { OAuthModule } from 'angular-oauth2-oidc'
 
+import { JwtModule } from "@auth0/angular-jwt";
+
 import {
   MatTableModule,
   MatSortModule,
@@ -153,7 +155,15 @@ export function initializeApp(bootstrap: BootstrapService) {
     OwlDateTimeModule, 
     OwlNativeDateTimeModule,
     ToastrModule.forRoot({progressBar: true}),
-    OAuthModule.forRoot()
+    OAuthModule.forRoot(),
+    // JwtModule.forRoot({
+    //   config: {
+    //     tokenGetter: () => {
+    //       return localStorage.getItem("access_token");
+    //     },
+    //     whitelistedDomains: ["localhost:4200", "foo.com", "bar.com"]
+    //   }
+    // })
   ],
   entryComponents : [
     EditServiceCatalogsComponent,

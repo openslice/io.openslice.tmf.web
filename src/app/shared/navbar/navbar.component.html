@@ -22,7 +22,7 @@
             <span class="navbar-toggler-icon"></span>
         </button>
         <div [ngbCollapse]="isNavbarCollapsed" class="collapse navbar-collapse" id="navbarsDefault">
-            <ul class="navbar-nav">
+            <ul class="navbar-nav mr-auto">
                 <li class="nav-item" routerLinkActive="active">
                     <a class="nav-link" routerLink="/services_marketplace">Services Marketplace</a>
                 </li>
@@ -105,6 +105,12 @@
                         
         
             </ul> -->
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                  <a class="nav-link" (click)="logout()">Logout</a>
+                </li>
+
+            </ul>
             <!-- <ul class="nav navbar-nav navbar-right">
                 <li ng-show="!loggedIn"><a href="#!/login" >Sign In</a></li>
                 <li ng-show="loggedIn" class="dropdown"><a href="" class="dropdown-toggle" 

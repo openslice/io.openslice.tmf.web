@@ -30,7 +30,7 @@ export class AppComponent {
     this.oauthService.configure(authConfig);
     this.oauthService.setStorage(localStorage);
 
-    // this.oauthService.tokenValidationHandler = new JwksValidationHandler();
+    this.oauthService.tokenValidationHandler = new JwksValidationHandler();
 
     // this.oauthService.events
     //   .pipe(filter((e: any) => e.type === 'token_received'))

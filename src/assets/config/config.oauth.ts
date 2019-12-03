@@ -11,7 +11,6 @@ export const authConfig: AuthConfig = {
 
   tokenEndpoint: 'http://portal.openslice.io/osapi-oauth-server/oauth/token',
   
-  waitForTokenInMsec: 10000,
   oidc: false,
   // URL of the SPA to redirect the user to after login
   redirectUri: window.location.origin + '/services/services_marketplace',
@@ -27,6 +26,7 @@ export const authConfig: AuthConfig = {
   requireHttps: false,
 
   clearHashAfterLogin: false,
+  // disablePKCE: true,
 
   // set the scope for the permissions the client should request
   // The first three are defined by OIDC. The 4th is a usecase-specific one

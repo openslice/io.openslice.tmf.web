@@ -1,5 +1,6 @@
 .nav-link {
     font-weight: 500;
+    cursor: pointer;
     /* font-style: normal; */
     /* text-decoration: none; */
     // text-transform: uppercase;
@@ -57,4 +58,8 @@ nav {
     font-weight: bold;
     color: rgba(0,0,0,.75);
     padding: 0.25rem 1rem;
+}
+
+.dropdown-link {
+    cursor: pointer;
 }

@@ -3,7 +3,6 @@ import { NgModule } from '@angular/core';
 
 import { APP_INITIALIZER } from '@angular/core'
 import { BootstrapService } from './bootstrap/bootstrap.service';
-import { AppService } from './shared/services/app.service';
 
 import { 
   NgbCollapseModule,
@@ -19,7 +18,6 @@ import { ToastrModule } from 'ngx-toastr';
 
 import { OAuthModule } from 'angular-oauth2-oidc'
 
-import { JwtModule } from "@auth0/angular-jwt";
 
 import {
   MatTableModule,
@@ -53,7 +51,7 @@ import { NavbarComponent } from './shared/navbar/navbar.component';
 import { FooterComponent } from './shared/footer/footer.component';
 import { ContactComponent } from './shared/contact/contact.component';
 import { LandingComponent } from './landing/landing.component';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AdminComponent } from './admin/admin.component';
 import { ServicesMarketplaceComponent } from './marketplaces/services-marketplace/services-marketplace.component';
 import { ExperimentsMarketplaceComponent } from './marketplaces/experiments-marketplace/experiments-marketplace.component';
@@ -80,6 +78,7 @@ import { CloneVinniTemplateComponent } from './admin/services/edit-service-specs
 import { PreviewServiceComponent } from './marketplaces/services-marketplace/preview-service/preview-service.component';
 import { AssignServiceRelationshipsComponent } from './admin/services/edit-service-specs/assign-service-relationships/assign-service-relationships.component';
 import { ConfigureServiceComponent } from './marketplaces/services-marketplace/preview-service/configure-service/configure-service.component';
+import { TokenInterceptor } from './shared/interceptors/token-interceptor';
 
 
 
@@ -155,15 +154,7 @@ export function initializeApp(bootstrap: BootstrapService) {
     OwlDateTimeModule, 
     OwlNativeDateTimeModule,
     ToastrModule.forRoot({progressBar: true}),
-    OAuthModule.forRoot(),
-    // JwtModule.forRoot({
-    //   config: {
-    //     tokenGetter: () => {
-    //       return localStorage.getItem("access_token");
-    //     },
-    //     whitelistedDomains: ["localhost:4200", "foo.com", "bar.com"]
-    //   }
-    // })
+    OAuthModule.forRoot()
   ],
   entryComponents : [
     EditServiceCatalogsComponent,
@@ -181,9 +172,8 @@ export function initializeApp(bootstrap: BootstrapService) {
     PreviewServiceComponent
   ],
   providers: [
-    BootstrapService,
     { provide: APP_INITIALIZER, useFactory: initializeApp, deps: [BootstrapService], multi: true },
-    AppService
+    { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true }
   ],
   bootstrap: [AppComponent]
 })

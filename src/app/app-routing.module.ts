@@ -9,6 +9,8 @@ import { ListServiceCategoriesComponent } from './admin/services/list-service-ca
 import { ListServiceSpecsComponent } from './admin/services/list-service-specs/list-service-specs.component';
 import { EditServiceSpecsComponent } from './admin/services/edit-service-specs/edit-service-specs.component';
 import { EditServiceCategoriesComponent } from './admin/services/edit-service-categories/edit-service-categories.component';
+import { AdminComponent } from './admin/admin.component';
+import { AuthGuardService } from './shared/services/auth-guard.service';
 
 
 const routes: Routes = [
@@ -16,13 +18,17 @@ const routes: Routes = [
   { path: 'services_marketplace', component: ServicesMarketplaceComponent },
   { path: 'experiments_marketplace', component: ExperimentsMarketplaceComponent },
   { path: 'vxf_marketplace', component: VxfsMarketplaceComponent },
-  { path: 'service_catalogs', component: ListServiceCatalogsComponent },
-  { path: 'service_categories', component: ListServiceCategoriesComponent },
-  { path: 'service_categories_update/:id', component: EditServiceCategoriesComponent },
-  { path: 'service_categories_update', component: EditServiceCategoriesComponent },
-  { path: 'service_specs', component: ListServiceSpecsComponent },
-  { path: 'service_spec_update/:id', component: EditServiceSpecsComponent },
-  { path: 'service_spec_update', component: EditServiceSpecsComponent },
+
+  { path: 'service_catalogs', component: ListServiceCatalogsComponent, canActivate: [AuthGuardService] },
+  { path: 'service_categories', component: ListServiceCategoriesComponent, canActivate: [AuthGuardService]},
+  { path: 'service_categories_update/:id', component: EditServiceCategoriesComponent, canActivate: [AuthGuardService] },
+  { path: 'service_categories_update', component: EditServiceCategoriesComponent, canActivate: [AuthGuardService] },
+  { path: 'service_specs', component: ListServiceSpecsComponent, canActivate: [AuthGuardService] },
+  { path: 'service_spec_update/:id', component: EditServiceSpecsComponent, canActivate: [AuthGuardService] },
+  { path: 'service_spec_update', component: EditServiceSpecsComponent, canActivate: [AuthGuardService] },
+  
+  { path: '**', component: LandingComponent }
+  
 ];
 
 @NgModule({

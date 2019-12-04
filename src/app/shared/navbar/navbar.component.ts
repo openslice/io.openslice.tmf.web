@@ -6,7 +6,9 @@ import { CloneGstTemplateComponent } from 'src/app/admin/services/edit-service-s
 import { MatDialog } from '@angular/material';
 import { ToastrService } from 'ngx-toastr';
 import { CloneVinniTemplateComponent } from 'src/app/admin/services/edit-service-specs/clone-vinni-template/clone-vinni-template.component';
-import { OAuthService } from 'angular-oauth2-oidc';
+import { AuthService } from '../services/auth.service';
+import { PortalRepositoryApiImplService } from 'src/app/openApis/PortalRepositoryAPI/services';
+import { PortalUser } from 'src/app/openApis/PortalRepositoryAPI/models';
 
 @Component({
   selector: 'app-navbar',
@@ -16,18 +18,30 @@ import { OAuthService } from 'angular-oauth2-oidc';
 export class NavbarComponent implements OnInit {
 
   constructor(
-    private specService: ServiceSpecificationService,
     private router: Router,
     private dialog: MatDialog,
     private toast: ToastrService,
-    private authService: OAuthService
+    public authService: AuthService,
+    private portalRepApi: PortalRepositoryApiImplService
   ) { }
 
   loggedIn: boolean
   isNavbarCollapsed: boolean = true
+  portalUser: PortalUser
   
   ngOnInit() {
-    this.loggedIn = false
+    this.loggedIn = this.authService.hasValidToken()
+
+    this.authService.canActivateProtectedRoutes$.subscribe(
+      _ => {
+        if (this.authService.hasValidToken()) {
+          this.loggedIn = true
+          this.portalRepApi.getUserUsingGET().subscribe(
+            user => this.portalUser = user
+          )
+        }
+      }
+    )
   }
 
   onGSTtemplateClick() {
@@ -43,8 +57,6 @@ export class NavbarComponent implements OnInit {
       }
     )
   }
-    
-  
 
   onVINNItemplateClick() {
     const dialogRef = this.dialog.open(CloneVinniTemplateComponent, {disableClose:true})
@@ -61,8 +73,14 @@ export class NavbarComponent implements OnInit {
   }
 
   logout() {
-    console.log(this.authService)
-    this.authService.logOut()
+    console.log('logout')
+    this.authService.logout()
+    this.router.navigate(['services_marketplace'])
+  }
+
+  login() {
+    this.loggedIn = false
+    this.authService.login()
   }
 
 }

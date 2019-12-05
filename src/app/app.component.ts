@@ -23,7 +23,6 @@ export class AppComponent {
   // get decodedIDToken() { return this._decodedIDToken; }
 
   constructor(private authService: AuthService) {
-    console.log('app launched')
     this.authService.runInitialLoginSequence()
   }
 

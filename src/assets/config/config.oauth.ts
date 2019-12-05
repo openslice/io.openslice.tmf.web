@@ -17,9 +17,9 @@ export const authConfig: AuthConfig = {
   clientId: 'osapiWebClientId',
   dummyClientSecret: 'secret',
 
-  silentRefreshRedirectUri: window.location.origin + '/services/services_marketplace',
-  silentRefreshTimeout: 5000,
-  timeoutFactor: 0.10,
+  // silentRefreshRedirectUri: window.location.origin + '/services/services_marketplace',
+  // silentRefreshTimeout: 5000,
+  // timeoutFactor: 0.10,
 
   requireHttps: false,
   useHttpBasicAuth: true,

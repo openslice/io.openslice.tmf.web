@@ -1,5 +1,4 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
-import { ServiceSpecificationService } from 'src/app/openApis/ServiceCatalogManagement/services';
 import { ServiceSpecification } from 'src/app/openApis/ServiceCatalogManagement/models/service-specification';
 import { Router } from '@angular/router';
 import { CloneGstTemplateComponent } from 'src/app/admin/services/edit-service-specs/clone-gst-template/clone-gst-template.component';
@@ -9,6 +8,8 @@ import { CloneVinniTemplateComponent } from 'src/app/admin/services/edit-service
 import { AuthService } from '../services/auth.service';
 import { PortalRepositoryApiImplService } from 'src/app/openApis/PortalRepositoryAPI/services';
 import { PortalUser } from 'src/app/openApis/PortalRepositoryAPI/models';
+import { AuthGuardService } from '../services/auth-guard.service';
+import { RequesterService } from 'src/app/requester/services/requester.service';
 
 @Component({
   selector: 'app-navbar',
@@ -22,13 +23,14 @@ export class NavbarComponent implements OnInit {
     private dialog: MatDialog,
     private toast: ToastrService,
     public authService: AuthService,
+    public requesterService: RequesterService,
     private portalRepApi: PortalRepositoryApiImplService
   ) { }
 
   loggedIn: boolean
   isNavbarCollapsed: boolean = true
   portalUser: PortalUser
-  
+
   ngOnInit() {
     this.loggedIn = this.authService.hasValidToken()
 
@@ -75,7 +77,8 @@ export class NavbarComponent implements OnInit {
   logout() {
     console.log('logout')
     this.authService.logout()
-    this.router.navigate(['services_marketplace'])
+
+    this.router.navigate([this.router.routerState.snapshot.url])
   }
 
   login() {

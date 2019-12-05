@@ -18,8 +18,24 @@ export class ConfigureServiceComponent implements OnInit {
 
   configurableSpecChar: ServiceSpecCharacteristic[] = []
   ngOnInit() {
+
+  }
+
+  ngOnChanges() {
+    console.log("Input Change Detected")
+    this.initForm()
     console.log(this.spec)
     console.log(this.candidate)
+
+    
+
+    console.log(this.specCharFormArray)
+  }
+
+  initForm() {
+
+    this.specCharFormArray = new FormArray([])
+    
     const formArray = this.specCharFormArray as FormArray
     
     this.configurableSpecChar = this.spec.serviceSpecCharacteristic.filter(specChar => specChar.configurable)
@@ -27,9 +43,6 @@ export class ConfigureServiceComponent implements OnInit {
     this.configurableSpecChar.forEach( confSpecChar => {
       formArray.push(this.updateFormArrayItem(confSpecChar))
     })
-
-
-    console.log(this.specCharFormArray)
   }
 
   updateFormArrayItem( specChar: ServiceSpecCharacteristic): FormGroup {

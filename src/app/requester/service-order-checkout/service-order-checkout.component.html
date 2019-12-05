@@ -1,0 +1,74 @@
+<div class="container py-5">
+
+    <!-- Heading -->
+    <h2 class="h2 text-center shadowed mb-5">Service Order Checkout</h2>
+
+    <!--Grid row-->
+    <div class="row">
+
+        <!--Grid column-->
+        <div class="col-md-8 mb-4">
+
+            <!--Card-->
+            <div class="card card-paper shadow">
+
+                <!--Card content-->
+                <form class="card-body">
+
+                    <app-configure-service [spec]="requesterService.selectedSpecToView"></app-configure-service>
+
+                </form>
+
+            </div>
+            <!--/.Card-->
+
+        </div>
+        <!--Grid column-->
+
+        <!--Grid column-->
+        <div class="col-md-4 mb-4">
+
+            <!-- Heading -->
+            <h4 class="d-flex justify-content-between align-items-center mb-3">
+                <span class="text-muted">Your list</span>
+                <span class="badge badge-secondary badge-pill">{{requesterService.serviceSpecsCart.length}}</span>
+            </h4>
+
+            <!-- Cart -->
+            <ul class="list-group mb-3 card card-paper shadow">
+                <li class="list-group-item d-flex justify-content-between lh-condensed" *ngFor="let spec of requesterService.serviceSpecsCart" (click)="viewAndConfigureSpec(spec)" [ngClass]="{'selected-spec': requesterService.selectedSpecToView === spec}">
+                    <div>
+                        <h6 class="my-0">{{spec.name}}</h6>
+                        <small class="text-muted">{{spec.version}}</small>
+                    </div>
+                    <span class="text-muted">$12</span>
+                </li>
+                <!-- <li class="list-group-item d-flex justify-content-between">
+                    <span>Total (USD)</span>
+                    <strong>$20</strong>
+                </li> -->
+            </ul>
+
+            <button class="btn btn-primary btn-block my-4" type="submit">Continue to checkout</button>
+
+            <!-- Cart -->
+
+            <!-- Promo code -->
+            <!-- <form class="card p-2">
+                    <div class="input-group">
+                        <input type="text" class="form-control" placeholder="Promo code"
+                            aria-label="Recipient's username" aria-describedby="basic-addon2">
+                        <div class="input-group-append">
+                            <button class="btn btn-secondary btn-md waves-effect m-0" type="button">Redeem</button>
+                        </div>
+                    </div>
+                </form> -->
+            <!-- Promo code -->
+
+        </div>
+        <!--Grid column-->
+
+    </div>
+    <!--Grid row-->
+
+</div>

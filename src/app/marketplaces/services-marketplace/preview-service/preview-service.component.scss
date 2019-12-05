@@ -52,3 +52,17 @@
     margin-top: 1rem;
     text-align: center;
 }
+
+span.hidden {
+    display: none;
+}
+
+.mat-column-defaultValues span:last-child span span.comma-separator {
+    display: none;
+}
+
+.value-measureUnits {
+    color: #727272;
+    font-size: 11px;
+    line-height: 1.1;
+}

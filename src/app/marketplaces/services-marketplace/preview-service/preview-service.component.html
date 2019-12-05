@@ -94,7 +94,10 @@
                         </div>
                     </div>
                     <div class="separator-div"></div>
-                    <button type="button" class="btn btn-primary " (click)="startConfiguration()">Service Configuration & Order</button>
+                    <button type="button" class="btn btn-primary " (click)="placeInOrderList()">
+                        <i class="fas fa-shopping-cart mr-1"></i>
+                        <span> Place in Order List </span>
+                    </button>
                 </div>
             </div>
             <div class="separator-div"></div>
@@ -105,9 +108,9 @@
             </div>
             <div class="separator-div"></div>
     
-            <div class="row justify-content-center">
+            <!-- <div class="row justify-content-center">
                 <mat-checkbox color="primary" (change)="configurableFilterChanged($event)" >Show Configurable Characteristics</mat-checkbox>
-            </div>
+            </div> -->
               
             <div class="no-chars-found" *ngIf="!dataSource.data.length">This service does not contain any configurable characteristics</div>
     
@@ -120,16 +123,32 @@
                             <b>{{element.name}}</b> </td>
                     </ng-container>
                 
-                    <ng-container matColumnDef="configurable">
+                    <!-- <ng-container matColumnDef="configurable">
                         <th mat-header-cell *matHeaderCellDef mat-sort-header>Configurable</th>
                         <td mat-cell *matCellDef="let element">
                             <i *ngIf="element.configurable" class="material-icons checked" color="primary">check</i>
                             <i *ngIf="!element.configurable" class="material-icons crossed">close</i>                        
                         </td>
+                    </ng-container> -->
+
+                    <ng-container matColumnDef="defaultValues">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header> Default Values </th>
+                        <td mat-cell *matCellDef="let element">
+                            <span *ngFor="let val of element.serviceSpecCharacteristicValue; let last = last"
+                                [class.hidden]="!val || !val.isDefault">
+                                <span *ngIf="val && val.isDefault">{{val.value.value}} ({{val.value.alias}})
+                                    <span class="comma-separator">, </span>
+                                </span>
+                                <div *ngIf="last" class="value-measureUnits">{{val.unitOfMeasure}}</div>
+                    
+                            </span>
+                        </td>
                     </ng-container>
                 
                     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-                    <tr mat-row *matRowDef="let row; columns: displayedColumns;" [class.isConfigurable-class]="row.configurable">
+                    <tr mat-row *matRowDef="let row; columns: displayedColumns;">
+
+                    <!-- <tr mat-row *matRowDef="let row; columns: displayedColumns;" [class.isConfigurable-class]="row.configurable"> -->
                     </tr>
                 </table>
             </div>

@@ -11,6 +11,7 @@ import { EditServiceSpecsComponent } from './admin/services/edit-service-specs/e
 import { EditServiceCategoriesComponent } from './admin/services/edit-service-categories/edit-service-categories.component';
 import { AdminComponent } from './admin/admin.component';
 import { AuthGuardService } from './shared/services/auth-guard.service';
+import { ServiceOrderCheckoutComponent } from './requester/service-order-checkout/service-order-checkout.component';
 
 
 const routes: Routes = [
@@ -19,20 +20,22 @@ const routes: Routes = [
   { path: 'experiments_marketplace', component: ExperimentsMarketplaceComponent },
   { path: 'vxf_marketplace', component: VxfsMarketplaceComponent },
 
-  { path: 'service_catalogs', component: ListServiceCatalogsComponent, canActivate: [AuthGuardService] },
-  { path: 'service_categories', component: ListServiceCategoriesComponent, canActivate: [AuthGuardService]},
-  { path: 'service_categories_update/:id', component: EditServiceCategoriesComponent, canActivate: [AuthGuardService] },
-  { path: 'service_categories_update', component: EditServiceCategoriesComponent, canActivate: [AuthGuardService] },
-  { path: 'service_specs', component: ListServiceSpecsComponent, canActivate: [AuthGuardService] },
-  { path: 'service_spec_update/:id', component: EditServiceSpecsComponent, canActivate: [AuthGuardService] },
-  { path: 'service_spec_update', component: EditServiceSpecsComponent, canActivate: [AuthGuardService] },
+  { path: 'service_catalogs', component: ListServiceCatalogsComponent, canActivate: [AuthGuardService], runGuardsAndResolvers: 'always' },
+  { path: 'service_categories', component: ListServiceCategoriesComponent, canActivate: [AuthGuardService], runGuardsAndResolvers: 'always'},
+  { path: 'service_categories_update/:id', component: EditServiceCategoriesComponent, canActivate: [AuthGuardService], runGuardsAndResolvers: 'always' },
+  { path: 'service_categories_update', component: EditServiceCategoriesComponent, canActivate: [AuthGuardService], runGuardsAndResolvers: 'always' },
+  { path: 'service_specs', component: ListServiceSpecsComponent, canActivate: [AuthGuardService], runGuardsAndResolvers: 'always' },
+  { path: 'service_spec_update/:id', component: EditServiceSpecsComponent, canActivate: [AuthGuardService], runGuardsAndResolvers: 'always' },
+  { path: 'service_spec_update', component: EditServiceSpecsComponent, canActivate: [AuthGuardService], runGuardsAndResolvers: 'always' },
+
+  { path: 'service_order_checkout', component: ServiceOrderCheckoutComponent, canActivate: [AuthGuardService], runGuardsAndResolvers: 'always' },
   
   { path: '**', component: LandingComponent }
   
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes, {scrollPositionRestoration: 'enabled'})],
+  imports: [RouterModule.forRoot(routes, {scrollPositionRestoration: 'enabled', onSameUrlNavigation: 'reload'})],
   exports: [RouterModule]
 })
 export class AppRoutingModule { }

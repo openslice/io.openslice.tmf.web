@@ -79,6 +79,8 @@ import { PreviewServiceComponent } from './marketplaces/services-marketplace/pre
 import { AssignServiceRelationshipsComponent } from './admin/services/edit-service-specs/assign-service-relationships/assign-service-relationships.component';
 import { ConfigureServiceComponent } from './marketplaces/services-marketplace/preview-service/configure-service/configure-service.component';
 import { TokenInterceptor } from './shared/interceptors/token-interceptor';
+import { RequesterComponent } from './requester/requester.component';
+import { ServiceOrderCheckoutComponent } from './requester/service-order-checkout/service-order-checkout.component';
 
 
 
@@ -116,7 +118,9 @@ export function initializeApp(bootstrap: BootstrapService) {
     CloneVinniTemplateComponent,
     PreviewServiceComponent,
     AssignServiceRelationshipsComponent,
-    ConfigureServiceComponent
+    ConfigureServiceComponent,
+    RequesterComponent,
+    ServiceOrderCheckoutComponent
   ],
   imports: [
     BrowserModule,

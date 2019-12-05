@@ -77,16 +77,18 @@ export class AuthService {
         // console.log('getAccessToken : ', this.oauthService.getAccessToken());
         // console.log('getIdToken : ', this.oauthService.getIdToken());
         
+        console.warn('AccessTokenExpiration : ', new Date(this.oauthService.getAccessTokenExpiration()).toUTCString());
+
 
         if (this.oauthService.hasValidAccessToken()) {
-          console.log('this.oauthService.hasValidAccessToken() === true')
+          console.warn('this.oauthService.hasValidAccessToken() === true')
           this.isAuthenticatedSubject$.next(this.oauthService.hasValidAccessToken());
           return Promise.resolve();
         } 
         
         //If Silent LOGIN isn't implemented
         else {
-          console.log('this.oauthService.hasValidAccessToken() === false')
+          console.warn('this.oauthService.hasValidAccessToken() === false')
           return Promise.reject();
         }
 

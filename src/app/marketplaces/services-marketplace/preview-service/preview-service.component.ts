@@ -2,6 +2,7 @@ import { Component, OnInit, Inject, ViewChild } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef, MatTableDataSource, MatSort, MatCheckboxChange } from '@angular/material';
 import { ServiceCandidate, ServiceSpecification } from 'src/app/openApis/ServiceCatalogManagement/models';
 import { ServiceSpecificationService } from 'src/app/openApis/ServiceCatalogManagement/services';
+import { RequesterService } from 'src/app/requester/services/requester.service';
 
 @Component({
   selector: 'app-preview-service',
@@ -15,14 +16,15 @@ export class PreviewServiceComponent implements OnInit {
       serviceCandidate: ServiceCandidate
     },
     private dialogRef: MatDialogRef<PreviewServiceComponent>,
-    private specService: ServiceSpecificationService
+    private specService: ServiceSpecificationService,
+    private requesterService: RequesterService
   ) { }
 
   candidate: ServiceCandidate
   spec: ServiceSpecification
 
 
-  displayedColumns = ['name', 'configurable']
+  displayedColumns = ['name', 'defaultValues']
   dataSource  = new MatTableDataSource<ServiceSpecification>()
 
   @ViewChild(MatSort, {static: true}) sort: MatSort;
@@ -45,7 +47,7 @@ export class PreviewServiceComponent implements OnInit {
       data => this.spec = data,
       error => console.error(error),
       () => {
-        this.dataSource.data = this.spec.serviceSpecCharacteristic
+        this.dataSource.data = this.spec.serviceSpecCharacteristic.filter(spec => spec.configurable)
         this.dataSource.sort = this.sort        
       }
     )
@@ -60,6 +62,15 @@ export class PreviewServiceComponent implements OnInit {
 
   startConfiguration() {
     this.orderView = true
+  }
+
+  placeInOrderList() {
+    if (!this.requesterService.serviceSpecsCart.includes(this.spec)) {
+      this.requesterService.serviceSpecsCart.push(this.spec)
+      this.dialogRef.close("list_added")
+    }
+
+    
   }
 
 }

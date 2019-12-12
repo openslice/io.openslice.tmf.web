@@ -39,7 +39,7 @@ export class NavbarComponent implements OnInit {
         if (this.authService.hasValidToken()) {
           this.loggedIn = true
           this.portalRepApi.getUserUsingGET().subscribe(
-            user => this.portalUser = user
+            user => this.authService.portalUser = this.portalUser = user
           )
         }
       }

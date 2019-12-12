@@ -4,24 +4,120 @@
     <h2 class="h2 text-center shadowed mb-5">Service Order Checkout</h2>
 
     <!--Grid row-->
-    <div class="row">
+    <h4 class="row justify-content-center" *ngIf="requesterService.serviceConfigurationList.length === 0">
+        Service Order List is empty 
+    </h4>
+
+    <div class="row" *ngIf="requesterService.serviceConfigurationList.length">
+    
+        <!--Grid column-->
+        <div class="col-md-12 mb-4">
+            <!--Card-->
+            <div class="card card-paper shadow">
+                <h5 class="card-header">
+                    Service Note
+                </h5>
+                <div class="card-body">
+                    <mat-form-field class="col-12">
+                        <mat-label>Notes about the order</mat-label>
+                        <textarea  matInput [formControl]="serviceNoteCtrl" cdkTextareaAutosize
+                        #autosize="cdkTextareaAutosize"
+                        cdkAutosizeMinRows="1"
+                        cdkAutosizeMaxRows="5">
+                        </textarea>
+                    </mat-form-field>
+                </div>
+                <div class="card-footer">
+                </div>
+            </div>
+            <!--/.Card-->
+        </div>
+        <!--Grid column-->
+    
+    </div>
+
+    <div class="row" *ngIf="requesterService.serviceConfigurationList.length">
 
         <!--Grid column-->
         <div class="col-md-8 mb-4">
-
             <!--Card-->
             <div class="card card-paper shadow">
-
-                <!--Card content-->
-                <form class="card-body">
-
-                    <app-configure-service [spec]="requesterService.selectedSpecToView"></app-configure-service>
-
-                </form>
-
-            </div>
+                    <h5 class="card-header">
+                        Service Configuration
+                        <small class="text-muted d-block">{{requesterService.selectedSpecToView?.spec.name}}</small>
+                    </h5>
+                    <div class="card-body">
+                        <!-- <div class="row justify-content-center">
+                    
+                            <div class="col-12 shadowed mb-3 text-center">Service Configuration</div>
+                    
+                        </div> -->
+                        
+                        <div *ngIf="configurableSpecChar.length === 0" class="no-chars-found">
+                            This service does not contain any configurable characteristics
+                        </div>
+                    
+                        <div formArray="specCharFormArray" *ngIf="configurableSpecChar.length > 0">
+                            <div *ngFor="let charForm of specCharFormArray.controls; let i = index;" [formGroup]="charForm"
+                                class="row align-items-center justify-content-center">
+                                <div class="col-md-6">
+                                    <b>{{charForm.get('name').value}}</b>
+                                </div>
+                                <div class="col-md-6" [ngSwitch]="charForm.get('valueType').value">
+                    
+                                    <ng-container *ngSwitchCase="'SET'">
+                                        <ng-container *ngTemplateOutlet="iterables"></ng-container>
+                                    </ng-container>
+                                    
+                                    <ng-container *ngSwitchCase="'ARRAY'">
+                                        <ng-container *ngTemplateOutlet="iterables"></ng-container>
+                                    </ng-container>
+                    
+                                    <ng-container *ngSwitchCase="'ENUM'">
+                                        <mat-form-field class="col-12">
+                                            <mat-label>Custom Value</mat-label>
+                                            <mat-select [(ngModel)]="charForm.get('value').value[0]" [ngModelOptions]="{standalone: true}">
+                                                <mat-option *ngFor="let charValue of configurableSpecChar[i].serviceSpecCharacteristicValue"
+                                                    [value]="charValue">
+                                                    {{charValue.value.alias}}</mat-option>
+                                            </mat-select>
+                                        </mat-form-field>
+                                    </ng-container>
+                       
+                                    <ng-container *ngSwitchCase="'TIMESTAMP'">
+                                        <mat-form-field class="col-12" [owlDateTimeTrigger]="pickerFrom">
+                                            <mat-label>Custom Value</mat-label>
+                                            <input matInput [owlDateTime]="pickerFrom" placeholder="Date Time" [(ngModel)]="charForm.get('value').value[0].value.value" [ngModelOptions]="{standalone: true}">
+                                            <mat-icon matSuffix>date_range</mat-icon>
+                                            <!-- <span [owlDateTimeTrigger]="dt1"><i class="fa fa-calendar"></i></span> -->
+                                            <owl-date-time #pickerFrom></owl-date-time>
+                                        </mat-form-field>
+                                    </ng-container>
+                    
+                                    <ng-container *ngSwitchDefault>
+                                        <mat-form-field class="col-12">
+                                            <mat-label>Custom Value</mat-label>
+                                            <input matInput [(ngModel)]="charForm.get('value').value[0].value.value" [ngModelOptions]="{standalone: true}">
+                                        </mat-form-field>
+                                    </ng-container>
+                    
+                                    <ng-template #iterables>
+                                        <mat-form-field class="col-12" >
+                                            <mat-label>Custom Value</mat-label>
+                                            <mat-select formControlName="value" multiple>
+                                                <mat-option *ngFor="let charValue of configurableSpecChar[i].serviceSpecCharacteristicValue" [value]="charValue">
+                                                    {{charValue.value.alias}}</mat-option>
+                                            </mat-select>
+                                        </mat-form-field>
+                                    </ng-template>
+                                </div>   
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                    </div>
+                </div>
             <!--/.Card-->
-
         </div>
         <!--Grid column-->
 
@@ -29,19 +125,21 @@
         <div class="col-md-4 mb-4">
 
             <!-- Heading -->
-            <h4 class="d-flex justify-content-between align-items-center mb-3">
-                <span class="text-muted">Your list</span>
-                <span class="badge badge-secondary badge-pill">{{requesterService.serviceSpecsCart.length}}</span>
-            </h4>
+            <h5 class="d-flex justify-content-between align-items-center mb-3">
+                <span class="text-muted">Your Order Item list</span>
+                <span class="badge badge-secondary badge-pill">{{requesterService.serviceConfigurationList.length}}</span>
+            </h5>
 
             <!-- Cart -->
             <ul class="list-group mb-3 card card-paper shadow">
-                <li class="list-group-item d-flex justify-content-between lh-condensed" *ngFor="let spec of requesterService.serviceSpecsCart" (click)="viewAndConfigureSpec(spec)" [ngClass]="{'selected-spec': requesterService.selectedSpecToView === spec}">
+                <li class="list-group-item d-flex justify-content-between align-items-center" *ngFor="let item of requesterService.serviceConfigurationList" (click)="viewAndConfigureSpec(item)" [ngClass]="{'selected-spec': requesterService.selectedSpecToView === item}">
                     <div>
-                        <h6 class="my-0">{{spec.name}}</h6>
-                        <small class="text-muted">{{spec.version}}</small>
+                        <h6 class="my-0">{{item.spec.name}}</h6>
+                        <small class="text-muted">{{item.spec.version}}</small>
                     </div>
-                    <span class="text-muted">$12</span>
+                    <div>
+                        <button mat-icon-button (click)="removeSpecFromCart(item)"><i class="material-icons">close</i></button>
+                    </div>
                 </li>
                 <!-- <li class="list-group-item d-flex justify-content-between">
                     <span>Total (USD)</span>
@@ -49,7 +147,7 @@
                 </li> -->
             </ul>
 
-            <button class="btn btn-primary btn-block my-4" type="submit">Continue to checkout</button>
+            
 
             <!-- Cart -->
 
@@ -70,5 +168,11 @@
 
     </div>
     <!--Grid row-->
+
+    <div class="row justify-content-center" *ngIf="requesterService.serviceConfigurationList.length">
+        <div class="col-md-6">
+            <button class="btn btn-primary btn-block my-4 shadow" type="submit" (click)="submitOrder()">Order Service</button>
+        </div>
+    </div> 
 
 </div>

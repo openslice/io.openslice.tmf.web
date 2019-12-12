@@ -1,8 +1,9 @@
 import { Component, OnInit, Inject, ViewChild } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef, MatTableDataSource, MatSort, MatCheckboxChange } from '@angular/material';
-import { ServiceCandidate, ServiceSpecification } from 'src/app/openApis/ServiceCatalogManagement/models';
+import { ServiceCandidate, ServiceSpecification, ServiceSpecCharacteristicValue, ServiceSpecCharacteristic } from 'src/app/openApis/ServiceCatalogManagement/models';
 import { ServiceSpecificationService } from 'src/app/openApis/ServiceCatalogManagement/services';
 import { RequesterService } from 'src/app/requester/services/requester.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-preview-service',
@@ -17,7 +18,8 @@ export class PreviewServiceComponent implements OnInit {
     },
     private dialogRef: MatDialogRef<PreviewServiceComponent>,
     private specService: ServiceSpecificationService,
-    private requesterService: RequesterService
+    private requesterService: RequesterService,
+    private toastr: ToastrService
   ) { }
 
   candidate: ServiceCandidate
@@ -48,7 +50,8 @@ export class PreviewServiceComponent implements OnInit {
       error => console.error(error),
       () => {
         this.dataSource.data = this.spec.serviceSpecCharacteristic.filter(spec => spec.configurable)
-        this.dataSource.sort = this.sort        
+        this.dataSource.sort = this.sort  
+        console.log(this.spec)      
       }
     )
   }
@@ -65,12 +68,42 @@ export class PreviewServiceComponent implements OnInit {
   }
 
   placeInOrderList() {
-    if (!this.requesterService.serviceSpecsCart.includes(this.spec)) {
-      this.requesterService.serviceSpecsCart.push(this.spec)
+    if (!this.requesterService.serviceConfigurationList.some(el => el.spec.id === this.spec.id)) {
+      // this.requesterService.serviceSpecsCart.push(this.spec)
+      this.requesterService.serviceConfigurationList.push({
+        spec: this.spec,
+        checked: false,
+        specCharacteristics:  this.initCharacteristicsValue()
+      })
       this.dialogRef.close("list_added")
+    } else {
+      this.toastr.warning("This Service is already in your Service List")
     }
-
     
+  }
+
+  initCharacteristicsValue() {
+    let initialCharValues: {
+      name: string,
+      valueType: string,
+      value: ServiceSpecCharacteristicValue[]
+    }[] =[]
+
+    const configurableSpecChar = this.spec.serviceSpecCharacteristic.filter(specChar => specChar.configurable)
+
+    configurableSpecChar.forEach( confSpecChar => {
+      
+      const charDefaultValueArray = confSpecChar.serviceSpecCharacteristicValue.filter( val => val.isDefault )
+      initialCharValues.push({
+        name: confSpecChar.name,
+        valueType: confSpecChar.valueType,
+        value: charDefaultValueArray
+      })
+    })
+
+
+    console.log(initialCharValues)
+    return initialCharValues
   }
 
 }

@@ -4,6 +4,7 @@ import { OAuthService, OAuthErrorEvent, JwksValidationHandler } from 'angular-oa
 import { Router } from '@angular/router';
 import { authConfig } from 'src/assets/config/config.oauth';
 import { map } from 'rxjs/operators';
+import { PortalUser } from 'src/app/openApis/PortalRepositoryAPI/models';
 
 
 @Injectable({
@@ -26,6 +27,8 @@ export class AuthService {
   private navigateToLoginPage() {
     this.router.navigateByUrl('/');
   }
+
+  public portalUser: PortalUser
 
   constructor(    
     private oauthService: OAuthService,

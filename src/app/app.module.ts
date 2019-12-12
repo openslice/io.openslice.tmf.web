@@ -157,7 +157,7 @@ export function initializeApp(bootstrap: BootstrapService) {
     NgProgressHttpModule,
     OwlDateTimeModule, 
     OwlNativeDateTimeModule,
-    ToastrModule.forRoot({progressBar: true}),
+    ToastrModule.forRoot({progressBar: true, preventDuplicates: true}),
     OAuthModule.forRoot()
   ],
   entryComponents : [

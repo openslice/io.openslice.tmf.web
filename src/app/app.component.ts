@@ -1,9 +1,6 @@
 import { Component } from '@angular/core';
 
-import { BaseRootEntity } from 'src/app/openApis/ServiceCatalogManagementCustom/models/BaseRootEntity'
 import { OAuthService, JwksValidationHandler } from 'angular-oauth2-oidc';
-import { authConfig } from 'src/assets/config/config.oauth';
-import { AppService } from './shared/services/app.service';
 import { AuthService } from './shared/services/auth.service';
 
 @Component({

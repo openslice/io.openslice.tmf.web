@@ -1,6 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { ServiceSpecification, ServiceCandidate, ServiceSpecCharacteristic } from 'src/app/openApis/ServiceCatalogManagement/models';
+import { ServiceSpecification, ServiceCandidate, ServiceSpecCharacteristic, ServiceSpecCharacteristicValue } from 'src/app/openApis/ServiceCatalogManagement/models';
 import { FormArray, FormGroup, FormControl } from '@angular/forms';
+import { RequesterService } from 'src/app/requester/services/requester.service';
 
 @Component({
   selector: 'app-configure-service',
@@ -9,27 +10,30 @@ import { FormArray, FormGroup, FormControl } from '@angular/forms';
 })
 export class ConfigureServiceComponent implements OnInit {
 
-  constructor() { }
+  constructor(
+    private requesterService: RequesterService
+  ) { }
 
   @Input() spec: ServiceSpecification
-  @Input() candidate: ServiceCandidate
   
   specCharFormArray = new FormArray([])
 
   configurableSpecChar: ServiceSpecCharacteristic[] = []
   ngOnInit() {
-
+    // this.requesterService.newSpecSelected$.subscribe(
+    //   val => {
+    //     console.log('newSpecSelected')
+    //     this.requesterService.serviceConfigurationList.find(listItem => listItem.spec.id === val.previousSpec.id).specCharacteristics = this.specCharFormArray.value
+    //     console.log(this.requesterService.serviceConfigurationList)
+    //   }
+    // )
   }
+    
+  
 
   ngOnChanges() {
-    console.log("Input Change Detected")
+    console.log('ngOnChanges')
     this.initForm()
-    console.log(this.spec)
-    console.log(this.candidate)
-
-    
-
-    console.log(this.specCharFormArray)
   }
 
   initForm() {
@@ -47,12 +51,13 @@ export class ConfigureServiceComponent implements OnInit {
 
   updateFormArrayItem( specChar: ServiceSpecCharacteristic): FormGroup {
 
-    const charValueArray = specChar.serviceSpecCharacteristicValue.filter( val => val.isDefault )
+    // const charValueArray = specChar.serviceSpecCharacteristicValue.filter( val => val.isDefault )
+    const charValueArray = this.requesterService.serviceConfigurationList.find(listItem => listItem.spec.id === this.spec.id).specCharacteristics
+    console.log(charValueArray)
     
-    console.log(charValueArray);
-    let controlValue
-    if (charValueArray.length === 1) controlValue = charValueArray[0]
-    if (charValueArray.length > 1) controlValue = charValueArray
+    let controlValue: ServiceSpecCharacteristicValue[] | ServiceSpecCharacteristicValue
+    // if (charValueArray.length === 1) controlValue = charValueArray
+    // if (charValueArray.length > 1) controlValue = charValueArray
 
     return new FormGroup({
       name: new FormControl(specChar.name),
@@ -61,8 +66,13 @@ export class ConfigureServiceComponent implements OnInit {
     })
   }
 
-  placeOrder() {
+  configCharacteristic() {
     console.log(this.specCharFormArray)
-  } 
+    console.log(this.requesterService.serviceConfigurationList)
+  }
+  
+  ngOnDestroy() {
+    console.log(this.specCharFormArray)
+  }
 
 }

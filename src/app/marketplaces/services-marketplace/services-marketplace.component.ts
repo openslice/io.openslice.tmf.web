@@ -46,7 +46,6 @@ export class ServicesMarketplaceComponent implements OnInit {
         category.serviceCandidate.forEach(candidateRef => {
           this.retrieveCandidateFromRef(candidateRef)
         })
-
       }
     )
   }
@@ -82,7 +81,6 @@ export class ServicesMarketplaceComponent implements OnInit {
   }
 
   previewServiceSpec(candidate: ServiceCandidate) {
-    console.log(candidate);
     const dialogRef = this.dialog.open(PreviewServiceComponent, {
       data: {
         serviceCandidate: candidate
@@ -92,8 +90,7 @@ export class ServicesMarketplaceComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(
       result => {
-        console.log(result);
-        
+        console.log(result);    
       }
     )
     

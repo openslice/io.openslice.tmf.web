@@ -51,7 +51,6 @@ export class PreviewServiceComponent implements OnInit {
       () => {
         this.dataSource.data = this.spec.serviceSpecCharacteristic.filter(spec => spec.configurable)
         this.dataSource.sort = this.sort  
-        console.log(this.spec)      
       }
     )
   }

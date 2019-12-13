@@ -1,9 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { RequesterService, serviceConfigurationItem } from '../services/requester.service';
-import { ServiceSpecification, ServiceSpecCharacteristic, ServiceSpecCharacteristicValue } from 'src/app/openApis/ServiceCatalogManagement/models';
+import { ServiceSpecCharacteristic } from 'src/app/openApis/ServiceCatalogManagement/models';
 import { FormControl, FormArray, FormGroup } from '@angular/forms';
-import { ServiceOrder, ServiceOrderCreate, ServiceOrderItem } from 'src/app/openApis/ServiceOrderingManagement/models';
+import { ServiceOrderCreate, ServiceOrderItem } from 'src/app/openApis/ServiceOrderingManagement/models';
 import { AuthService } from 'src/app/shared/services/auth.service';
+import { ServiceOrderService } from 'src/app/openApis/ServiceOrderingManagement/services';
+import { ToastrService } from 'ngx-toastr';
+import { Router } from '@angular/router';
+
+const today = new Date()
 
 @Component({
   selector: 'app-service-order-checkout',
@@ -14,10 +19,15 @@ export class ServiceOrderCheckoutComponent implements OnInit {
 
   constructor(
     public requesterService: RequesterService,
-    private authService: AuthService
+    private authService: AuthService,
+    private orderService: ServiceOrderService,
+    private toastr: ToastrService,
+    private router: Router
   ) { }
 
   serviceNoteCtrl = new FormControl('')
+  reqStartDate = new FormControl(new Date())
+  reqCompletionDate = new FormControl(new Date(new Date().setFullYear(today.getFullYear()+20)))
 
   specCharFormArray = new FormArray([])
 
@@ -39,8 +49,8 @@ export class ServiceOrderCheckoutComponent implements OnInit {
     this.initValuesForm()
   }
 
-  removeSpecFromCart(spec: ServiceSpecification) {
-    const toBeRemovedSpecIndex = this.requesterService.serviceConfigurationList.findIndex(el => el === spec)
+  removeSpecFromCart(item: serviceConfigurationItem) {
+    const toBeRemovedSpecIndex = this.requesterService.serviceConfigurationList.findIndex(el => el.spec.id === item.spec.id)
     this.requesterService.selectedSpecToView = null
     this.requesterService.serviceConfigurationList.splice(toBeRemovedSpecIndex, 1)
     if (toBeRemovedSpecIndex === this.requesterService.serviceConfigurationList.length) {
@@ -89,45 +99,55 @@ export class ServiceOrderCheckoutComponent implements OnInit {
     
     console.log(this.requesterService.serviceConfigurationList)
     
-    let newOrder: ServiceOrderCreate = {orderItem:[]}
+    let newOrder: ServiceOrderCreate = {
+      orderItem:[], 
+      note: [{
+        author:this.authService.portalUser.username,
+        text: this.serviceNoteCtrl.value
+      }],
+      requestedStartDate: this.reqStartDate.value,
+      requestedCompletionDate: this.reqCompletionDate.value
+    }
 
-
-    let newOrderItem: ServiceOrderItem = { service: {}, action: 'add'}
+    let newOrderItem: ServiceOrderItem 
+    // = { service: {}, action: 'add'}
     this.requesterService.serviceConfigurationList.forEach(serviceItem => {
-      console.log(serviceItem)
-      newOrderItem.service['serviceSpecification'] = {id: serviceItem.spec.id}
-      serviceItem.specCharacteristics.forEach(characteristic => {
-        console.log(characteristic)
-        newOrderItem.service['serviceCharacteristic'] = []
+      // console.log(serviceItem)
+      newOrderItem = { service: {
+        serviceSpecification: {id: serviceItem.spec.id},
+        serviceCharacteristic: []
+      }, action: 'add'}
+
+      serviceItem.specCharacteristics.forEach( (characteristic, index) => {
+        newOrderItem.service.serviceCharacteristic.push({
+          name: characteristic.name,
+          valueType: characteristic.valueType,
+          value: undefined
+        })
+
         if (characteristic.value.length > 1) {
-          newOrderItem.service['serviceCharacteristic'].push(
-            {
-              name: characteristic.name,
-              valueType: characteristic.valueType,
-              value: characteristic.value.map(el => el.value)
-              // value: characteristic.value.map(char => {return})
-            }
-          )
+          newOrderItem.service.serviceCharacteristic[index].value = {
+            value: JSON.stringify( characteristic.value.map(el => {return {'value': el.value.value, 'alias': el.value.alias}}) )
+          }
         } else {
-          newOrderItem.service['serviceCharacteristic'].push(
-            {
-              name: characteristic.name,
-              valueType: characteristic.valueType,
-              value: characteristic.value[0].value
-              // value: characteristic.value.map(char => {return})
-            }
-          )
+          newOrderItem.service.serviceCharacteristic[index].value = characteristic.value[0].value
         }
-
-        newOrder.orderItem.push(newOrderItem)
       })
-      console.log(newOrderItem)
+      newOrder.orderItem.push(newOrderItem)
     })
-
+    
     console.log(newOrder)
 
-    // newOrder['note'].push({author: this.authService.portalUser.username, text: this.serviceNoteCtrl.value })
-    
+
+    this.orderService.createServiceOrder(newOrder).subscribe(
+      response => { console.log(response) },
+      error => { console.error(error); this.toastr.error("An error occurred while processing your Service Order") },
+      () => {
+        this.toastr.success("Service Order was successfully placed")
+        this.requesterService.serviceConfigurationList = []
+        this.router.navigate(['services_marketplace'])
+      }
+    )
   }
 
   updateActiveServiceInList() {

@@ -33,27 +33,36 @@
                     <a class="nav-link" routerLink="/vxf_marketplace">VxFs</a>
                 </li> -->
 
+                <li class="nav-item" routerLinkActive="active" *ngIf="authService.isAuthenticated$ | async">
+                    <a class="nav-link" routerLink="/my_service_orders">My Service Orders</a>
+                </li>
+
 
                 <li class="nav-item dropdown" ngbDropdown *ngIf="authService.isAuthenticated$ | async">
-                    <a class="nav-link dropdown-toggle" id="navbarDropdown" aria-haspopup="true" ngbDropdownToggle tabindex="-1">Manage Services</a>
+                    <a class="nav-link dropdown-toggle" id="navbarDropdown" aria-haspopup="true" ngbDropdownToggle tabindex="0">Manage Services
                         <ul class="dropdown-menu" aria-labelledby="navbarDropdown" ngbDropdownMenu>
-                            <li><a class="dropdown-item" tabindex="-1" routerLink="/service_catalogs">Service Catalogs</a></li>
-                            <li><a class="dropdown-item" tabindex="-1" routerLink="/service_categories">Service Categories</a></li>
+                            <div class="optgroup-label">Catalog Management</div>
+                            <li><a class="dropdown-item" tabindex="0" routerLink="/service_catalogs">Service Catalogs</a></li>
+                            <li><a class="dropdown-item" tabindex="0" routerLink="/service_categories">Service Categories</a></li>
                             <!-- <li><a class="dropdown-item" tabindex="-1" routerLink="/service_specs">Service Specifications</a></li> -->
                             <li class="dropdown dropdown-submenu" ngbDropdown>
-                                <a class="dropdown-toggle" id="navbarDropdown1" aria-haspopup="true" ngbDropdownToggle tabindex="-1">Service Specifications</a>
+                                <a class="dropdown-toggle" id="navbarDropdown1" aria-haspopup="true" ngbDropdownToggle tabindex="0">Service Specifications</a>
                                 <ul class="dropdown-menu" aria-labelledby="navbarDropdown1" ngbDropdownMenu>
-                                        <li><a class="dropdown-item" tabindex="-1" routerLink="/service_specs">List Service Specifications</a></li>
-                                        <li><a class="dropdown-item" tabindex="-1" routerLink="/service_spec_update">New Service Specification</a></li>
+                                        <li><a class="dropdown-item" tabindex="0" routerLink="/service_specs">List Service Specifications</a></li>
+                                        <li><a class="dropdown-item" tabindex="0" routerLink="/service_spec_update">New Service Specification</a></li>
                                         <div class="dropdown-divider"></div>
                                         <div class="optgroup-label">Choose from Templates</div>
-                                        <li><a class="dropdown-item clone-item" tabindex="-1" (click)="onGSTtemplateClick()">New GST External</a></li>
-                                        <li><a class="dropdown-item clone-item" tabindex="-1" (click)="onVINNItemplateClick()">New VINNI-SB</a></li>
+                                        <li><a class="dropdown-item clone-item" tabindex="0" (click)="onGSTtemplateClick()">New GST External</a></li>
+                                        <li><a class="dropdown-item clone-item" tabindex="0" (click)="onVINNItemplateClick()">New VINNI-SB</a></li>
                                 </ul>
                             </li>
-                            <!-- <div class="dropdown-divider"></div> -->
+
+                            <div class="dropdown-divider"></div>
+                            <div class="optgroup-label">Order Management</div>
+                        <li><a class="dropdown-item" tabindex="0" routerLink="/service_orders">Service Orders</a></li> 
                             <!-- <a class="dropdown-item">More</a> -->
                         </ul>
+                    </a>
                 </li>
             </ul>
             <!-- <ul class="nav navbar-nav">

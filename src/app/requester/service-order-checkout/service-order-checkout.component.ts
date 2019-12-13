@@ -114,7 +114,11 @@ export class ServiceOrderCheckoutComponent implements OnInit {
     this.requesterService.serviceConfigurationList.forEach(serviceItem => {
       // console.log(serviceItem)
       newOrderItem = { service: {
-        serviceSpecification: {id: serviceItem.spec.id},
+        serviceSpecification: {
+          id: serviceItem.spec.id,
+          name: serviceItem.spec.name,
+          version: serviceItem.spec.version
+        },
         serviceCharacteristic: []
       }, action: 'add'}
 

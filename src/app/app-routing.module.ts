@@ -4,14 +4,16 @@ import { LandingComponent } from './landing/landing.component';
 import { ServicesMarketplaceComponent } from './marketplaces/services-marketplace/services-marketplace.component';
 import { ExperimentsMarketplaceComponent } from './marketplaces/experiments-marketplace/experiments-marketplace.component';
 import { VxfsMarketplaceComponent } from './marketplaces/vxfs-marketplace/vxfs-marketplace.component';
-import { ListServiceCatalogsComponent } from './admin/services/list-service-catalogs/list-service-catalogs.component';
-import { ListServiceCategoriesComponent } from './admin/services/list-service-categories/list-service-categories.component';
-import { ListServiceSpecsComponent } from './admin/services/list-service-specs/list-service-specs.component';
-import { EditServiceSpecsComponent } from './admin/services/edit-service-specs/edit-service-specs.component';
-import { EditServiceCategoriesComponent } from './admin/services/edit-service-categories/edit-service-categories.component';
+import { ListServiceCatalogsComponent } from './admin/CatalogManagement/list-service-catalogs/list-service-catalogs.component';
+import { ListServiceCategoriesComponent } from './admin/CatalogManagement/list-service-categories/list-service-categories.component';
+import { ListServiceSpecsComponent } from './admin/CatalogManagement/list-service-specs/list-service-specs.component';
+import { EditServiceSpecsComponent } from './admin/CatalogManagement/edit-service-specs/edit-service-specs.component';
+import { EditServiceCategoriesComponent } from './admin/CatalogManagement/edit-service-categories/edit-service-categories.component';
 import { AdminComponent } from './admin/admin.component';
 import { AuthGuardService } from './shared/services/auth-guard.service';
 import { ServiceOrderCheckoutComponent } from './requester/service-order-checkout/service-order-checkout.component';
+import { ServiceOrdersOverviewComponent } from './admin/OrderManagement/service-orders-overview/service-orders-overview.component';
+import { MyServiceOrderOverviewComponent } from './requester/my-service-order-overview/my-service-order-overview.component';
 
 
 const routes: Routes = [
@@ -27,8 +29,11 @@ const routes: Routes = [
   { path: 'service_specs', component: ListServiceSpecsComponent, canActivate: [AuthGuardService], runGuardsAndResolvers: 'always' },
   { path: 'service_spec_update/:id', component: EditServiceSpecsComponent, canActivate: [AuthGuardService], runGuardsAndResolvers: 'always' },
   { path: 'service_spec_update', component: EditServiceSpecsComponent, canActivate: [AuthGuardService], runGuardsAndResolvers: 'always' },
+  { path: 'service_orders', component: ServiceOrdersOverviewComponent, canActivate: [AuthGuardService], runGuardsAndResolvers: 'always' },
 
   { path: 'service_order_checkout', component: ServiceOrderCheckoutComponent, canActivate: [AuthGuardService], runGuardsAndResolvers: 'always' },
+  { path: 'my_service_orders', component: ServiceOrdersOverviewComponent, canActivate: [AuthGuardService], runGuardsAndResolvers: 'always' },
+ 
   
   { path: '**', component: LandingComponent }
   

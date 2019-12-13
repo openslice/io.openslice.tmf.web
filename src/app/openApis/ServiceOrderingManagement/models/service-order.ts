@@ -71,6 +71,7 @@ export interface ServiceOrder {
    * A list of service orders related to this order (e.g. prerequisite, dependent on)
    */
   orderRelationship?: Array<ServiceOrderRelationship>;
+  orderRequester?: RelatedParty;
 
   /**
    * Can be used by consumers to prioritize orders in a Service Order Management system
@@ -100,6 +101,6 @@ export interface ServiceOrder {
   /**
    * State of the order: described in the state-machine diagram
    */
-  state?: 'initial' | 'acknowledged' | 'rejected' | 'pending' | 'held' | 'inProgress' | 'cancelled' | 'completed' | 'failed' | 'partial';
+  state?: 'INITIAL' | 'ACKNOWLEDGED' | 'REJECTED' | 'PENDING' | 'HELD' | 'INPROGRESS' | 'CANCELLED' | 'COMPLETED' | 'FAILED' | 'PARTIAL';
   uuid?: string;
 }

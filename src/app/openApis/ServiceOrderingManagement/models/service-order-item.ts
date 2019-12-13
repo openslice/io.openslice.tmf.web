@@ -44,6 +44,6 @@ export interface ServiceOrderItem {
   /**
    * State of the order item: described in the state machine diagram. This is the requested state.
    */
-  state?: 'initial' | 'acknowledged' | 'rejected' | 'pending' | 'held' | 'inProgress' | 'cancelled' | 'completed' | 'failed' | 'partial';
+  state?: 'INITIAL' | 'ACKNOWLEDGED' | 'REJECTED' | 'PENDING' | 'HELD' | 'INPROGRESS' | 'CANCELLED' | 'COMPLETED' | 'FAILED' | 'PARTIAL';
   uuid?: string;
 }

@@ -1,5 +1,6 @@
 /* tslint:disable */
 import { Note } from './note';
+import { ServiceOrderItem } from './service-order-item';
 import { ServiceOrderRelationship } from './service-order-relationship';
 import { RelatedParty } from './related-party';
 
@@ -9,9 +10,9 @@ import { RelatedParty } from './related-party';
 export interface ServiceOrderUpdate {
 
   /**
-   * Extra-information about the order; e.g. useful to add extra delivery information that could be useful for a human process
+   * Contact attached to the order to send back information regarding this order
    */
-  note?: Array<Note>;
+  notificationContact?: string;
 
   /**
    * When sub-classing, this defines the super-class
@@ -39,14 +40,15 @@ export interface ServiceOrderUpdate {
   expectedCompletionDate?: string;
 
   /**
+   * Extra-information about the order; e.g. useful to add extra delivery information that could be useful for a human process
+   */
+  note?: Array<Note>;
+
+  /**
    * A URI to a JSON-Schema file that defines additional attributes and relationships
    */
   '@schemaLocation'?: string;
-
-  /**
-   * Contact attached to the order to send back information regarding this order
-   */
-  notificationContact?: string;
+  orderItem?: Array<ServiceOrderItem>;
 
   /**
    * A list of service orders related to this order (e.g. prerequisite, dependent on)
@@ -72,4 +74,5 @@ export interface ServiceOrderUpdate {
    * Date when the order was started for processing
    */
   startDate?: string;
+  state?: 'INITIAL' | 'ACKNOWLEDGED' | 'REJECTED' | 'PENDING' | 'HELD' | 'INPROGRESS' | 'CANCELLED' | 'COMPLETED' | 'FAILED' | 'PARTIAL';
 }

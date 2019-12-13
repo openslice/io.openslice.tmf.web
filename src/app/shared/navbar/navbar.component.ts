@@ -1,14 +1,13 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { ServiceSpecification } from 'src/app/openApis/ServiceCatalogManagement/models/service-specification';
 import { Router } from '@angular/router';
-import { CloneGstTemplateComponent } from 'src/app/admin/services/edit-service-specs/clone-gst-template/clone-gst-template.component';
+import { CloneGstTemplateComponent } from 'src/app/admin/CatalogManagement/edit-service-specs/clone-gst-template/clone-gst-template.component';
 import { MatDialog } from '@angular/material';
 import { ToastrService } from 'ngx-toastr';
-import { CloneVinniTemplateComponent } from 'src/app/admin/services/edit-service-specs/clone-vinni-template/clone-vinni-template.component';
+import { CloneVinniTemplateComponent } from 'src/app/admin/CatalogManagement/edit-service-specs/clone-vinni-template/clone-vinni-template.component';
 import { AuthService } from '../services/auth.service';
 import { PortalRepositoryApiImplService } from 'src/app/openApis/PortalRepositoryAPI/services';
 import { PortalUser } from 'src/app/openApis/PortalRepositoryAPI/models';
-import { AuthGuardService } from '../services/auth-guard.service';
 import { RequesterService } from 'src/app/requester/services/requester.service';
 
 @Component({

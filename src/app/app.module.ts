@@ -57,30 +57,32 @@ import { ServicesMarketplaceComponent } from './marketplaces/services-marketplac
 import { ExperimentsMarketplaceComponent } from './marketplaces/experiments-marketplace/experiments-marketplace.component';
 import { VxfsMarketplaceComponent } from './marketplaces/vxfs-marketplace/vxfs-marketplace.component';
 import { VerticalNavbarComponent } from './marketplaces/shared/vertical-navbar/vertical-navbar.component';
-import { ListServiceCatalogsComponent } from './admin/services/list-service-catalogs/list-service-catalogs.component';
-import { ListServiceCategoriesComponent } from './admin/services/list-service-categories/list-service-categories.component';
-import { ListServiceSpecsComponent } from './admin/services/list-service-specs/list-service-specs.component';
+import { ListServiceCatalogsComponent } from './admin/CatalogManagement/list-service-catalogs/list-service-catalogs.component';
+import { ListServiceCategoriesComponent } from './admin/CatalogManagement/list-service-categories/list-service-categories.component';
+import { ListServiceSpecsComponent } from './admin/CatalogManagement/list-service-specs/list-service-specs.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { EditServiceCatalogsComponent } from './admin/services/edit-service-catalogs/edit-service-catalogs.component';
-import { EditServiceCategoriesComponent } from './admin/services/edit-service-categories/edit-service-categories.component';
-import { EditServiceSpecsComponent } from './admin/services/edit-service-specs/edit-service-specs.component';
+import { EditServiceCatalogsComponent } from './admin/CatalogManagement/edit-service-catalogs/edit-service-catalogs.component';
+import { EditServiceCategoriesComponent } from './admin/CatalogManagement/edit-service-categories/edit-service-categories.component';
+import { EditServiceSpecsComponent } from './admin/CatalogManagement/edit-service-specs/edit-service-specs.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { EditServiceSpecCharacteristicsComponent } from './admin/services/edit-service-specs/edit-service-spec-characteristics/edit-service-spec-characteristics.component';
-import { DeleteServiceSpecCharacteristicsComponent } from './admin/services/edit-service-specs/delete-service-spec-characteristics/delete-service-spec-characteristics.component';
-import { DeleteServiceCatalogComponent } from './admin/services/delete-service-catalog/delete-service-catalog.component';
-import { DeleteServiceCategoryComponent } from './admin/services/delete-service-category/delete-service-category.component';
-import { DeleteServiceSpecComponent } from './admin/services/delete-service-spec/delete-service-spec.component';
-import { CreateServiceCategoryChildrenComponent } from './admin/services/edit-service-categories/create-service-category-children/create-service-category-children.component';
+import { EditServiceSpecCharacteristicsComponent } from './admin/CatalogManagement/edit-service-specs/edit-service-spec-characteristics/edit-service-spec-characteristics.component';
+import { DeleteServiceSpecCharacteristicsComponent } from './admin/CatalogManagement/edit-service-specs/delete-service-spec-characteristics/delete-service-spec-characteristics.component';
+import { DeleteServiceCatalogComponent } from './admin/CatalogManagement/delete-service-catalog/delete-service-catalog.component';
+import { DeleteServiceCategoryComponent } from './admin/CatalogManagement/delete-service-category/delete-service-category.component';
+import { DeleteServiceSpecComponent } from './admin/CatalogManagement/delete-service-spec/delete-service-spec.component';
+import { CreateServiceCategoryChildrenComponent } from './admin/CatalogManagement/edit-service-categories/create-service-category-children/create-service-category-children.component';
 import { TreeSidenavComponent } from './marketplaces/shared/tree-sidenav/tree-sidenav.component';
-import { AssignServiceCandidatesComponent } from './admin/services/edit-service-categories/assign-service-candidates/assign-service-candidates.component';
-import { CloneGstTemplateComponent } from './admin/services/edit-service-specs/clone-gst-template/clone-gst-template.component';
-import { CloneVinniTemplateComponent } from './admin/services/edit-service-specs/clone-vinni-template/clone-vinni-template.component';
+import { AssignServiceCandidatesComponent } from './admin/CatalogManagement/edit-service-categories/assign-service-candidates/assign-service-candidates.component';
+import { CloneGstTemplateComponent } from './admin/CatalogManagement/edit-service-specs/clone-gst-template/clone-gst-template.component';
+import { CloneVinniTemplateComponent } from './admin/CatalogManagement/edit-service-specs/clone-vinni-template/clone-vinni-template.component';
 import { PreviewServiceComponent } from './marketplaces/services-marketplace/preview-service/preview-service.component';
-import { AssignServiceRelationshipsComponent } from './admin/services/edit-service-specs/assign-service-relationships/assign-service-relationships.component';
+import { AssignServiceRelationshipsComponent } from './admin/CatalogManagement/edit-service-specs/assign-service-relationships/assign-service-relationships.component';
 import { ConfigureServiceComponent } from './marketplaces/services-marketplace/preview-service/configure-service/configure-service.component';
 import { TokenInterceptor } from './shared/interceptors/token-interceptor';
 import { RequesterComponent } from './requester/requester.component';
 import { ServiceOrderCheckoutComponent } from './requester/service-order-checkout/service-order-checkout.component';
+import { MyServiceOrderOverviewComponent } from './requester/my-service-order-overview/my-service-order-overview.component';
+import { ServiceOrdersOverviewComponent } from './admin/OrderManagement/service-orders-overview/service-orders-overview.component';
 
 
 
@@ -120,7 +122,9 @@ export function initializeApp(bootstrap: BootstrapService) {
     AssignServiceRelationshipsComponent,
     ConfigureServiceComponent,
     RequesterComponent,
-    ServiceOrderCheckoutComponent
+    ServiceOrderCheckoutComponent,
+    MyServiceOrderOverviewComponent,
+    ServiceOrdersOverviewComponent
   ],
   imports: [
     BrowserModule,

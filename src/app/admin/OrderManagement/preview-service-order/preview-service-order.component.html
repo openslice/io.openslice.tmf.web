@@ -1,0 +1,377 @@
+<div class="container py-5">
+    <div class="row">
+        <div class="col-12">
+
+
+            <div class="card card-paper mb-0">
+
+                <div class="card-header">
+                    <div class="container-fluid">
+                        <div class="row justify-content-between align-items-center">
+                            <div>
+                                <h2 class="shadowed">Service Order Overview</h2>
+
+
+                                <p class="shadowed mb-0">Preview and Manage Service Order
+                                    <dfn><b>#{{serviceOrder?.id}}</b></dfn>
+                                </p>
+
+                                <!-- <div class="card-stats">
+                                                <i class="far fa-calendar mr-2"></i>Placed at
+                                            {{serviceOrder?.orderDate | date:'short'}}
+                                        </div> -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card-body">
+                    <mat-accordion multi="true">
+                        <mat-expansion-panel expanded="true" class="bg-light">
+                            <mat-expansion-panel-header>
+                                <mat-panel-title>
+                                    General
+                                </mat-panel-title>
+                                <mat-panel-description>
+                                    Main Service Order properties
+                                </mat-panel-description>
+                            </mat-expansion-panel-header>
+                            <form [formGroup]="editForm">
+                                <div class="row justify-content-center">
+                                    <div class="col-lg-3">
+                                        <h6>Orderer By</h6>
+                                        <p>{{serviceOrder?.relatedParty[0].name}}</p>
+                                    </div>
+                                    <div class="col-lg-3">
+                                        <h6>Order Date</h6>
+                                        <p>{{serviceOrder?.orderDate | date:'d MMM y, h:mm a'}}</p>
+                                    </div>
+                                    <div class="col-lg-3">
+                                        <ng-container *ngIf="!admin">
+                                            <h6>Priority</h6>
+                                            <p>{{serviceOrder?.priority}}</p>
+                                        </ng-container>
+                            
+                                        <mat-form-field *ngIf="admin">
+                                            <mat-label>Priority</mat-label>
+                                            <mat-select formControlName="priority">
+                                                <mat-option *ngFor="let priority of availablePriorities" [value]="priority | uppercase">
+                                                    {{priority | uppercase}}
+                                                </mat-option>
+                                            </mat-select>
+                                        </mat-form-field>
+                                    </div>
+                                    <div class="col-lg-3">
+                                        <ng-container *ngIf="!admin">
+                                            <h6>State</h6>
+                                            <p>{{serviceOrder?.state}}</p>
+                                        </ng-container>
+                            
+                                        <mat-form-field *ngIf="admin">
+                                            <mat-label>State</mat-label>
+                                            <mat-select formControlName="state">
+                                                <mat-option *ngFor="let state of availableOrderStates" [value]="state | uppercase">
+                                                    {{state | uppercase}}
+                                                </mat-option>
+                                            </mat-select>
+                                        </mat-form-field>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <h6>Description</h6>
+                                        <p>{{serviceOrder?.description}}</p>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <h6>Notification Contact</h6>
+                                        <p>{{serviceOrder?.notificationContact}}</p>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <h6>Requested Starting Date</h6>
+                                        <p>{{serviceOrder?.requestedStartDate | date:'d MMM y, h:mm a'}}</p>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <h6>Requested Completion Date</h6>
+                                        <p>{{serviceOrder?.requestedCompletionDate | date:'d MMM y, h:mm a'}}</p>
+                                    </div>
+                            
+                                    <div class="col-lg-6">
+                                        <ng-container *ngIf="!admin">
+                                            <h6>Starting Date</h6>
+                                            <p>{{serviceOrder?.startDate | date:'d MMM y, h:mm a'}}</p>
+                                        </ng-container>
+                            
+                                        <mat-form-field *ngIf="admin" [owlDateTimeTrigger]="pickerFrom">
+                                            <mat-label>Starting Date</mat-label>
+                                            <input matInput [owlDateTime]="pickerFrom" placeholder="Date Time" formControlName="startDate">
+                                            <mat-icon matSuffix>date_range</mat-icon>
+                                            <owl-date-time #pickerFrom></owl-date-time>
+                                        </mat-form-field>
+                                    </div>
+                            
+                            
+                                    <div class="col-lg-6">
+                                        <ng-container *ngIf="!admin">
+                                            <h6>Expected Completion Date</h6>
+                                            <p>{{serviceOrder?.expectedCompletionDate | date:'d MMM y, h:mm a'}}</p>
+                                        </ng-container>
+                            
+                                        <mat-form-field *ngIf="admin" [owlDateTimeTrigger]="pickerUntil">
+                                            <mat-label>Expected Completion Date</mat-label>
+                                            <input matInput [owlDateTime]="pickerUntil" placeholder="Date Time"
+                                                formControlName="expectedCompletionDate">
+                                            <mat-icon matSuffix>date_range</mat-icon>
+                                            <owl-date-time #pickerUntil></owl-date-time>
+                                        </mat-form-field>
+                                    </div>
+                            
+                            
+                                    <div class="col-lg-12">
+                                        <h6>Notes</h6>
+                                        <div class="notes-container">
+                                            <div *ngFor="let note of serviceOrder?.note">
+                                                <div class="card card-paper mb-2">
+                                                    <div class="note-card-body">
+                                                        {{note.text}}
+                                                        <div class="small">written by {{note.author}} @ {{note.date | date:'d MMM y, h:mm a'}}</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                            
+                                        </div>
+                                        <div *ngIf="admin">
+                                            <button *ngIf="!adminNote" type="button" class="btn btn-primary btn-sm btn-block mb-2"
+                                                (click)="triggerAdminNote()"><i class="far fa-sticky-note mr-2"></i>Add Note</button>
+                            
+                                            <div *ngIf="adminNote" class="card card-paper mb-2">
+                                                <div class="note-card-body pb-0">
+                                                    <div class="d-flex justify-content-center align-items-center">
+                                                        <mat-form-field>
+                                                            <mat-label>New Note</mat-label>
+                                                            <textarea matInput formControlName="note"></textarea>
+                                                        </mat-form-field>
+                                                        <button type="button" class="btn btn-danger btn-sm ml-2 mb-1"
+                                                            (click)="triggerAdminNote()"><i class="fas fa-times"></i></button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                            
+                            <div class="container-fluid mt-2">
+                                <div class="row justify-content-end">
+                                    <button *ngIf="!admin" class="btn btn-warning" (click)="enableOrderEditing()"><i
+                                            class="far fa-edit mr-1"></i>edit</button>
+                                    <button *ngIf="admin" class="btn btn-danger mr-2" (click)="cancelOrderEditing()">Cancel</button>
+                                    <button *ngIf="admin" class="btn btn-success" (click)="submitOrderEditing()">Submit</button>
+                                </div>
+                            </div>
+                        </mat-expansion-panel>
+
+
+
+                        <mat-expansion-panel expanded="true" class="bg-light" *ngFor="let orderItem of serviceOrder?.orderItem; let orderIndex = index; let firstItem = first">
+                                <mat-expansion-panel-header>
+                                    <mat-panel-title>
+                                            Order Item #{{orderItem.id}}
+                                    </mat-panel-title>
+                                    <mat-panel-description>
+                                        <!-- A collection of items contained in the order -->
+                                    </mat-panel-description>
+                                </mat-expansion-panel-header>
+                                <div *ngFor="let orderItem of serviceOrder?.orderItem; let orderIndex = index; let firstItem = first">
+                                    <div [ngClass]="{'orderItem-border': serviceOrder?.orderItem.length > 1}">
+                                            <!-- <h5 class="orderItem-title">Order Item #{{orderItem.id}}</h5> -->
+
+                                            <mat-accordion multi="true">
+                                                <mat-expansion-panel expanded="true">
+                                                    <mat-expansion-panel-header>
+                                                        <mat-panel-title>
+                                                            General
+                                                        </mat-panel-title>
+                                                        <mat-panel-description>
+                                                            Main Service Order Item properties
+                                                        </mat-panel-description>
+                                                    </mat-expansion-panel-header>
+                                                    
+                                                    <div class="row justify-content-center">
+                                                        <div class="col-6">
+                                                            <h6>ID</h6>
+                                                            <p>{{orderItem?.service.id}}</p>
+                                                        </div>
+                                                        <div class="col-6">
+                                                            <h6>Name</h6>
+                                                            <p>{{orderItem?.service.name}}</p>
+                                                        </div>
+                                                        <div class="col-4">
+                                                            <h6>Service Type</h6>
+                                                            <p>{{orderItem?.service.serviceType}}</p>
+                                                        </div>
+                                                        <div class="col-4">
+                                                            <h6>Category</h6>
+                                                            <p>{{orderItem?.service.category}}</p>
+                                                        </div>
+                                                        <div class="col-4">
+                                                            <h6>State</h6>
+                                                            <p [ngClass]="stateClassSelector(orderItem?.service.state)" style="font-size: .8rem;">{{orderItem?.service.state}}</p>
+                                                        </div>
+                                                    </div>
+                                                
+                                                </mat-expansion-panel>
+
+                                                <mat-expansion-panel expanded="true">
+                                                    <mat-expansion-panel-header>
+                                                        <mat-panel-title>
+                                                            Service Specification
+                                                        </mat-panel-title>
+                                                        <mat-panel-description>
+                                                            Configurable Service Specification Characteristics allocated with Service Item
+                                                        </mat-panel-description>
+                                                    </mat-expansion-panel-header>
+
+                                                    <div class="service-spec-container">
+                                                        <div><b>{{orderItem?.service.serviceSpecification.name}}</b></div>
+                                                        <button class="btn btn-warning btn-sm" routerLink='/service_spec_update/{{orderItem?.service.serviceSpecification.id}}'><i
+                                                                class="far fa-edit"></i></button>
+                                                    </div>
+
+                                                    <div *ngIf="orderItem?.service.serviceCharacteristic.length === 0" class="pt-2">
+                                                        There are no configurable characteristics assigned to this Service Specification.
+                                                    </div>
+
+                                                    <div *ngFor="let specCharacteristic of orderItem?.service.serviceCharacteristic">
+                                                        {{specCharacteristic.name}} (value: {{specCharacteristic.value.value}}, alias: {{specCharacteristic.value.alias}})
+                                                    </div>
+                                                </mat-expansion-panel>
+
+                                                <mat-expansion-panel expanded="true">
+                                                    <mat-expansion-panel-header>
+                                                        <mat-panel-title>
+                                                            Supporting Services
+                                                        </mat-panel-title>
+                                                        <mat-panel-description>
+                                                            A collection of services than support this service
+                                                        </mat-panel-description>
+                                                    </mat-expansion-panel-header>
+
+                                                    <div *ngIf="orderItem?.service.supportingService.length === 0" class="pt-2">
+                                                            There are no supporting services assigned to this Order Item.
+                                                        </div>
+                
+                                                        <!-- <div>{{retrieveServiceInventory(orderItem?.service.supportingService[0].id) | async}}</div> -->
+                
+                                                        <div *ngFor="let supportedService of orderItem?.service.supportingService; let ServiceIndex=index"
+                                                            class="supportedService-container pt-2">
+                                                            <div class="card card-paper mb-0 bg-light">
+                                                                <div class="card-body">
+                                                                    <div class="d-flex align-items-center">
+                                                                        <span *ngIf="!supportingServices[orderIndex][ServiceIndex]">
+                                                                            <mat-spinner [diameter]="16"></mat-spinner>
+                                                                        </span>
+                                                                        <span *ngIf="supportingServices[orderIndex][ServiceIndex]"
+                                                                            [ngClass]="stateClassSelector(supportingServices[orderIndex][ServiceIndex].state)">
+                                                                            {{supportingServices[orderIndex][ServiceIndex]?.state}}
+                                                                        </span>
+                                                                        <div class="ml-2">
+                                                                            <!-- <i class="fas fa-tasks mr-2"></i> -->
+                                                                            {{supportedService.name}}
+                                                                        </div>
+                
+                                                                    </div>
+                
+                                                                <!-- <div *ngIf="supportingServices[orderIndex][ServiceIndex]" class="row align-items-center">                
+                                                                        <div class="col-lg-3">
+                                                                            <span [ngClass]="stateClassSelector(supportingServices[orderIndex][ServiceIndex].state)">
+                                                                                {{supportingServices[orderIndex][ServiceIndex]?.state}}
+                                                                            </span>
+                                                                        </div>
+                
+                                                                        <div class="col-lg-3">
+                                                                                {{supportingServices[orderIndex][ServiceIndex]?.serviceDate}}
+                                                                       </div>              
+                                                                </div> -->
+                
+                                                                </div>
+                                                                <div class="card-footer">
+                                                                    <div class="small"
+                                                                        *ngIf="supportingServices[orderIndex][ServiceIndex]">
+                                                                        StartMode:
+                                                                        {{supportingServices[orderIndex][ServiceIndex]?.startMode}}
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    
+                                                </mat-expansion-panel>
+                                            </mat-accordion>
+                                            
+                                    </div>
+                                </div>
+    
+                               
+                            </mat-expansion-panel>
+
+<!-- 
+                        <mat-expansion-panel expanded="true" class="bg-light">
+                            <mat-expansion-panel-header>
+                                <mat-panel-title>
+                                    Supported Services
+                                </mat-panel-title>
+                                <mat-panel-description>
+                                    A collection of services than support this service
+                                </mat-panel-description>
+                            </mat-expansion-panel-header>
+
+                            <div class="filter-container ">
+                                <div *ngFor="let orderItem of serviceOrder?.orderItem; let orderIndex = index; let firstItem = first">
+
+
+                                    <div [ngClass]="{'orderItem-border': serviceOrder?.orderItem.length > 1}">
+                                        <b>Order Item #{{orderItem.id}}</b>
+                                        <div *ngIf="orderItem?.service.supportingService.length === 0" class="pt-2">
+                                            There are no supporting services assigned to this Order Item.
+                                        </div>
+
+
+                                        <div *ngFor="let supportedService of orderItem?.service.supportingService; let ServiceIndex=index"
+                                            class="supportedService-container pt-2">
+                                            <div class="card card-paper mb-0">
+                                                <div class="card-body">
+                                                    <div class="d-flex align-items-center">
+                                                        <span *ngIf="!supportingServices[orderIndex][ServiceIndex]">
+                                                            <mat-spinner [diameter]="16"></mat-spinner>
+                                                        </span>
+                                                        <span *ngIf="supportingServices[orderIndex][ServiceIndex]"
+                                                            [ngClass]="stateClassSelector(supportingServices[orderIndex][ServiceIndex].state)">
+                                                            {{supportingServices[orderIndex][ServiceIndex]?.state}}
+                                                        </span>
+                                                        <div class="ml-2">
+                                                            {{supportedService.name}}
+                                                        </div>
+
+                                                    </div>
+
+                                                </div>
+                                                <div class="card-footer">
+                                                    <div class="small"
+                                                        *ngIf="supportingServices[orderIndex][ServiceIndex]">
+                                                        StartMode:
+                                                        {{supportingServices[orderIndex][ServiceIndex]?.startMode}}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </mat-expansion-panel> -->
+
+                    </mat-accordion>
+                </div>
+
+                <div class="card-footer"></div>
+            </div>
+        </div>
+    </div>
+</div>

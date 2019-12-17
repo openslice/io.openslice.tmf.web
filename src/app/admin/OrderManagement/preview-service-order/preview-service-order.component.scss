@@ -1,0 +1,36 @@
+// .supportedService-container {
+//     display: flex;
+//     justify-content: space-between;
+//     align-items: center;
+// }
+
+.orderItem-border {
+    border: 2px dotted #ddd;
+    padding: 1rem .5rem .5rem .5rem;
+    border-radius: 12px;    
+    margin-bottom: 1rem;
+}
+
+.orderItem-title {
+    margin-bottom: 1rem;
+    text-align: center;
+}
+
+.note-card-body {
+    padding: .5rem;
+}
+
+mat-form-field {
+    width: 100%;
+}
+
+.notes-container {
+    max-height: 200px;
+    overflow-y: auto;
+}
+
+.service-spec-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}

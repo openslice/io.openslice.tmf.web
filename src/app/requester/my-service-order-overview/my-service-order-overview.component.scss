@@ -1,0 +1,11 @@
+.supportedService-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.orderItem-border {
+    border: 2px dotted #ddd;
+    padding: 1rem;
+    border-radius: 0.25rem;
+}

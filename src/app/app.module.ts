@@ -40,7 +40,8 @@ import {
   MatTreeModule,
   MatProgressBarModule,
   MatButtonToggleModule,
-  MatRadioModule
+  MatRadioModule,
+  MatProgressSpinnerModule
 } from '@angular/material'
 
 import {DragDropModule} from '@angular/cdk/drag-drop';
@@ -82,7 +83,8 @@ import { TokenInterceptor } from './shared/interceptors/token-interceptor';
 import { RequesterComponent } from './requester/requester.component';
 import { ServiceOrderCheckoutComponent } from './requester/service-order-checkout/service-order-checkout.component';
 import { MyServiceOrderOverviewComponent } from './requester/my-service-order-overview/my-service-order-overview.component';
-import { ServiceOrdersOverviewComponent } from './admin/OrderManagement/service-orders-overview/service-orders-overview.component';
+import { ListServiceOrdersComponent } from './admin/OrderManagement/list-service-orders/list-service-orders.component';
+import { PreviewServiceOrderComponent } from './admin/OrderManagement/preview-service-order/preview-service-order.component';
 
 
 
@@ -124,7 +126,8 @@ export function initializeApp(bootstrap: BootstrapService) {
     RequesterComponent,
     ServiceOrderCheckoutComponent,
     MyServiceOrderOverviewComponent,
-    ServiceOrdersOverviewComponent
+    ListServiceOrdersComponent,
+    PreviewServiceOrderComponent
   ],
   imports: [
     BrowserModule,
@@ -154,6 +157,7 @@ export function initializeApp(bootstrap: BootstrapService) {
     MatProgressBarModule,
     MatButtonToggleModule,
     MatRadioModule,
+    MatProgressSpinnerModule,
     DragDropModule,
     MatNativeDateModule,
     MatDatepickerModule,  

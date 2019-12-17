@@ -12,7 +12,8 @@ import { EditServiceCategoriesComponent } from './admin/CatalogManagement/edit-s
 import { AdminComponent } from './admin/admin.component';
 import { AuthGuardService } from './shared/services/auth-guard.service';
 import { ServiceOrderCheckoutComponent } from './requester/service-order-checkout/service-order-checkout.component';
-import { ServiceOrdersOverviewComponent } from './admin/OrderManagement/service-orders-overview/service-orders-overview.component';
+import { ListServiceOrdersComponent } from './admin/OrderManagement/list-service-orders/list-service-orders.component';
+import { PreviewServiceOrderComponent } from './admin/OrderManagement/preview-service-order/preview-service-order.component';
 import { MyServiceOrderOverviewComponent } from './requester/my-service-order-overview/my-service-order-overview.component';
 
 
@@ -29,10 +30,12 @@ const routes: Routes = [
   { path: 'service_specs', component: ListServiceSpecsComponent, canActivate: [AuthGuardService], runGuardsAndResolvers: 'always' },
   { path: 'service_spec_update/:id', component: EditServiceSpecsComponent, canActivate: [AuthGuardService], runGuardsAndResolvers: 'always' },
   { path: 'service_spec_update', component: EditServiceSpecsComponent, canActivate: [AuthGuardService], runGuardsAndResolvers: 'always' },
-  { path: 'service_orders', component: ServiceOrdersOverviewComponent, canActivate: [AuthGuardService], runGuardsAndResolvers: 'always' },
+  { path: 'service_orders', component: ListServiceOrdersComponent, canActivate: [AuthGuardService], runGuardsAndResolvers: 'always' },
+  { path: 'service_order/:id', component: PreviewServiceOrderComponent, canActivate: [AuthGuardService], runGuardsAndResolvers: 'always' },
+
 
   { path: 'service_order_checkout', component: ServiceOrderCheckoutComponent, canActivate: [AuthGuardService], runGuardsAndResolvers: 'always' },
-  { path: 'my_service_orders', component: ServiceOrdersOverviewComponent, canActivate: [AuthGuardService], runGuardsAndResolvers: 'always' },
+  { path: 'my_service_orders', component: MyServiceOrderOverviewComponent, canActivate: [AuthGuardService], runGuardsAndResolvers: 'always' },
  
   
   { path: '**', component: LandingComponent }

@@ -2,7 +2,7 @@
     <mat-tree-node *matTreeNodeDef="let node" matTreeNodePadding matTreeNodePaddingIndent="15" [class.catalog-divider]="node.level === 0">
         <button mat-icon-button disabled></button>
         <span *ngIf="node.level === 0" class="catalog-header">{{node.item}}</span>
-        <span *ngIf="node.level !== 0" [class.active]="selectedTreeNodeID === node.info.id" (click)="selectTreeNode(node)">{{node.item}}</span>
+        <span *ngIf="node.level !== 0" class="node-header" [class.active]="selectedTreeNodeID === node.info.id" (click)="selectTreeNode(node)">{{node.item}}</span>
     </mat-tree-node>
     
     <mat-tree-node *matTreeNodeDef="let node; when: hasChild" matTreeNodePadding matTreeNodePaddingIndent="15" [class.catalog-divider]="node.level === 0">
@@ -12,7 +12,7 @@
             </mat-icon>
         </button>
         <span *ngIf="node.level === 0" class="catalog-header" matTreeNodeToggle>{{node.item}}</span>
-        <span *ngIf="node.level !== 0" [class.active]="selectedTreeNodeID === node.info.id" (click)="selectTreeNode(node)" matTreeNodeToggle>{{node.item}}</span>
+        <span *ngIf="node.level !== 0" class="node-header" [class.active]="selectedTreeNodeID === node.info.id" (click)="selectTreeNode(node)" matTreeNodeToggle>{{node.item}}</span>
 
         <!-- <mat-progress-bar *ngIf="node.isLoading" mode="indeterminate" class="example-tree-progress-bar">
         </mat-progress-bar> -->

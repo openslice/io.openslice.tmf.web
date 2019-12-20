@@ -8,7 +8,7 @@ import { Subject } from 'rxjs';
 export class RequesterService {
 
 
-  constructor() { }
+  constructor() {}
 
   // serviceSpecsCart: ServiceSpecification[] = []
 

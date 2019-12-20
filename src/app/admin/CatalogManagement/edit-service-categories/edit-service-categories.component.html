@@ -61,11 +61,8 @@
                             <mat-expansion-panel expanded="true" class="bg-light">
                                 <mat-expansion-panel-header>
                                     <mat-panel-title>
-                                        General
+                                        Main Service Category properties
                                     </mat-panel-title>
-                                    <mat-panel-description>
-                                        Main Service Category Description
-                                    </mat-panel-description>
                                 </mat-expansion-panel-header>
                             
                                 <div class="row align-items-center">
@@ -82,7 +79,7 @@
                             
                                     <mat-form-field appearance="" class="col-md-12">
                                         <mat-label>Description</mat-label>
-                                        <textarea matTextareaAutosize="true" matAutosizeMaxRows="3" matInput
+                                        <textarea matTextareaAutosize="true" matAutosizeMinRows="2" matInput
                                             formControlName="description"></textarea>
                                     </mat-form-field>
                             
@@ -138,11 +135,8 @@
                             <mat-expansion-panel [expanded]="!newCategory" [disabled]="newCategory" class="bg-light" >
                                 <mat-expansion-panel-header>
                                     <mat-panel-title>
-                                        Children Categories
+                                        Assign Children Categories to Service Category
                                     </mat-panel-title>
-                                    <mat-panel-description>
-                                        Create Children Categories of Service Category
-                                    </mat-panel-description>
                                 </mat-expansion-panel-header>
                             
                                 <div class="filter-container row align-items-center justify-content-center">
@@ -179,11 +173,8 @@
                             <mat-expansion-panel [expanded]="!newCategory" [disabled]="newCategory" class="bg-light">
                                 <mat-expansion-panel-header>
                                     <mat-panel-title>
-                                        Service Specifications
-                                    </mat-panel-title>
-                                    <mat-panel-description>
                                         Assign Service Specifications to Service Category
-                                    </mat-panel-description>
+                                    </mat-panel-title>
                                 </mat-expansion-panel-header>
                             
                                 <div class="filter-container row align-items-center justify-content-center">

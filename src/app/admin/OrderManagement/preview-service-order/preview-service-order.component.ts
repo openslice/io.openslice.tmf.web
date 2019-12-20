@@ -1,19 +1,20 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ServiceOrder, ServiceOrderUpdate } from 'src/app/openApis/ServiceOrderingManagement/models';
+import { ServiceOrder, ServiceOrderUpdate, ServiceRef } from 'src/app/openApis/ServiceOrderingManagement/models';
 import { ServiceOrderService } from 'src/app/openApis/ServiceOrderingManagement/services';
 import { ToastrService } from 'ngx-toastr';
 import { FormControl, FormGroup } from '@angular/forms';
 import { ServiceService } from 'src/app/openApis/ServiceInventoryManagement/services';
 import { Service } from 'src/app/openApis/ServiceInventoryManagement/models';
-import { Observable } from 'rxjs';
-import { map, delay } from 'rxjs/operators';
+import { delay } from 'rxjs/operators';
 import { AuthService } from 'src/app/shared/services/auth.service';
+import { MatDialog } from '@angular/material';
+import { PreviewSupportingServicesComponent } from '../preview-supporting-services/preview-supporting-services.component';
 
 @Component({
   selector: 'app-preview-service-order',
   templateUrl: './preview-service-order.component.html',
-  styleUrls: ['./preview-service-order.component.scss']
+  styleUrls: ['./preview-service-order.component.scss'],
 })
 export class PreviewServiceOrderComponent implements OnInit {
 
@@ -23,18 +24,19 @@ export class PreviewServiceOrderComponent implements OnInit {
     private router: Router,
     private inventoryService: ServiceService,
     private toast: ToastrService,
-    private authService: AuthService
+    private authService: AuthService,
+    private dialog: MatDialog
   ) { }
 
   availableOrderStates = ['initial', 'acknowledged', 'rejected', 'pending', 'held', 'inProgress', 'cancelled', 'completed', 'failed', 'partial']
+  availableInitialOrderStates = ['initial', 'acknowledged', 'rejected']
+  
   availablePriorities = ['low', 'normal', 'high']
 
 
   serviceOrder: ServiceOrder
   orderID: string
   supportingServices: Service[][] = [[]]
-
-  supportedServiceFilterCtrl = new FormControl()
 
   admin: boolean = false
   adminNote: boolean = false
@@ -68,7 +70,7 @@ export class PreviewServiceOrderComponent implements OnInit {
         this.editForm.patchValue({
           state: this.serviceOrder.state,
           startDate: this.serviceOrder.requestedStartDate,
-          completionDate: this.serviceOrder.requestedCompletionDate
+          expectedCompletionDate: this.serviceOrder.requestedCompletionDate
         })
 
         console.log(this.editForm)
@@ -123,7 +125,8 @@ export class PreviewServiceOrderComponent implements OnInit {
     if (this.editForm.get('note').value) {
       orderUpdate.note = [{
         author:this.authService.portalUser.username,
-        text: this.editForm.get('note').value
+        text: this.editForm.get('note').value,
+        date: new Date().toISOString()
       }]
     }
 
@@ -143,5 +146,25 @@ export class PreviewServiceOrderComponent implements OnInit {
   triggerAdminNote() {
     this.adminNote = !this.adminNote
   }
+
+  openSupportingServiceDialog(supportingServiceRef: ServiceRef) {
+    console.log(supportingServiceRef)
+    const dialogRef = this.dialog.open(PreviewSupportingServicesComponent, {
+      data : { serviceRef: supportingServiceRef }, disableClose: true
+    })
+
+    dialogRef.afterClosed().subscribe(
+      result => {
+        console.log(result)
+        if (result) {
+          this.toast.success("Supporting Service was successfully updated")
+          this.supportingServices = [[]]
+          this.retrieveServiceOrder()
+        }
+      }
+    )
+    
+  }
+  
 
 }

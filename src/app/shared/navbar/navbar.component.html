@@ -51,12 +51,12 @@
                                         <li><a class="dropdown-item" tabindex="0" routerLink="/service_specs">List Service Specifications</a></li>
                                         <li><a class="dropdown-item" tabindex="0" routerLink="/service_spec_update">New Service Specification</a></li>
                                         <div class="dropdown-divider"></div>
-                                        <div class="optgroup-label">Choose from Templates</div>
+                                        <!-- <div class="optgroup-label">Choose from Templates</div> -->
                                         <li><a class="dropdown-item clone-item" tabindex="0" (click)="onGSTtemplateClick()">New GST External</a></li>
                                         <li><a class="dropdown-item clone-item" tabindex="0" (click)="onVINNItemplateClick()">New VINNI-SB</a></li>
                                 </ul>
                             </li>
-
+                            <li><a class="dropdown-item" tabindex="0" routerLink="/list_nsds">Import from NSD list</a></li>
                             <div class="dropdown-divider"></div>
                             <!-- <div class="optgroup-label">Order Management</div> -->
                         <li><a class="dropdown-item" tabindex="0" routerLink="/service_orders">Service Orders</a></li> 
@@ -130,10 +130,10 @@
                         <li class="nav-item dropdown" ngbDropdown *ngIf="portalUser">
                             <a class="nav-link dropdown-toggle" id="navbarDropdown2" aria-haspopup="true" ngbDropdownToggle tabindex="-1">{{portalUser.username}}</a>
                             <ul class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown2" ngbDropdownMenu>
-                                <li class="dropdown-item user-info">User: {{portalUser.name}}</li>
-                                <li class="dropdown-item user-info">Email: {{portalUser.email}}</li>
-                                <li class="dropdown-item user-info">Organization: {{portalUser.organization}}</li>
-                                <li class="dropdown-item user-info">Roles: {{portalUser.roles}}</li>
+                                <li class="user-info">User: {{portalUser.name}}</li>
+                                <li class="user-info">Email: {{portalUser.email}}</li>
+                                <li class="user-info">Organization: {{portalUser.organization}}</li>
+                                <li class="user-info">Roles: {{portalUser.roles}}</li>
                                 <div class="dropdown-divider"></div>
                                 <li class="dropdown-item" (click)="logout()" >
                                     <a class="dropdown-link" >Sign out</a>

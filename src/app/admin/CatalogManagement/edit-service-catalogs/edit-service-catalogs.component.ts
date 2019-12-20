@@ -7,6 +7,7 @@ import { ServiceCatalog, ServiceCatalogUpdate, ServiceCategory, ServiceCatalogCr
 import { Observable } from 'rxjs';
 import { MatAutocomplete, MatChipInputEvent, MatAutocompleteSelectedEvent, MatAutocompleteTrigger, MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
 import { startWith, map } from 'rxjs/operators';
+import { AppService } from 'src/app/shared/services/app.service';
 
 const today = new Date()
 
@@ -21,7 +22,8 @@ export class EditServiceCatalogsComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: ServiceCatalog,
     private catalogService: ServiceCatalogService,
     private categoryService: ServiceCategoryService, 
-    private dialogRef: MatDialogRef<EditServiceCatalogsComponent>
+    private dialogRef: MatDialogRef<EditServiceCatalogsComponent>,
+    private appService: AppService
   ) { }
 
   catalogID: string
@@ -200,5 +202,4 @@ export class EditServiceCatalogsComponent implements OnInit {
   closeDialog() { 
     this.dialogRef.close()
   }
-
 }

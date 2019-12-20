@@ -209,7 +209,7 @@ export class EditServiceCategoriesComponent implements OnInit, OnDestroy {
   }
 
   openAssignCandidatesDialog(element: ServiceCategory) {
-    const dialogRef = this.dialog.open(AssignServiceCandidatesComponent, {data: element, disableClose: true})
+    const dialogRef = this.dialog.open(AssignServiceCandidatesComponent, {data: element, disableClose: true, autoFocus:false})
 
     dialogRef.afterClosed().subscribe (
       result => {

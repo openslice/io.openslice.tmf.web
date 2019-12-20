@@ -1,0 +1,100 @@
+<div class="container">
+
+    <h4 mat-dialog-title class="shadowed mb-3">
+        <i class="fa fa-tasks mr-2"></i>
+        <span>Supporting Service Information</span>
+    </h4>
+
+    <mat-dialog-content>
+        <form class="row justify-content-center" [formGroup]="editForm">
+            <div class="col-lg-4">
+                <h6>ID</h6>
+                <p>{{supportingService?.id}}</p>
+            </div>
+            <div class="col-lg-4">
+                <h6>Name</h6>
+                <p>{{supportingService?.name}}</p>
+            </div>
+            <div class="col-lg-4">
+                <h6>Desc</h6>
+                <p>{{supportingService?.description}}</p>
+            </div>
+            <div class="col-lg-4">
+                <h6>Service Type</h6>
+                <p>{{supportingService?.serviceType}}</p>
+            </div>
+            <div class="col-lg-4">
+                <h6>Category</h6>
+                <p>{{supportingService?.category}}</p>
+            </div>
+            <div class="col-lg-4">
+                <h6>Specification</h6>
+                <p><a routerLink='/service_spec_update/{{supportingService?.serviceSpecification.id}}'>{{supportingService?.serviceSpecification.name}}</a></p>
+            </div>
+            <div class="col-lg-4">
+                <h6>Start Date</h6>
+                <p>{{supportingService?.startDate | date:'d MMM y, h:mm a'}}</p>
+            </div>
+            <div class="col-lg-4">
+                <h6>Start Mode</h6>
+                <p>{{supportingService?.startMode}}</p>
+            </div>
+            <div class="col-lg-4">
+                
+                <mat-form-field>
+                    <mat-label>State</mat-label>
+                    <mat-select formControlName="state">
+                        <mat-option *ngFor="let state of availableStates" [value]="state">{{state}}</mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+            <div class="col-lg-6">
+                <h6>Supporting Resources</h6>
+                <p *ngFor="let resource of supportingService?.supportingResource" class="mb-2">{{resource.name}}</p>
+            </div>
+            <div class="col-lg-6">
+                <h6>Supporting Services</h6>
+                <p *ngFor="let service of supportingService?.supportingService" class="mb-2">{{service.name}}</p>
+            </div>
+            <div class="col-lg-12">
+                <h6>Notes</h6>
+                <div class="notes-container">
+                    <div *ngFor="let note of supportingService?.note">
+                        <div class="card card-paper mb-2 bg-light">
+                            <div class="note-card-body">
+                                {{note.text}}
+                                <div class="small">written by {{note.author}} @ {{note.date | date:'d MMM y, h:mm a'}}</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <button type="button" *ngIf="!newNote" class="btn btn-primary btn-sm btn-block mb-2"
+                    (click)="triggerNewNote()"><i class="far fa-sticky-note mr-2"></i>Add Note</button>
+            
+                <div class="card card-paper mb-2 bg-light" *ngIf="newNote">
+                    <div class="note-card-body pb-0">
+                        <div class="d-flex justify-content-center align-items-center">
+                            <mat-form-field>
+                                <mat-label>New Note</mat-label>
+                                <textarea cdkTextareaAutosize #autosize="cdkTextareaAutosize" cdkAutosizeMinRows="2" matInput formControlName="note"></textarea>
+                            </mat-form-field>
+                            <button type="button" class="btn btn-danger btn-sm ml-2 mb-1" (click)="triggerNewNote()"><i
+                                    class="fas fa-times"></i></button>
+                        </div>
+                    </div>
+                </div>
+            
+
+            </div>
+        </form>
+
+    </mat-dialog-content>
+
+    <div class="container-fluid">
+        <div class="row justify-content-end">
+            <button type="button" class="btn btn-danger m-2" (click)="closeDialog()">Cancel</button>
+            <button type="submit" class="btn btn-success m-2" (click)="submitDialog()" *ngIf="!editForm.pristine">Submit</button>
+        </div>
+    </div>
+</div>

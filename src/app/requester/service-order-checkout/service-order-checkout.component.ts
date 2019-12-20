@@ -21,13 +21,13 @@ export class ServiceOrderCheckoutComponent implements OnInit {
     public requesterService: RequesterService,
     private authService: AuthService,
     private orderService: ServiceOrderService,
-    private toastr: ToastrService,
+    private toast: ToastrService,
     private router: Router
   ) { }
 
   serviceNoteCtrl = new FormControl('')
   reqStartDate = new FormControl(new Date())
-  reqCompletionDate = new FormControl(new Date(new Date().setFullYear(today.getFullYear()+20)))
+  reqCompletionDate = new FormControl(new Date(new Date().setDate(today.getDate()+1)))
 
   specCharFormArray = new FormArray([])
 
@@ -36,9 +36,9 @@ export class ServiceOrderCheckoutComponent implements OnInit {
 
   ngOnInit() {
     this.requesterService.selectedSpecToView = this.requesterService.serviceConfigurationList[0]
-    
+
     if (this.requesterService.serviceConfigurationList.length) 
-      this.initValuesForm()
+    this.initValuesForm()  
   }
 
   viewAndConfigureSpec(item: serviceConfigurationItem) {
@@ -69,16 +69,15 @@ export class ServiceOrderCheckoutComponent implements OnInit {
     const formArray = this.specCharFormArray as FormArray
     
     this.configurableSpecChar = this.requesterService.selectedSpecToView.spec.serviceSpecCharacteristic.filter(specChar => specChar.configurable)
-    
+    console.log(this.configurableSpecChar)
     this.configurableSpecChar.forEach( (confSpecChar, charIndex) => {
       formArray.push(this.updateFormArrayItem(confSpecChar, charIndex))
     })
-
+    
   }
 
   updateFormArrayItem( specChar: ServiceSpecCharacteristic, index: number): FormGroup {
 
-    // const charValueArray = specChar.serviceSpecCharacteristicValue.filter( val => val.isDefault )
     const charValueArray = this.requesterService.serviceConfigurationList.find(listItem => listItem.spec.id === this.requesterService.selectedSpecToView.spec.id).specCharacteristics[index].value
     
     // let controlValue: ServiceSpecCharacteristicValue[] | ServiceSpecCharacteristicValue
@@ -103,7 +102,8 @@ export class ServiceOrderCheckoutComponent implements OnInit {
       orderItem:[], 
       note: [{
         author:this.authService.portalUser.username,
-        text: this.serviceNoteCtrl.value
+        text: this.serviceNoteCtrl.value,
+        date: new Date().toISOString()
       }],
       requestedStartDate: this.reqStartDate.value,
       requestedCompletionDate: this.reqCompletionDate.value
@@ -145,9 +145,9 @@ export class ServiceOrderCheckoutComponent implements OnInit {
 
     this.orderService.createServiceOrder(newOrder).subscribe(
       response => { console.log(response) },
-      error => { console.error(error); this.toastr.error("An error occurred while processing your Service Order") },
+      error => { console.error(error); this.toast.error("An error occurred while processing your Service Order") },
       () => {
-        this.toastr.success("Service Order was successfully placed")
+        this.toast.success("Service Order was successfully placed")
         this.requesterService.serviceConfigurationList = []
         this.router.navigate(['services_marketplace'])
       }

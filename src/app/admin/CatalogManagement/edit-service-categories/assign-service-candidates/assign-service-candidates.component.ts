@@ -1,8 +1,10 @@
-import { Component, OnInit, Inject } from '@angular/core';
-import {CdkDragDrop, moveItemInArray, transferArrayItem, CdkDropList, CdkDrag} from '@angular/cdk/drag-drop';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
-import { ServiceCategory, ServiceCandidate, ServiceCandidateRef, ServiceCategoryUpdate } from 'src/app/openApis/ServiceCatalogManagement/models';
+import { Component, OnInit, Inject, ViewChild, ElementRef } from '@angular/core';
+import { MAT_DIALOG_DATA, MatDialogRef, MatAutocompleteTrigger, MatAutocomplete, MatTableDataSource, MatSort, MatAutocompleteSelectedEvent } from '@angular/material';
+import { ServiceCategory, ServiceCandidate, ServiceCandidateRef, ServiceCategoryUpdate, ServiceSpecification } from 'src/app/openApis/ServiceCatalogManagement/models';
 import { ServiceCandidateService, ServiceCategoryService } from 'src/app/openApis/ServiceCatalogManagement/services';
+import { Observable } from 'rxjs';
+import { FormControl } from '@angular/forms';
+import { startWith, map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-assign-service-candidates',
@@ -19,37 +21,30 @@ export class AssignServiceCandidatesComponent implements OnInit {
 
   ) { }
 
+  @ViewChild('candidateInput', {static: false}) candidateInput: ElementRef<HTMLInputElement>;  
+  @ViewChild('candidateInput', {static: false, read: MatAutocompleteTrigger}) matAutocompleteTrigger: MatAutocompleteTrigger;
+
+  @ViewChild('auto', {static: false}) matAutocomplete: MatAutocomplete;
+
+  displayedCandidateTableColumns = ['name', 'actions']
+  dataSource  = new MatTableDataSource<ServiceCandidate>()
+
+  @ViewChild(MatSort, {static: true}) sort: MatSort;
+
+
   serviceCategory: ServiceCategory = this.data
+  
+  assignedCandidates: ServiceCandidateRef[] = []
+  availableCandidates: ServiceCandidate[] = []
+  filteredCandidates$: Observable<ServiceCandidate[]>
+
+  candidateInputCtrl = new FormControl()
 
   ngOnInit() {
     console.log(this.data)
-    this.assignedCandidates = this.data.serviceCandidate.slice()
     this.listServiceCandidates()
   }
 
-  assignedCandidates: ServiceCandidateRef[] = []
-
-  availableCandidates: ServiceCandidate[] = []
-
-  drop(event: CdkDragDrop<string[]>) {
-    console.log(event)
-    if (event.previousContainer === event.container) {
-      moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
-    } else {
-      console.log(event)
-      transferArrayItem(event.previousContainer.data,
-                        event.container.data,
-                        event.previousIndex,
-                        event.currentIndex);
-    }
-  }
-
-  listItem_dblclicked(index: number, origin_list: CdkDropList, dest_list: CdkDropList, event?) {
-    console.log(event)
-    if (!event || event.tapCount == 2) {
-      transferArrayItem(origin_list.data, dest_list.data, index, 0)
-    }
-  }
 
   listServiceCandidates() {
     let allServiceCandidates: ServiceCandidate[]
@@ -62,10 +57,50 @@ export class AssignServiceCandidatesComponent implements OnInit {
         const initiallyAssignedCandidatesIDs = this.serviceCategory.serviceCandidate.map(el => el.id)
         this.availableCandidates = allServiceCandidates.filter(cand => !initiallyAssignedCandidatesIDs.includes(cand.id))
         // this.available = this.availableCandidates
+
+        this.assignedCandidates = this.data.serviceCandidate.slice()
+        this.dataSource.data = this.assignedCandidates
+        this.dataSource.sort = this.sort
+
+        this.filteredCandidates$ = this.candidateInputCtrl.valueChanges.pipe(
+          startWith(null),
+          map( (spec: string | ServiceSpecification) => typeof(spec) === 'string' ? this._filter(spec) : this.availableCandidates.slice() )
+        )
+
       }
       
 
     )
+  }
+
+  selected(event: MatAutocompleteSelectedEvent): void {
+    this.assignedCandidates.push(event.option.value);
+    this.dataSource.data = this.assignedCandidates
+
+    this.availableCandidates = this.availableCandidates.filter(el =>  el.name != event.option.value.name)
+
+    this.candidateInput.nativeElement.value = '';
+    this.candidateInputCtrl.setValue(null);
+  }
+
+  private _filter(value: string): ServiceSpecification[] {
+      console.log(value)
+      const filterValue = value.toLowerCase();
+      return this.availableCandidates.filter(cat => cat.name.toLowerCase().indexOf(filterValue) !== -1);
+  }
+
+  openList() {
+    if (!this.matAutocomplete.isOpen) this.matAutocompleteTrigger.openPanel()
+  }
+
+  removeServiceCandidate(spec:ServiceSpecification) {
+    console.log(spec)
+    const index = this.assignedCandidates.indexOf(spec);
+    if (index >= 0) {
+      this.assignedCandidates.splice(index, 1);
+      this.dataSource.data = this.assignedCandidates
+      this.availableCandidates.push(spec);
+    }
   }
 
   closeDialog() { 
@@ -75,7 +110,7 @@ export class AssignServiceCandidatesComponent implements OnInit {
   submitDialog() {
     console.log('submit')
     console.log(this.assignedCandidates)
-    const updateCandidatesObj: ServiceCategoryUpdate = { serviceCandidate: this.assignedCandidates.map(cand => {return {id: cand.id}}) }
+    const updateCandidatesObj: ServiceCategoryUpdate = { serviceCandidate: this.assignedCandidates.map(cand => {return {id: cand.id, name: cand.name}}) }
     console.log(updateCandidatesObj)
     console.log(this.serviceCategory.id)
     this.categoryService.patchServiceCategory({id: this.serviceCategory.id, serviceCategory: updateCandidatesObj}).subscribe(

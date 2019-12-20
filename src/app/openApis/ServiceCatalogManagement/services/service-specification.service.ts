@@ -18,6 +18,7 @@ class ServiceSpecificationService extends __BaseService {
   static readonly createServiceSpecificationPath = '/serviceCatalogManagement/v4/serviceSpecification';
   static readonly cloneGSTServiceSpecificationPath = '/serviceCatalogManagement/v4/serviceSpecification/cloneGST';
   static readonly cloneVINNIServiceSpecificationPath = '/serviceCatalogManagement/v4/serviceSpecification/cloneVINNI';
+  static readonly createServiceSpecificationFromNSDIDPath = '/serviceCatalogManagement/v4/serviceSpecification/specFromNSDID/{id}';
   static readonly retrieveServiceSpecificationPath = '/serviceCatalogManagement/v4/serviceSpecification/{id}';
   static readonly deleteServiceSpecificationPath = '/serviceCatalogManagement/v4/serviceSpecification/{id}';
   static readonly patchServiceSpecificationPath = '/serviceCatalogManagement/v4/serviceSpecification/{id}';
@@ -252,6 +253,44 @@ class ServiceSpecificationService extends __BaseService {
    */
   cloneVINNIServiceSpecification(params: ServiceSpecificationService.CloneVINNIServiceSpecificationParams): __Observable<ServiceSpecification> {
     return this.cloneVINNIServiceSpecificationResponse(params).pipe(
+      __map(_r => _r.body as ServiceSpecification)
+    );
+  }
+
+  /**
+   * This operation creates a ServiceSpecification from an NSD id. It retreives the NSD from  the NSD/VNF catalog. The response is the cloned spec
+   * @param id Identifier of the NSD id from the NSD/VNF catalog
+   * @return Created
+   */
+  createServiceSpecificationFromNSDIDResponse(id: string): __Observable<__StrictHttpResponse<ServiceSpecification>> {
+    let __params = this.newParams();
+    let __headers = new HttpHeaders();
+    let __body: any = null;
+
+    let req = new HttpRequest<any>(
+      'GET',
+      this.rootUrl + `/serviceCatalogManagement/v4/serviceSpecification/specFromNSDID/${id}`,
+      __body,
+      {
+        headers: __headers,
+        params: __params,
+        responseType: 'json'
+      });
+
+    return this.http.request<any>(req).pipe(
+      __filter(_r => _r instanceof HttpResponse),
+      __map((_r) => {
+        return _r as __StrictHttpResponse<ServiceSpecification>;
+      })
+    );
+  }
+  /**
+   * This operation creates a ServiceSpecification from an NSD id. It retreives the NSD from  the NSD/VNF catalog. The response is the cloned spec
+   * @param id Identifier of the NSD id from the NSD/VNF catalog
+   * @return Created
+   */
+  createServiceSpecificationFromNSDID(id: string): __Observable<ServiceSpecification> {
+    return this.createServiceSpecificationFromNSDIDResponse(id).pipe(
       __map(_r => _r.body as ServiceSpecification)
     );
   }

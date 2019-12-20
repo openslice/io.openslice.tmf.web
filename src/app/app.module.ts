@@ -12,7 +12,7 @@ import {
 import { NgProgressModule } from '@ngx-progressbar/core';
 import { NgProgressHttpModule } from '@ngx-progressbar/http';
 
-import { OwlDateTimeModule, OwlNativeDateTimeModule } from 'ng-pick-datetime';
+import { OwlDateTimeModule, OwlNativeDateTimeModule, OWL_DATE_TIME_LOCALE } from 'ng-pick-datetime';
 
 import { ToastrModule } from 'ngx-toastr';
 
@@ -85,6 +85,10 @@ import { ServiceOrderCheckoutComponent } from './requester/service-order-checkou
 import { MyServiceOrderOverviewComponent } from './requester/my-service-order-overview/my-service-order-overview.component';
 import { ListServiceOrdersComponent } from './admin/OrderManagement/list-service-orders/list-service-orders.component';
 import { PreviewServiceOrderComponent } from './admin/OrderManagement/preview-service-order/preview-service-order.component';
+import { PreviewSupportingServicesComponent } from './admin/OrderManagement/preview-supporting-services/preview-supporting-services.component';
+import { jsonParsePipe } from './shared/pipes/jsonParsePipe';
+import { ListNsdComponent } from './admin/ExperimentsImport/list-nsd/list-nsd.component';
+import { ImportNsdDialogComponent } from './admin/ExperimentsImport/list-nsd/import-nsd-dialog/import-nsd-dialog.component';
 
 
 
@@ -127,7 +131,11 @@ export function initializeApp(bootstrap: BootstrapService) {
     ServiceOrderCheckoutComponent,
     MyServiceOrderOverviewComponent,
     ListServiceOrdersComponent,
-    PreviewServiceOrderComponent
+    PreviewServiceOrderComponent,
+    PreviewSupportingServicesComponent,
+    jsonParsePipe,
+    ListNsdComponent,
+    ImportNsdDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -181,11 +189,14 @@ export function initializeApp(bootstrap: BootstrapService) {
     CloneGstTemplateComponent,
     CloneVinniTemplateComponent,
     AssignServiceRelationshipsComponent,
-    PreviewServiceComponent
+    PreviewServiceComponent,
+    PreviewSupportingServicesComponent,
+    ImportNsdDialogComponent
   ],
   providers: [
     { provide: APP_INITIALIZER, useFactory: initializeApp, deps: [BootstrapService], multi: true },
-    { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true }
+    { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true },
+    { provide: OWL_DATE_TIME_LOCALE, useValue: 'en-GB'}
   ],
   bootstrap: [AppComponent]
 })

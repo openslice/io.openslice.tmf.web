@@ -73,7 +73,7 @@ export class PreviewServiceComponent implements OnInit {
         spec: this.spec,
         checked: false,
         specCharacteristics:  this.initCharacteristicsValue()
-      })
+      })      
       this.dialogRef.close("list_added")
     } else {
       this.toastr.warning("This Service is already in your Service List")
@@ -93,6 +93,10 @@ export class PreviewServiceComponent implements OnInit {
     configurableSpecChar.forEach( confSpecChar => {
       
       const charDefaultValueArray = confSpecChar.serviceSpecCharacteristicValue.filter( val => val.isDefault )
+      
+      //In case there are no Default Values assigned, initiate Default Value Array with null values
+      if (charDefaultValueArray.length === 0) {charDefaultValueArray[0] = {value: {value:'' , alias:''}}}
+      
       initialCharValues.push({
         name: confSpecChar.name,
         valueType: confSpecChar.valueType,

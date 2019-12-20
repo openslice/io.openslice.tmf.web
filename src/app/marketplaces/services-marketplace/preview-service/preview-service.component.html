@@ -61,39 +61,33 @@
     
                 <div class="col-md-6">
                     <div class="header-section">{{spec?.name}}</div>
-                    <div class="separator-div"></div>
-                    <div class="mt-3">
+                    <!-- <div class="separator-div"></div> -->
+                    <div class="mt-1">
                         <div class="badge badge-info mr-1"
                         *ngFor="let category of candidate.category">
                         {{category.name}}
                         </div>
                     </div>
                     
-                    <div class="row general-info-tab mt-3">
-                        <div class="col-md-4">
-                            <b>Version:</b>
-                        </div>
-                        <div class="col-md-8">
+                    <div class="general-info-tab mt-3">
+                        <b>Version</b>
+                        <div>
                             {{spec?.version}}
                         </div>
                     </div>
-                    <div class="row general-info-tab">
-                        <div class="col-md-4">
-                           <b>Description:</b>
-                        </div>
-                        <div class="col-md-8">
+                    <div class="general-info-tab">
+                        <b>Description:</b>
+                        <div>
                             {{spec?.description}}
                         </div>
                     </div>
-                    <div class="row general-info-tab">
-                        <div class="col-md-4">
-                            <b>Bundle:</b>
-                        </div>
-                        <div class="col-md-8">
+                    <div class="general-info-tab">
+                        <b>Bundle:</b>
+                        <div>
                             {{spec?.isBundle}}
                         </div>
                     </div>
-                    <div class="separator-div"></div>
+                    <!-- <div class="separator-div"></div> -->
                     <button type="button" class="btn btn-primary " (click)="placeInOrderList()">
                         <i class="fas fa-shopping-cart mr-1"></i>
                         <span> Place in Order List </span>

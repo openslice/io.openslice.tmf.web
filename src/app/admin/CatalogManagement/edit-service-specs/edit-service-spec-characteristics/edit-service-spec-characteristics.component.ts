@@ -183,7 +183,7 @@ export class EditServiceSpecCharacteristicsComponent implements OnInit {
     console.log(updateCharacteristicObj)
     this.specService.patchServiceSpecification({id: this.data.serviceSpec.id, serviceSpecification: updateCharacteristicObj}).subscribe(
       data => console.log(data),
-      error => console.error(error),
+      error => { console.error(error); this.toast.error("An error occurred upon updating Spec Characteristics") },
       () => {this.dialogRef.close('updated')}
     )
   }

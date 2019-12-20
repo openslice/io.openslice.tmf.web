@@ -14,19 +14,19 @@
         <mat-dialog-content>
     
             <div class="row justify-content-center align-items-center">
-                <mat-form-field appearance="" class="col-md-12">
+                <mat-form-field class="col-md-12">
                     <mat-label>Name</mat-label>
                     <input matInput formControlName="name">
                 </mat-form-field>
                 
-                <mat-form-field appearance="" class="col-md-12">
+                <mat-form-field class="col-md-12">
                     <mat-label>Description</mat-label>
-                    <textarea matTextareaAutosize="true" matAutosizeMaxRows="3" matInput formControlName="description"></textarea>
+                    <textarea matTextareaAutosize="true" matAutosizeMinRows="2" matInput formControlName="description"></textarea>
                 </mat-form-field>
                 
                 <div class="col-12" formGroupName="validFor">
                     <div class="row">
-                        <mat-form-field appearance="" class="col-md-6" [owlDateTimeTrigger]="pickerFrom">
+                        <mat-form-field class="col-md-6" [owlDateTimeTrigger]="pickerFrom">
                             <mat-label>Valid From</mat-label>
                             <!-- <input matInput [matDatepicker]="pickerFrom" formControlName="startDateTime">
                                                                 <mat-datepicker-toggle matSuffix [for]="pickerFrom"></mat-datepicker-toggle>
@@ -38,7 +38,7 @@
                             <owl-date-time #pickerFrom></owl-date-time>
                         </mat-form-field>
                 
-                        <mat-form-field appearance="" class="col-md-6" [owlDateTimeTrigger]="pickerUntil">
+                        <mat-form-field class="col-md-6" [owlDateTimeTrigger]="pickerUntil">
                             <mat-label>Valid Until</mat-label>
                             <!-- <input matInput [matDatepicker]="pickerUntil" formControlName="endDateTime">
                                                                 <mat-datepicker-toggle matSuffix [for]="pickerUntil"></mat-datepicker-toggle>
@@ -51,7 +51,7 @@
                     </div>
                 </div>
     
-                <mat-form-field appearance="" [ngClass]="{'col-md-2':subTypeSelection, 'col-md-4':!subTypeSelection}">
+                <mat-form-field [ngClass]="{'col-md-2':subTypeSelection, 'col-md-4':!subTypeSelection}">
                     <mat-label>Value Type</mat-label>
                     <mat-select formControlName="valueType">
                         <mat-option *ngFor="let type of valueTypes" [value]="type">
@@ -59,7 +59,7 @@
                     </mat-select>
                 </mat-form-field>
                 
-                <mat-form-field appearance="" class="col-md-2" *ngIf="subTypeSelection">
+                <mat-form-field class="col-md-2" *ngIf="subTypeSelection">
                     <mat-label>Of</mat-label>
                     <mat-select [formControl]="subValueTypeCtrl">
                         <mat-option *ngFor="let type of subValueTypes" [value]="type">
@@ -75,12 +75,12 @@
                     </mat-select>
                 </mat-form-field> -->
                 
-                <mat-form-field appearance="" class="col-md-2">
+                <mat-form-field class="col-md-2">
                     <mat-label>Min Cardinality</mat-label>
                     <input matInput type="number" formControlName="minCardinality">
                 </mat-form-field>
                 
-                <mat-form-field appearance="" class="col-md-2">
+                <mat-form-field class="col-md-2">
                     <mat-label>Max Cardinality</mat-label>
                     <input matInput type="number" formControlName="maxCardinality">
                 </mat-form-field>

@@ -10,6 +10,7 @@ import { delay } from 'rxjs/operators';
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { MatDialog } from '@angular/material';
 import { PreviewSupportingServicesComponent } from '../preview-supporting-services/preview-supporting-services.component';
+import { timer, Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-preview-service-order',
@@ -28,8 +29,8 @@ export class PreviewServiceOrderComponent implements OnInit {
     private dialog: MatDialog
   ) { }
 
-  availableOrderStates = ['initial', 'acknowledged', 'rejected', 'pending', 'held', 'inProgress', 'cancelled', 'completed', 'failed', 'partial']
-  availableInitialOrderStates = ['initial', 'acknowledged', 'rejected']
+  availableOrderStates = ['INITIAL', 'ACKNOWLEDGED', 'REJECTED', 'PENDING', 'HELD', 'INPROGRESS', 'CANCELLED', 'COMPLETED', 'FAILED', 'PARTIAL']
+  availableInitialOrderStates = ['INITIAL', 'ACKNOWLEDGED', 'REJECTED']
   
   availablePriorities = ['low', 'normal', 'high']
 
@@ -49,8 +50,9 @@ export class PreviewServiceOrderComponent implements OnInit {
     note: new FormControl()
   })
 
-  
+  subscription = new Subscription
 
+  
   ngOnInit() {
     if (this.activatedRoute.snapshot.params.id)
     {
@@ -73,17 +75,13 @@ export class PreviewServiceOrderComponent implements OnInit {
           expectedCompletionDate: this.serviceOrder.requestedCompletionDate
         })
 
-        console.log(this.editForm)
-
         this.serviceOrder.orderItem.forEach((orderItem, index) => {
-          console.log(orderItem.service.supportingService)
           orderItem.service.supportingService.forEach( (supService, serviceIndex) => {
             this.retrieveServiceInventory(supService.id).pipe(delay(Math.random()*1000)).subscribe(
               data => this.supportingServices[index][serviceIndex] = data
             )
           })
         })
-        console.log(this.supportingServices)
       }
     )
   }
@@ -92,7 +90,7 @@ export class PreviewServiceOrderComponent implements OnInit {
     return this.inventoryService.retrieveService({id:serviceId})
   }
 
-  stateClassSelector(state:'feasibilityChecked' | 'designed' | 'reserved' | 'inactive' | 'active' | 'terminated') {
+  orderItemStateClassSelector(state:'feasibilityChecked' | 'designed' | 'reserved' | 'inactive' | 'active' | 'terminated') {
     let cssClass: string = 'badge'
     switch (state) {
       case 'active':
@@ -103,6 +101,26 @@ export class PreviewServiceOrderComponent implements OnInit {
         break;
       case 'terminated':
         cssClass += ' badge-danger'
+        break;
+      default:
+        cssClass += ' badge-warning'
+    }
+    return cssClass
+  }
+
+  orderStateClassSelector(state:'INITIAL'|'ACKNOWLEDGED'|'REJECTED'|'PENDING'|'HELD'|'INPROGRESS'|'CANCELLED'|'COMPLETED'|'FAILED'|'PARTIAL') {
+    let cssClass: string = 'badge'
+    switch (state) {
+      case 'INITIAL':
+        cssClass += ' badge-primary'
+        break;
+      case 'REJECTED':
+      case 'CANCELLED':
+      case 'FAILED':
+        cssClass += ' badge-danger'
+        break;
+      case 'COMPLETED':
+        cssClass += ' badge-success'
         break;
       default:
         cssClass += ' badge-warning'
@@ -134,7 +152,7 @@ export class PreviewServiceOrderComponent implements OnInit {
       data => { console.log(data); this.toast.success("Service Order was successfully updated")},
       error => {console.error(error); this.toast.error("An error occurred while editing Service Order")},
       () => {
-        this.retrieveServiceOrder()
+        this.enableOrderRefreshTimer()
       }
     )
   }
@@ -158,12 +176,26 @@ export class PreviewServiceOrderComponent implements OnInit {
         console.log(result)
         if (result) {
           this.toast.success("Supporting Service was successfully updated")
-          this.supportingServices = [[]]
-          this.retrieveServiceOrder()
+      
+          this.enableOrderRefreshTimer()
         }
       }
     )
     
+  }
+
+  enableOrderRefreshTimer() {
+    this.subscription.unsubscribe()
+    this.subscription = timer(0, 10000).subscribe(
+      data => {
+        this.supportingServices = [[]]
+        this.retrieveServiceOrder()
+      }
+    )
+  }
+
+  ngOnDestroy() {
+    this.subscription.unsubscribe()
   }
   
 

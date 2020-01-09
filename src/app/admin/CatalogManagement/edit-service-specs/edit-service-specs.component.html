@@ -15,8 +15,9 @@
                                         specification</p>
 
                                     <p class="shadowed" *ngIf="!newSpecification">Edit Design of 
-                                        <dfn><b>{{spec?.name}}</b></dfn> Service Specification
+                                        <dfn><b>{{spec?.name}}</b></dfn> Service Specification <span *ngIf="spec"><dfn><b>({{spec['@type']}})</b></dfn></span>
                                     </p>
+
                                     <div class="card-stats" *ngIf="!newSpecification">
                                         <i class="fas fa-sync spin mr-2"></i>Last updated at
                                         {{spec?.lastUpdate | date:'short'}}

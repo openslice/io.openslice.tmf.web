@@ -55,7 +55,9 @@ export class AssignServiceCandidatesComponent implements OnInit {
       () => { 
         
         const initiallyAssignedCandidatesIDs = this.serviceCategory.serviceCandidate.map(el => el.id)
-        this.availableCandidates = allServiceCandidates.filter(cand => !initiallyAssignedCandidatesIDs.includes(cand.id))
+        this.availableCandidates = allServiceCandidates.filter(cand => cand.name &&  !initiallyAssignedCandidatesIDs.includes(cand.id))
+
+        
         // this.available = this.availableCandidates
 
         this.assignedCandidates = this.data.serviceCandidate.slice()
@@ -86,7 +88,7 @@ export class AssignServiceCandidatesComponent implements OnInit {
   private _filter(value: string): ServiceSpecification[] {
       console.log(value)
       const filterValue = value.toLowerCase();
-      return this.availableCandidates.filter(cat => cat.name.toLowerCase().indexOf(filterValue) !== -1);
+      return this.availableCandidates.filter(cat => cat.name && cat.name.toLowerCase().indexOf(filterValue) !== -1);
   }
 
   openList() {

@@ -63,20 +63,20 @@
                                     <div class="col-lg-3">
                                         <ng-container *ngIf="!admin">
                                             <h6>State</h6>
-                                            <p>{{serviceOrder?.state}}</p>
+                                            <p [ngClass]="orderStateClassSelector(serviceOrder?.state)"><b>{{serviceOrder?.state}}</b></p>
                                         </ng-container>
 
                                         <mat-form-field *ngIf="admin">
                                             <mat-label>State</mat-label>
                                             <mat-select formControlName="state">
-                                                <ng-container *ngIf="editForm.get('state').value === 'INITIAL'">
+                                                <ng-container *ngIf="serviceOrder?.state === 'INITIAL'">
                                                     <mat-option *ngFor="let state of availableInitialOrderStates"
                                                         [value]="state | uppercase">
                                                         {{state | uppercase}}
                                                     </mat-option>
                                                 </ng-container>
 
-                                                <ng-container *ngIf="editForm.get('state').value !== 'INITIAL'">
+                                                <ng-container *ngIf="serviceOrder?.state !== 'INITIAL'">
                                                     <mat-option *ngFor="let state of availableOrderStates"
                                                         [value]="state | uppercase">
                                                         {{state | uppercase}}
@@ -190,7 +190,9 @@
                                     Order Item #{{orderItem.id}}
                                 </mat-panel-title>
                                 <mat-panel-description>
-                                    {{orderItem.state}}
+                                    <div>
+                                        <b [ngClass]="orderStateClassSelector(orderItem?.state)">{{orderItem.state}}</b>
+                                    </div>
                                 </mat-panel-description>
                             </mat-expansion-panel-header>
                             <div [ngClass]="{'orderItem-border': serviceOrder?.orderItem.length > 1}">
@@ -224,7 +226,7 @@
                                             <div class="col-lg-4">
                                                 <h6>State</h6>
                                                 <div class="d-flex">
-                                                    <p [ngClass]="stateClassSelector(orderItem?.service.state)"
+                                                    <p [ngClass]="orderItemStateClassSelector(orderItem?.service.state)"
                                                         style="font-size: .8rem;">{{orderItem?.service.state}}</p>
                                                 </div>
                                             </div>
@@ -249,8 +251,8 @@
                                                 <thead class="thead-inverse">
                                                     <tr class="table-light">
                                                         <th><h6 class="mb-0">Characteristic</h6></th>
-                                                        <th><h6 class="mb-0">Value</h6></th>
-                                                        <th><h6 class="mb-0">Alias</h6></th>
+                                                        <th><h6 class="mb-0">Value ( - Alias )</h6></th>
+                                                        
                                                     </tr>
                                                 </thead>
                                                 <tbody>
@@ -267,26 +269,32 @@
                                                             </ng-container>
                                 
                                                             <ng-container *ngSwitchDefault>
-                                                                <td>
-                                                                    {{specCharacteristic.value.value}}
+                                                                <td class="align-middle">
+                                                                    {{specCharacteristic.value.value}} <span *ngIf="specCharacteristic.value.alias">- {{specCharacteristic.value.alias}}</span> 
     
                                                                 </td>
-                                                                <td>
-                                                                    {{specCharacteristic.value.alias}}
-    
-                                                                </td>
+
                                                             </ng-container>
     
                                                             <ng-template #iterables>
-                                                                <td>
+                                                                <!-- <td class="align-middle">
                                                                     <div *ngFor="let value of (specCharacteristic.value.value | jsonParse)">
                                                                         {{value.value}}
                                                                     </div>                                               
-                                                                </td>
-                                                                <td>
-                                                                    <div *ngFor="let value of (specCharacteristic.value.value | jsonParse)">
+                                                                </td> -->
+                                                                <td class="align-middle">
+                                                                    <table class="table-borderless">
+                                                                        <tbody>
+                                                                            <tr *ngFor="let value of (specCharacteristic.value.value | jsonParse)">
+                                                                                <td>
+                                                                                    {{value.value}} - {{value.alias}}
+                                                                                </td>
+                                                                            </tr>
+                                                                        </tbody>
+                                                                    </table>
+                                                                    <!-- <div >
                                                                         {{value.alias}}
-                                                                    </div>
+                                                                    </div> -->
                                                                 </td>
                                                             </ng-template>            
                                                         </ng-container>
@@ -314,27 +322,36 @@
                                             class="pt-2">
                                             <div class="card card-paper mb-1 bg-light supporting-service-card"
                                                 (click)="openSupportingServiceDialog(supportingService)">
-                                                <div class="note-card-body ">
-                                                    <div class="d-flex align-items-center">
-                                                        <span *ngIf="!supportingServices[orderIndex][ServiceIndex]">
-                                                            <mat-spinner [diameter]="16"></mat-spinner>
-                                                        </span>
-                                                        <span *ngIf="supportingServices[orderIndex][ServiceIndex]"
-                                                            [ngClass]="stateClassSelector(supportingServices[orderIndex][ServiceIndex].state)">
-                                                            {{supportingServices[orderIndex][ServiceIndex]?.state}}
-                                                        </span>
-                                                        <div class="ml-2">
-                                                            <!-- <i class="fas fa-tasks mr-2"></i> -->
-                                                            {{supportingService.name}}
+                                                <div class="note-card-body">
+                                                    <div class="container-fluid">
+                                                        <div class="row justify-content-between">
+                                                            <div class="d-flex align-items-center">
+                                                                <span *ngIf="!supportingServices[orderIndex][ServiceIndex]">
+                                                                    <mat-spinner [diameter]="16"></mat-spinner>
+                                                                </span>
+                                                                <span *ngIf="supportingServices[orderIndex][ServiceIndex]"
+                                                                    [ngClass]="orderItemStateClassSelector(supportingServices[orderIndex][ServiceIndex].state)">
+                                                                    {{supportingServices[orderIndex][ServiceIndex]?.state}}
+                                                                </span>
+                                                                <div class="ml-2">
+                                                                    <!-- <i class="fas fa-tasks mr-2"></i> -->
+                                                                    {{supportingService.name}}
+                                                                </div>
+                                                            </div>
+        
+                                                            <div class="small"
+                                                                *ngIf="supportingServices[orderIndex][ServiceIndex]">
+                                                                StartMode:
+                                                                <b>{{supportingServices[orderIndex][ServiceIndex]?.startMode}}</b>,
+                                                                StartDate:
+                                                                <b>{{supportingServices[orderIndex][ServiceIndex]?.startDate | date:'d MMM y, h:mm a'}}</b>
+                                                            </div>
                                                         </div>
+                                                        
                                                     </div>
-
-                                                    <div class="small"
-                                                        *ngIf="supportingServices[orderIndex][ServiceIndex]">
-                                                        StartMode:
-                                                        <b>{{supportingServices[orderIndex][ServiceIndex]?.startMode}}</b>,
-                                                        StartDate:
-                                                        <b>{{supportingServices[orderIndex][ServiceIndex]?.startDate | date:'d MMM y, h:mm a'}}</b>
+                                                    <div class="ml-1" *ngFor="let characteristic of supportingServices[orderIndex][ServiceIndex]?.serviceCharacteristic">
+                                                        {{characteristic.name}}:
+                                                        <b>{{characteristic.value.value}}</b>
                                                     </div>
                                                 </div>
                                             </div>

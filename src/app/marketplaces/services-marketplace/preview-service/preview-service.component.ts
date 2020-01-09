@@ -27,9 +27,13 @@ export class PreviewServiceComponent implements OnInit {
 
 
   displayedColumns = ['name', 'defaultValues']
-  dataSource  = new MatTableDataSource<ServiceSpecification>()
+  dataSourceConf  = new MatTableDataSource<ServiceSpecification>()
 
-  @ViewChild(MatSort, {static: true}) sort: MatSort;
+  dataSourceNonConf  = new MatTableDataSource<ServiceSpecification>()
+
+  @ViewChild('sort1', {static: true}) sort1: MatSort;
+  @ViewChild('sort2', {static: true}) sort2: MatSort;
+
 
   orderView = false
 
@@ -40,8 +44,8 @@ export class PreviewServiceComponent implements OnInit {
   }
 
   configurableFilterChanged(event:MatCheckboxChange) {
-    if (event.checked) this.dataSource.data = this.spec.serviceSpecCharacteristic.filter(spec => spec.configurable)
-    else this.dataSource.data = this.spec.serviceSpecCharacteristic
+    if (event.checked) this.dataSourceConf.data = this.spec.serviceSpecCharacteristic.filter(spec => spec.configurable)
+    else this.dataSourceConf.data = this.spec.serviceSpecCharacteristic
   }
 
   retrieveServiceSpec(candidate: ServiceCandidate) {
@@ -49,8 +53,10 @@ export class PreviewServiceComponent implements OnInit {
       data => this.spec = data,
       error => console.error(error),
       () => {
-        this.dataSource.data = this.spec.serviceSpecCharacteristic.filter(spec => spec.configurable)
-        this.dataSource.sort = this.sort  
+        this.dataSourceConf.data = this.spec.serviceSpecCharacteristic.filter(spec => spec.configurable)
+        this.dataSourceConf.sort = this.sort1
+        this.dataSourceNonConf.data = this.spec.serviceSpecCharacteristic.filter(spec => !spec.configurable)
+        this.dataSourceNonConf.sort = this.sort2
       }
     )
   }

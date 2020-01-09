@@ -129,7 +129,8 @@ export class ServiceOrderCheckoutComponent implements OnInit {
           value: undefined
         })
 
-        if (characteristic.value.length > 1) {
+        // if (characteristic.value.length > 1) {
+        if (characteristic.valueType === "SET" || characteristic.valueType === "ARRAY") {
           newOrderItem.service.serviceCharacteristic[index].value = {
             value: JSON.stringify( characteristic.value.map(el => {return {'value': el.value.value, 'alias': el.value.alias}}) )
           }

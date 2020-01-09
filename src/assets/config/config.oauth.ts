@@ -1,5 +1,4 @@
 import { AuthConfig } from 'angular-oauth2-oidc';
-import { trigger } from '@angular/animations';
 
 export const authConfig: AuthConfig = {
 
@@ -10,8 +9,8 @@ export const authConfig: AuthConfig = {
   redirectUri: window.location.origin + '/services/services_marketplace',
   responseType: 'code',
 
-  // logoutUrl: 'http://portal.openslice.io/services',
-  // postLogoutRedirectUri: 'http://portal.openslice.io/services',
+  // logoutUrl: 'http://portal.openslice.io/logout.html',
+  // postLogoutRedirectUri: 'http://portal.openslice.io/login',
   oidc: false,
 
   clientId: 'osapiWebClientId',

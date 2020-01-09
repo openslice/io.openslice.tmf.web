@@ -22,7 +22,7 @@ export class ListServiceSpecsComponent implements OnInit {
     private toast: ToastrService
   ) { }
 
-  displayedColumns = ['name', 'description', 'version', 'lastUpdate',  'lifestyleStatus', 'actions']
+  displayedColumns = ['name', 'description', 'version', 'type', 'lastUpdate',  'lifestyleStatus', 'actions']
   dataSource  = new MatTableDataSource<ServiceSpecification>()
 
   serviceSpecs: ServiceSpecification[]

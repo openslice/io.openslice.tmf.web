@@ -44,16 +44,11 @@
                                     </ng-container>
         
                                     <ng-container *ngSwitchCase="'ENUM'">
-                                        <mat-form-field class="col-12">
-                                            <mat-label>Custom Value</mat-label>
-                                            <mat-select [(ngModel)]="charForm.get('value').value[0]"
-                                                [ngModelOptions]="{standalone: true}">
-                                                <mat-option
-                                                    *ngFor="let charValue of configurableSpecChar[i].serviceSpecCharacteristicValue"
-                                                    [value]="charValue">
-                                                    {{charValue.value.alias}}</mat-option>
-                                            </mat-select>
-                                        </mat-form-field>
+                                        <ng-container *ngTemplateOutlet="enumerable"></ng-container>
+                                    </ng-container>
+
+                                    <ng-container *ngSwitchCase="'BINARY'">
+                                        <ng-container *ngTemplateOutlet="enumerable"></ng-container>
                                     </ng-container>
         
                                     <ng-container *ngSwitchCase="'TIMESTAMP'">
@@ -86,6 +81,20 @@
                                                     {{charValue.value.alias}}</mat-option>
                                             </mat-select>
                                         </mat-form-field>
+                                    </ng-template>
+
+                                    <ng-template #enumerable>
+                                        <mat-form-field class="col-12">
+                                            <mat-label>Custom Value</mat-label>
+                                            <mat-select [(ngModel)]="charForm.get('value').value[0]"
+                                                [ngModelOptions]="{standalone: true}">
+                                                <mat-option
+                                                    *ngFor="let charValue of configurableSpecChar[i].serviceSpecCharacteristicValue"
+                                                    [value]="charValue">
+                                                    {{charValue.value.alias}}</mat-option>
+                                            </mat-select>
+                                        </mat-form-field>
+
                                     </ng-template>
                                 </div>
                             </div>

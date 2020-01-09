@@ -33,12 +33,12 @@
                     <a class="nav-link" routerLink="/vxf_marketplace">VxFs</a>
                 </li> -->
 
-                <li class="nav-item" routerLinkActive="active" *ngIf="authService.isAuthenticated$ | async">
+                <li class="nav-item" routerLinkActive="active" *ngIf="(authService.isAuthenticated$ | async) && !portalUser?.roles.includes('ROLE_ADMIN')">
                     <a class="nav-link" routerLink="/my_service_orders">My Service Orders</a>
                 </li>
 
 
-                <li class="nav-item dropdown" ngbDropdown *ngIf="authService.isAuthenticated$ | async">
+                <li class="nav-item dropdown" ngbDropdown *ngIf="(authService.isAuthenticated$ | async) && portalUser?.roles.includes('ROLE_ADMIN')">
                     <a class="nav-link dropdown-toggle" id="navbarDropdown" aria-haspopup="true" ngbDropdownToggle tabindex="0">Manage Services
                         <ul class="dropdown-menu" aria-labelledby="navbarDropdown" ngbDropdownMenu>
                             <!-- <div class="optgroup-label">Catalog Management</div> -->
@@ -113,8 +113,6 @@
                             <li><a href="#!/service_specs">Service Specifications</a></li>	
                             <li><a href="#!/service_related_parties">Related Parties</a></li>	
                         </ul></li>
-                        
-        
             </ul> -->            
             <ng-container *ngIf="authService.isAuthenticated$ | async; else elseTemplate">
                 <ul class="navbar-nav">
@@ -140,7 +138,6 @@
                                 </li>
                             </ul>
                         </li>
-
                 </ul> 
             </ng-container>
             <ng-template #elseTemplate>

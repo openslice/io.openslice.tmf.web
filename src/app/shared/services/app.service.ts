@@ -17,13 +17,17 @@ export class AppService {
     private tmfServiceInventoryConfig: ServiceInventoryAPIconfig,
     private tmfServiceOrderingConfig: ServiceOrderingAPIconfig,
   ) { 
-    this.portalAPIConfig.rootUrl = this.config.APIURL
-    this.tmfServiceCatalogConfig.rootUrl = this.config.APITMFURL
-    this.tmfServiceOrderingConfig.rootUrl = this.config.APITMFURL
-    this.tmfServiceInventoryConfig.rootUrl = this.config.APITMFURL    
+    this.setAPIurls()
   }
 
   config = this.bootstrapService.getConfig()
+
+  setAPIurls() {
+    this.portalAPIConfig.rootUrl = this.config.APIURL
+    this.tmfServiceCatalogConfig.rootUrl = this.config.APITMFURL
+    this.tmfServiceInventoryConfig.rootUrl = this.config.APITMFURL    
+    this.tmfServiceOrderingConfig.rootUrl = this.config.APITMFURL
+  }
 
   descStringSortingFunction() {
     return (a,b) => {

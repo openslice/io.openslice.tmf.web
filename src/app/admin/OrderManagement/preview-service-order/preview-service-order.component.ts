@@ -11,6 +11,7 @@ import { AuthService } from 'src/app/shared/services/auth.service';
 import { MatDialog } from '@angular/material';
 import { PreviewSupportingServicesComponent } from '../preview-supporting-services/preview-supporting-services.component';
 import { timer, Subscription } from 'rxjs';
+import { SortingService } from 'src/app/shared/functions/sorting.service';
 
 @Component({
   selector: 'app-preview-service-order',
@@ -26,7 +27,8 @@ export class PreviewServiceOrderComponent implements OnInit {
     private inventoryService: ServiceService,
     private toast: ToastrService,
     private authService: AuthService,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private sortingService: SortingService
   ) { }
 
   availableOrderStates = ['INITIAL', 'ACKNOWLEDGED', 'REJECTED', 'PENDING', 'HELD', 'INPROGRESS', 'CANCELLED', 'COMPLETED', 'FAILED', 'PARTIAL']
@@ -76,6 +78,9 @@ export class PreviewServiceOrderComponent implements OnInit {
         })
 
         this.serviceOrder.orderItem.forEach((orderItem, index) => {
+          //sort serviceOrderItem Characteristics
+          orderItem.service.serviceCharacteristic.sort(this.sortingService.ascStringSortingFunctionByNameProperty())
+
           orderItem.service.supportingService.forEach( (supService, serviceIndex) => {
             this.retrieveServiceInventory(supService.id).pipe(delay(Math.random()*1000)).subscribe(
               data => this.supportingServices[index][serviceIndex] = data

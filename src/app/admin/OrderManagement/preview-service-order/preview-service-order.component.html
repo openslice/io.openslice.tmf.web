@@ -12,9 +12,14 @@
                                 <h2 class="shadowed">Service Order Overview</h2>
 
 
-                                <p class="shadowed mb-0">Preview and Manage Service Order
-                                    <dfn><b>#{{serviceOrder?.id}}</b></dfn>
+                                <p class="shadowed mb-0">Preview and Manage Service Order of 
+                                        <span *ngFor="let orderItem of serviceOrder?.orderItem; let last=last">
+                                            <dfn><b>{{orderItem.service.serviceSpecification.name}}
+                                            <span *ngIf="!last">,</span>
+                                            </b></dfn>
+                                        </span>
                                 </p>
+                                <p class="shadowed mb-0">with id <dfn>#{{serviceOrder?.id}}</dfn></p>
 
                                 <!-- <div class="card-stats">
                                                 <i class="far fa-calendar mr-2"></i>Placed at

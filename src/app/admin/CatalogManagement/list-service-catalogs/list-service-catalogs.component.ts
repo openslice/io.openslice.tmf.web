@@ -17,7 +17,7 @@ export class ListServiceCatalogsComponent implements OnInit {
 
   constructor(private catalogService: ServiceCatalogService, public dialog: MatDialog, private toast: ToastrService) { }
 
-  displayedColumns = ['name', 'description', 'version', 'lastUpdate',  'lifestyleStatus', 'actions']
+  displayedColumns = ['name', 'description', 'version', 'lastUpdate',  'lifecycleStatus', 'actions']
   dataSource  = new MatTableDataSource<ServiceCatalog>()
 
   serviceCatalogs: ServiceCatalog[]

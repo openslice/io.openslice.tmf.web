@@ -20,7 +20,7 @@ export class ListServiceCategoriesComponent implements OnInit {
     private toast: ToastrService
     ) { }
 
-  displayedColumns = ['name', 'description', 'version', 'lastUpdate',  'lifestyleStatus', 'isRoot', 'parent', 'actions']
+  displayedColumns = ['name', 'description', 'version', 'lastUpdate',  'lifecycleStatus', 'isRoot', 'parent', 'actions']
   dataSource  = new MatTableDataSource<ServiceCategory>()
 
   serviceCategories: ServiceCategory[]

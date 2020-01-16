@@ -63,7 +63,13 @@ export class EditServiceSpecCharacteristicsComponent implements OnInit {
       this.data.specToBeUpdated.serviceSpecCharacteristicValue.forEach( val => {
         formArray.push(this.updateFormArrayItem(val))
       })
+      console.log(this.data)
       console.log(this.editFormCharacteristic)
+
+      this.subValueTypeCtrl.patchValue(this.data.specToBeUpdated.serviceSpecCharacteristicValue[0].valueType)
+      if (['SET', 'ARRAY', 'ENUM'].includes(this.data.specToBeUpdated.valueType)) {
+        this.subTypeSelection = true
+      }
     }
     
     else { this.newSpec = true }

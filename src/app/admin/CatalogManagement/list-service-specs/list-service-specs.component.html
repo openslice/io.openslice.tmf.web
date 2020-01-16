@@ -21,7 +21,7 @@
                 </div>
 
                 <div class="table-responsive mat-elevation-z1">
-                    <table mat-table [dataSource]="dataSource" matSort class="table table-generic" matSortActive="name" matSortDirection="asc">
+                    <table mat-table [dataSource]="dataSource" matSort class="table table-generic">
 
 
                         <ng-container matColumnDef="name">
@@ -37,18 +37,27 @@
                             </td>
                         </ng-container>
 
+                        
+                        <ng-container matColumnDef="version">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header> Version </th>
+                            <td mat-cell *matCellDef="let element"> {{element.version}} </td>
+                        </ng-container>
+                        
+                        <ng-container matColumnDef="type">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header> Type </th>
+                            <td mat-cell *matCellDef="let element">
+                                <span *ngIf="element['@type'] === 'ResourceFacingServiceSpecification' ">RFSS</span>
+                                <span *ngIf="element['@type'] === 'CustomerFacingServiceSpecification' ">CFSS</span> 
+                            </td>
+                        </ng-container>
+                        
                         <ng-container matColumnDef="lastUpdate">
                             <th mat-header-cell *matHeaderCellDef mat-sort-header> Last Update </th>
                             <td mat-cell *matCellDef="let element"> {{element.lastUpdate | date:'d MMM y, h:mm a'}}
                             </td>
                         </ng-container>
 
-                        <ng-container matColumnDef="version">
-                            <th mat-header-cell *matHeaderCellDef mat-sort-header> Version </th>
-                            <td mat-cell *matCellDef="let element"> {{element.version}} </td>
-                        </ng-container>
-
-                        <ng-container matColumnDef="lifestyleStatus">
+                        <ng-container matColumnDef="lifecycleStatus">
                             <th mat-header-cell *matHeaderCellDef mat-sort-header> Lifecycle Status </th>
                             <td mat-cell *matCellDef="let element"> {{element.lifecycleStatus}} </td>
                         </ng-container>

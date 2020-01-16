@@ -11,7 +11,7 @@
         <div class="col-md-8 col-xl-10">
             <div class="jumbotron card card-paper bg-light shadowed">
                 <h2>Welcome to Openslice demo!</h2>
-                <h5>Browse available services and sign in to order!</h5>
+                <h5>Browse available services and sign in to order</h5>
             </div>
 
             <div class="card1" *ngIf="selectedCategory">
@@ -65,15 +65,10 @@
                                 <div class="card-footer">
                                     <hr>
                                     <div class="card-stats">
-                                        <ng-container *ngIf="candidate.lifecycleStatus === 'Launched'; else elseTemplate">
-                                            <i class="far fa-play-circle mr-1" ></i>
-                                            Deployed at {{candidate.validFor.startDateTime | date:'medium'}}
-                                        </ng-container>
-
-                                        <ng-template #elseTemplate>
-                                            <i class="far fa-calendar mr-1"></i>
-                                            Bound to be deployed at {{candidate.validFor.startDateTime | date:'medium'}}
-                                        </ng-template>                              
+                                        <ng-container>
+                                            <i class="far fa-calendar mr-1" ></i>
+                                            Last updated at {{candidate.lastUpdate | date:'medium'}}
+                                        </ng-container>                          
                                     </div>
                                 </div>
                             </div>

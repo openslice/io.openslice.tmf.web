@@ -7,7 +7,7 @@ import { FormControl } from '@angular/forms';
 import { startWith, map } from 'rxjs/operators';
 import { MatDialog } from '@angular/material';
 import { PreviewServiceComponent } from './preview-service/preview-service.component';
-import { AppService } from 'src/app/shared/services/app.service';
+import { SortingService } from 'src/app/shared/functions/sorting.service';
 
 @Component({
   selector: 'app-services-marketplace',
@@ -22,7 +22,7 @@ export class ServicesMarketplaceComponent implements OnInit {
     private candidateService: ServiceCandidateService,
     private treeMarketPlaceService: TreeServiceMarketPlaceService,
     private dialog: MatDialog,
-    private appService: AppService
+    private sortingService: SortingService
   ) { }
 
   serviceCatalogs: ServiceCatalog[]
@@ -68,7 +68,7 @@ export class ServicesMarketplaceComponent implements OnInit {
       data => { this.serviceCandidates.push(data) },
       error => { console.error(error) },
       () => {
-        this.serviceCandidates.sort(this.appService.descStringSortingFunction())
+        this.serviceCandidates.sort(this.sortingService.ascStringSortingFunctionByNameProperty())
         this.filteredServiceCandidates$ = this.serviceCandidatesFilterCtrl.valueChanges.pipe( 
           startWith(null),
           map( (value:null | string) => value ? this._filterOnServiceCandidates(value) : this.serviceCandidates.slice() )

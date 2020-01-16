@@ -7,6 +7,7 @@ import { AuthService } from 'src/app/shared/services/auth.service';
 import { ServiceOrderService } from 'src/app/openApis/ServiceOrderingManagement/services';
 import { ToastrService } from 'ngx-toastr';
 import { Router } from '@angular/router';
+import { SortingService } from 'src/app/shared/functions/sorting.service';
 
 const today = new Date()
 
@@ -22,7 +23,8 @@ export class ServiceOrderCheckoutComponent implements OnInit {
     private authService: AuthService,
     private orderService: ServiceOrderService,
     private toast: ToastrService,
-    private router: Router
+    private router: Router,
+    private sortingService: SortingService
   ) { }
 
   serviceNoteCtrl = new FormControl('')
@@ -63,12 +65,13 @@ export class ServiceOrderCheckoutComponent implements OnInit {
 
   initValuesForm() {
     // console.log(this.requesterService.serviceConfigurationList)
-
     this.specCharFormArray = new FormArray([])
     
     const formArray = this.specCharFormArray as FormArray
     
     this.configurableSpecChar = this.requesterService.selectedSpecToView.spec.serviceSpecCharacteristic.filter(specChar => specChar.configurable)
+    this.configurableSpecChar.sort(this.sortingService.ascStringSortingFunctionByNameProperty())
+    
     console.log(this.configurableSpecChar)
     this.configurableSpecChar.forEach( (confSpecChar, charIndex) => {
       formArray.push(this.updateFormArrayItem(confSpecChar, charIndex))
@@ -129,7 +132,8 @@ export class ServiceOrderCheckoutComponent implements OnInit {
           value: undefined
         })
 
-        if (characteristic.value.length > 1) {
+        // if (characteristic.value.length > 1) {
+        if (characteristic.valueType === "SET" || characteristic.valueType === "ARRAY") {
           newOrderItem.service.serviceCharacteristic[index].value = {
             value: JSON.stringify( characteristic.value.map(el => {return {'value': el.value.value, 'alias': el.value.alias}}) )
           }

@@ -29,6 +29,10 @@ mat-form-field {
     align-items: center;
 }
 
+table.table-borderless tbody tr td {
+    padding: 0;
+}
+
 .supporting-service-card {
     cursor: pointer
 }

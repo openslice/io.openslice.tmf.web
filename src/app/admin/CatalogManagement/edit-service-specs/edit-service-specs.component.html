@@ -15,8 +15,9 @@
                                         specification</p>
 
                                     <p class="shadowed" *ngIf="!newSpecification">Edit Design of 
-                                        <dfn><b>{{spec?.name}}</b></dfn> Service Specification
+                                        <dfn><b>{{spec?.name}}</b></dfn> Service Specification <span *ngIf="spec"><dfn><b>({{spec['@type']}})</b></dfn></span>
                                     </p>
+
                                     <div class="card-stats" *ngIf="!newSpecification">
                                         <i class="fas fa-sync spin mr-2"></i>Last updated at
                                         {{spec?.lastUpdate | date:'short'}}
@@ -188,9 +189,10 @@
                                                     <th mat-header-cell *matHeaderCellDef mat-sort-header> Default Values </th>
                                                     <td mat-cell *matCellDef="let element">
                                                         <span *ngFor="let val of element.serviceSpecCharacteristicValue; let last = last" [class.hidden]="!val || !val.isDefault">
-                                                            <span *ngIf="val && val.isDefault">{{val.value.value}} ({{val.value.alias}})
-                                                                <span class="comma-separator">, </span>
+                                                            <span *ngIf="val && val.isDefault">{{val.value.value}} <span *ngIf="val.value.alias">({{val.value.alias}})</span>
+                                                                <!-- <span class="comma-separator">, </span> -->
                                                             </span>
+                                                            <br>
                                                             <div *ngIf="last" class="value-measureUnits">{{val.unitOfMeasure}}</div>
                                                             
                                                         </span>

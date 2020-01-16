@@ -50,11 +50,19 @@
             </div>
             <div class="col-lg-6">
                 <h6>Supporting Resources</h6>
+                <p *ngIf="supportingService?.supportingResource.length === 0"> There are not supporting resources allocated </p>
                 <p *ngFor="let resource of supportingService?.supportingResource" class="mb-2">{{resource.name}}</p>
             </div>
             <div class="col-lg-6">
                 <h6>Supporting Services</h6>
+                <p *ngIf="supportingService?.supportingService.length === 0"> There are not supporting services allocated </p>
                 <p *ngFor="let service of supportingService?.supportingService" class="mb-2">{{service.name}}</p>
+            </div>
+            <div class="col-12">
+                <h6>Service Characteristics</h6>
+                <p *ngFor="let characteristic of supportingService?.serviceCharacteristic; let last = last" [ngClass]="{'mb-0':!last}">
+                    {{characteristic.name}}: <dfn>{{characteristic.value.value}}</dfn>
+                </p>
             </div>
             <div class="col-lg-12">
                 <h6>Notes</h6>

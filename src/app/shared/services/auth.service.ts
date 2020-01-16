@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { authConfig } from 'src/assets/config/config.oauth';
 import { map } from 'rxjs/operators';
 import { PortalUser } from 'src/app/openApis/PortalRepositoryAPI/models';
+import { HttpClient } from '@angular/common/http';
 
 
 @Injectable({
@@ -32,7 +33,8 @@ export class AuthService {
 
   constructor(    
     private oauthService: OAuthService,
-    private router: Router
+    private router: Router,
+    private http: HttpClient
     ) 
   {
     window.addEventListener('storage', (event) => {
@@ -155,7 +157,21 @@ export class AuthService {
   }
 
   public logout() { 
-    this.oauthService.logOut()
+    // this.http.delete(authConfig.tokenEndpoint).subscribe(
+    //   data => console.log(data)
+    // )
+
+    this.http.delete(authConfig.tokenEndpoint).subscribe(
+      data => { 
+        this.oauthService.logOut()
+        this.router.navigate([this.router.routerState.snapshot.url])
+      },
+      error => {
+        console.error(error)
+        this.oauthService.logOut()
+        this.router.navigate([this.router.routerState.snapshot.url])        
+      }
+    )
   }
 
 

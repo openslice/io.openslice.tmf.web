@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { FormGroup, FormControl, Validators, FormArray } from '@angular/forms';
 import { MatDialogRef } from '@angular/material';
 import { ServiceSpecificationService } from 'src/app/openApis/ServiceCatalogManagement/services';
 
@@ -17,7 +17,7 @@ export class CloneVinniTemplateComponent implements OnInit {
 
   paramsForm =  new FormGroup({
     serviceName: new FormControl('', Validators.required),
-    serviceSpecsToInclude: new FormControl([])
+    serviceSpecsToInclude: new FormArray([])
     // addServiceVNF: new FormControl(),
     // addServiceTopology: new FormControl(),
     // addServiceTesting: new FormControl(),
@@ -44,16 +44,30 @@ export class CloneVinniTemplateComponent implements OnInit {
   ]
 
   ngOnInit() {
+    const specsFormArray = this.paramsForm.get('serviceSpecsToInclude') as FormArray
+    this.availableSpecs.forEach( spec => {
+      specsFormArray.push(new FormControl(false))
+    })
+
+    console.log(this.paramsForm)
+
   }
 
   submitDialog() {
+    console.log(this.paramsForm.get('serviceSpecsToInclude'))
+
     if (this.paramsForm.valid) {
       let cloneObj: ServiceSpecificationService.CloneVINNIServiceSpecificationParams = {}
+
+      let selectedSpecs = this.paramsForm.get('serviceSpecsToInclude').value
+        .map( (specBoolean,index) => { return specBoolean ? this.availableSpecs[index].value : null})
+        .filter( val => val)
+        
       this.availableSpecs.forEach(spec => {
-        cloneObj[spec.value] = this.paramsForm.get('serviceSpecsToInclude').value.includes(spec.value);
+        cloneObj[spec.value] = selectedSpecs.includes(spec.value);
       })
       cloneObj.serviceName = this.paramsForm.value.serviceName
-
+      
       this.specService.cloneVINNIServiceSpecification(cloneObj).subscribe(
         data => { console.log(data); this.dialogRef.close(data) },
         error => console.error(error)

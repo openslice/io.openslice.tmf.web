@@ -22,7 +22,7 @@ export class ListServiceSpecsComponent implements OnInit {
     private toast: ToastrService
   ) { }
 
-  displayedColumns = ['name', 'description', 'version', 'lastUpdate',  'lifestyleStatus', 'actions']
+  displayedColumns = ['name', 'description', 'version', 'type', 'lastUpdate',  'lifecycleStatus', 'actions']
   dataSource  = new MatTableDataSource<ServiceSpecification>()
 
   serviceSpecs: ServiceSpecification[]
@@ -42,9 +42,12 @@ export class ListServiceSpecsComponent implements OnInit {
       () => {
         this.dataSource.data = this.serviceSpecs
         this.dataSource.sort = this.sort
+        // console.log(this.sort)
         this.dataSource.paginator = this.paginator;
         this.dataSource.sortingDataAccessor = (item, property): string | number => {
-          console.log(property)
+          // console.log(property)
+          // console.log(item)
+          // console.log(item[property])
           switch (property) {
             case 'lastUpdate': return new Date(item.lastUpdate).getTime();
             default: return item[property];

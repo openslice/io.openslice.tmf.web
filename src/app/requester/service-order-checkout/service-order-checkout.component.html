@@ -28,7 +28,8 @@
                                 class="row align-items-center justify-content-center">
                                 <div class="col-md-6">
                                     <div class="d-flex align-items-center">
-                                            <i class="fas fa-info-circle mr-2 info-icon" matTooltipClass="universal-tooltip" [matTooltip]="configurableSpecChar[i].description" matTooltipPosition="above"></i>
+                                            <i class="fas fa-info-circle mr-2 info-icon" *ngIf="!configurableSpecChar[i].description" matTooltipClass="universal-tooltip" matTooltip="No description available" matTooltipPosition="above"></i>
+                                            <i class="fas fa-info-circle mr-2 info-icon" *ngIf="configurableSpecChar[i].description" matTooltipClass="universal-tooltip" [matTooltip]="configurableSpecChar[i].description" matTooltipPosition="above"></i>
                                             <b>{{charForm.get('name').value}}</b>
                                     </div>
                                     
@@ -44,16 +45,11 @@
                                     </ng-container>
         
                                     <ng-container *ngSwitchCase="'ENUM'">
-                                        <mat-form-field class="col-12">
-                                            <mat-label>Custom Value</mat-label>
-                                            <mat-select [(ngModel)]="charForm.get('value').value[0]"
-                                                [ngModelOptions]="{standalone: true}">
-                                                <mat-option
-                                                    *ngFor="let charValue of configurableSpecChar[i].serviceSpecCharacteristicValue"
-                                                    [value]="charValue">
-                                                    {{charValue.value.alias}}</mat-option>
-                                            </mat-select>
-                                        </mat-form-field>
+                                        <ng-container *ngTemplateOutlet="enumerable"></ng-container>
+                                    </ng-container>
+
+                                    <ng-container *ngSwitchCase="'BINARY'">
+                                        <ng-container *ngTemplateOutlet="enumerable"></ng-container>
                                     </ng-container>
         
                                     <ng-container *ngSwitchCase="'TIMESTAMP'">
@@ -86,6 +82,20 @@
                                                     {{charValue.value.alias}}</mat-option>
                                             </mat-select>
                                         </mat-form-field>
+                                    </ng-template>
+
+                                    <ng-template #enumerable>
+                                        <mat-form-field class="col-12">
+                                            <mat-label>Custom Value</mat-label>
+                                            <mat-select [(ngModel)]="charForm.get('value').value[0]"
+                                                [ngModelOptions]="{standalone: true}">
+                                                <mat-option
+                                                    *ngFor="let charValue of configurableSpecChar[i].serviceSpecCharacteristicValue"
+                                                    [value]="charValue">
+                                                    {{charValue.value.alias}}</mat-option>
+                                            </mat-select>
+                                        </mat-form-field>
+
                                     </ng-template>
                                 </div>
                             </div>

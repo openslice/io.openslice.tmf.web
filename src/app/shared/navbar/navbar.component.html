@@ -92,8 +92,8 @@
                         <ul class="dropdown-menu" role="menu">
                             <li ng-show="loggedinportaluser.roles.indexOf('ROLE_ADMIN')>-1" ><a href="#!/users">System Users</a></li>
                             <li><a ng-show="( (loggedinportaluser.roles.indexOf('ROLE_EXPERIMENTER')>-1 ) || (loggedinportaluser.roles.indexOf('ROLE_ADMIN')>-1)  )" href="#!/experiments">Registered Experiment Descriptors</a></li>
-                            <li><a ng-show="( (loggedinportaluser.roles.indexOf('ROLE_VXF_DEVELOPER')>-1 ) || (loggedinportaluser.roles.indexOf('ROLE_ADMIN')>-1)  )" href="#!/vxfs">Registered VxFs</a></li>
-                            <li><a ng-show="( (loggedinportaluser.roles.indexOf('ROLE_VXF_DEVELOPER')>-1 ) || (loggedinportaluser.roles.indexOf('ROLE_ADMIN')>-1)  )" href="#!/vfimages">Registered Images</a></li>
+                            <li><a ng-show="( (loggedinportaluser.roles.indexOf('ROLE_NFV_DEVELOPER')>-1 ) || (loggedinportaluser.roles.indexOf('ROLE_ADMIN')>-1)  )" href="#!/vxfs">Registered VxFs</a></li>
+                            <li><a ng-show="( (loggedinportaluser.roles.indexOf('ROLE_NFV_DEVELOPER')>-1 ) || (loggedinportaluser.roles.indexOf('ROLE_ADMIN')>-1)  )" href="#!/vfimages">Registered Images</a></li>
                             <li><a ng-show="( (loggedinportaluser.roles.indexOf('ROLE_ADMIN')>-1 ) || (loggedinportaluser.roles.indexOf('ROLE_MENTOR')>-1)  )" href="#!/deployments_admin">Registered Deployed Experiments</a></li>
                             <li ng-show="loggedinportaluser.roles.indexOf('ROLE_ADMIN')>-1" class="divider"></li>
                             <li ng-show="loggedinportaluser.roles.indexOf('ROLE_ADMIN')>-1"><a href="#!/categories">Manage Categories</a></li>		

@@ -1,3 +1,5 @@
+import { AuthConfig } from 'angular-oauth2-oidc';
+
 export interface IAppConfig {	      
     "TITLE": string,
     "PORTALVERSION":string,
@@ -7,5 +9,6 @@ export interface IAppConfig {
     "APIURL": string, 
     "WEBURL": string,
     "APIOAUTHURL":  string,
-    "APITMFURL": string
+    "APITMFURL": string,
+    "OAUTH_CONFIG": AuthConfig
 }

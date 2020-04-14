@@ -2,12 +2,13 @@ import { Component } from '@angular/core';
 
 import { OAuthService, JwksValidationHandler } from 'angular-oauth2-oidc';
 import { AuthService } from './shared/services/auth.service';
+import { BootstrapService } from './bootstrap/bootstrap.service';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'], 
-  providers: [OAuthService]
+  providers: []
 })
 export class AppComponent {
   title = 'io-openslice-portal-web';
@@ -19,8 +20,10 @@ export class AppComponent {
   // get decodedAccessToken() { return this._decodedAccessToken; }
   // get decodedIDToken() { return this._decodedIDToken; }
 
-  constructor(private authService: AuthService) {
-    this.authService.runInitialLoginSequence()
+  constructor(
+    private authService: AuthService
+    ) {
+      this.authService.runInitialLoginSequence()
   }
 
 

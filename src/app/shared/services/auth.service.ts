@@ -1,11 +1,13 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, ReplaySubject, combineLatest, Observable } from 'rxjs';
-import { OAuthService, OAuthErrorEvent, JwksValidationHandler } from 'angular-oauth2-oidc';
+import { OAuthService, OAuthErrorEvent, JwksValidationHandler, AuthConfig } from 'angular-oauth2-oidc';
 import { Router } from '@angular/router';
-import { authConfig } from 'src/assets/config/config.oauth';
+// import { authConfig } from 'src/assets/config/config.oauth';
 import { map } from 'rxjs/operators';
 import { PortalUser } from 'src/app/openApis/PortalRepositoryAPI/models';
 import { HttpClient } from '@angular/common/http';
+import { BootstrapService } from 'src/app/bootstrap/bootstrap.service';
+import { IAppConfig } from 'src/app/models/app-config.model';
 
 
 @Injectable({
@@ -29,12 +31,14 @@ export class AuthService {
     this.router.navigateByUrl('/');
   }
 
+  private authConfigFile: AuthConfig
   public portalUser: PortalUser
 
   constructor(    
     private oauthService: OAuthService,
     private router: Router,
-    private http: HttpClient
+    private http: HttpClient,
+    private bootstrapService: BootstrapService
     ) 
   {
     window.addEventListener('storage', (event) => {
@@ -65,7 +69,9 @@ export class AuthService {
   }
 
   public runInitialLoginSequence() {
-    this.oauthService.configure(authConfig);
+    this.authConfigFile = this.bootstrapService.getConfig().OAUTH_CONFIG
+    
+    this.oauthService.configure(this.authConfigFile);
     this.oauthService.setStorage(localStorage);
 
     this.oauthService.tokenValidationHandler = new JwksValidationHandler();
@@ -161,7 +167,7 @@ export class AuthService {
     //   data => console.log(data)
     // )
 
-    this.http.delete(authConfig.tokenEndpoint).subscribe(
+    this.http.delete(this.authConfigFile.tokenEndpoint).subscribe(
       data => { 
         this.oauthService.logOut()
         this.router.navigate([this.router.routerState.snapshot.url])

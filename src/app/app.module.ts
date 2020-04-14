@@ -89,6 +89,7 @@ import { PreviewSupportingServicesComponent } from './admin/OrderManagement/prev
 import { jsonParsePipe } from './shared/pipes/jsonParsePipe';
 import { ListNsdComponent } from './admin/ExperimentsImport/list-nsd/list-nsd.component';
 import { ImportNsdDialogComponent } from './admin/ExperimentsImport/list-nsd/import-nsd-dialog/import-nsd-dialog.component';
+import { AuthService } from './shared/services/auth.service';
 
 
 
@@ -194,6 +195,8 @@ export function initializeApp(bootstrap: BootstrapService) {
     ImportNsdDialogComponent
   ],
   providers: [
+    AuthService,
+    BootstrapService,
     { provide: APP_INITIALIZER, useFactory: initializeApp, deps: [BootstrapService], multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true },
     { provide: OWL_DATE_TIME_LOCALE, useValue: 'en-GB'}

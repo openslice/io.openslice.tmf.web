@@ -6,5 +6,25 @@
     "STATUS": "http://status.localhost/",
     "WEBURL": "http://portal.openslice.io",
     "APIURL": "http://portal.openslice.io/osapi/", 
-    "APITMFURL": "http://portal.openslice.io/tmf-api"
+    "APITMFURL": "http://portal.openslice.io/tmf-api",
+    "OAUTH_CONFIG" : {
+        "issuer": "http://portal.openslice.io/auth/realms/openslice/protocol/openid-connect/auth",
+        "loginUrl": "http://portal.openslice.io/auth/realms/openslice/protocol/openid-connect/auth",
+        "tokenEndpoint": "http://portal.openslice.io/auth/realms/openslice/protocol/openid-connect/token",
+        "redirectUri": "http://portal.openslice.io/services/services_marketplace",
+        "responseType": "code",
+        "oidc": false,
+        "clientId": "osapiWebClientId",
+        "dummyClientSecret": "secret",
+            
+        "requireHttps": false,
+        "useHttpBasicAuth": true,
+        
+        "clearHashAfterLogin": false,
+      
+        "scope": "read write admin openapi",
+    
+        "showDebugInformation": true,
+        "silentRefreshShowIFrame": true
+    }
 }

@@ -31,6 +31,7 @@ export class EditOrganizationsComponent implements OnInit {
   organization: Organization
 
   editForm = new FormGroup({
+    name: new FormControl(),
     tradingName: new FormControl(),
     isLegalEntity: new FormControl(),
     status: new FormControl()
@@ -149,6 +150,7 @@ export class EditOrganizationsComponent implements OnInit {
 
   updateOrganization() {
     let updateObj: OrganizationUpdate | OrganizationCreate = {
+      name: this.editForm.value.name,
       tradingName: this.editForm.value.tradingName,
       status: this.editForm.value.status,
       isLegalEntity: this.editForm.value.isLegalEntity

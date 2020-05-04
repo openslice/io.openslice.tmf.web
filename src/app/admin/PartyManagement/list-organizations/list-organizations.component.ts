@@ -19,7 +19,7 @@ export class ListOrganizationsComponent implements OnInit {
     private toast: ToastrService
   ) { }
 
-  displayedColumns = ['tradingName', 'isLegalEntity', 'status', 'actions']
+  displayedColumns = ['name', 'tradingName', 'isLegalEntity', 'status', 'actions']
   dataSource  = new MatTableDataSource<Organization>()
 
   organizations: Organization[]

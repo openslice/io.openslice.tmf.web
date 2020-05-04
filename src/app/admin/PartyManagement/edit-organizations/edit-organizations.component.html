@@ -33,11 +33,16 @@
 
                                     <div class="row align-items-center">
                                         <mat-form-field class="col-md-6">
+                                            <mat-label>Organization Name</mat-label>
+                                            <input matInput formControlName="name">
+                                        </mat-form-field>
+
+                                        <mat-form-field class="col-md-6">
                                             <mat-label>Trading Name</mat-label>
                                             <input matInput formControlName="tradingName">
                                         </mat-form-field>
                                     
-                                        <mat-form-field class="col-md-4 col-sm-6">
+                                        <mat-form-field class="col-md-6 ">
                                             <mat-label>Status</mat-label>
                                             <mat-select formControlName="status">
                                                 <mat-option *ngFor="let status of organizationStatuses" [value]="status">
@@ -46,7 +51,7 @@
                                             </mat-select>
                                         </mat-form-field>
 
-                                        <div class="col-md-2 col-sm-6 text-center">
+                                        <div class="col-md-6">
                                             <mat-checkbox color="primary" formControlName="isLegalEntity">Legal Entity</mat-checkbox>
                                         </div>
                                 

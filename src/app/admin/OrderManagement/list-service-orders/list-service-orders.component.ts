@@ -2,8 +2,10 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { ServiceOrderService } from 'src/app/openApis/ServiceOrderingManagement/services';
 import { ToastrService } from 'ngx-toastr';
 import { ServiceOrder } from 'src/app/openApis/ServiceOrderingManagement/models';
-import { MatTableDataSource, MatSort, MatPaginator } from '@angular/material';
+import { MatTableDataSource, MatSort, MatPaginator, MatDialog } from '@angular/material';
 import { FormGroup, FormControl } from '@angular/forms';
+import { DeleteServiceOrderComponent } from '../delete-service-order/delete-service-order/delete-service-order.component';
+import { HttpErrorResponse } from '@angular/common/http';
 
 const today = new Date()
 
@@ -17,6 +19,7 @@ export class ListServiceOrdersComponent implements OnInit {
 
   constructor(
     private serviceOrder: ServiceOrderService,
+    private dialog: MatDialog,
     private toastr: ToastrService
   ) { }
 
@@ -122,6 +125,24 @@ export class ListServiceOrdersComponent implements OnInit {
 
   filterPeriod (data: ServiceOrder, filter: string) {
     return data.orderDate >= this.fromDate && data.orderDate <= this.toDate 
+  }
+
+  openOrderDeleteDialog(element: ServiceOrder) {
+    const dialogRef = this.dialog.open(DeleteServiceOrderComponent, {data: element})
+
+    dialogRef.afterClosed().subscribe (
+      result => {
+        console.log(result)
+        if (result) {
+          if (result instanceof HttpErrorResponse) {
+            this.toastr.error("An error occurred while attempting to delete Service Order")
+          } else {
+            this.toastr.success("Service Order list is successfully updated")
+            this.retrieveOrderList()
+          }
+        }
+      }
+    )
   }
 
 

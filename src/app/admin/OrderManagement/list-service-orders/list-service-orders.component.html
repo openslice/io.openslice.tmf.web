@@ -91,7 +91,8 @@
                             <ng-container matColumnDef="actions">
                                 <th mat-header-cell *matHeaderCellDef>Actions</th>
                                 <td mat-cell *matCellDef="let element">
-                                    <button class="btn btn-primary btn-sm" routerLink='/service_order/{{element.id}}'><i class="fas fa-search"></i></button>
+                                    <button class="btn btn-primary btn-sm mr-1" routerLink='/service_order/{{element.id}}'><i class="fas fa-search"></i></button>
+                                    <button class="btn btn-danger btn-sm" (click)="openOrderDeleteDialog(element)"><i class="far fa-trash-alt"></i></button>
                                 </td>
                             </ng-container>
                     

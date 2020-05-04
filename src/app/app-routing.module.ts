@@ -14,6 +14,8 @@ import { ServiceOrderCheckoutComponent } from './requester/service-order-checkou
 import { ListServiceOrdersComponent } from './admin/OrderManagement/list-service-orders/list-service-orders.component';
 import { PreviewServiceOrderComponent } from './admin/OrderManagement/preview-service-order/preview-service-order.component';
 import { ListNsdComponent } from './admin/ExperimentsImport/list-nsd/list-nsd.component';
+import { ListOrganizationsComponent } from './admin/PartyManagement/list-organizations/list-organizations.component';
+import { EditOrganizationsComponent } from './admin/PartyManagement/edit-organizations/edit-organizations.component';
 
 
 const routes: Routes = [
@@ -34,11 +36,14 @@ const routes: Routes = [
   { path: 'service_orders', component: ListServiceOrdersComponent, canActivate: [AuthGuardService], runGuardsAndResolvers: 'always' },
   { path: 'service_order/:id', component: PreviewServiceOrderComponent, canActivate: [AuthGuardService], runGuardsAndResolvers: 'always' },
 
-
   { path: 'service_order_checkout', component: ServiceOrderCheckoutComponent, canActivate: [AuthGuardService], runGuardsAndResolvers: 'always' },
   { path: 'my_service_orders', component: ListServiceOrdersComponent, canActivate: [AuthGuardService], runGuardsAndResolvers: 'always' },
- 
   
+  { path: 'organizations', component: ListOrganizationsComponent, canActivate: [AuthGuardService], runGuardsAndResolvers: 'always' },
+  { path: 'organization_update/:id', component: EditOrganizationsComponent, canActivate: [AuthGuardService], runGuardsAndResolvers: 'always' },
+  { path: 'organization_update', component: EditOrganizationsComponent, canActivate: [AuthGuardService], runGuardsAndResolvers: 'always' },
+
+ 
   { path: '**', component: LandingComponent }
   
 ];

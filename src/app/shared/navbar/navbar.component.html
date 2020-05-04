@@ -64,6 +64,16 @@
                         </ul>
                     </a>
                 </li>
+
+                <li class="nav-item dropdown" ngbDropdown *ngIf="(authService.isAuthenticated$ | async) && portalUser?.roles.includes('ROLE_ADMIN')">
+                    <a class="nav-link dropdown-toggle" id="navbarDropdown" aria-haspopup="true" ngbDropdownToggle tabindex="0">Manage Entities
+                        <ul class="dropdown-menu" aria-labelledby="navbarDropdown" ngbDropdownMenu>
+                            <!-- <div class="optgroup-label">Catalog Management</div> -->
+                            <li><a class="dropdown-item" tabindex="0" routerLink="/organizations">Organizations</a></li>
+                            <!-- <li><a class="dropdown-item" tabindex="-1" routerLink="/service_specs">Service Specifications</a></li> -->
+                        </ul>
+                    </a>
+                </li>
             </ul>
             <!-- <ul class="nav navbar-nav">
                 <li ><a routerLink="/experiments_marketplace">Experiments</a></li>

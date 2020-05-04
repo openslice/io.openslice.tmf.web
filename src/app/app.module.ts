@@ -90,6 +90,12 @@ import { jsonParsePipe } from './shared/pipes/jsonParsePipe';
 import { ListNsdComponent } from './admin/ExperimentsImport/list-nsd/list-nsd.component';
 import { ImportNsdDialogComponent } from './admin/ExperimentsImport/list-nsd/import-nsd-dialog/import-nsd-dialog.component';
 import { AuthService } from './shared/services/auth.service';
+import { ListOrganizationsComponent } from './admin/PartyManagement/list-organizations/list-organizations.component';
+import { EditOrganizationsComponent } from './admin/PartyManagement/edit-organizations/edit-organizations.component';
+import { EditPartyCharacteristicsComponent } from './admin/PartyManagement/edit-organizations/edit-party-characteristics/edit-party-characteristics/edit-party-characteristics.component';
+import { DeletePartyCharacteristicComponent } from './admin/PartyManagement/edit-organizations/delete-party-characteristic/delete-party-characteristic/delete-party-characteristic.component';
+import { DeleteOrganizationComponent } from './admin/PartyManagement/delete-organization/delete-organization/delete-organization.component';
+import { DeleteServiceOrderComponent } from './admin/OrderManagement/delete-service-order/delete-service-order/delete-service-order.component';
 
 
 
@@ -136,7 +142,13 @@ export function initializeApp(bootstrap: BootstrapService) {
     PreviewSupportingServicesComponent,
     jsonParsePipe,
     ListNsdComponent,
-    ImportNsdDialogComponent
+    ImportNsdDialogComponent,
+    ListOrganizationsComponent,
+    EditOrganizationsComponent,
+    EditPartyCharacteristicsComponent,
+    DeletePartyCharacteristicComponent,
+    DeleteOrganizationComponent,
+    DeleteServiceOrderComponent
   ],
   imports: [
     BrowserModule,
@@ -192,7 +204,11 @@ export function initializeApp(bootstrap: BootstrapService) {
     AssignServiceRelationshipsComponent,
     PreviewServiceComponent,
     PreviewSupportingServicesComponent,
-    ImportNsdDialogComponent
+    ImportNsdDialogComponent,
+    EditPartyCharacteristicsComponent,
+    DeletePartyCharacteristicComponent,
+    DeleteOrganizationComponent,
+    DeleteServiceOrderComponent
   ],
   providers: [
     AuthService,

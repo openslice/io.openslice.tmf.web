@@ -65,7 +65,7 @@ export class ListServiceSpecsComponent implements OnInit {
         console.log(result)
         if (result) {
           if (result instanceof HttpErrorResponse) {
-            this.toast.error("An error occured while attempting to delete Service Specification")
+            this.toast.error("An error occurred while attempting to delete Service Specification")
           } else {
             this.toast.success("Service Specification list is successfully updated")
             this.retrieveSpecsList()

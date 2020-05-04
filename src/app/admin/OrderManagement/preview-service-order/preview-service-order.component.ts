@@ -193,7 +193,7 @@ export class PreviewServiceOrderComponent implements OnInit {
     this.subscription.unsubscribe()
     this.subscription = timer(0, 10000).subscribe(
       data => {
-        this.supportingServices = [[]]
+        // this.supportingServices = [[]]
         this.retrieveServiceOrder()
       }
     )

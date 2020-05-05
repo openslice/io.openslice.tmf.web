@@ -23,7 +23,7 @@ export class ListServiceOrdersComponent implements OnInit {
     private toastr: ToastrService
   ) { }
 
-  displayedColumns = ['order', 'placed_by', 'order_date', 'state', 'requested_startdate', 'requested_enddate', 'actions']
+  displayedColumns = ['id', 'placed_by', 'order_date', 'state', 'requested_startdate', 'requested_enddate', 'actions']
   dataSource  = new MatTableDataSource<ServiceOrder>()
 
   serviceOrders: ServiceOrder[]

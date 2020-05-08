@@ -92,10 +92,13 @@ import { ImportNsdDialogComponent } from './admin/ExperimentsImport/list-nsd/imp
 import { AuthService } from './shared/services/auth.service';
 import { ListOrganizationsComponent } from './admin/PartyManagement/list-organizations/list-organizations.component';
 import { EditOrganizationsComponent } from './admin/PartyManagement/edit-organizations/edit-organizations.component';
-import { EditPartyCharacteristicsComponent } from './admin/PartyManagement/edit-organizations/edit-party-characteristics/edit-party-characteristics/edit-party-characteristics.component';
-import { DeletePartyCharacteristicComponent } from './admin/PartyManagement/edit-organizations/delete-party-characteristic/delete-party-characteristic/delete-party-characteristic.component';
-import { DeleteOrganizationComponent } from './admin/PartyManagement/delete-organization/delete-organization/delete-organization.component';
-import { DeleteServiceOrderComponent } from './admin/OrderManagement/delete-service-order/delete-service-order/delete-service-order.component';
+import { EditPartyCharacteristicsComponent } from './admin/PartyManagement/edit-organizations/edit-party-characteristics/edit-party-characteristics.component';
+import { DeletePartyCharacteristicComponent } from './admin/PartyManagement/edit-organizations/delete-party-characteristic/delete-party-characteristic.component';
+import { DeleteOrganizationComponent } from './admin/PartyManagement/delete-organization/delete-organization.component';
+import { DeleteServiceOrderComponent } from './admin/OrderManagement/delete-service-order/delete-service-order.component';
+import { ListIndividualsComponent } from './admin/PartyManagement/list-individuals/list-individuals.component';
+import { EditIndividualsComponent } from './admin/PartyManagement/edit-individuals/edit-individuals.component';
+import { DeleteIndividualComponent } from './admin/PartyManagement/delete-individual/delete-individual.component';
 
 
 
@@ -148,7 +151,10 @@ export function initializeApp(bootstrap: BootstrapService) {
     EditPartyCharacteristicsComponent,
     DeletePartyCharacteristicComponent,
     DeleteOrganizationComponent,
-    DeleteServiceOrderComponent
+    DeleteServiceOrderComponent,
+    ListIndividualsComponent,
+    EditIndividualsComponent,
+    DeleteIndividualComponent
   ],
   imports: [
     BrowserModule,
@@ -208,6 +214,7 @@ export function initializeApp(bootstrap: BootstrapService) {
     EditPartyCharacteristicsComponent,
     DeletePartyCharacteristicComponent,
     DeleteOrganizationComponent,
+    DeleteIndividualComponent,
     DeleteServiceOrderComponent
   ],
   providers: [

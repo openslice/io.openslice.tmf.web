@@ -1,0 +1,114 @@
+<div class="container py-5">
+    <div class="row">
+        <div class="col-12">
+            
+            <form [formGroup]="editForm">
+                <div class="card card-paper mb-0">
+                    
+                    <div class="card-header">
+                        <div class="container-fluid">
+                            <div class="row justify-content-between align-items-center">
+                                <div>
+                                    <h2 class="shadowed">Individual Profile</h2>
+
+                                    <p class="shadowed mb-0" *ngIf="newIndividual">Add a new individual</p>
+
+                                    <p class="shadowed" *ngIf="!newIndividual">Edit individual
+                                        <dfn>
+                                            <b>{{individual?.familyName}} {{individual?.givenName}}</b>
+                                        </dfn>
+                                    </p>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card-body">
+                        <mat-accordion multi="true">
+                            <mat-expansion-panel expanded="true" class="bg-light">
+                                <mat-expansion-panel-header>
+                                    <mat-panel-title>
+                                        Main Individual properties
+                                    </mat-panel-title>
+                                </mat-expansion-panel-header>
+
+                                    <div class="row align-items-center">
+                                        <mat-form-field class="col-md-6">
+                                            <mat-label>Family Name</mat-label>
+                                            <input matInput formControlName="familyName">
+                                        </mat-form-field>
+
+                                        <mat-form-field class="col-md-6">
+                                            <mat-label>Given Name</mat-label>
+                                            <input matInput formControlName="givenName">
+                                        </mat-form-field>
+                                    
+                                        <mat-form-field class="col-md-6">
+                                            <mat-label>Location</mat-label>
+                                            <input matInput formControlName="location">
+                                        </mat-form-field>
+
+                                        <mat-form-field class="col-md-6">
+                                            <mat-label>Organization</mat-label>
+                                            <input matInput [formControl]="customOrganizationCtrl">
+                                        </mat-form-field>
+                                
+                                    </div>
+
+                                    <h6 class="mt-3">Contact Details</h6>
+                                    <div class="row align-items-center" formGroupName="contactInfo">
+                                        <mat-form-field class="col-md-4">
+                                            <mat-label class="d-flex">
+                                                <mat-icon matPrefix class="mr-1">home</mat-icon>City
+                                            </mat-label>
+                                            <input matInput formControlName="city">
+                                        </mat-form-field>
+
+                                        <mat-form-field class="col-md-4">
+                                            <mat-label class="d-flex">
+                                                <mat-icon matPrefix class="mr-1">email</mat-icon>Email
+                                            </mat-label>
+                                            <input matInput formControlName="emailAddress">
+                                        </mat-form-field>
+                                    
+                                        <mat-form-field class="col-md-4">
+                                            <mat-label class="d-flex"> 
+                                                <mat-icon matPrefix class="mr-1">phone</mat-icon>Phone
+                                            </mat-label>
+                                            <input matInput formControlName="phoneNumber">
+                                        </mat-form-field>
+                                
+                                    </div>
+
+
+                                    <!-- <div class="row mt-2" *ngIf="newOrganization" formArrayName="partyCharacteristic">
+                                        <h6 class="col-12">Initial Party Characteristics</h6>
+                                        <div *ngFor="let char of editForm.get('partyCharacteristic')['controls']; let i = index" [formGroupName]="i" class="col-xl-6">
+                                            <mat-form-field class="" >
+                                                
+                                                <mat-label>{{char.value.name}}</mat-label>
+                                                <input matInput formControlName="value">
+                                            </mat-form-field>
+                                        </div>
+                                    </div> -->
+
+                                    <div class="container-fluid">
+                                        <div class="row justify-content-end">
+                                            <button type="submit" class="btn btn-primary" (click)="updateIndividual()"><i
+                                                    class="fas fa-check mr-2"></i>Submit</button>
+                                        </div>
+                                    </div>
+
+                            </mat-expansion-panel>
+                        </mat-accordion>
+                    </div>
+
+                    <div class="card-footer"></div>
+
+
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

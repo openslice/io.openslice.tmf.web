@@ -3,13 +3,11 @@
     <span>Confirm deletion</span>
 </h4>
 <div mat-dialog-content>
-    Are you sure you want to permanently delete 
-    <b><dfn>Order of 
-    <span *ngFor="let orderItem of data.orderItem; let last=last">
-        {{orderItem.service.serviceSpecification.name}}
-        <span *ngIf="!last">,</span>
-    </span>
-    </dfn></b> ?
+    Are you sure you want to permanently delete organization 
+    <dfn>
+        <b *ngIf="data?.name">{{data?.name}}</b>
+        <b *ngIf="!data?.name">{{data?.tradingName}}</b>
+    </dfn> ?
 </div>
 
 <div mat-dialog-actions class="d-flex justify-content-end">

@@ -6,8 +6,8 @@ import { ToastrService } from 'ngx-toastr';
 import { Organization, Characteristic, Any, OrganizationUpdate, OrganizationCreate } from 'src/app/openApis/PartyManagement/models';
 import { FormGroup, FormControl, FormArray } from '@angular/forms';
 import { Subscription } from 'rxjs';
-import { EditPartyCharacteristicsComponent } from './edit-party-characteristics/edit-party-characteristics/edit-party-characteristics.component';
-import { DeletePartyCharacteristicComponent } from './delete-party-characteristic/delete-party-characteristic/delete-party-characteristic.component';
+import { EditPartyCharacteristicsComponent } from './edit-party-characteristics/edit-party-characteristics.component';
+import { DeletePartyCharacteristicComponent } from './delete-party-characteristic/delete-party-characteristic.component';
 
 // const defaultPartyCharacteristics = ['EXTERNAL_TMFAPI_BASEURL', 'EXTERNAL_TMFAPI_CLIENTREGISTRATIONID', 'EXTERNAL_TMFAPI_OAUTH2CLIENTID', 'EXTERNAL_TMFAPI_OAUTH2CLIENTSECRET', 'EXTERNAL_TMFAPI_OAUTH2SCOPES', 'EXTERNAL_TMFAPI_OAUTH2TOKENURI', 'EXTERNAL_TMFAPI_USERNAME', 'EXTERNAL_TMFAPI_PASSWORD', 'EXTERNAL_TMFAPI_SERVICE_CATALOG_URLS', 'EXTERNAL_TMFAPI_SERVICE_ORDER_URLS', 'EXTERNAL_TMFAPI_SERVICE_SPEC']
 

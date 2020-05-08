@@ -16,6 +16,8 @@ import { PreviewServiceOrderComponent } from './admin/OrderManagement/preview-se
 import { ListNsdComponent } from './admin/ExperimentsImport/list-nsd/list-nsd.component';
 import { ListOrganizationsComponent } from './admin/PartyManagement/list-organizations/list-organizations.component';
 import { EditOrganizationsComponent } from './admin/PartyManagement/edit-organizations/edit-organizations.component';
+import { ListIndividualsComponent } from './admin/PartyManagement/list-individuals/list-individuals.component';
+import { EditIndividualsComponent } from './admin/PartyManagement/edit-individuals/edit-individuals.component';
 
 
 const routes: Routes = [
@@ -42,6 +44,10 @@ const routes: Routes = [
   { path: 'organizations', component: ListOrganizationsComponent, canActivate: [AuthGuardService], runGuardsAndResolvers: 'always' },
   { path: 'organization_update/:id', component: EditOrganizationsComponent, canActivate: [AuthGuardService], runGuardsAndResolvers: 'always' },
   { path: 'organization_update', component: EditOrganizationsComponent, canActivate: [AuthGuardService], runGuardsAndResolvers: 'always' },
+
+  { path: 'individuals', component: ListIndividualsComponent, canActivate: [AuthGuardService], runGuardsAndResolvers: 'always' },
+  { path: 'individual_update/:id', component: EditIndividualsComponent, canActivate: [AuthGuardService], runGuardsAndResolvers: 'always' },
+  { path: 'individual_update', component: EditIndividualsComponent, canActivate: [AuthGuardService], runGuardsAndResolvers: 'always' },
 
  
   { path: '**', component: LandingComponent }

@@ -1,0 +1,151 @@
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { IndividualService, OrganizationService } from 'src/app/openApis/PartyManagement/services';
+import { MatDialog } from '@angular/material';
+import { ToastrService } from 'ngx-toastr';
+import { Individual, Organization, IndividualCreate, IndividualUpdate } from 'src/app/openApis/PartyManagement/models';
+import { FormGroup, FormControl } from '@angular/forms';
+
+@Component({
+  selector: 'app-edit-individuals',
+  templateUrl: './edit-individuals.component.html',
+  styleUrls: ['./edit-individuals.component.scss']
+})
+export class EditIndividualsComponent implements OnInit {
+
+  constructor(
+    private activatedRoute: ActivatedRoute,
+    private individualService: IndividualService,
+    private organizationService: OrganizationService,
+    private dialog: MatDialog,
+    private toast: ToastrService,
+  ) { }
+
+  individualID: string
+  individual: Individual
+
+  organizations: Organization[]
+
+  editForm = new FormGroup({
+    givenName: new FormControl(),
+    familyName: new FormControl(),
+    location: new FormControl(),
+    contactInfo: new FormGroup({
+      city: new FormControl(),
+      emailAddress: new FormControl(),
+      phoneNumber: new FormControl()
+    })
+  })
+  
+  predefinedOrganizationCtrl = new FormControl()
+  customOrganizationCtrl = new FormControl()
+
+  contactMediums = [
+    { mediumType: 'email', contactType: ['email']},
+    { mediumType: 'telephone', contactType: ['mobile', 'fixed home', 'fixed office']},
+    { mediumType: 'postal', contactType: ['shipping', 'installation']},
+  ]
+
+  newIndividual = false
+
+  
+  ngOnInit() {
+    // this.retrieveOrganizations()
+
+    if (this.activatedRoute.snapshot.params.id) 
+    {
+      this.individualID = this.activatedRoute.snapshot.params.id
+      this.retrieveIndividual()
+    } else {
+      // this.initNewOrganizationFormArray()  
+      this.newIndividual = true
+    }
+  }
+
+  retrieveOrganizations() {
+    this.organizationService.listOrganization({}).subscribe(
+      data => { this.organizations = data },
+      error => { console.error(error) }
+    )
+  }
+
+  retrieveIndividual() {
+    this.individualService.retrieveIndividual({id: this.individualID}).subscribe(
+      data => this.individual = data,
+      error => console.error(error),
+      () => {
+        this.editForm.patchValue({
+          givenName: this.individual.givenName,
+          familyName: this.individual.familyName,
+          location: this.individual.location,
+          contactInfo: {
+            city: this.individual.contactMedium[0].characteristic.city,
+            emailAddress: this.individual.contactMedium[0].characteristic.emailAddress,
+            phoneNumber: this.individual.contactMedium[0].characteristic.phoneNumber
+          }
+        })
+
+        if (this.individual.partyCharacteristic.length) {
+          this.customOrganizationCtrl.setValue(this.individual.partyCharacteristic.find( char => char.name === 'organization').value.value)
+        }
+
+        //prefefined Organization in Related Party
+        
+        //
+      }
+      
+    )
+  }
+
+  updateIndividual() {
+    let updateObj: IndividualCreate | IndividualUpdate = {
+      familyName: this.editForm.value.familyName,
+      givenName: this.editForm.value.givenName,
+      location: this.editForm.value.location,
+      contactMedium: [{
+        mediumType: 'main',
+        characteristic: this.editForm.value.contactInfo
+      }],
+      partyCharacteristic: []
+    }
+
+    if (this.customOrganizationCtrl.value)
+      updateObj.partyCharacteristic.push({name: 'organization', valueType: 'TEXT', value: {value: this.customOrganizationCtrl.value}})
+    // updateObj = this.editForm.value
+
+    let updatedIndividual: Individual
+
+    if (this.newIndividual) {
+      // const definedCharacteristics = this.editForm.get('partyCharacteristic').value.filter(el => el.value)
+      // if (definedCharacteristics.length) updateObj.partyCharacteristic = definedCharacteristics
+
+      this.individualService.createIndividual(updateObj).subscribe(
+        data => { updatedIndividual = data },
+        error => console.error(error),
+        () => {
+          this.newIndividual = false
+          this.toast.success("Individual was successfully created")
+          this.refreshIndividual(updatedIndividual)
+        }
+      )
+    } 
+    else {
+      this.individualService.patchIndividual({id: this.individualID, individual: updateObj}).subscribe(
+        data => { updatedIndividual = data },
+        error => console.error(error),
+        () => {
+          this.newIndividual = false
+          this.toast.success("Individual was successfully updated")
+          this.refreshIndividual(updatedIndividual)
+        }
+      )
+    }
+
+  }
+
+  refreshIndividual(updatedIndividual: Individual) {
+    this.individualID = updatedIndividual.id
+    this.retrieveIndividual()
+  }
+
+}

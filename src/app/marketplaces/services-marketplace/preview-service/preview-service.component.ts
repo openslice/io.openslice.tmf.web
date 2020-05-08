@@ -5,11 +5,16 @@ import { ServiceSpecificationService } from 'src/app/openApis/ServiceCatalogMana
 import { RequesterService } from 'src/app/requester/services/requester.service';
 import { ToastrService } from 'ngx-toastr';
 import { SortingService } from 'src/app/shared/functions/sorting.service';
+import { trigger } from '@angular/animations';
+import { fadeIn } from 'src/app/shared/animations/animations';
+
 
 @Component({
   selector: 'app-preview-service',
   templateUrl: './preview-service.component.html',
-  styleUrls: ['./preview-service.component.scss']
+  styleUrls: ['./preview-service.component.scss'],
+  animations: [ trigger('fadeIn', fadeIn()) ]
+
 })
 export class PreviewServiceComponent implements OnInit {
 

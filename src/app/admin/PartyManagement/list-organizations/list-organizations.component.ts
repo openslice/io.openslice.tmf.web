@@ -4,7 +4,7 @@ import { MatTableDataSource, MatSort, MatPaginator, MatDialog } from '@angular/m
 import { Organization } from 'src/app/openApis/PartyManagement/models';
 import { ToastrService } from 'ngx-toastr';
 import { HttpErrorResponse } from '@angular/common/http';
-import { DeleteOrganizationComponent } from '../delete-organization/delete-organization/delete-organization.component';
+import { DeleteOrganizationComponent } from '../delete-organization/delete-organization.component';
 
 @Component({
   selector: 'app-list-organizations',

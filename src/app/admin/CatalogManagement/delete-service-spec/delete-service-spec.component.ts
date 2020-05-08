@@ -23,7 +23,7 @@ export class DeleteServiceSpecComponent implements OnInit {
     // this.dialogRef.close('deleted')
     this.specService.deleteServiceSpecification(this.data.id).subscribe(
       data => console.log(data),
-      error => {this.dialogRef.close(error); console.error(error)},
+      error => { this.dialogRef.close(error); console.error(error) },
       () => this.dialogRef.close('deleted')
     )
   }

@@ -4,7 +4,7 @@ import { ToastrService } from 'ngx-toastr';
 import { ServiceOrder } from 'src/app/openApis/ServiceOrderingManagement/models';
 import { MatTableDataSource, MatSort, MatPaginator, MatDialog } from '@angular/material';
 import { FormGroup, FormControl } from '@angular/forms';
-import { DeleteServiceOrderComponent } from '../delete-service-order/delete-service-order/delete-service-order.component';
+import { DeleteServiceOrderComponent } from '../delete-service-order/delete-service-order.component';
 import { HttpErrorResponse } from '@angular/common/http';
 
 const today = new Date()

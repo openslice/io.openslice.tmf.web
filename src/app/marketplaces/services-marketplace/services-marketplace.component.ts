@@ -8,11 +8,14 @@ import { startWith, map } from 'rxjs/operators';
 import { MatDialog } from '@angular/material';
 import { PreviewServiceComponent } from './preview-service/preview-service.component';
 import { SortingService } from 'src/app/shared/functions/sorting.service';
+import { trigger } from '@angular/animations';
+import { fadeIn } from 'src/app/shared/animations/animations';
 
 @Component({
   selector: 'app-services-marketplace',
   templateUrl: './services-marketplace.component.html',
-  styleUrls: ['./services-marketplace.component.scss']
+  styleUrls: ['./services-marketplace.component.scss'],
+  animations: [ trigger('fadeIn', fadeIn()) ]
 })
 export class ServicesMarketplaceComponent implements OnInit {
 

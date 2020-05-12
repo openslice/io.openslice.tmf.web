@@ -11,12 +11,14 @@ import { PortalUser } from 'src/app/openApis/PortalRepositoryAPI/models';
 import { RequesterService } from 'src/app/requester/services/requester.service';
 import decode from 'jwt-decode';
 import { userFromJWT } from 'src/app/models/user-from-jwt.model';
+import { trigger } from '@angular/animations';
+import { fadeIn } from '../animations/animations';
 
 @Component({
   selector: 'app-navbar',
   templateUrl: './navbar.component.html',
   styleUrls: ['./navbar.component.scss'],
-  providers: []
+  animations: [ trigger('fadeIn', fadeIn()) ]
 })
 export class NavbarComponent implements OnInit {
 

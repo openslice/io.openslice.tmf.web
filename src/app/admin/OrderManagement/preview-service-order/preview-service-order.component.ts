@@ -147,7 +147,7 @@ export class PreviewServiceOrderComponent implements OnInit {
     }
     if (this.editForm.get('note').value) {
       orderUpdate.note = [{
-        author:this.authService.portalUser.username,
+        author:this.authService.portalUser.preferred_username,
         text: this.editForm.get('note').value,
         date: new Date().toISOString()
       }]

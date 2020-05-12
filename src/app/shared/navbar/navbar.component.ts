@@ -9,11 +9,14 @@ import { AuthService } from '../services/auth.service';
 import { PortalRepositoryApiImplService } from 'src/app/openApis/PortalRepositoryAPI/services';
 import { PortalUser } from 'src/app/openApis/PortalRepositoryAPI/models';
 import { RequesterService } from 'src/app/requester/services/requester.service';
+import decode from 'jwt-decode';
+import { userFromJWT } from 'src/app/models/user-from-jwt.model';
 
 @Component({
   selector: 'app-navbar',
   templateUrl: './navbar.component.html',
-  styleUrls: ['./navbar.component.scss']
+  styleUrls: ['./navbar.component.scss'],
+  providers: []
 })
 export class NavbarComponent implements OnInit {
 
@@ -22,13 +25,12 @@ export class NavbarComponent implements OnInit {
     private dialog: MatDialog,
     private toast: ToastrService,
     public authService: AuthService,
-    public requesterService: RequesterService,
-    private portalRepApi: PortalRepositoryApiImplService
+    public requesterService: RequesterService
   ) { }
 
   loggedIn: boolean
   isNavbarCollapsed: boolean = true
-  portalUser: PortalUser
+  portalUser: userFromJWT
 
   ngOnInit() {
     this.loggedIn = this.authService.hasValidToken()
@@ -36,10 +38,13 @@ export class NavbarComponent implements OnInit {
     this.authService.canActivateProtectedRoutes$.subscribe(
       _ => {
         if (this.authService.hasValidToken()) {
+          
+          this.authService.portalUser = this.portalUser = decode(this.authService.getAccessToken())
           this.loggedIn = true
-          this.portalRepApi.getUserUsingGET().subscribe(
-            user => this.authService.portalUser = this.portalUser = user
-          )
+
+          // this.portalRepApi.getUserUsingGET().subscribe(
+          //   user => this.authService.portalUser = this.portalUser = user
+          // )
         }
       }
     )
@@ -74,7 +79,7 @@ export class NavbarComponent implements OnInit {
   }
 
   logout() {
-    console.log('logout')
+    console.warn('logging out...')
     
     this.authService.logout()
 

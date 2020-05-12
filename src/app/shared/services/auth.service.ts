@@ -5,9 +5,10 @@ import { Router } from '@angular/router';
 // import { authConfig } from 'src/assets/config/config.oauth';
 import { map } from 'rxjs/operators';
 import { PortalUser } from 'src/app/openApis/PortalRepositoryAPI/models';
+import { IAppConfig } from 'src/app/models/app-config.model';
 import { HttpClient } from '@angular/common/http';
 import { BootstrapService } from 'src/app/bootstrap/bootstrap.service';
-import { IAppConfig } from 'src/app/models/app-config.model';
+import { userFromJWT } from 'src/app/models/user-from-jwt.model';
 
 
 @Injectable({
@@ -32,7 +33,7 @@ export class AuthService {
   }
 
   private authConfigFile: AuthConfig
-  public portalUser: PortalUser
+  public portalUser: userFromJWT
 
   constructor(    
     private oauthService: OAuthService,
@@ -60,8 +61,11 @@ export class AuthService {
       this.isAuthenticatedSubject$.next(this.oauthService.hasValidAccessToken())
       if (ev instanceof OAuthErrorEvent) {
         console.error(ev);
+        console.error('AccessTokenExpiration : ', new Date(this.oauthService.getAccessTokenExpiration()).toUTCString());
+
       } else {
         console.warn(ev);
+        console.warn('AccessTokenExpiration : ', new Date(this.oauthService.getAccessTokenExpiration()).toUTCString());
       }
     })
 
@@ -74,8 +78,9 @@ export class AuthService {
     this.oauthService.configure(this.authConfigFile);
     this.oauthService.setStorage(localStorage);
 
-    this.oauthService.tokenValidationHandler = new JwksValidationHandler();
-    
+    // this.oauthService.tokenValidationHandler = new JwksValidationHandler();
+
+    this.oauthService.setupAutomaticSilentRefresh();
 
     this.oauthService.tryLoginCodeFlow()
     .catch(error => console.error(error))
@@ -87,9 +92,9 @@ export class AuthService {
         // console.log('getAccessTokenExpiration : ', this.oauthService.getAccessTokenExpiration());
         // console.log('getAccessToken : ', this.oauthService.getAccessToken());
         // console.log('getIdToken : ', this.oauthService.getIdToken());
-        
+        // console.log(this.oauthService)
+       
         console.warn('AccessTokenExpiration : ', new Date(this.oauthService.getAccessTokenExpiration()).toUTCString());
-
 
         if (this.oauthService.hasValidAccessToken()) {
           console.warn('this.oauthService.hasValidAccessToken() === true')
@@ -166,18 +171,20 @@ export class AuthService {
     // this.http.delete(authConfig.tokenEndpoint).subscribe(
     //   data => console.log(data)
     // )
+    this.oauthService.logOut()
 
-    this.http.delete(this.authConfigFile.tokenEndpoint).subscribe(
-      data => { 
-        this.oauthService.logOut()
-        this.router.navigate([this.router.routerState.snapshot.url])
-      },
-      error => {
-        console.error(error)
-        this.oauthService.logOut()
-        this.router.navigate([this.router.routerState.snapshot.url])        
-      }
-    )
+    // this.http.delete(this.authConfigFile.tokenEndpoint).subscribe(
+    //   data => { 
+    //     console.warn(data)
+    //     this.oauthService.logOut()
+    //     this.router.navigate([this.router.routerState.snapshot.url])
+    //   },
+    //   error => {
+    //     console.error(error)
+    //     this.oauthService.logOut()
+    //     this.router.navigate([this.router.routerState.snapshot.url])        
+    //   }
+    // )
   }
 
 
@@ -185,4 +192,5 @@ export class AuthService {
   public refresh() { this.oauthService.silentRefresh(); }
   public hasValidToken() { return this.oauthService.hasValidAccessToken(); }
   public getAccessToken() { return this.oauthService.getAccessToken(); }
+  public getRefreshToken() { return  this.oauthService.getRefreshToken();}
 }

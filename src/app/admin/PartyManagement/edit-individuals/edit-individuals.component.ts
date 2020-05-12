@@ -1,10 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router, ActivationEnd } from '@angular/router';
 import { IndividualService, OrganizationService } from 'src/app/openApis/PartyManagement/services';
 import { MatDialog } from '@angular/material';
 import { ToastrService } from 'ngx-toastr';
 import { Individual, Organization, IndividualCreate, IndividualUpdate } from 'src/app/openApis/PartyManagement/models';
 import { FormGroup, FormControl } from '@angular/forms';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-edit-individuals',
@@ -17,6 +18,7 @@ export class EditIndividualsComponent implements OnInit {
     private activatedRoute: ActivatedRoute,
     private individualService: IndividualService,
     private organizationService: OrganizationService,
+    private router: Router,
     private dialog: MatDialog,
     private toast: ToastrService,
   ) { }
@@ -48,9 +50,11 @@ export class EditIndividualsComponent implements OnInit {
 
   newIndividual = false
 
+  subscriptions = new Subscription()
   
   ngOnInit() {
     // this.retrieveOrganizations()
+    this.routerEventsSubscription()
 
     if (this.activatedRoute.snapshot.params.id) 
     {
@@ -60,6 +64,17 @@ export class EditIndividualsComponent implements OnInit {
       // this.initNewOrganizationFormArray()  
       this.newIndividual = true
     }
+  }
+
+  routerEventsSubscription() {
+    this.subscriptions = this.router.events.subscribe(
+      event => {
+        if (event instanceof ActivationEnd) {
+          this.individualID = this.activatedRoute.snapshot.params.id
+          this.retrieveIndividual()
+        }
+      }
+    )
   }
 
   retrieveOrganizations() {
@@ -130,7 +145,7 @@ export class EditIndividualsComponent implements OnInit {
       )
     } 
     else {
-      this.individualService.patchIndividual({id: this.individualID, individual: updateObj}).subscribe(
+      this.individualService.patchIndividual({id: this.individual.id, individual: updateObj}).subscribe(
         data => { updatedIndividual = data },
         error => console.error(error),
         () => {
@@ -146,6 +161,10 @@ export class EditIndividualsComponent implements OnInit {
   refreshIndividual(updatedIndividual: Individual) {
     this.individualID = updatedIndividual.id
     this.retrieveIndividual()
+  }
+
+  ngOnDestroy() {
+    this.subscriptions.unsubscribe()
   }
 
 }

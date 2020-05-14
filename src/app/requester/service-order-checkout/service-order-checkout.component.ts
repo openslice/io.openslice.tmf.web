@@ -104,7 +104,7 @@ export class ServiceOrderCheckoutComponent implements OnInit {
     let newOrder: ServiceOrderCreate = {
       orderItem:[], 
       note: [{
-        author:this.authService.portalUser.preferred_username,
+        author:this.authService.portalUserJWT.preferred_username,
         text: this.serviceNoteCtrl.value,
         date: new Date().toISOString()
       }],

@@ -4,11 +4,13 @@ import { OAuthService, OAuthErrorEvent, JwksValidationHandler, AuthConfig } from
 import { Router } from '@angular/router';
 // import { authConfig } from 'src/assets/config/config.oauth';
 import { map } from 'rxjs/operators';
-import { PortalUser } from 'src/app/openApis/PortalRepositoryAPI/models';
-import { IAppConfig } from 'src/app/models/app-config.model';
-import { HttpClient } from '@angular/common/http';
 import { BootstrapService } from 'src/app/bootstrap/bootstrap.service';
 import { userFromJWT } from 'src/app/models/user-from-jwt.model';
+import { Individual } from 'src/app/openApis/PartyManagement/models';
+import decode from 'jwt-decode';
+import { IndividualService } from 'src/app/openApis/PartyManagement/services';
+import { ToastrService } from 'ngx-toastr';
+
 
 
 @Injectable({
@@ -33,13 +35,15 @@ export class AuthService {
   }
 
   private authConfigFile: AuthConfig
-  public portalUser: userFromJWT
+  public portalUser: Individual
+  public portalUserJWT: userFromJWT
 
-  constructor(    
+   constructor(    
     private oauthService: OAuthService,
     private router: Router,
-    private http: HttpClient,
-    private bootstrapService: BootstrapService
+    private toast: ToastrService,
+    private bootstrapService: BootstrapService,
+    private individualService: IndividualService
     ) 
   {
     window.addEventListener('storage', (event) => {
@@ -62,7 +66,7 @@ export class AuthService {
       if (ev instanceof OAuthErrorEvent) {
         console.error(ev);
         console.error('AccessTokenExpiration : ', new Date(this.oauthService.getAccessTokenExpiration()).toUTCString());
-
+        this.logout()
       } else {
         console.warn(ev);
         console.warn('AccessTokenExpiration : ', new Date(this.oauthService.getAccessTokenExpiration()).toUTCString());
@@ -161,6 +165,17 @@ export class AuthService {
     })
 
     // this.oauthService.setupAutomaticSilentRefresh()
+  }
+  
+  public fetchUserInfo() {
+    this.portalUserJWT = decode(this.getAccessToken())
+    this.individualService.retrieveIndividual({id:'myuser'}).subscribe(
+      data => { this.portalUser = data },
+      error => {
+        console.error(error)
+        this.toast.error('An error occurred fetching user information')
+      }
+    )
   }
 
   public login() {

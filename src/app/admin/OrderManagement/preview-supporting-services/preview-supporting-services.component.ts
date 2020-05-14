@@ -87,7 +87,7 @@ export class PreviewSupportingServicesComponent implements OnInit {
       updateServiceObj['state'] = this.editForm.get('state').value
     if (!this.editForm.get('note').pristine)
       updateServiceObj['note'] = [{
-        author: this.authService.portalUser.preferred_username,
+        author: this.authService.portalUserJWT.preferred_username,
         text: this.editForm.get('note').value
       }]
       

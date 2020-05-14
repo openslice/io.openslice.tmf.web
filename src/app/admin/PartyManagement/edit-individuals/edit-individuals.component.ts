@@ -6,6 +6,7 @@ import { ToastrService } from 'ngx-toastr';
 import { Individual, Organization, IndividualCreate, IndividualUpdate } from 'src/app/openApis/PartyManagement/models';
 import { FormGroup, FormControl } from '@angular/forms';
 import { Subscription } from 'rxjs';
+import { AuthService } from 'src/app/shared/services/auth.service';
 
 @Component({
   selector: 'app-edit-individuals',
@@ -18,6 +19,7 @@ export class EditIndividualsComponent implements OnInit {
     private activatedRoute: ActivatedRoute,
     private individualService: IndividualService,
     private organizationService: OrganizationService,
+    private authService: AuthService,
     private router: Router,
     private dialog: MatDialog,
     private toast: ToastrService,
@@ -104,6 +106,10 @@ export class EditIndividualsComponent implements OnInit {
           this.customOrganizationCtrl.setValue(this.individual.partyCharacteristic.find( char => char.name === 'organization').value.value)
         }
 
+        if (this.individualID ==="myuser") {
+          this.authService.portalUser = this.individual
+        }
+
         //prefefined Organization in Related Party
         
         //
@@ -159,7 +165,7 @@ export class EditIndividualsComponent implements OnInit {
   }
 
   refreshIndividual(updatedIndividual: Individual) {
-    this.individualID = updatedIndividual.id
+    // this.individualID = updatedIndividual.id
     this.retrieveIndividual()
   }
 

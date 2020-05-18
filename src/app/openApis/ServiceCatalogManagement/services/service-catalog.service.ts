@@ -28,6 +28,8 @@ class ServiceCatalogService extends __BaseService {
   }
 
   /**
+   * List or find ServiceCatalog objects
+   *
    * This operation list or find ServiceCatalog entities
    * @param params The `ServiceCatalogService.ListServiceCatalogParams` containing the following parameters:
    *
@@ -64,6 +66,8 @@ class ServiceCatalogService extends __BaseService {
     );
   }
   /**
+   * List or find ServiceCatalog objects
+   *
    * This operation list or find ServiceCatalog entities
    * @param params The `ServiceCatalogService.ListServiceCatalogParams` containing the following parameters:
    *
@@ -82,6 +86,8 @@ class ServiceCatalogService extends __BaseService {
   }
 
   /**
+   * Creates a ServiceCatalog
+   *
    * This operation creates a ServiceCatalog entity.
    * @param serviceCatalog The ServiceCatalog to be created
    * @return OK or Created
@@ -109,6 +115,8 @@ class ServiceCatalogService extends __BaseService {
     );
   }
   /**
+   * Creates a ServiceCatalog
+   *
    * This operation creates a ServiceCatalog entity.
    * @param serviceCatalog The ServiceCatalog to be created
    * @return OK or Created
@@ -120,6 +128,8 @@ class ServiceCatalogService extends __BaseService {
   }
 
   /**
+   * Retrieves a ServiceCatalog by ID
+   *
    * This operation retrieves a ServiceCatalog entity. Attribute selection is enabled for all first level attributes.
    * @param params The `ServiceCatalogService.RetrieveServiceCatalogParams` containing the following parameters:
    *
@@ -137,7 +147,7 @@ class ServiceCatalogService extends __BaseService {
     if (params.fields != null) __params = __params.set('fields', params.fields.toString());
     let req = new HttpRequest<any>(
       'GET',
-      this.rootUrl + `/serviceCatalogManagement/v4/serviceCatalog/${params.id}`,
+      this.rootUrl + `/serviceCatalogManagement/v4/serviceCatalog/${encodeURIComponent(params.id)}`,
       __body,
       {
         headers: __headers,
@@ -153,6 +163,8 @@ class ServiceCatalogService extends __BaseService {
     );
   }
   /**
+   * Retrieves a ServiceCatalog by ID
+   *
    * This operation retrieves a ServiceCatalog entity. Attribute selection is enabled for all first level attributes.
    * @param params The `ServiceCatalogService.RetrieveServiceCatalogParams` containing the following parameters:
    *
@@ -169,6 +181,8 @@ class ServiceCatalogService extends __BaseService {
   }
 
   /**
+   * Deletes a ServiceCatalog
+   *
    * This operation deletes a ServiceCatalog entity.
    * @param id Identifier of the ServiceCatalog
    */
@@ -179,7 +193,7 @@ class ServiceCatalogService extends __BaseService {
 
     let req = new HttpRequest<any>(
       'DELETE',
-      this.rootUrl + `/serviceCatalogManagement/v4/serviceCatalog/${id}`,
+      this.rootUrl + `/serviceCatalogManagement/v4/serviceCatalog/${encodeURIComponent(id)}`,
       __body,
       {
         headers: __headers,
@@ -195,6 +209,8 @@ class ServiceCatalogService extends __BaseService {
     );
   }
   /**
+   * Deletes a ServiceCatalog
+   *
    * This operation deletes a ServiceCatalog entity.
    * @param id Identifier of the ServiceCatalog
    */
@@ -205,6 +221,8 @@ class ServiceCatalogService extends __BaseService {
   }
 
   /**
+   * Updates partially a ServiceCatalog
+   *
    * This operation updates partially a ServiceCatalog entity.
    * @param params The `ServiceCatalogService.PatchServiceCatalogParams` containing the following parameters:
    *
@@ -222,7 +240,7 @@ class ServiceCatalogService extends __BaseService {
 
     let req = new HttpRequest<any>(
       'PATCH',
-      this.rootUrl + `/serviceCatalogManagement/v4/serviceCatalog/${params.id}`,
+      this.rootUrl + `/serviceCatalogManagement/v4/serviceCatalog/${encodeURIComponent(params.id)}`,
       __body,
       {
         headers: __headers,
@@ -238,6 +256,8 @@ class ServiceCatalogService extends __BaseService {
     );
   }
   /**
+   * Updates partially a ServiceCatalog
+   *
    * This operation updates partially a ServiceCatalog entity.
    * @param params The `ServiceCatalogService.PatchServiceCatalogParams` containing the following parameters:
    *

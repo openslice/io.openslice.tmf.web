@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ServiceCatalogService, ServiceCandidateService } from 'src/app/openApis/ServiceCatalogManagement/services';
+import { ServiceCatalogService, ServiceCandidateService, ServiceSpecificationService } from 'src/app/openApis/ServiceCatalogManagement/services';
 import { ServiceCatalog, ServiceCategoryRef, ServiceCategory, ServiceCandidateRef, ServiceCandidate } from 'src/app/openApis/ServiceCatalogManagement/models';
 import { TreeServiceMarketPlaceService } from '../shared/services/tree-service-market-place.service';
 import { Observable } from 'rxjs';
@@ -10,6 +10,7 @@ import { PreviewServiceComponent } from './preview-service/preview-service.compo
 import { SortingService } from 'src/app/shared/functions/sorting.service';
 import { trigger } from '@angular/animations';
 import { fadeIn } from 'src/app/shared/animations/animations';
+import { ServiceCandidateWithLogo } from 'src/app/models/service-candidate-with-logo.model';
 
 @Component({
   selector: 'app-services-marketplace',
@@ -17,12 +18,14 @@ import { fadeIn } from 'src/app/shared/animations/animations';
   styleUrls: ['./services-marketplace.component.scss'],
   animations: [ trigger('fadeIn', fadeIn()) ]
 })
+
 export class ServicesMarketplaceComponent implements OnInit {
 
   constructor(
     private catalogService: ServiceCatalogService,
     // private categoryService: ServiceCategoryService,
     private candidateService: ServiceCandidateService,
+    private specificationService: ServiceSpecificationService,
     private treeMarketPlaceService: TreeServiceMarketPlaceService,
     private dialog: MatDialog,
     private sortingService: SortingService
@@ -35,12 +38,16 @@ export class ServicesMarketplaceComponent implements OnInit {
 
   selectedCategory: ServiceCategory
 
-  serviceCandidates: ServiceCandidate[] = []
+  serviceCandidates: ServiceCandidateWithLogo[] = []
 
   serviceCandidatesFilterCtrl = new FormControl();
-  filteredServiceCandidates$: Observable<ServiceCandidate[]>
+  filteredServiceCandidates$: Observable<ServiceCandidateWithLogo[]>
+
+  specServiceRootUrl : string
 
   ngOnInit() {
+    this.specServiceRootUrl = this.specificationService.rootUrl
+
     this.retrieveCatalogsList()
     
     this.treeMarketPlaceService.categorySelected$.subscribe(
@@ -48,7 +55,7 @@ export class ServicesMarketplaceComponent implements OnInit {
         this.selectedCategory = category
         this.serviceCandidates = []
         this.serviceCandidatesFilterCtrl.reset()
-        category.serviceCandidate.forEach(candidateRef => {
+        category.serviceCandidate.forEach((candidateRef) => {
           this.retrieveCandidateFromRef(candidateRef)
         })
       }
@@ -65,10 +72,34 @@ export class ServicesMarketplaceComponent implements OnInit {
     )
   }
 
-
   retrieveCandidateFromRef(candidateRef: ServiceCandidateRef) {
+    
     this.candidateService.retrieveServiceCandidate({ id: candidateRef.id }).subscribe(
-      data => { this.serviceCandidates.push(data) },
+      data => { 
+        console.log(data)
+        let candidate: ServiceCandidateWithLogo = data
+        candidate.fetchingLogo = true
+        candidate.logo = 'assets/images/logo_icon_original.png' //set Default App Image
+
+        this.serviceCandidates.push(candidate)
+
+        this.specificationService.getAttachment({id: data.serviceSpecification.id, attid:'logo'}).subscribe(
+          data => {
+            const reader = new FileReader();
+            reader.readAsDataURL(data);
+            reader.onload = (__event) => {
+              const base64data = reader.result;
+              this.serviceCandidates.find(cand => cand.id === candidateRef.id).logo = base64data
+              candidate.fetchingLogo = false
+            }
+          },
+          error => {
+            candidate.fetchingLogo = false
+            // console.error (error)
+          }
+        )
+
+      },
       error => { console.error(error) },
       () => {
         this.serviceCandidates.sort(this.sortingService.ascStringSortingFunctionByNameProperty())
@@ -99,10 +130,6 @@ export class ServicesMarketplaceComponent implements OnInit {
         console.log(result);    
       }
     )
-    
   }
-
-
-
 
 }

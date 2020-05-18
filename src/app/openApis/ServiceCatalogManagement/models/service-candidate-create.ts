@@ -9,14 +9,14 @@ import { TimePeriod } from './time-period';
 export interface ServiceCandidateCreate {
 
   /**
-   * Date and time of the last update of this REST resource
-   */
-  lastUpdate?: string;
-
-  /**
    * When sub-classing, this defines the super-class
    */
   '@baseType'?: string;
+
+  /**
+   * A URI to a JSON-Schema file that defines additional attributes and relationships
+   */
+  '@schemaLocation'?: string;
 
   /**
    * When sub-classing, this defines the sub-class entity name
@@ -34,9 +34,9 @@ export interface ServiceCandidateCreate {
   description?: string;
 
   /**
-   * A URI to a JSON-Schema file that defines additional attributes and relationships
+   * Date and time of the last update of this REST resource
    */
-  '@schemaLocation'?: string;
+  lastUpdate?: string;
 
   /**
    * Used to indicate the current lifecycle status of the service candidate.

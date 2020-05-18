@@ -1,6 +1,6 @@
 import { Component, OnInit, Inject, ViewChild } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef, MatTableDataSource, MatSort, MatCheckboxChange } from '@angular/material';
-import { ServiceCandidate, ServiceSpecification, ServiceSpecCharacteristicValue, ServiceSpecCharacteristic } from 'src/app/openApis/ServiceCatalogManagement/models';
+import { ServiceCandidate, ServiceSpecification, ServiceSpecCharacteristicValue, ServiceSpecCharacteristic, AttachmentRef } from 'src/app/openApis/ServiceCatalogManagement/models';
 import { ServiceSpecificationService } from 'src/app/openApis/ServiceCatalogManagement/services';
 import { RequesterService } from 'src/app/requester/services/requester.service';
 import { ToastrService } from 'ngx-toastr';
@@ -31,7 +31,9 @@ export class PreviewServiceComponent implements OnInit {
 
   candidate: ServiceCandidate
   spec: ServiceSpecification
-
+  specLogoRef: AttachmentRef
+  specLogoUrl: string
+  specServiceRootUrl: string
 
   displayedColumns = ['name', 'defaultValues']
   dataSourceConf  = new MatTableDataSource<ServiceSpecification>()
@@ -45,9 +47,10 @@ export class PreviewServiceComponent implements OnInit {
   orderView = false
 
   ngOnInit() {
+    this.specServiceRootUrl = this.specService.rootUrl
+
     this.candidate = this.data.serviceCandidate
     this.retrieveServiceSpec(this.data.serviceCandidate)
-
   }
 
   configurableFilterChanged(event:MatCheckboxChange) {
@@ -64,6 +67,14 @@ export class PreviewServiceComponent implements OnInit {
         this.dataSourceConf.sort = this.sort1
         this.dataSourceNonConf.data = this.spec.serviceSpecCharacteristic.filter(spec => !spec.configurable)
         this.dataSourceNonConf.sort = this.sort2
+
+        //Check if spec has a defined logo
+        this.specLogoRef = this.spec.attachment.find( att => att.name.includes('logo') )
+        if (this.specLogoRef) {
+          this.specLogoUrl = `${this.specServiceRootUrl}/${this.specLogoRef.url}`
+        } else {
+          this.specLogoUrl = "assets/images/logo_icon_original.png"
+        }
       }
     )
   }

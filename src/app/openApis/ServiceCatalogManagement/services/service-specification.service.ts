@@ -10,6 +10,8 @@ import { map as __map, filter as __filter } from 'rxjs/operators';
 import { ServiceSpecification } from '../models/service-specification';
 import { ServiceSpecificationCreate } from '../models/service-specification-create';
 import { ServiceSpecificationUpdate } from '../models/service-specification-update';
+import { Attachment } from '../models/attachment';
+import { Resource } from '../models/resource';
 @Injectable({
   providedIn: 'root',
 })
@@ -23,6 +25,8 @@ class ServiceSpecificationService extends __BaseService {
   static readonly deleteServiceSpecificationPath = '/serviceCatalogManagement/v4/serviceSpecification/{id}';
   static readonly patchServiceSpecificationPath = '/serviceCatalogManagement/v4/serviceSpecification/{id}';
   static readonly addAttachmentToServiceSpecificationPath = '/serviceCatalogManagement/v4/serviceSpecification/{id}/attachment';
+  static readonly getAttachmentPath = '/serviceCatalogManagement/v4/serviceSpecification/{id}/attachment/{attid}';
+  static readonly getAttachmentWithFilenamePath = '/serviceCatalogManagement/v4/serviceSpecification/{id}/attachment/{attid}/{afilename}';
   static readonly cloneServiceSpecificationPath = '/serviceCatalogManagement/v4/serviceSpecification/{id}/clone';
   static readonly retrieveServiceSpecificationDescriptorPath = '/serviceCatalogManagement/v4/serviceSpecification/{id}/sd';
 
@@ -34,6 +38,8 @@ class ServiceSpecificationService extends __BaseService {
   }
 
   /**
+   * List or find ServiceSpecification objects
+   *
    * This operation list or find ServiceSpecification entities
    * @param params The `ServiceSpecificationService.ListServiceSpecificationParams` containing the following parameters:
    *
@@ -70,6 +76,8 @@ class ServiceSpecificationService extends __BaseService {
     );
   }
   /**
+   * List or find ServiceSpecification objects
+   *
    * This operation list or find ServiceSpecification entities
    * @param params The `ServiceSpecificationService.ListServiceSpecificationParams` containing the following parameters:
    *
@@ -88,6 +96,8 @@ class ServiceSpecificationService extends __BaseService {
   }
 
   /**
+   * Creates a ServiceSpecification
+   *
    * This operation creates a ServiceSpecification entity.
    * @param serviceSpecification The ServiceSpecification to be created
    * @return OK or Created
@@ -115,6 +125,8 @@ class ServiceSpecificationService extends __BaseService {
     );
   }
   /**
+   * Creates a ServiceSpecification
+   *
    * This operation creates a ServiceSpecification entity.
    * @param serviceSpecification The ServiceSpecification to be created
    * @return OK or Created
@@ -126,6 +138,8 @@ class ServiceSpecificationService extends __BaseService {
   }
 
   /**
+   * Clones a GST ServiceSpecification
+   *
    * This operation clones a ServiceSpecification GST entity. The response is the cloned spec
    * @param serviceName A name of the cloned GST
    * @return Cloned
@@ -153,6 +167,8 @@ class ServiceSpecificationService extends __BaseService {
     );
   }
   /**
+   * Clones a GST ServiceSpecification
+   *
    * This operation clones a ServiceSpecification GST entity. The response is the cloned spec
    * @param serviceName A name of the cloned GST
    * @return Cloned
@@ -164,6 +180,8 @@ class ServiceSpecificationService extends __BaseService {
   }
 
   /**
+   * Clones a VINNI ServiceSpecification
+   *
    * This operation clones a ServiceSpecification 5G-VINNI entity. The response is the cloned spec
    * @param params The `ServiceSpecificationService.CloneVINNIServiceSpecificationParams` containing the following parameters:
    *
@@ -224,6 +242,8 @@ class ServiceSpecificationService extends __BaseService {
     );
   }
   /**
+   * Clones a VINNI ServiceSpecification
+   *
    * This operation clones a ServiceSpecification 5G-VINNI entity. The response is the cloned spec
    * @param params The `ServiceSpecificationService.CloneVINNIServiceSpecificationParams` containing the following parameters:
    *
@@ -258,6 +278,8 @@ class ServiceSpecificationService extends __BaseService {
   }
 
   /**
+   * Creates a ServiceSpecification from an NSD id. It retreives the NSD from  the NSD/VNF catalog
+   *
    * This operation creates a ServiceSpecification from an NSD id. It retreives the NSD from  the NSD/VNF catalog. The response is the cloned spec
    * @param id Identifier of the NSD id from the NSD/VNF catalog
    * @return Created
@@ -269,7 +291,7 @@ class ServiceSpecificationService extends __BaseService {
 
     let req = new HttpRequest<any>(
       'GET',
-      this.rootUrl + `/serviceCatalogManagement/v4/serviceSpecification/specFromNSDID/${id}`,
+      this.rootUrl + `/serviceCatalogManagement/v4/serviceSpecification/specFromNSDID/${encodeURIComponent(id)}`,
       __body,
       {
         headers: __headers,
@@ -285,6 +307,8 @@ class ServiceSpecificationService extends __BaseService {
     );
   }
   /**
+   * Creates a ServiceSpecification from an NSD id. It retreives the NSD from  the NSD/VNF catalog
+   *
    * This operation creates a ServiceSpecification from an NSD id. It retreives the NSD from  the NSD/VNF catalog. The response is the cloned spec
    * @param id Identifier of the NSD id from the NSD/VNF catalog
    * @return Created
@@ -296,6 +320,8 @@ class ServiceSpecificationService extends __BaseService {
   }
 
   /**
+   * Retrieves a ServiceSpecification by ID
+   *
    * This operation retrieves a ServiceSpecification entity. Attribute selection is enabled for all first level attributes.
    * @param params The `ServiceSpecificationService.RetrieveServiceSpecificationParams` containing the following parameters:
    *
@@ -313,7 +339,7 @@ class ServiceSpecificationService extends __BaseService {
     if (params.fields != null) __params = __params.set('fields', params.fields.toString());
     let req = new HttpRequest<any>(
       'GET',
-      this.rootUrl + `/serviceCatalogManagement/v4/serviceSpecification/${params.id}`,
+      this.rootUrl + `/serviceCatalogManagement/v4/serviceSpecification/${encodeURIComponent(params.id)}`,
       __body,
       {
         headers: __headers,
@@ -329,6 +355,8 @@ class ServiceSpecificationService extends __BaseService {
     );
   }
   /**
+   * Retrieves a ServiceSpecification by ID
+   *
    * This operation retrieves a ServiceSpecification entity. Attribute selection is enabled for all first level attributes.
    * @param params The `ServiceSpecificationService.RetrieveServiceSpecificationParams` containing the following parameters:
    *
@@ -345,6 +373,8 @@ class ServiceSpecificationService extends __BaseService {
   }
 
   /**
+   * Deletes a ServiceSpecification
+   *
    * This operation deletes a ServiceSpecification entity.
    * @param id Identifier of the ServiceSpecification
    */
@@ -355,7 +385,7 @@ class ServiceSpecificationService extends __BaseService {
 
     let req = new HttpRequest<any>(
       'DELETE',
-      this.rootUrl + `/serviceCatalogManagement/v4/serviceSpecification/${id}`,
+      this.rootUrl + `/serviceCatalogManagement/v4/serviceSpecification/${encodeURIComponent(id)}`,
       __body,
       {
         headers: __headers,
@@ -371,6 +401,8 @@ class ServiceSpecificationService extends __BaseService {
     );
   }
   /**
+   * Deletes a ServiceSpecification
+   *
    * This operation deletes a ServiceSpecification entity.
    * @param id Identifier of the ServiceSpecification
    */
@@ -381,6 +413,8 @@ class ServiceSpecificationService extends __BaseService {
   }
 
   /**
+   * Updates partially a ServiceSpecification
+   *
    * This operation updates partially a ServiceSpecification entity.
    * @param params The `ServiceSpecificationService.PatchServiceSpecificationParams` containing the following parameters:
    *
@@ -398,7 +432,7 @@ class ServiceSpecificationService extends __BaseService {
 
     let req = new HttpRequest<any>(
       'PATCH',
-      this.rootUrl + `/serviceCatalogManagement/v4/serviceSpecification/${params.id}`,
+      this.rootUrl + `/serviceCatalogManagement/v4/serviceSpecification/${encodeURIComponent(params.id)}`,
       __body,
       {
         headers: __headers,
@@ -414,6 +448,8 @@ class ServiceSpecificationService extends __BaseService {
     );
   }
   /**
+   * Updates partially a ServiceSpecification
+   *
    * This operation updates partially a ServiceSpecification entity.
    * @param params The `ServiceSpecificationService.PatchServiceSpecificationParams` containing the following parameters:
    *
@@ -430,29 +466,28 @@ class ServiceSpecificationService extends __BaseService {
   }
 
   /**
+   * Adds an attachment to a ServiceSpecification
+   *
    * This operation adds an attachment to a ServiceSpecification and updates partially a ServiceSpecification entity
    * @param params The `ServiceSpecificationService.AddAttachmentToServiceSpecificationParams` containing the following parameters:
    *
    * - `id`: Identifier of the ServiceSpecification
    *
-   * - `attachment`: The Attachment object to be added
-   *
    * - `afile`: The Attachment file to be added
    *
    * @return Success
    */
-  addAttachmentToServiceSpecificationResponse(params: ServiceSpecificationService.AddAttachmentToServiceSpecificationParams): __Observable<__StrictHttpResponse<ServiceSpecification>> {
+  addAttachmentToServiceSpecificationResponse(params: ServiceSpecificationService.AddAttachmentToServiceSpecificationParams): __Observable<__StrictHttpResponse<Attachment>> {
     let __params = this.newParams();
     let __headers = new HttpHeaders();
     let __body: any = null;
     let __formData = new FormData();
     __body = __formData;
 
-    __body = params.attachment;
     if (params.afile != null) { __formData.append('afile', params.afile as string | Blob);}
     let req = new HttpRequest<any>(
       'POST',
-      this.rootUrl + `/serviceCatalogManagement/v4/serviceSpecification/${params.id}/attachment`,
+      this.rootUrl + `/serviceCatalogManagement/v4/serviceSpecification/${encodeURIComponent(params.id)}/attachment`,
       __body,
       {
         headers: __headers,
@@ -463,29 +498,142 @@ class ServiceSpecificationService extends __BaseService {
     return this.http.request<any>(req).pipe(
       __filter(_r => _r instanceof HttpResponse),
       __map((_r) => {
-        return _r as __StrictHttpResponse<ServiceSpecification>;
+        return _r as __StrictHttpResponse<Attachment>;
       })
     );
   }
   /**
+   * Adds an attachment to a ServiceSpecification
+   *
    * This operation adds an attachment to a ServiceSpecification and updates partially a ServiceSpecification entity
    * @param params The `ServiceSpecificationService.AddAttachmentToServiceSpecificationParams` containing the following parameters:
    *
    * - `id`: Identifier of the ServiceSpecification
    *
-   * - `attachment`: The Attachment object to be added
-   *
    * - `afile`: The Attachment file to be added
    *
    * @return Success
    */
-  addAttachmentToServiceSpecification(params: ServiceSpecificationService.AddAttachmentToServiceSpecificationParams): __Observable<ServiceSpecification> {
+  addAttachmentToServiceSpecification(params: ServiceSpecificationService.AddAttachmentToServiceSpecificationParams): __Observable<Attachment> {
     return this.addAttachmentToServiceSpecificationResponse(params).pipe(
-      __map(_r => _r.body as ServiceSpecification)
+      __map(_r => _r.body as Attachment)
     );
   }
 
   /**
+   * Get an attachment
+   *
+   * This operation gets an attachment
+   * @param params The `ServiceSpecificationService.GetAttachmentParams` containing the following parameters:
+   *
+   * - `id`: Identifier of the ServiceSpecification
+   *
+   * - `attid`: Identifier of the Attachment
+   *
+   * @return Success
+   */
+  getAttachmentResponse(params: ServiceSpecificationService.GetAttachmentParams): __Observable<__StrictHttpResponse<Resource>> {
+    let __params = this.newParams();
+    let __headers = new HttpHeaders();
+    let __body: any = null;
+
+
+    let req = new HttpRequest<any>(
+      'GET',
+      this.rootUrl + `/serviceCatalogManagement/v4/serviceSpecification/${encodeURIComponent(params.id)}/attachment/${encodeURIComponent(params.attid)}`,
+      __body,
+      {
+        headers: __headers,
+        params: __params,
+        responseType: 'blob'
+      });
+
+    return this.http.request<any>(req).pipe(
+      __filter(_r => _r instanceof HttpResponse),
+      __map((_r) => {
+        return _r as __StrictHttpResponse<Resource>;
+      })
+    );
+  }
+  /**
+   * Get an attachment
+   *
+   * This operation gets an attachment
+   * @param params The `ServiceSpecificationService.GetAttachmentParams` containing the following parameters:
+   *
+   * - `id`: Identifier of the ServiceSpecification
+   *
+   * - `attid`: Identifier of the Attachment
+   *
+   * @return Success
+   */
+  getAttachment(params: ServiceSpecificationService.GetAttachmentParams): __Observable<Blob> {
+    return this.getAttachmentResponse(params).pipe(
+      __map(_r => _r.body as Blob)
+    );
+  }
+
+  /**
+   * Get an attachment with filename
+   *
+   * This operation gets an attachment
+   * @param params The `ServiceSpecificationService.GetAttachmentWithFilenameParams` containing the following parameters:
+   *
+   * - `id`: Identifier of the ServiceSpecification
+   *
+   * - `attid`: Identifier of the Attachment
+   *
+   * - `afilename`: Identifier of the Filename
+   *
+   * @return Success
+   */
+  getAttachmentWithFilenameResponse(params: ServiceSpecificationService.GetAttachmentWithFilenameParams): __Observable<__StrictHttpResponse<Resource>> {
+    let __params = this.newParams();
+    let __headers = new HttpHeaders();
+    let __body: any = null;
+
+
+
+    let req = new HttpRequest<any>(
+      'GET',
+      this.rootUrl + `/serviceCatalogManagement/v4/serviceSpecification/${encodeURIComponent(params.id)}/attachment/${encodeURIComponent(params.attid)}/${encodeURIComponent(params.afilename)}`,
+      __body,
+      {
+        headers: __headers,
+        params: __params,
+        responseType: 'blob'
+      });
+
+    return this.http.request<any>(req).pipe(
+      __filter(_r => _r instanceof HttpResponse),
+      __map((_r) => {
+        return _r as __StrictHttpResponse<Resource>;
+      })
+    );
+  }
+  /**
+   * Get an attachment with filename
+   *
+   * This operation gets an attachment
+   * @param params The `ServiceSpecificationService.GetAttachmentWithFilenameParams` containing the following parameters:
+   *
+   * - `id`: Identifier of the ServiceSpecification
+   *
+   * - `attid`: Identifier of the Attachment
+   *
+   * - `afilename`: Identifier of the Filename
+   *
+   * @return Success
+   */
+  getAttachmentWithFilename(params: ServiceSpecificationService.GetAttachmentWithFilenameParams): __Observable<Resource> {
+    return this.getAttachmentWithFilenameResponse(params).pipe(
+      __map(_r => _r.body as Resource)
+    );
+  }
+
+  /**
+   * Clones a ServiceSpecification
+   *
    * This operation clones a ServiceSpecification entity. The response is the cloned spec
    * @param id Identifier of the ServiceSpecification to clone
    * @return Cloned
@@ -497,7 +645,7 @@ class ServiceSpecificationService extends __BaseService {
 
     let req = new HttpRequest<any>(
       'GET',
-      this.rootUrl + `/serviceCatalogManagement/v4/serviceSpecification/${id}/clone`,
+      this.rootUrl + `/serviceCatalogManagement/v4/serviceSpecification/${encodeURIComponent(id)}/clone`,
       __body,
       {
         headers: __headers,
@@ -513,6 +661,8 @@ class ServiceSpecificationService extends __BaseService {
     );
   }
   /**
+   * Clones a ServiceSpecification
+   *
    * This operation clones a ServiceSpecification entity. The response is the cloned spec
    * @param id Identifier of the ServiceSpecification to clone
    * @return Cloned
@@ -524,6 +674,8 @@ class ServiceSpecificationService extends __BaseService {
   }
 
   /**
+   * Retrieves a ServiceDescriptor by ServiceSpecification  ID
+   *
    * This operation retrieves a Service Descriptor entity. Attribute selection is enabled for all first level attributes.
    * @param id Identifier of the ServiceSpecification
    * @return Success
@@ -535,7 +687,7 @@ class ServiceSpecificationService extends __BaseService {
 
     let req = new HttpRequest<any>(
       'GET',
-      this.rootUrl + `/serviceCatalogManagement/v4/serviceSpecification/${id}/sd`,
+      this.rootUrl + `/serviceCatalogManagement/v4/serviceSpecification/${encodeURIComponent(id)}/sd`,
       __body,
       {
         headers: __headers,
@@ -551,6 +703,8 @@ class ServiceSpecificationService extends __BaseService {
     );
   }
   /**
+   * Retrieves a ServiceDescriptor by ServiceSpecification  ID
+   *
    * This operation retrieves a Service Descriptor entity. Attribute selection is enabled for all first level attributes.
    * @param id Identifier of the ServiceSpecification
    * @return Success
@@ -689,14 +843,46 @@ module ServiceSpecificationService {
     id: string;
 
     /**
-     * The Attachment object to be added
-     */
-    attachment?: string;
-
-    /**
      * The Attachment file to be added
      */
     afile?: Blob;
+  }
+
+  /**
+   * Parameters for getAttachment
+   */
+  export interface GetAttachmentParams {
+
+    /**
+     * Identifier of the ServiceSpecification
+     */
+    id: string;
+
+    /**
+     * Identifier of the Attachment
+     */
+    attid: string;
+  }
+
+  /**
+   * Parameters for getAttachmentWithFilename
+   */
+  export interface GetAttachmentWithFilenameParams {
+
+    /**
+     * Identifier of the ServiceSpecification
+     */
+    id: string;
+
+    /**
+     * Identifier of the Attachment
+     */
+    attid: string;
+
+    /**
+     * Identifier of the Filename
+     */
+    afilename: string;
   }
 }
 

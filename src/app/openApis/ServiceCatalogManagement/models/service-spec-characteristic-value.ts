@@ -8,14 +8,14 @@ import { Any } from './any';
 export interface ServiceSpecCharacteristicValue {
 
   /**
-   * A length, surface, volume, dry measure, liquid measure, money, weight, time, and the like. In general, a determinate quantity or magnitude of the kind designated, taken as a standard of comparison for others of the same kind, in assigning to them numerical values, as 1 foot, 1 yard, 1 mile, 1 square foot.
-   */
-  unitOfMeasure?: string;
-
-  /**
    * When sub-classing, this defines the super-class
    */
   '@baseType'?: string;
+
+  /**
+   * A URI to a JSON-Schema file that defines additional attributes and relationships
+   */
+  '@schemaLocation'?: string;
   '@type'?: string;
 
   /**
@@ -39,9 +39,9 @@ export interface ServiceSpecCharacteristicValue {
   regex?: string;
 
   /**
-   * A URI to a JSON-Schema file that defines additional attributes and relationships
+   * A length, surface, volume, dry measure, liquid measure, money, weight, time, and the like. In general, a determinate quantity or magnitude of the kind designated, taken as a standard of comparison for others of the same kind, in assigning to them numerical values, as 1 foot, 1 yard, 1 mile, 1 square foot.
    */
-  '@schemaLocation'?: string;
+  unitOfMeasure?: string;
   uuid?: string;
 
   /**

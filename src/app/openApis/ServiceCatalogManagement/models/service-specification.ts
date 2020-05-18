@@ -14,14 +14,14 @@ import { TimePeriod } from './time-period';
 export interface ServiceSpecification {
 
   /**
-   * Name of the entity
-   */
-  name?: string;
-
-  /**
    * When sub-classing, this defines the super-class
    */
   '@baseType'?: string;
+
+  /**
+   * A URI to a JSON-Schema file that defines additional attributes and relationships
+   */
+  '@schemaLocation'?: string;
   '@type'?: string;
 
   /**
@@ -56,9 +56,9 @@ export interface ServiceSpecification {
   lifecycleStatus?: string;
 
   /**
-   * A URI to a JSON-Schema file that defines additional attributes and relationships
+   * Name of the entity
    */
-  '@schemaLocation'?: string;
+  name?: string;
 
   /**
    * A list of related party references (RelatedParty [*]). A related party defines party or party role linked to a specific entity.

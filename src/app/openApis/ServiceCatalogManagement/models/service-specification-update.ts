@@ -1,6 +1,6 @@
 /* tslint:disable */
-import { RelatedParty } from './related-party';
 import { AttachmentRef } from './attachment-ref';
+import { RelatedParty } from './related-party';
 import { ResourceSpecificationRef } from './resource-specification-ref';
 import { ServiceLevelSpecificationRef } from './service-level-specification-ref';
 import { ServiceSpecCharacteristic } from './service-spec-characteristic';
@@ -14,14 +14,14 @@ import { TimePeriod } from './time-period';
 export interface ServiceSpecificationUpdate {
 
   /**
-   * A list of related party references (RelatedParty [*]). A related party defines party or party role linked to a specific entity.
-   */
-  relatedParty?: Array<RelatedParty>;
-
-  /**
    * When sub-classing, this defines the super-class
    */
   '@baseType'?: string;
+
+  /**
+   * A URI to a JSON-Schema file that defines additional attributes and relationships
+   */
+  '@schemaLocation'?: string;
 
   /**
    * When sub-classing, this defines the sub-class entity name
@@ -54,9 +54,9 @@ export interface ServiceSpecificationUpdate {
   name?: string;
 
   /**
-   * A URI to a JSON-Schema file that defines additional attributes and relationships
+   * A list of related party references (RelatedParty [*]). A related party defines party or party role linked to a specific entity.
    */
-  '@schemaLocation'?: string;
+  relatedParty?: Array<RelatedParty>;
 
   /**
    * A list of resource specification references (ResourceSpecificationRef [*]). The ResourceSpecification is required for a service specification with type ResourceFacingServiceSpecification (RFSS).

@@ -6,14 +6,14 @@
 export interface ExportJob {
 
   /**
-   * Reason for failure
-   */
-  errorLog?: string;
-
-  /**
    * When sub-classing, this defines the super-class
    */
   '@baseType'?: string;
+
+  /**
+   * A URI to a JSON-Schema file that defines additional attributes and relationships
+   */
+  '@schemaLocation'?: string;
 
   /**
    * When sub-classing, this defines the sub-class entity name
@@ -36,9 +36,9 @@ export interface ExportJob {
   creationDate?: string;
 
   /**
-   * A URI to a JSON-Schema file that defines additional attributes and relationships
+   * Reason for failure
    */
-  '@schemaLocation'?: string;
+  errorLog?: string;
 
   /**
    * Reference of the export job

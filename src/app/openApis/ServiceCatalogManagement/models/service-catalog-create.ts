@@ -9,14 +9,14 @@ import { TimePeriod } from './time-period';
 export interface ServiceCatalogCreate {
 
   /**
-   * Date and time of the last update
-   */
-  lastUpdate?: string;
-
-  /**
    * When sub-classing, this defines the super-class
    */
   '@baseType'?: string;
+
+  /**
+   * A URI to a JSON-Schema file that defines additional attributes and relationships
+   */
+  '@schemaLocation'?: string;
 
   /**
    * When sub-classing, this defines the sub-class entity name
@@ -34,9 +34,9 @@ export interface ServiceCatalogCreate {
   description?: string;
 
   /**
-   * A URI to a JSON-Schema file that defines additional attributes and relationships
+   * Date and time of the last update
    */
-  '@schemaLocation'?: string;
+  lastUpdate?: string;
 
   /**
    * Used to indicate the current lifecycle status

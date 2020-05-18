@@ -1,8 +1,8 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 
 import { ActivatedRoute, Router, ActivationEnd } from '@angular/router';
-import { FormGroup, FormControl, FormArray } from '@angular/forms';
-import { ServiceSpecification, ServiceSpecCharacteristic, ServiceSpecificationUpdate, ServiceSpecificationCreate, ServiceSpecRelationship } from 'src/app/openApis/ServiceCatalogManagement/models';
+import { FormGroup, FormControl, FormArray, Validators } from '@angular/forms';
+import { ServiceSpecification, ServiceSpecCharacteristic, ServiceSpecificationUpdate, ServiceSpecificationCreate, ServiceSpecRelationship, AttachmentRef, Attachment } from 'src/app/openApis/ServiceCatalogManagement/models';
 import { ServiceSpecificationService } from 'src/app/openApis/ServiceCatalogManagement/services';
 import { MatTableDataSource, MatSort, MatPaginator, MatDialog, MatCheckboxChange, MatExpansionPanel } from '@angular/material';
 import { EditServiceSpecCharacteristicsComponent } from './edit-service-spec-characteristics/edit-service-spec-characteristics.component';
@@ -12,13 +12,19 @@ import { Observable, Subscription, timer } from 'rxjs';
 import { startWith, map } from 'rxjs/operators';
 import { delay } from 'q';
 import { AssignServiceRelationshipsComponent } from './assign-service-relationships/assign-service-relationships.component';
+import { FileUploadControl, FileUploadValidators } from '@iplab/ngx-file-upload';
+import { trigger } from '@angular/animations';
+import { fadeIn } from 'src/app/shared/animations/animations';
+import { DeleteAttachmentComponent } from './delete-attachment/delete-attachment.component';
 
 const today = new Date()
 
 @Component({
   selector: 'app-edit-service-specs',
   templateUrl: './edit-service-specs.component.html',
-  styleUrls: ['./edit-service-specs.component.scss']
+  styleUrls: ['./edit-service-specs.component.scss'],
+  animations: [ trigger('fadeIn', fadeIn()) ]
+
 })
 export class EditServiceSpecsComponent implements OnInit {
 
@@ -65,10 +71,23 @@ export class EditServiceSpecsComponent implements OnInit {
   serviceRelatedSpecsFilterCtrl = new FormControl();
   filteredRelatedSpecs$: Observable<ServiceSpecRelationship[]>
 
+  attachmentFilesCtrl = new FileUploadControl(FileUploadValidators.accept(['.jpeg', '.jpg', '.png', '.zip', '.pdf', '.yaml', '.json', '.xml', '.txt', '.tar.gz']))
+  logoImageCtrl = new FileUploadControl(FileUploadValidators.accept(['image/*']))
+  
+  specLogoRef: AttachmentRef
+  currentSpecLogoAsDataUrl: string | ArrayBuffer
+
+  dataUrlConverting = false
+  specLogoAsDataUrl: string | ArrayBuffer
+  specServiceRootUrl : string
+
   subscriptions = new Subscription()
 
   ngOnInit() {
+    this.specServiceRootUrl = this.specService.rootUrl
+
     this.initSubscriptions()
+    this.subscribeToLogoUploadEvent()
     
     if (this.activatedRoute.snapshot.params.id) 
     {
@@ -77,11 +96,10 @@ export class EditServiceSpecsComponent implements OnInit {
     } else {
       this.newSpecification = true
     }
-
   }
 
   initSubscriptions() {
-    this.subscriptions = this.router.events.subscribe(
+    this.subscriptions.add(this.router.events.subscribe(
       event => {
         if (event instanceof ActivationEnd) {
           console.log(event.snapshot.params.id)
@@ -89,7 +107,28 @@ export class EditServiceSpecsComponent implements OnInit {
           this.retrieveServiceSpec()
         }
       }
-    )
+    ))
+  }
+
+  subscribeToLogoUploadEvent() {
+    this.subscriptions.add(this.logoImageCtrl.valueChanges.subscribe(
+      files => {
+        this.logoImageCtrl.setValidators(FileUploadValidators.accept(['image/*']))
+        if (files.length) {
+          let img = new Image()
+          img.src = window.URL.createObjectURL(files[0])
+          img.onload = () => {
+            if (img.height === 150 && img.width === 150) {
+              this.convertImageToDataUrl(files[0])
+            } else {
+              // this.toast.error('Please upload a logo of supported type and resolution')
+              this.logoImageCtrl.setValidators(FileUploadValidators.filesLimit(0))
+            }
+          }
+
+        }
+      }
+    ))
   }
 
   retrieveServiceSpec() {
@@ -118,8 +157,14 @@ export class EditServiceSpecsComponent implements OnInit {
         this.tagFiltervalue = "All"
         this.specCharacteristicsTags = this.retrieveSpecCharaceristicsTags(this.dataSource.data)
 
+        // Check if spec has a defined logo already
+        this.specLogoRef = this.spec.attachment.find( att => att.name.includes('logo') )
+        if (this.specLogoRef) {
+          this.currentSpecLogoAsDataUrl = `${this.specServiceRootUrl}/${this.specLogoRef.url}`
+        }
+
         //populate Service Descriptor Panel Info
-        this.retrieveServiceDesriptor(this.spec.id)
+        // this.retrieveServiceDesriptor(this.spec.id)
       }
     )
   }
@@ -304,6 +349,114 @@ export class EditServiceSpecsComponent implements OnInit {
   refreshServiceSpecification(updatedSpec : ServiceSpecification) {
     this.specID = updatedSpec.id
     this.retrieveServiceSpec()
+  }
+
+  submitAttachments() {
+    if (this.attachmentFilesCtrl.valid) {
+      this.specService.addAttachmentToServiceSpecification({id: this.specID, afile: this.attachmentFilesCtrl.value[0]}).subscribe(
+        data => { console.log(data) },
+        error => {
+          console.error(error)
+          this.toast.error("An error occurred while uploading attachment")
+        },
+        () => {
+          this.toast.success("Attachment was successfully uploaded")
+          this.clearAttachmentsList()
+          this.retrieveServiceSpec()
+        }
+      )
+    }
+  }
+
+  clearAttachmentsList() {
+    this.attachmentFilesCtrl.clear()
+  }
+
+  convertImageToDataUrl (file) {
+    this.specLogoAsDataUrl = ''
+    this.dataUrlConverting = true
+
+    let reader = new FileReader()
+    reader.readAsDataURL(file)
+    reader.onload = (_event) => {
+      this.specLogoAsDataUrl = reader.result
+      this.dataUrlConverting = false
+    }
+  }
+  
+  submitLogo() {
+    if (this.logoImageCtrl.valid) {
+      let tempFile = this.logoImageCtrl.value[0]
+      const fileExtension = tempFile.name.split('.').pop()
+      const preDefinedLogoFilename = `logo.${fileExtension}` 
+
+      let newAttachment: Attachment
+      this.specService.addAttachmentToServiceSpecification({id: this.specID, afile: new File(this.logoImageCtrl.value, preDefinedLogoFilename, {type:tempFile.type})}).subscribe(
+        data => { newAttachment = data },
+        error => {
+          console.error(error)
+          this.toast.error("An error occurred while uploading attachment")
+        },
+        () => {
+          if (this.specLogoRef) { // If there is a logo defined already, delete it 
+            const attToBeDeletedIndex = this.spec.attachment.findIndex(char => char.id === this.specLogoRef.id)
+            const newSpecAttArray: AttachmentRef[] = this.spec.attachment.slice()
+            newSpecAttArray.splice(attToBeDeletedIndex, 1) // remove previously defined logo from attachment Array
+            newSpecAttArray.push({id: newAttachment.id}) // add newly added logo to attachment Array
+
+            const updateSpecObj: ServiceSpecificationUpdate = {
+              attachment: newSpecAttArray
+            }
+
+            this.specService.patchServiceSpecification({ id: this.specID, serviceSpecification: updateSpecObj}).subscribe(
+              data => console.log(data),
+              error => console.error(error),
+              () => {
+                this.logoUpdatedSuccessfully()
+              }
+            )
+          } else {
+            this.logoUpdatedSuccessfully()
+          }
+        }
+      )
+    }
+  }
+  
+  clearLogoList() {
+    this.logoImageCtrl.clear()
+  }
+  
+  logoUpdatedSuccessfully() {
+    this.toast.success("Service Specification logo was successfully uploaded")
+    this.clearLogoList()
+    this.retrieveServiceSpec()
+  }
+  
+  openAttachmentDeleteDialog(attachmentRef: AttachmentRef) {
+    const attToBeDeletedIndex = this.spec.attachment.findIndex(char => char.id === attachmentRef.id)
+
+    const newSpecAttArray: AttachmentRef[] = this.spec.attachment.slice()
+    
+    newSpecAttArray.splice(attToBeDeletedIndex, 1)
+
+    const dialogRef = this.dialog.open(DeleteAttachmentComponent, {
+      data: {
+        serviceSpec: this.spec,
+        serviceSpecAttachmentArray: newSpecAttArray, 
+        attachmentToBeDeleted: this.spec.attachment[attToBeDeletedIndex]
+      }
+    })
+
+    dialogRef.afterClosed().subscribe (
+      result => { 
+        console.log(result)
+        if (result){ 
+          this.toast.success("Service Specification Characteristics list was successfully updated")
+          this.retrieveServiceSpec()
+        }
+      }
+    )
   }
 
   ngOnDestroy() {

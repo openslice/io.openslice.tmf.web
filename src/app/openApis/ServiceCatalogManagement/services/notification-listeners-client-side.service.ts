@@ -47,6 +47,8 @@ class NotificationListenersClientSideService extends __BaseService {
   }
 
   /**
+   * Client listener for entity ServiceCandidateChangeNotification
+   *
    * Example of a client listener for receiving the notification ServiceCandidateChangeNotification
    * @param data The event data
    * @return OK or Notified
@@ -74,6 +76,8 @@ class NotificationListenersClientSideService extends __BaseService {
     );
   }
   /**
+   * Client listener for entity ServiceCandidateChangeNotification
+   *
    * Example of a client listener for receiving the notification ServiceCandidateChangeNotification
    * @param data The event data
    * @return OK or Notified
@@ -85,6 +89,8 @@ class NotificationListenersClientSideService extends __BaseService {
   }
 
   /**
+   * Client listener for entity ServiceCandidateCreateNotification
+   *
    * Example of a client listener for receiving the notification ServiceCandidateCreateNotification
    * @param data The event data
    * @return OK or Notified
@@ -112,6 +118,8 @@ class NotificationListenersClientSideService extends __BaseService {
     );
   }
   /**
+   * Client listener for entity ServiceCandidateCreateNotification
+   *
    * Example of a client listener for receiving the notification ServiceCandidateCreateNotification
    * @param data The event data
    * @return OK or Notified
@@ -123,6 +131,8 @@ class NotificationListenersClientSideService extends __BaseService {
   }
 
   /**
+   * Client listener for entity ServiceCandidateDeleteNotification
+   *
    * Example of a client listener for receiving the notification ServiceCandidateDeleteNotification
    * @param data The event data
    * @return OK or Notified
@@ -150,6 +160,8 @@ class NotificationListenersClientSideService extends __BaseService {
     );
   }
   /**
+   * Client listener for entity ServiceCandidateDeleteNotification
+   *
    * Example of a client listener for receiving the notification ServiceCandidateDeleteNotification
    * @param data The event data
    * @return OK or Notified
@@ -161,6 +173,8 @@ class NotificationListenersClientSideService extends __BaseService {
   }
 
   /**
+   * Client listener for entity ServiceCatalogBatchNotification
+   *
    * Example of a client listener for receiving the notification ServiceCatalogBatchNotification
    * @param data The event data
    * @return OK or Notified
@@ -188,6 +202,8 @@ class NotificationListenersClientSideService extends __BaseService {
     );
   }
   /**
+   * Client listener for entity ServiceCatalogBatchNotification
+   *
    * Example of a client listener for receiving the notification ServiceCatalogBatchNotification
    * @param data The event data
    * @return OK or Notified
@@ -199,6 +215,8 @@ class NotificationListenersClientSideService extends __BaseService {
   }
 
   /**
+   * Client listener for entity ServiceCatalogChangeNotification
+   *
    * Example of a client listener for receiving the notification ServiceCatalogChangeNotification
    * @param data The event data
    * @return OK or Notified
@@ -226,6 +244,8 @@ class NotificationListenersClientSideService extends __BaseService {
     );
   }
   /**
+   * Client listener for entity ServiceCatalogChangeNotification
+   *
    * Example of a client listener for receiving the notification ServiceCatalogChangeNotification
    * @param data The event data
    * @return OK or Notified
@@ -237,6 +257,8 @@ class NotificationListenersClientSideService extends __BaseService {
   }
 
   /**
+   * Client listener for entity ServiceCatalogCreateNotification
+   *
    * Example of a client listener for receiving the notification ServiceCatalogCreateNotification
    * @param data The event data
    * @return OK or Notified
@@ -264,6 +286,8 @@ class NotificationListenersClientSideService extends __BaseService {
     );
   }
   /**
+   * Client listener for entity ServiceCatalogCreateNotification
+   *
    * Example of a client listener for receiving the notification ServiceCatalogCreateNotification
    * @param data The event data
    * @return OK or Notified
@@ -275,6 +299,8 @@ class NotificationListenersClientSideService extends __BaseService {
   }
 
   /**
+   * Client listener for entity ServiceCatalogDeleteNotification
+   *
    * Example of a client listener for receiving the notification ServiceCatalogDeleteNotification
    * @param data The event data
    * @return OK or Notified
@@ -302,6 +328,8 @@ class NotificationListenersClientSideService extends __BaseService {
     );
   }
   /**
+   * Client listener for entity ServiceCatalogDeleteNotification
+   *
    * Example of a client listener for receiving the notification ServiceCatalogDeleteNotification
    * @param data The event data
    * @return OK or Notified
@@ -313,6 +341,8 @@ class NotificationListenersClientSideService extends __BaseService {
   }
 
   /**
+   * Client listener for entity ServiceCategoryChangeNotification
+   *
    * Example of a client listener for receiving the notification ServiceCategoryChangeNotification
    * @param data The event data
    * @return OK or Notified
@@ -340,6 +370,8 @@ class NotificationListenersClientSideService extends __BaseService {
     );
   }
   /**
+   * Client listener for entity ServiceCategoryChangeNotification
+   *
    * Example of a client listener for receiving the notification ServiceCategoryChangeNotification
    * @param data The event data
    * @return OK or Notified
@@ -351,6 +383,8 @@ class NotificationListenersClientSideService extends __BaseService {
   }
 
   /**
+   * Client listener for entity ServiceCategoryCreateNotification
+   *
    * Example of a client listener for receiving the notification ServiceCategoryCreateNotification
    * @param data The event data
    * @return OK or Notified
@@ -378,6 +412,8 @@ class NotificationListenersClientSideService extends __BaseService {
     );
   }
   /**
+   * Client listener for entity ServiceCategoryCreateNotification
+   *
    * Example of a client listener for receiving the notification ServiceCategoryCreateNotification
    * @param data The event data
    * @return OK or Notified
@@ -389,6 +425,8 @@ class NotificationListenersClientSideService extends __BaseService {
   }
 
   /**
+   * Client listener for entity ServiceCategoryDeleteNotification
+   *
    * Example of a client listener for receiving the notification ServiceCategoryDeleteNotification
    * @param data The event data
    * @return OK or Notified
@@ -416,6 +454,8 @@ class NotificationListenersClientSideService extends __BaseService {
     );
   }
   /**
+   * Client listener for entity ServiceCategoryDeleteNotification
+   *
    * Example of a client listener for receiving the notification ServiceCategoryDeleteNotification
    * @param data The event data
    * @return OK or Notified
@@ -427,6 +467,8 @@ class NotificationListenersClientSideService extends __BaseService {
   }
 
   /**
+   * Client listener for entity ServiceSpecificationChangeNotification
+   *
    * Example of a client listener for receiving the notification ServiceSpecificationChangeNotification
    * @param data The event data
    * @return OK or Notified
@@ -454,6 +496,8 @@ class NotificationListenersClientSideService extends __BaseService {
     );
   }
   /**
+   * Client listener for entity ServiceSpecificationChangeNotification
+   *
    * Example of a client listener for receiving the notification ServiceSpecificationChangeNotification
    * @param data The event data
    * @return OK or Notified
@@ -465,6 +509,8 @@ class NotificationListenersClientSideService extends __BaseService {
   }
 
   /**
+   * Client listener for entity ServiceSpecificationCreateNotification
+   *
    * Example of a client listener for receiving the notification ServiceSpecificationCreateNotification
    * @param data The event data
    * @return OK or Notified
@@ -492,6 +538,8 @@ class NotificationListenersClientSideService extends __BaseService {
     );
   }
   /**
+   * Client listener for entity ServiceSpecificationCreateNotification
+   *
    * Example of a client listener for receiving the notification ServiceSpecificationCreateNotification
    * @param data The event data
    * @return OK or Notified
@@ -503,6 +551,8 @@ class NotificationListenersClientSideService extends __BaseService {
   }
 
   /**
+   * Client listener for entity ServiceSpecificationDeleteNotification
+   *
    * Example of a client listener for receiving the notification ServiceSpecificationDeleteNotification
    * @param data The event data
    * @return OK or Notified
@@ -530,6 +580,8 @@ class NotificationListenersClientSideService extends __BaseService {
     );
   }
   /**
+   * Client listener for entity ServiceSpecificationDeleteNotification
+   *
    * Example of a client listener for receiving the notification ServiceSpecificationDeleteNotification
    * @param data The event data
    * @return OK or Notified

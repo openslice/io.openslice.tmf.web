@@ -28,6 +28,8 @@ class ServiceCandidateService extends __BaseService {
   }
 
   /**
+   * List or find ServiceCandidate objects
+   *
    * This operation list or find ServiceCandidate entities
    * @param params The `ServiceCandidateService.ListServiceCandidateParams` containing the following parameters:
    *
@@ -64,6 +66,8 @@ class ServiceCandidateService extends __BaseService {
     );
   }
   /**
+   * List or find ServiceCandidate objects
+   *
    * This operation list or find ServiceCandidate entities
    * @param params The `ServiceCandidateService.ListServiceCandidateParams` containing the following parameters:
    *
@@ -82,6 +86,8 @@ class ServiceCandidateService extends __BaseService {
   }
 
   /**
+   * Creates a ServiceCandidate
+   *
    * This operation creates a ServiceCandidate entity.
    * @param serviceCandidate The ServiceCandidate to be created
    * @return OK or Created
@@ -109,6 +115,8 @@ class ServiceCandidateService extends __BaseService {
     );
   }
   /**
+   * Creates a ServiceCandidate
+   *
    * This operation creates a ServiceCandidate entity.
    * @param serviceCandidate The ServiceCandidate to be created
    * @return OK or Created
@@ -120,6 +128,8 @@ class ServiceCandidateService extends __BaseService {
   }
 
   /**
+   * Retrieves a ServiceCandidate by ID
+   *
    * This operation retrieves a ServiceCandidate entity. Attribute selection is enabled for all first level attributes.
    * @param params The `ServiceCandidateService.RetrieveServiceCandidateParams` containing the following parameters:
    *
@@ -137,7 +147,7 @@ class ServiceCandidateService extends __BaseService {
     if (params.fields != null) __params = __params.set('fields', params.fields.toString());
     let req = new HttpRequest<any>(
       'GET',
-      this.rootUrl + `/serviceCatalogManagement/v4/serviceCandidate/${params.id}`,
+      this.rootUrl + `/serviceCatalogManagement/v4/serviceCandidate/${encodeURIComponent(params.id)}`,
       __body,
       {
         headers: __headers,
@@ -153,6 +163,8 @@ class ServiceCandidateService extends __BaseService {
     );
   }
   /**
+   * Retrieves a ServiceCandidate by ID
+   *
    * This operation retrieves a ServiceCandidate entity. Attribute selection is enabled for all first level attributes.
    * @param params The `ServiceCandidateService.RetrieveServiceCandidateParams` containing the following parameters:
    *
@@ -169,6 +181,8 @@ class ServiceCandidateService extends __BaseService {
   }
 
   /**
+   * Deletes a ServiceCandidate
+   *
    * This operation deletes a ServiceCandidate entity.
    * @param id Identifier of the ServiceCandidate
    */
@@ -179,7 +193,7 @@ class ServiceCandidateService extends __BaseService {
 
     let req = new HttpRequest<any>(
       'DELETE',
-      this.rootUrl + `/serviceCatalogManagement/v4/serviceCandidate/${id}`,
+      this.rootUrl + `/serviceCatalogManagement/v4/serviceCandidate/${encodeURIComponent(id)}`,
       __body,
       {
         headers: __headers,
@@ -195,6 +209,8 @@ class ServiceCandidateService extends __BaseService {
     );
   }
   /**
+   * Deletes a ServiceCandidate
+   *
    * This operation deletes a ServiceCandidate entity.
    * @param id Identifier of the ServiceCandidate
    */
@@ -205,6 +221,8 @@ class ServiceCandidateService extends __BaseService {
   }
 
   /**
+   * Updates partially a ServiceCandidate
+   *
    * This operation updates partially a ServiceCandidate entity.
    * @param params The `ServiceCandidateService.PatchServiceCandidateParams` containing the following parameters:
    *
@@ -222,7 +240,7 @@ class ServiceCandidateService extends __BaseService {
 
     let req = new HttpRequest<any>(
       'PATCH',
-      this.rootUrl + `/serviceCatalogManagement/v4/serviceCandidate/${params.id}`,
+      this.rootUrl + `/serviceCatalogManagement/v4/serviceCandidate/${encodeURIComponent(params.id)}`,
       __body,
       {
         headers: __headers,
@@ -238,6 +256,8 @@ class ServiceCandidateService extends __BaseService {
     );
   }
   /**
+   * Updates partially a ServiceCandidate
+   *
    * This operation updates partially a ServiceCandidate entity.
    * @param params The `ServiceCandidateService.PatchServiceCandidateParams` containing the following parameters:
    *

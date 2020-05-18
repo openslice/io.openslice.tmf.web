@@ -9,14 +9,14 @@ import { TimePeriod } from './time-period';
 export interface ServiceCandidate {
 
   /**
-   * Date and time of the last update
-   */
-  lastUpdate?: string;
-
-  /**
    * When sub-classing, this defines the super-class
    */
   '@baseType'?: string;
+
+  /**
+   * A URI to a JSON-Schema file that defines additional attributes and relationships
+   */
+  '@schemaLocation'?: string;
   '@type'?: string;
 
   /**
@@ -36,9 +36,9 @@ export interface ServiceCandidate {
   id?: string;
 
   /**
-   * A URI to a JSON-Schema file that defines additional attributes and relationships
+   * Date and time of the last update
    */
-  '@schemaLocation'?: string;
+  lastUpdate?: string;
 
   /**
    * Used to indicate the current lifecycle status

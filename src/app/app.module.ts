@@ -16,7 +16,9 @@ import { OwlDateTimeModule, OwlNativeDateTimeModule, OWL_DATE_TIME_LOCALE } from
 
 import { ToastrModule } from 'ngx-toastr';
 
-import { OAuthModule } from 'angular-oauth2-oidc'
+import { OAuthModule } from 'angular-oauth2-oidc';
+
+import { FileUploadModule } from '@iplab/ngx-file-upload'
 
 
 import {
@@ -99,6 +101,7 @@ import { DeleteServiceOrderComponent } from './admin/OrderManagement/delete-serv
 import { ListIndividualsComponent } from './admin/PartyManagement/list-individuals/list-individuals.component';
 import { EditIndividualsComponent } from './admin/PartyManagement/edit-individuals/edit-individuals.component';
 import { DeleteIndividualComponent } from './admin/PartyManagement/delete-individual/delete-individual.component';
+import { DeleteAttachmentComponent } from './admin/CatalogManagement/edit-service-specs/delete-attachment/delete-attachment.component';
 
 
 
@@ -154,7 +157,8 @@ export function initializeApp(bootstrap: BootstrapService) {
     DeleteServiceOrderComponent,
     ListIndividualsComponent,
     EditIndividualsComponent,
-    DeleteIndividualComponent
+    DeleteIndividualComponent,
+    DeleteAttachmentComponent
   ],
   imports: [
     BrowserModule,
@@ -193,7 +197,8 @@ export function initializeApp(bootstrap: BootstrapService) {
     OwlDateTimeModule, 
     OwlNativeDateTimeModule,
     ToastrModule.forRoot({progressBar: true, preventDuplicates: true}),
-    OAuthModule.forRoot()
+    OAuthModule.forRoot(),
+    FileUploadModule
   ],
   entryComponents : [
     EditServiceCatalogsComponent,
@@ -215,7 +220,8 @@ export function initializeApp(bootstrap: BootstrapService) {
     DeletePartyCharacteristicComponent,
     DeleteOrganizationComponent,
     DeleteIndividualComponent,
-    DeleteServiceOrderComponent
+    DeleteServiceOrderComponent,
+    DeleteAttachmentComponent
   ],
   providers: [
     AuthService,

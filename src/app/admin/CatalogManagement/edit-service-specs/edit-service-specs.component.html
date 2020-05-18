@@ -111,7 +111,7 @@
                             
                                     <div *ngIf="spec?.serviceSpecRelationship.length === 0" class="col-lg-10 children-categories-font">
                                         <!-- Category <dfn>{{category.name}}</dfn> has no service specifications assigned yet -->
-                                        There are no service specification relationships assigned yet.
+                                        There are not any service specification relationships assigned yet.
                                     </div>
                             
                                     <div class="text-right col-lg-2">
@@ -136,7 +136,7 @@
                                 </mat-expansion-panel-header>
                             
                                 <div *ngIf="spec?.resourceSpecification.length === 0">
-                                        There are no resource specification relationships assigned
+                                        There are not any resource specification relationships assigned
                                 </div>
                             
                                 <div *ngFor="let resourceSpec of spec?.resourceSpecification" class="spec-relationship-container ">
@@ -226,6 +226,98 @@
                                         <!-- <mat-paginator [pageSizeOptions]="[10, 20, 50]" showFirstLastButtons>
                                         </mat-paginator> -->
                                     </div>
+                            </mat-expansion-panel>
+
+                            <mat-expansion-panel [expanded]="!newSpecification" [disabled]="newSpecification " class="bg-light">
+                                <mat-expansion-panel-header>
+                                    <mat-panel-title>
+                                        Service Specification Logo
+                                    </mat-panel-title>
+                                </mat-expansion-panel-header>
+                            
+
+
+                                <div class="row justify-content-center align-items-center">
+                                    <div class="col-lg-4 col-md-12 mb-2 mb-lg-0">
+                                        <div *ngIf="!specLogoRef" class=" text-center">
+                                            There is not an assigned logo for this specification
+                                        </div>
+    
+                                        <div *ngIf="specLogoRef" class="d-flex flex-column justify-content-center align-items-center">
+                                            <div class="text-center p-2 font-weight-normal shadowed">Current Logo Preview</div>
+                                            
+                                            <div [@fadeIn] class="logo-preview-container mat-elevation-z3">
+                                                <img [src]="currentSpecLogoAsDataUrl" alt="Current Logo Preview">
+                                            </div>                                     
+                                        </div>
+                                    </div>
+
+                                    <div class="col-lg-4 col-md-6 mb-2 mb-lg-0">
+                                        <file-upload 
+                                        [control]="logoImageCtrl" multiple="false"
+                                        >
+                                        </file-upload>
+                                        <mat-hint *ngIf="!logoImageCtrl.invalid">Supported file types: image/* (150 x 150 px)</mat-hint>
+                                        <mat-error *ngIf="logoImageCtrl.invalid">Supported file types: image/* (150 x 150 px)</mat-error>
+                                    </div>
+                                    <div class="col-lg-4 col-md-6 d-flex justify-content-center align-items-center">
+                                        <div *ngIf="logoImageCtrl.value.length === 0" [@fadeIn]>New Logo Preview</div>
+                                        <div *ngIf="logoImageCtrl.value.length && logoImageCtrl.valid" [@fadeIn] class="logo-preview-container mat-elevation-z3">
+                                            <img *ngIf="!dataUrlConverting" [src]="specLogoAsDataUrl" alt="New Logo Preview" class="">
+                                            <mat-progress-spinner *ngIf="dataUrlConverting" color="primary" mode="indeterminate" diameter="50"></mat-progress-spinner>
+                                        </div> 
+                                    </div>
+                                </div>
+
+                               
+
+                                <div class="container-fluid mt-3">
+                                    <div class="row justify-content-end">
+                                        <button class="btn btn-secondary mr-2" (click)="clearLogoList()"><i
+                                            class="fas fa-times mr-2"></i>Clear</button>
+                                        <button type="submit" class="btn btn-primary" (click)="submitLogo()"><i
+                                                class="fas fa-upload mr-2"></i>Upload</button>
+                                    </div>
+                                </div>
+                            </mat-expansion-panel>
+
+                            <mat-expansion-panel [expanded]="!newSpecification" [disabled]="newSpecification " class="bg-light">
+                                <mat-expansion-panel-header>
+                                    <mat-panel-title>
+                                        Attachments
+                                    </mat-panel-title>
+                                </mat-expansion-panel-header>
+                            
+                                <div *ngIf="spec?.attachment.length === 0" class="mb-3 text-center">
+                                        There are not any attachments assigned yet
+                                </div>
+
+                                <div *ngIf="spec?.attachment.length > 0" class="mb-3 row">
+                                    <div *ngFor="let attachmentRef of spec.attachment" class="my-1 col-md-6 d-flex align-items-center justify-content-between">
+                                        <a target="_blank" href="{{specServiceRootUrl}}{{attachmentRef.url}}">
+                                            <i class="far fa-file mr-1"></i> {{attachmentRef.name}}  
+                                        </a>
+                                        <button class="file-icon btn btn-sm btn-danger ml-2" (click)="openAttachmentDeleteDialog(attachmentRef)"><i
+                                            class="far fa-trash-alt"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            
+                                <file-upload 
+                                    [control]="attachmentFilesCtrl" multiple="false"
+                                >
+                                </file-upload>
+                                <mat-hint *ngIf="!attachmentFilesCtrl.invalid" class="ml-1">Supported file types: .jpg, .png, .pdf, .zip, .yaml, .json, .xml, .txt, .tar.gz</mat-hint>
+                                <mat-error *ngIf="attachmentFilesCtrl.invalid" class="ml-1">Supported file types: .jpg, .png, .pdf, .zip, .yaml, .json, .xml, .txt, .tar.gz</mat-error>
+
+                                <div class="container-fluid mt-3">
+                                    <div class="row justify-content-end">
+                                        <button class="btn btn-secondary mr-2" (click)="clearAttachmentsList()"><i
+                                            class="fas fa-times mr-2"></i>Clear</button>
+                                        <button type="submit" class="btn btn-primary" (click)="submitAttachments()"><i
+                                                class="fas fa-upload mr-2"></i>Upload</button>
+                                    </div>
+                                </div>
                             </mat-expansion-panel>
 
 

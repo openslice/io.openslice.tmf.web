@@ -28,6 +28,8 @@ class ServiceCategoryService extends __BaseService {
   }
 
   /**
+   * List or find ServiceCategory objects
+   *
    * This operation list or find ServiceCategory entities
    * @param params The `ServiceCategoryService.ListServiceCategoryParams` containing the following parameters:
    *
@@ -64,6 +66,8 @@ class ServiceCategoryService extends __BaseService {
     );
   }
   /**
+   * List or find ServiceCategory objects
+   *
    * This operation list or find ServiceCategory entities
    * @param params The `ServiceCategoryService.ListServiceCategoryParams` containing the following parameters:
    *
@@ -82,6 +86,8 @@ class ServiceCategoryService extends __BaseService {
   }
 
   /**
+   * Creates a ServiceCategory
+   *
    * This operation creates a ServiceCategory entity.
    * @param serviceCategory The ServiceCategory to be created
    * @return OK or Created
@@ -109,6 +115,8 @@ class ServiceCategoryService extends __BaseService {
     );
   }
   /**
+   * Creates a ServiceCategory
+   *
    * This operation creates a ServiceCategory entity.
    * @param serviceCategory The ServiceCategory to be created
    * @return OK or Created
@@ -120,6 +128,8 @@ class ServiceCategoryService extends __BaseService {
   }
 
   /**
+   * Retrieves a ServiceCategory by ID
+   *
    * This operation retrieves a ServiceCategory entity. Attribute selection is enabled for all first level attributes.
    * @param params The `ServiceCategoryService.RetrieveServiceCategoryParams` containing the following parameters:
    *
@@ -137,7 +147,7 @@ class ServiceCategoryService extends __BaseService {
     if (params.fields != null) __params = __params.set('fields', params.fields.toString());
     let req = new HttpRequest<any>(
       'GET',
-      this.rootUrl + `/serviceCatalogManagement/v4/serviceCategory/${params.id}`,
+      this.rootUrl + `/serviceCatalogManagement/v4/serviceCategory/${encodeURIComponent(params.id)}`,
       __body,
       {
         headers: __headers,
@@ -153,6 +163,8 @@ class ServiceCategoryService extends __BaseService {
     );
   }
   /**
+   * Retrieves a ServiceCategory by ID
+   *
    * This operation retrieves a ServiceCategory entity. Attribute selection is enabled for all first level attributes.
    * @param params The `ServiceCategoryService.RetrieveServiceCategoryParams` containing the following parameters:
    *
@@ -169,6 +181,8 @@ class ServiceCategoryService extends __BaseService {
   }
 
   /**
+   * Deletes a ServiceCategory
+   *
    * This operation deletes a ServiceCategory entity.
    * @param id Identifier of the ServiceCategory
    */
@@ -179,7 +193,7 @@ class ServiceCategoryService extends __BaseService {
 
     let req = new HttpRequest<any>(
       'DELETE',
-      this.rootUrl + `/serviceCatalogManagement/v4/serviceCategory/${id}`,
+      this.rootUrl + `/serviceCatalogManagement/v4/serviceCategory/${encodeURIComponent(id)}`,
       __body,
       {
         headers: __headers,
@@ -195,6 +209,8 @@ class ServiceCategoryService extends __BaseService {
     );
   }
   /**
+   * Deletes a ServiceCategory
+   *
    * This operation deletes a ServiceCategory entity.
    * @param id Identifier of the ServiceCategory
    */
@@ -205,6 +221,8 @@ class ServiceCategoryService extends __BaseService {
   }
 
   /**
+   * Updates partially a ServiceCategory
+   *
    * This operation updates partially a ServiceCategory entity.
    * @param params The `ServiceCategoryService.PatchServiceCategoryParams` containing the following parameters:
    *
@@ -222,7 +240,7 @@ class ServiceCategoryService extends __BaseService {
 
     let req = new HttpRequest<any>(
       'PATCH',
-      this.rootUrl + `/serviceCatalogManagement/v4/serviceCategory/${params.id}`,
+      this.rootUrl + `/serviceCatalogManagement/v4/serviceCategory/${encodeURIComponent(params.id)}`,
       __body,
       {
         headers: __headers,
@@ -238,6 +256,8 @@ class ServiceCategoryService extends __BaseService {
     );
   }
   /**
+   * Updates partially a ServiceCategory
+   *
    * This operation updates partially a ServiceCategory entity.
    * @param params The `ServiceCategoryService.PatchServiceCategoryParams` containing the following parameters:
    *

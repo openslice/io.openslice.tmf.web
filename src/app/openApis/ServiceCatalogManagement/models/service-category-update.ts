@@ -9,14 +9,14 @@ import { TimePeriod } from './time-period';
 export interface ServiceCategoryUpdate {
 
   /**
-   * Used to indicate the current lifecycle status
-   */
-  lifecycleStatus?: string;
-
-  /**
    * When sub-classing, this defines the super-class
    */
   '@baseType'?: string;
+
+  /**
+   * A URI to a JSON-Schema file that defines additional attributes and relationships
+   */
+  '@schemaLocation'?: string;
 
   /**
    * When sub-classing, this defines the sub-class entity name
@@ -39,9 +39,9 @@ export interface ServiceCategoryUpdate {
   isRoot?: boolean;
 
   /**
-   * A URI to a JSON-Schema file that defines additional attributes and relationships
+   * Used to indicate the current lifecycle status
    */
-  '@schemaLocation'?: string;
+  lifecycleStatus?: string;
 
   /**
    * Name of the category

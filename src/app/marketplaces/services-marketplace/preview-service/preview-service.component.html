@@ -55,7 +55,9 @@
             <div class="row">
                 <div class="col-md-4 d-flex justify-content-center align-items-center">
                     <div class="image-container">
-                        <img class="img-fluid" src="assets/images/logo_icon.png" alt="Service Image">
+                        <img class="img-fluid" *ngIf="specLogoUrl" [src]="specLogoUrl" alt="Service Image">
+                        <mat-progress-spinner *ngIf="!specLogoUrl" color="primary" mode="indeterminate" diameter="100"></mat-progress-spinner>
+
                     </div>
                 </div>
     
@@ -76,24 +78,28 @@
                         </div>
                     </div>
                     <div class="general-info-tab">
-                        <b>Description:</b>
-                        <div>
-                            {{spec?.description}}
-                        </div>
-                    </div>
-                    <div class="general-info-tab">
-                        <b>Bundle:</b>
+                        <b>Bundle</b>
                         <div>
                             {{spec?.isBundle}}
                         </div>
                     </div>
                     <!-- <div class="separator-div"></div> -->
-                    <button type="button" class="btn btn-primary " (click)="placeInOrderList()">
-                        <i class="fas fa-shopping-cart mr-1"></i>
-                        <span> Place in Order List </span>
-                    </button>
+
+                </div>
+
+
+            </div>
+            <div class="general-info-tab">
+                <b>Description</b>
+                <div class="text-justify">
+                    {{spec?.description}}
                 </div>
             </div>
+
+            <button type="button" class="btn btn-primary " (click)="placeInOrderList()">
+                <i class="fas fa-shopping-cart mr-1"></i>
+                <span> Place in Order List </span>
+            </button>
             <div class="separator-div"></div>
             
                 

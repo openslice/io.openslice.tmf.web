@@ -9,14 +9,14 @@ import { TimePeriod } from './time-period';
 export interface ServiceSpecCharacteristic {
 
   /**
-   * An indicator that specifies if a value is unique for the specification. Possible values are; "unique while value is in effect" and "unique whether value is in effect or not"
-   */
-  isUnique?: boolean;
-
-  /**
    * When sub-classing, this defines the super-class
    */
   '@baseType'?: string;
+
+  /**
+   * A URI to a JSON-Schema file that defines additional attributes and relationships
+   */
+  '@schemaLocation'?: string;
   '@type'?: string;
 
   /**
@@ -46,9 +46,9 @@ export interface ServiceSpecCharacteristic {
   id?: string;
 
   /**
-   * A URI to a JSON-Schema file that defines additional attributes and relationships
+   * An indicator that specifies if a value is unique for the specification. Possible values are; "unique while value is in effect" and "unique whether value is in effect or not"
    */
-  '@schemaLocation'?: string;
+  isUnique?: boolean;
 
   /**
    * The maximum number of instances a CharacteristicValue can take on. For example, zero to five phone numbers in a group calling plan, where five is the value for the maxCardinality.

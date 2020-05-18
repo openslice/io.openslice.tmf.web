@@ -26,6 +26,8 @@ class ExportJobService extends __BaseService {
   }
 
   /**
+   * List or find ExportJob objects
+   *
    * This operation list or find ExportJob entities
    * @param params The `ExportJobService.ListExportJob1Params` containing the following parameters:
    *
@@ -62,6 +64,8 @@ class ExportJobService extends __BaseService {
     );
   }
   /**
+   * List or find ExportJob objects
+   *
    * This operation list or find ExportJob entities
    * @param params The `ExportJobService.ListExportJob1Params` containing the following parameters:
    *
@@ -80,6 +84,8 @@ class ExportJobService extends __BaseService {
   }
 
   /**
+   * Creates a ExportJob
+   *
    * This operation creates a ExportJob entity.
    * @param exportJob The ExportJob to be created
    * @return OK or Created
@@ -107,6 +113,8 @@ class ExportJobService extends __BaseService {
     );
   }
   /**
+   * Creates a ExportJob
+   *
    * This operation creates a ExportJob entity.
    * @param exportJob The ExportJob to be created
    * @return OK or Created
@@ -118,6 +126,8 @@ class ExportJobService extends __BaseService {
   }
 
   /**
+   * Retrieves a ExportJob by ID
+   *
    * This operation retrieves a ExportJob entity. Attribute selection is enabled for all first level attributes.
    * @param params The `ExportJobService.RetrieveExportJob1Params` containing the following parameters:
    *
@@ -135,7 +145,7 @@ class ExportJobService extends __BaseService {
     if (params.fields != null) __params = __params.set('fields', params.fields.toString());
     let req = new HttpRequest<any>(
       'GET',
-      this.rootUrl + `/serviceCatalogManagement/v4/exportJob/${params.id}`,
+      this.rootUrl + `/serviceCatalogManagement/v4/exportJob/${encodeURIComponent(params.id)}`,
       __body,
       {
         headers: __headers,
@@ -151,6 +161,8 @@ class ExportJobService extends __BaseService {
     );
   }
   /**
+   * Retrieves a ExportJob by ID
+   *
    * This operation retrieves a ExportJob entity. Attribute selection is enabled for all first level attributes.
    * @param params The `ExportJobService.RetrieveExportJob1Params` containing the following parameters:
    *
@@ -167,6 +179,8 @@ class ExportJobService extends __BaseService {
   }
 
   /**
+   * Deletes a ExportJob
+   *
    * This operation deletes a ExportJob entity.
    * @param id Identifier of the ExportJob
    */
@@ -177,7 +191,7 @@ class ExportJobService extends __BaseService {
 
     let req = new HttpRequest<any>(
       'DELETE',
-      this.rootUrl + `/serviceCatalogManagement/v4/exportJob/${id}`,
+      this.rootUrl + `/serviceCatalogManagement/v4/exportJob/${encodeURIComponent(id)}`,
       __body,
       {
         headers: __headers,
@@ -193,6 +207,8 @@ class ExportJobService extends __BaseService {
     );
   }
   /**
+   * Deletes a ExportJob
+   *
    * This operation deletes a ExportJob entity.
    * @param id Identifier of the ExportJob
    */

@@ -28,7 +28,7 @@
                 
                 <div class="card-body1" >                
                     <div class="row align-items-center">
-                        <div class="col-xl-4 col-lg-6 col-md-12" *ngFor="let candidate of filteredServiceCandidates$ | async" [@fadeIn]>
+                        <div class="col-xl-4 col-lg-6 col-md-12" *ngFor="let candidate of filteredServiceCandidates$ | async; let index = index" [@fadeIn]>
                             <div class="card card-paper">
                                 <div class="card-header appTitle">
                                     {{candidate.name}}
@@ -38,9 +38,11 @@
                                     <div class="row align-items-center justify-content-center">
                                         <div class="col-6">
                                             <div class="img-container">
-                                                <img class="img-fluid"
-                                                    src="assets/images/logo_icon.png"
+                                                <img class="img-fluid" *ngIf="!candidate?.fetchingLogo"
+                                                    [src]="candidate.logo"
                                                     alt="Service Image">
+                                                <mat-progress-spinner *ngIf="candidate?.fetchingLogo" color="primary" mode="indeterminate" diameter="100"></mat-progress-spinner>
+
                                             </div>
                                         </div>
                                         <div class="col-6">

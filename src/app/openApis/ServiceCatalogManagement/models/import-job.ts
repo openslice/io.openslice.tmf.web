@@ -6,14 +6,14 @@
 export interface ImportJob {
 
   /**
-   * Reason for failure if status is failed
-   */
-  errorLog?: string;
-
-  /**
    * When sub-classing, this defines the super-class
    */
   '@baseType'?: string;
+
+  /**
+   * A URI to a JSON-Schema file that defines additional attributes and relationships
+   */
+  '@schemaLocation'?: string;
 
   /**
    * When sub-classing, this defines the sub-class entity name
@@ -36,9 +36,9 @@ export interface ImportJob {
   creationDate?: string;
 
   /**
-   * A URI to a JSON-Schema file that defines additional attributes and relationships
+   * Reason for failure if status is failed
    */
-  '@schemaLocation'?: string;
+  errorLog?: string;
 
   /**
    * Reference of the import job

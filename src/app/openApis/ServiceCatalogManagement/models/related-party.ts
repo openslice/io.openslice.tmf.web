@@ -20,6 +20,7 @@ export interface RelatedParty {
    */
   '@schemaLocation'?: string;
   '@type'?: string;
+  extendedInfo?: string;
 
   /**
    * Unique reference of the entity

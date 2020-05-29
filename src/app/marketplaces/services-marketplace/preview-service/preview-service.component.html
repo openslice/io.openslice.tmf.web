@@ -1,59 +1,10 @@
-<!-- <div class="container text-center">
-    
-        <div mat-dialog-title class="shadowed">{{spec?.name}}</div>
-        <mat-dialog-content >
-
-                <p class="text-secondary">
-                        {{spec?.description}}
-                    </p>
-                    <div class="image-container">
-                            <img class="img-fluid"
-                            src="assets/images/logo_icon.png"
-                            alt="Service Image">
-                        
-                    </div>
-            
-                    <mat-checkbox color="primary" (change)="configurableFilterChanged($event)" class="text-left">Show Configurable Characteristics</mat-checkbox>
-                    <div class="table-responsive text-left">
-                        <table mat-table [dataSource]="dataSource" matSort class="table table-generic">
-                            <ng-container matColumnDef="name">
-                                <th mat-header-cell *matHeaderCellDef mat-sort-header> Service Characteristics </th>
-                                <td mat-cell *matCellDef="let element" matTooltipClass="universal-tooltip" [matTooltip]="element.description"
-                                    matTooltipPosition="above">
-                                    <b>{{element.name}}</b> </td>
-                            </ng-container>
-                        
-                            <ng-container matColumnDef="configurable">
-                                <th mat-header-cell *matHeaderCellDef mat-sort-header>Configurable</th>
-                                <td mat-cell *matCellDef="let element">
-                                    <i *ngIf="element.configurable" class="material-icons checked" color="primary">check</i>
-                                    <i *ngIf="!element.configurable" class="material-icons crossed">close</i>                        
-                                </td>
-                            </ng-container>
-                        
-                            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-                            <tr mat-row *matRowDef="let row; columns: displayedColumns;" [class.isConfigurable-class]="row.configurable">
-                            </tr>
-                        </table>
-                    </div>
-            
-        </mat-dialog-content>
-
-        <div mat-dialog-actions class="d-flex justify-content-center">
-                <button type="button" class="btn btn-outline-danger m-2" (click)="closeDialog()">Cancel</button>
-                <button type="button" class="btn btn-primary m-2 mr-0" (click)="startConfiguration()">Service Configuration & Order</button>
-            </div>
-   
-</div> -->
-
-
-<div class="container" >
+<div class="container-fluid" >
     
     <ng-container>
 
         <mat-dialog-content class="dialog-content-container" >
             <div class="row">
-                <div class="col-md-4 d-flex justify-content-center align-items-center">
+                <div class="col-md-4 d-flex flex-column justify-content-center align-items-center">
                     <div class="image-container">
                         <img class="img-fluid" *ngIf="specLogoUrl" [src]="specLogoUrl" alt="Service Image">
                         <mat-progress-spinner *ngIf="!specLogoUrl" color="primary" mode="indeterminate" diameter="100"></mat-progress-spinner>
@@ -71,18 +22,26 @@
                         </div>
                     </div>
                     
-                    <div class="general-info-tab mt-3">
-                        <b>Version</b>
-                        <div>
-                            {{spec?.version}}
+                    <div class="row mt-3 general-info-tab">
+                        <div class="col-6">
+                            <b>Version</b>
+                            <div>
+                                {{spec?.version}}
+                            </div>
                         </div>
-                    </div>
-                    <div class="general-info-tab">
-                        <b>Bundle</b>
-                        <div>
-                            {{spec?.isBundle}}
+                        <div class="col-6">
+                            <b>Bundle</b>
+                            <div>
+                                {{spec?.isBundle}}
+                            </div>
                         </div>
+
                     </div>
+
+                    <button type="button" class="btn btn-primary my-3" (click)="placeInOrderList()">
+                        <i class="fas fa-shopping-cart mr-1"></i>
+                        <span> Place in Order List </span>
+                    </button>
                     <!-- <div class="separator-div"></div> -->
 
                 </div>
@@ -91,15 +50,16 @@
             </div>
             <div class="general-info-tab">
                 <b>Description</b>
-                <div class="text-justify">
-                    {{spec?.description}}
+                <div class="text-justify mt-2">
+                    <!-- {{spec?.description}} -->
+                    <div markdown [data]="spec?.description" ngPreserveWhitespaces></div>
                 </div>
             </div>
 
-            <button type="button" class="btn btn-primary " (click)="placeInOrderList()">
+            <!-- <button type="button" class="btn btn-primary " (click)="placeInOrderList()">
                 <i class="fas fa-shopping-cart mr-1"></i>
                 <span> Place in Order List </span>
-            </button>
+            </button> -->
             <div class="separator-div"></div>
             
                 

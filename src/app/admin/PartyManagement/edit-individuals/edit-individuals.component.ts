@@ -61,11 +61,15 @@ export class EditIndividualsComponent implements OnInit {
     if (this.activatedRoute.snapshot.params.id) 
     {
       this.individualID = this.activatedRoute.snapshot.params.id
+      if (this.authService.portalUser && this.authService.portalUser.id === this.individualID) {
+        this.individualID = "myuser"
+      }
       this.retrieveIndividual()
     } else {
       // this.initNewOrganizationFormArray()  
       this.newIndividual = true
     }
+
   }
 
   routerEventsSubscription() {

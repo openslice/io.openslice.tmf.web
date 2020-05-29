@@ -160,7 +160,7 @@ export class EditServiceSpecsComponent implements OnInit {
         // Check if spec has a defined logo already
         this.specLogoRef = this.spec.attachment.find( att => att.name.includes('logo') )
         if (this.specLogoRef) {
-          this.currentSpecLogoAsDataUrl = `${this.specServiceRootUrl}/${this.specLogoRef.url}`
+          this.currentSpecLogoAsDataUrl = this.specServiceRootUrl+this.specLogoRef.url
         }
 
         //populate Service Descriptor Panel Info

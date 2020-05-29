@@ -173,7 +173,8 @@ export class AuthService {
       data => { this.portalUser = data },
       error => {
         console.error(error)
-        this.toast.error('An error occurred fetching user information')
+        // this.toast.error('An error occurred fetching user information')
+        this.logout()
       }
     )
   }

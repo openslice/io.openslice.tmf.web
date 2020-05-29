@@ -72,6 +72,11 @@
     // align-items: center;
 }
 
+.description-container {
+    max-height: 80px;
+    overflow: hidden;
+}
+
 .img-container img {
     border-radius: 6px;
 }

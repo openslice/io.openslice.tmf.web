@@ -71,7 +71,7 @@ export class PreviewServiceComponent implements OnInit {
         //Check if spec has a defined logo
         this.specLogoRef = this.spec.attachment.find( att => att.name.includes('logo') )
         if (this.specLogoRef) {
-          this.specLogoUrl = `${this.specServiceRootUrl}/${this.specLogoRef.url}`
+          this.specLogoUrl = this.specServiceRootUrl+this.specLogoRef.url
         } else {
           this.specLogoUrl = "assets/images/logo_icon_original.png"
         }

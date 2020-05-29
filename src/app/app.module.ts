@@ -20,6 +20,8 @@ import { OAuthModule } from 'angular-oauth2-oidc';
 
 import { FileUploadModule } from '@iplab/ngx-file-upload'
 
+import { MarkdownModule } from 'ngx-markdown'
+
 
 import {
   MatTableModule,
@@ -198,7 +200,8 @@ export function initializeApp(bootstrap: BootstrapService) {
     OwlNativeDateTimeModule,
     ToastrModule.forRoot({progressBar: true, preventDuplicates: true}),
     OAuthModule.forRoot(),
-    FileUploadModule
+    FileUploadModule,
+    MarkdownModule.forRoot()
   ],
   entryComponents : [
     EditServiceCatalogsComponent,

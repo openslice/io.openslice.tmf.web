@@ -21,7 +21,7 @@ export class AuthGuardService implements CanActivate{
     return this.authService.canActivateProtectedRoutes$
       .pipe(tap(canNavigate => {
         if (!canNavigate) this.router.navigateByUrl('')
-        console.log('You tried to navigate to protected route ' + state.url + ' and auth guard said ' + canNavigate)
+        // console.log('You tried to navigate to protected route ' + state.url + ' and auth guard said ' + canNavigate)
       }))
   }
 }

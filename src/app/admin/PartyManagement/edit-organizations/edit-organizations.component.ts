@@ -64,7 +64,6 @@ export class EditOrganizationsComponent implements OnInit {
         status: 'initialized'  
       })
     }
-    console.log(this.editForm)
   }
 
   // initNewOrganizationFormArray() {

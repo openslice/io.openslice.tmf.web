@@ -76,7 +76,7 @@ export class ServicesMarketplaceComponent implements OnInit {
     
     this.candidateService.retrieveServiceCandidate({ id: candidateRef.id }).subscribe(
       data => { 
-        console.log(data)
+        // console.log(data)
         let candidate: ServiceCandidateWithLogo = data
         candidate.fetchingLogo = true
         candidate.logo = 'assets/images/logo_icon_original.png' //set Default App Image

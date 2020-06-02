@@ -62,7 +62,7 @@ export class AuthService {
     })
 
     this.oauthService.events.subscribe( (ev) => {
-      this.isAuthenticatedSubject$.next(this.oauthService.hasValidAccessToken())
+      // this.isAuthenticatedSubject$.next(this.oauthService.hasValidAccessToken())
       if (ev instanceof OAuthErrorEvent) {
         console.error(ev);
         console.error('AccessTokenExpiration : ', new Date(this.oauthService.getAccessTokenExpiration()).toUTCString());
@@ -70,6 +70,9 @@ export class AuthService {
       } else {
         console.warn(ev);
         console.warn('AccessTokenExpiration : ', new Date(this.oauthService.getAccessTokenExpiration()).toUTCString());
+        if (ev.type === 'token_received') {
+          this.isAuthenticatedSubject$.next(this.oauthService.hasValidAccessToken())
+        }
       }
     })
 

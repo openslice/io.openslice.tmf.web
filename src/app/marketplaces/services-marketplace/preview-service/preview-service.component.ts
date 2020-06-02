@@ -7,6 +7,7 @@ import { ToastrService } from 'ngx-toastr';
 import { SortingService } from 'src/app/shared/functions/sorting.service';
 import { trigger } from '@angular/animations';
 import { fadeIn } from 'src/app/shared/animations/animations';
+import { AuthService } from 'src/app/shared/services/auth.service';
 
 
 @Component({
@@ -26,7 +27,8 @@ export class PreviewServiceComponent implements OnInit {
     private specService: ServiceSpecificationService,
     private requesterService: RequesterService,
     private toastr: ToastrService,
-    private sortingService: SortingService
+    private sortingService: SortingService,
+    public authService: AuthService
   ) { }
 
   candidate: ServiceCandidate

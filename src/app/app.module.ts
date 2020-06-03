@@ -45,7 +45,8 @@ import {
   MatProgressBarModule,
   MatButtonToggleModule,
   MatRadioModule,
-  MatProgressSpinnerModule
+  MatProgressSpinnerModule,
+  MatListModule
 } from '@angular/material'
 
 import {DragDropModule} from '@angular/cdk/drag-drop';
@@ -68,7 +69,7 @@ import { ListServiceSpecsComponent } from './admin/CatalogManagement/list-servic
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { EditServiceCatalogsComponent } from './admin/CatalogManagement/edit-service-catalogs/edit-service-catalogs.component';
 import { EditServiceCategoriesComponent } from './admin/CatalogManagement/edit-service-categories/edit-service-categories.component';
-import { EditServiceSpecsComponent } from './admin/CatalogManagement/edit-service-specs/edit-service-specs.component';
+import { EditServiceSpecsComponent, DiscardChangesComponent } from './admin/CatalogManagement/edit-service-specs/edit-service-specs.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { EditServiceSpecCharacteristicsComponent } from './admin/CatalogManagement/edit-service-specs/edit-service-spec-characteristics/edit-service-spec-characteristics.component';
 import { DeleteServiceSpecCharacteristicsComponent } from './admin/CatalogManagement/edit-service-specs/delete-service-spec-characteristics/delete-service-spec-characteristics.component';
@@ -160,7 +161,8 @@ export function initializeApp(bootstrap: BootstrapService) {
     ListIndividualsComponent,
     EditIndividualsComponent,
     DeleteIndividualComponent,
-    DeleteAttachmentComponent
+    DeleteAttachmentComponent,
+    DiscardChangesComponent
   ],
   imports: [
     BrowserModule,
@@ -191,6 +193,7 @@ export function initializeApp(bootstrap: BootstrapService) {
     MatButtonToggleModule,
     MatRadioModule,
     MatProgressSpinnerModule,
+    MatListModule,
     DragDropModule,
     MatNativeDateModule,
     MatDatepickerModule,  
@@ -224,7 +227,8 @@ export function initializeApp(bootstrap: BootstrapService) {
     DeleteOrganizationComponent,
     DeleteIndividualComponent,
     DeleteServiceOrderComponent,
-    DeleteAttachmentComponent
+    DeleteAttachmentComponent,
+    DiscardChangesComponent
   ],
   providers: [
     AuthService,

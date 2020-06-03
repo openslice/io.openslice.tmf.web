@@ -1,3 +1,25 @@
+.nav-link:hover {
+    cursor: pointer;
+}
+
+.nav-link.disabled {
+    color: rgba(0,0,0,.30);
+}
+
+.nav-pills .nav-link.active {
+    color: #fff
+}
+
+.tab-pane .card.bg-light {
+    min-height: max(350px, 20vh);
+}
+
+.tab-pane .card .card-body.space-between{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
 .orderItem-border {
     border: 2px dotted #ddd;
     padding: 1rem .5rem .5rem .5rem;

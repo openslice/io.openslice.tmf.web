@@ -12,11 +12,15 @@ import { MatDialog } from '@angular/material';
 import { PreviewSupportingServicesComponent } from '../preview-supporting-services/preview-supporting-services.component';
 import { timer, Subscription } from 'rxjs';
 import { SortingService } from 'src/app/shared/functions/sorting.service';
+import { trigger } from '@angular/animations';
+import { fadeIn } from 'src/app/shared/animations/animations';
 
 @Component({
   selector: 'app-preview-service-order',
   templateUrl: './preview-service-order.component.html',
   styleUrls: ['./preview-service-order.component.scss'],
+  animations: [ trigger('fadeIn', fadeIn()) ]
+
 })
 export class PreviewServiceOrderComponent implements OnInit {
 
@@ -30,6 +34,9 @@ export class PreviewServiceOrderComponent implements OnInit {
     private dialog: MatDialog,
     private sortingService: SortingService
   ) { }
+
+  staticListItems = ["Main Properties", "Related Parties"]
+  activeListItem = "Main Properties"
 
   availableOrderStates = ['INITIAL', 'ACKNOWLEDGED', 'REJECTED', 'PENDING', 'HELD', 'INPROGRESS', 'CANCELLED', 'COMPLETED', 'FAILED', 'PARTIAL']
   availableInitialOrderStates = ['INITIAL', 'ACKNOWLEDGED', 'REJECTED']
@@ -65,6 +72,10 @@ export class PreviewServiceOrderComponent implements OnInit {
     }
   }
 
+  selectListitem(item: string) {
+    this.activeListItem = item
+  } 
+
   retrieveServiceOrder() {
     this.orderService.retrieveServiceOrder({id: this.orderID}).subscribe(
       data => this.serviceOrder = data,
@@ -78,6 +89,7 @@ export class PreviewServiceOrderComponent implements OnInit {
         })
 
         this.serviceOrder.orderItem.forEach((orderItem, index) => {
+          // this.listItems.push(`Order Item #${orderItem.id}`)
           //sort serviceOrderItem Characteristics
           orderItem.service.serviceCharacteristic.sort(this.sortingService.ascStringSortingFunctionByNameProperty())
 

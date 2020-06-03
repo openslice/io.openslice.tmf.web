@@ -4,7 +4,7 @@ import { ActivatedRoute, Router, ActivationEnd } from '@angular/router';
 import { FormGroup, FormControl, FormArray, Validators } from '@angular/forms';
 import { ServiceSpecification, ServiceSpecCharacteristic, ServiceSpecificationUpdate, ServiceSpecificationCreate, ServiceSpecRelationship, AttachmentRef, Attachment } from 'src/app/openApis/ServiceCatalogManagement/models';
 import { ServiceSpecificationService } from 'src/app/openApis/ServiceCatalogManagement/services';
-import { MatTableDataSource, MatSort, MatPaginator, MatDialog, MatCheckboxChange, MatExpansionPanel } from '@angular/material';
+import { MatTableDataSource, MatSort, MatPaginator, MatDialog, MatCheckboxChange, MatExpansionPanel, MatDialogRef } from '@angular/material';
 import { EditServiceSpecCharacteristicsComponent } from './edit-service-spec-characteristics/edit-service-spec-characteristics.component';
 import { DeleteServiceSpecCharacteristicsComponent } from './delete-service-spec-characteristics/delete-service-spec-characteristics.component';
 import { ToastrService } from 'ngx-toastr';
@@ -50,6 +50,9 @@ export class EditServiceSpecsComponent implements OnInit {
     }),
     version: new FormControl("0.1.0")
   })
+
+  listItems = ["Main Properties", "Service Specification Relationships", "Resource Specification Relationships", "Related Parties", "Service Specification Characteristics", "Logo", "Attachments"]
+  activeListItem = "Main Properties"
 
   lifecycleStatuses = ["In study", "In design", "In test", "Active", "Launched", "Retired", "Obsolete", "Rejected"]
 
@@ -131,6 +134,23 @@ export class EditServiceSpecsComponent implements OnInit {
     ))
   }
 
+  selectListitem(item: string) {
+    if (this.editForm.pristine) {
+      this.activeListItem = item
+    } else {
+      const dialogRef = this.dialog.open(DiscardChangesComponent, {autoFocus: true})
+    
+      dialogRef.afterClosed().subscribe (discardChanges => {
+        if (discardChanges) {
+          this.editForm.patchValue(this.spec)
+          this.editForm.markAsPristine()  
+          this.activeListItem = item
+        }
+      })
+    }
+  } 
+
+
   retrieveServiceSpec() {
     this.specService.retrieveServiceSpecification({id: this.specID}).subscribe(
       data => this.spec = data,
@@ -138,7 +158,9 @@ export class EditServiceSpecsComponent implements OnInit {
       () => {
         //populate General Panel Info
         if (!this.spec.validFor) this.spec.validFor = {endDateTime:null, startDateTime:null}
+
         this.editForm.patchValue(this.spec)
+        this.editForm.markAsPristine()
 
         //populate Specification Relationships Panel Info
         this.filteredRelatedSpecs$ = this.serviceRelatedSpecsFilterCtrl.valueChanges.pipe(
@@ -187,7 +209,7 @@ export class EditServiceSpecsComponent implements OnInit {
   }
 
   bundleCheckboxChanged(event:MatCheckboxChange) {
-    if (!event.checked) this.specRelationshipsPanel.close()
+    // if (!event.checked) this.specRelationshipsPanel.close()
   }
 
   private _filterOnRelatedSpecs(filterValue: string) {
@@ -461,6 +483,26 @@ export class EditServiceSpecsComponent implements OnInit {
 
   ngOnDestroy() {
     this.subscriptions.unsubscribe()
+  }
+
+}
+
+@Component({
+  selector: 'app-discard-changes',
+  templateUrl: 'discard-changes.component.html',
+})
+export class DiscardChangesComponent {
+
+  constructor(
+    public dialogRef: MatDialogRef<DiscardChangesComponent>,
+  ) {}
+
+  onNoClick(): void {
+    this.dialogRef.close(false);
+  }
+
+  onYesClick(): void {
+    this.dialogRef.close(true)
   }
 
 }

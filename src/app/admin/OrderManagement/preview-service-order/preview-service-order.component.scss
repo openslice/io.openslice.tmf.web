@@ -10,7 +10,7 @@
     color: #fff
 }
 
-.tab-pane .card.bg-light {
+.tab-pane > .card:nth-child(1) {
     min-height: max(350px, 20vh);
 }
 

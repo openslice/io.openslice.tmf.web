@@ -34,7 +34,8 @@
                                     (click)="selectListitem(orderItem.id)" *ngFor="let orderItem of serviceOrder?.orderItem; let orderIndex = index;" role="tab" aria-selected="true">
                                     Order Item #{{orderIndex+1}}
                                     <div>
-                                        <b [ngClass]="orderStateClassSelector(orderItem?.state)" class="ml-1">{{orderItem.state}}</b>
+                                        <b [ngClass]="orderStateClassSelector(orderItem?.state)" class="ml-1" >{{orderItem.state}}</b>
+                                        <!-- <b class="ml-1 badge" *ngIf="orderItem.id === activeListItem">{{orderItem.state}}</b> -->
                                     </div>
 
                                 </a>
@@ -45,8 +46,8 @@
                         <div class="col-xl-10 col-lg-9">
                             <div class="tab-content">
 
-                                <!-- Main Properties Tab -->
-                                <div class="tab-pane active" *ngIf="activeListItem === 'Main Properties'"
+                                <!-- Main Order Properties Tab -->
+                                <div class="tab-pane active" *ngIf="activeListItem === 'Main Order Properties'"
                                     role="tabpanel" [@fadeIn]>
                                     <div class="card mat-elevation-z1 bg-light">
                                         <div class="card-body">
@@ -246,7 +247,7 @@
                                                         <mat-expansion-panel expanded="true" class="no-shadow">
                                                             <mat-expansion-panel-header>
                                                                 <mat-panel-title>
-                                                                    Main Ordered Service properties
+                                                                    Order Item's Service main properties
                                                                 </mat-panel-title>
                                                             </mat-expansion-panel-header>
                     
@@ -388,7 +389,7 @@
                                                                                     StartMode:
                                                                                     <b>{{supportingServices[orderIndex][ServiceIndex]?.startMode}}</b>,
                                                                                     StartDate:
-                                                                                    <b>{{supportingServices[orderIndex][ServiceIndex]?.startDate | date:'d MMM y, h:mm a'}}</b>
+                                                                                    <b>{{supportingServices[orderIndex][ServiceIndex]?.startDate | date:'d MMM y, h:mm a'}} (Local Time)</b>
                                                                                 </div>
                                                                             </div>
                                                                             

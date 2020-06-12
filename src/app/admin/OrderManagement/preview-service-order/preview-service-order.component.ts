@@ -35,8 +35,8 @@ export class PreviewServiceOrderComponent implements OnInit {
     private sortingService: SortingService
   ) { }
 
-  staticListItems = ["Main Properties", "Related Parties"]
-  activeListItem = "Main Properties"
+  staticListItems = ["Main Order Properties", "Related Parties"]
+  activeListItem = "Main Order Properties"
 
   availableOrderStates = ['INITIAL', 'ACKNOWLEDGED', 'REJECTED', 'PENDING', 'HELD', 'INPROGRESS', 'CANCELLED', 'COMPLETED', 'FAILED', 'PARTIAL']
   availableInitialOrderStates = ['INITIAL', 'ACKNOWLEDGED', 'REJECTED']

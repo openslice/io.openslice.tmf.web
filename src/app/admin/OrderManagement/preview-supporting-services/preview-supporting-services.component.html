@@ -33,7 +33,8 @@
             </div>
             <div class="col-lg-4">
                 <h6>Start Date</h6>
-                <p>{{supportingService?.startDate | date:'d MMM y, h:mm a'}}</p>
+                <p [class.mb-0]="supportingService?.startDate">{{supportingService?.startDate | date:'d MMM y, h:mm a'}} - Local Time</p>
+                <p>{{supportingService?.startDate | date:'d MMM y, h:mm a':'UTC'}} - UTC</p>
             </div>
             <div class="col-lg-4">
                 <h6>Start Mode</h6>

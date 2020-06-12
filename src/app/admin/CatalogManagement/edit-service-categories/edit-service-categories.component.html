@@ -17,7 +17,7 @@
 
                                     <div class="card-stats" *ngIf="!newCategory">
                                         <i class="fas fa-sync spin mr-2"></i>Last updated at
-                                        {{category?.lastUpdate | date:'short'}}
+                                        {{category?.lastUpdate | date:'short'}} (Local Time)
                                     </div>
 
                                 </div>
@@ -112,6 +112,7 @@
                                                 <input matInput [owlDateTime]="pickerFrom" placeholder="Date Time" formControlName="startDateTime">
                                                 <mat-icon matSuffix>date_range</mat-icon>
                                                 <owl-date-time #pickerFrom></owl-date-time>
+                                                <mat-hint>Date is displayed in Local Time <span *ngIf="editForm.value.validFor.startDateTime">(UTC: {{editForm.value.validFor.startDateTime | date:'dd/MM/yy, HH:mm':'UTC'}})</span></mat-hint>
                                             </mat-form-field>
                             
                                             <mat-form-field appearance="" class="col-md-6" [owlDateTimeTrigger]="pickerUntil">
@@ -119,6 +120,7 @@
                                                 <input matInput [owlDateTime]="pickerUntil" placeholder="Date Time" formControlName="endDateTime">
                                                 <mat-icon matSuffix>date_range</mat-icon>
                                                 <owl-date-time #pickerUntil></owl-date-time>
+                                                <mat-hint>Date is displayed in Local Time <span *ngIf="editForm.value.validFor.endDateTime">(UTC: {{editForm.value.validFor.endDateTime | date:'dd/MM/yy, HH:mm':'UTC'}})</span></mat-hint>
                                             </mat-form-field>
                                         </div>
                                     </div>

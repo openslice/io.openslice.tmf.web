@@ -7,12 +7,15 @@ import { ServiceSpecification, ServiceSpecificationCreate } from 'src/app/openAp
 import { DeleteServiceSpecComponent } from '../delete-service-spec/delete-service-spec.component';
 import { ToastrService } from 'ngx-toastr';
 import { HttpErrorResponse } from '@angular/common/http';
+import { trigger } from '@angular/animations';
+import { fadeIn } from 'src/app/shared/animations/animations';
 
 
 @Component({
   selector: 'app-list-service-specs',
   templateUrl: './list-service-specs.component.html',
-  styleUrls: ['./list-service-specs.component.scss']
+  styleUrls: ['./list-service-specs.component.scss'],
+  animations: [ trigger('fadeIn', fadeIn()) ]
 })
 export class ListServiceSpecsComponent implements OnInit {
 

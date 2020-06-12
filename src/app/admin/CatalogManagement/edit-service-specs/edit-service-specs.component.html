@@ -21,7 +21,7 @@
 
                                 <div class="card-stats" *ngIf="!newSpecification">
                                     <i class="fas fa-sync spin mr-2"></i>Last updated at
-                                    {{spec?.lastUpdate | date:'short'}}
+                                    {{spec?.lastUpdate | date:'short'}} (Local Time)
                                 </div>
                             </div>
 
@@ -97,6 +97,7 @@
                                                                     formControlName="startDateTime">
                                                                 <mat-icon matSuffix>date_range</mat-icon>
                                                                 <owl-date-time #pickerFrom></owl-date-time>
+                                                                <mat-hint>Date is displayed in Local Time <span *ngIf="editForm.value.validFor.startDateTime">(UTC: {{editForm.value.validFor.startDateTime | date:'dd/MM/yy, HH:mm':'UTC'}})</span></mat-hint>
                                                             </mat-form-field>
 
                                                             <mat-form-field class="col-md-6"
@@ -107,6 +108,7 @@
                                                                     formControlName="endDateTime">
                                                                 <mat-icon matSuffix>date_range</mat-icon>
                                                                 <owl-date-time #pickerUntil></owl-date-time>
+                                                                <mat-hint>Date is displayed in Local Time <span *ngIf="editForm.value.validFor.endDateTime">(UTC: {{editForm.value.validFor.endDateTime | date:'dd/MM/yy, HH:mm':'UTC'}})</span></mat-hint>
                                                             </mat-form-field>
                                                         </div>
                                                     </div>

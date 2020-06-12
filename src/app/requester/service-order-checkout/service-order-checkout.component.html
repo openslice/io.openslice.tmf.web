@@ -111,7 +111,7 @@
         
                 <!-- Heading -->
                 <h5 class="d-flex justify-content-between align-items-center mb-3">
-                    <span class="text-muted">Your Order Item list</span>
+                    <span class="text-muted">Order Item List</span>
                     <span class="badge badge-secondary badge-pill">{{requesterService.serviceConfigurationList.length}}</span>
                 </h5>
         
@@ -155,6 +155,7 @@
                                 <input matInput [owlDateTime]="pickerFrom" placeholder="Date Time" [formControl]="reqStartDate">
                                 <mat-icon matSuffix>date_range</mat-icon>
                                 <owl-date-time #pickerFrom></owl-date-time>
+                                <mat-hint>Date is displayed in Local Time <span *ngIf="reqStartDate.value">(UTC: {{reqStartDate.value | date:'dd/MM/yy, HH:mm':'UTC'}})</span></mat-hint>
                             </mat-form-field>
         
                             <mat-form-field class="col-md-6" [owlDateTimeTrigger]="pickerUntil">
@@ -163,6 +164,7 @@
                                     [formControl]="reqCompletionDate">
                                 <mat-icon matSuffix>date_range</mat-icon>
                                 <owl-date-time #pickerUntil></owl-date-time>
+                                <mat-hint>Date is displayed in Local Time <span *ngIf="reqCompletionDate.value">(UTC: {{reqCompletionDate.value | date:'dd/MM/yy, HH:mm':'UTC'}})</span></mat-hint>
                             </mat-form-field>
                         </div>
                     </div>

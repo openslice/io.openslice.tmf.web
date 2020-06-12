@@ -3,7 +3,7 @@
         <i class="row far fa-clipboard mr-2"></i>
         <span>Edit Service Catalog</span>
         <div class="row card-stats">
-            Last updated at {{catalog?.lastUpdate | date:'short'}}
+            Last updated at {{catalog?.lastUpdate | date:'short'}} (Local Time)
         </div>
     </h4>
 
@@ -78,6 +78,7 @@
                             <mat-icon matSuffix>date_range</mat-icon>
                             <!-- <span [owlDateTimeTrigger]="dt1"><i class="fa fa-calendar"></i></span> -->
                             <owl-date-time #pickerFrom></owl-date-time>
+                            <mat-hint>Date is displayed in Local Time <span *ngIf="editForm.value.validFor.startDateTime">(UTC: {{editForm.value.validFor.startDateTime | date:'dd/MM/yy, HH:mm':'UTC'}})</span></mat-hint>
                         </mat-form-field>
 
                         <mat-form-field appearance="" class="col-md-6" [owlDateTimeTrigger]="pickerUntil">
@@ -90,6 +91,7 @@
                             <mat-icon matSuffix>date_range</mat-icon>
                             <!-- <span [owlDateTimeTrigger]="dt1"><i class="fa fa-calendar"></i></span> -->
                             <owl-date-time #pickerUntil></owl-date-time>
+                            <mat-hint>Date is displayed in Local Time <span *ngIf="editForm.value.validFor.endDateTime">(UTC: {{editForm.value.validFor.endDateTime | date:'dd/MM/yy, HH:mm':'UTC'}})</span></mat-hint>
                         </mat-form-field>
                     </div>
                 </div>

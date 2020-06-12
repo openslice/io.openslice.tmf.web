@@ -6,6 +6,8 @@ import { MatTableDataSource, MatSort, MatPaginator, MatDialog } from '@angular/m
 import { FormGroup, FormControl } from '@angular/forms';
 import { DeleteServiceOrderComponent } from '../delete-service-order/delete-service-order.component';
 import { HttpErrorResponse } from '@angular/common/http';
+import { trigger } from '@angular/animations';
+import { fadeIn } from 'src/app/shared/animations/animations';
 
 const today = new Date()
 
@@ -13,7 +15,8 @@ const today = new Date()
 @Component({
   selector: 'app-list-service-orders',
   templateUrl: './list-service-orders.component.html',
-  styleUrls: ['./list-service-orders.component.scss']
+  styleUrls: ['./list-service-orders.component.scss'],
+  animations: [ trigger('fadeIn', fadeIn()) ]
 })
 export class ListServiceOrdersComponent implements OnInit {
 
@@ -64,14 +67,13 @@ export class ListServiceOrdersComponent implements OnInit {
           }
         }
         this.dataSource.filterPredicate = (data, filter) => {
-          console.log(filter)
-          console.log()
+          // console.log(filter)
 
           const dataString = `${data.relatedParty[0].name} (${data.relatedParty[0].role})`
 
           let filterExpression: boolean = true
 
-          console.log(filterExpression)
+          // console.log(filterExpression)
           if (this.text) {
             filterExpression = dataString.trim().toLowerCase().includes(this.text)
           }

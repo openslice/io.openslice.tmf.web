@@ -58,7 +58,8 @@
                                                     </div>
                                                     <div class="col-lg-3">
                                                         <h6>Order Date</h6>
-                                                        <p>{{serviceOrder?.orderDate | date:'d MMM y, h:mm a'}}</p>
+                                                        <p [class.mb-0]="serviceOrder?.orderDate">{{serviceOrder?.orderDate | date:'d MMM y, h:mm a'}} - Local Time</p>
+                                                        <p *ngIf="serviceOrder?.orderDate">{{serviceOrder?.orderDate | date:'d MMM y, h:mm a':'UTC'}} - UTC</p>
                                                     </div>
                                                     <div class="col-lg-3">
                                                         <ng-container *ngIf="!admin">
@@ -111,40 +112,47 @@
                                                     </div>
                                                     <div class="col-lg-6">
                                                         <h6>Requested Starting Date</h6>
-                                                        <p>{{serviceOrder?.requestedStartDate | date:'d MMM y, h:mm a'}}</p>
+                                                        <p [class.mb-0]="serviceOrder?.requestedStartDate" *ngIf="serviceOrder?.requestedStartDate">{{serviceOrder?.requestedStartDate | date:'d MMM y, h:mm a'}} - Local Time</p>
+                                                        <p *ngIf="serviceOrder?.requestedStartDate">{{serviceOrder?.requestedStartDate | date:'d MMM y, h:mm a':'UTC'}} - UTC</p>
                                                     </div>
                                                     <div class="col-lg-6">
                                                         <h6>Requested Completion Date</h6>
-                                                        <p>{{serviceOrder?.requestedCompletionDate | date:'d MMM y, h:mm a'}}</p>
+                                                        <p [class.mb-0]="serviceOrder?.requestedCompletionDate" *ngIf="serviceOrder?.requestedCompletionDate">{{serviceOrder?.requestedCompletionDate | date:'d MMM y, h:mm a'}} - Local Time</p>
+                                                        <p *ngIf="serviceOrder?.requestedCompletionDate">{{serviceOrder?.requestedCompletionDate | date:'d MMM y, h:mm a':'UTC'}} - UTC</p>                                                      
                                                     </div>
                 
                                                     <div class="col-lg-6">
                                                         <ng-container *ngIf="!admin">
                                                             <h6>Starting Date</h6>
-                                                            <p>{{serviceOrder?.startDate | date:'d MMM y, h:mm a'}}</p>
+                                                            <p [class.mb-0]="serviceOrder?.startDate" *ngIf="serviceOrder?.startDate">{{serviceOrder?.startDate | date:'d MMM y, h:mm a'}} - Local Time</p>
+                                                            <p *ngIf="serviceOrder?.startDate">{{serviceOrder?.startDate | date:'d MMM y, h:mm a':'UTC'}} - UTC</p>                                                      
                                                         </ng-container>
                 
-                                                        <mat-form-field *ngIf="admin" [owlDateTimeTrigger]="pickerFrom">
+                                                        <mat-form-field *ngIf="admin" [owlDateTimeTrigger]="pickerFrom" class="mb-2">
                                                             <mat-label>Starting Date</mat-label>
                                                             <input matInput [owlDateTime]="pickerFrom" placeholder="Date Time"
                                                                 formControlName="startDate">
                                                             <mat-icon matSuffix>date_range</mat-icon>
                                                             <owl-date-time #pickerFrom></owl-date-time>
+                                                            <mat-hint>Date is displayed in Local Time <span *ngIf="editForm.value.startDate">(UTC: {{editForm.value.startDate | date:'dd/MM/yy, HH:mm':'UTC'}})</span></mat-hint>
                                                         </mat-form-field>
                                                     </div>
                 
                                                     <div class="col-lg-6">
                                                         <ng-container *ngIf="!admin">
                                                             <h6>Expected Completion Date</h6>
-                                                            <p>{{serviceOrder?.expectedCompletionDate | date:'d MMM y, h:mm a'}}</p>
+                                                            <p [class.mb-0]="serviceOrder?.expectedCompletionDate" *ngIf="serviceOrder?.expectedCompletionDate">{{serviceOrder?.expectedCompletionDate | date:'d MMM y, h:mm a'}} - Local Time</p>
+                                                            <p *ngIf="serviceOrder?.expectedCompletionDate">{{serviceOrder?.expectedCompletionDate | date:'d MMM y, h:mm a':'UTC'}} - UTC</p>                                                      
+
                                                         </ng-container>
                 
-                                                        <mat-form-field *ngIf="admin" [owlDateTimeTrigger]="pickerUntil">
-                                                            <mat-label>Expected Completion Date</mat-label>
+                                                        <mat-form-field *ngIf="admin" [owlDateTimeTrigger]="pickerUntil" class="mb-2">
+                                                            <mat-label>Expected Completion Date </mat-label>
                                                             <input matInput [owlDateTime]="pickerUntil" placeholder="Date Time"
                                                                 formControlName="expectedCompletionDate">
                                                             <mat-icon matSuffix>date_range</mat-icon>
                                                             <owl-date-time #pickerUntil></owl-date-time>
+                                                            <mat-hint>Date is displayed in Local Time <span *ngIf="editForm.value.expectedCompletionDate">(UTC: {{editForm.value.expectedCompletionDate | date:'dd/MM/yy, HH:mm':'UTC'}})</span></mat-hint>
                                                         </mat-form-field>
                                                     </div>
                 
@@ -156,7 +164,7 @@
                                                                     <div class="note-card-body">
                                                                         {{note.text}}
                                                                         <div class="small">written by {{note.author}} @
-                                                                            {{note.date | date:'d MMM y, h:mm a'}}</div>
+                                                                            {{note.date | date:'d MMM y, h:mm a'}} (Local Time)</div>
                                                                     </div>
                                                                 </div>
                                                             </div>

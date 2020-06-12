@@ -6,11 +6,14 @@ import { ServiceCategory } from 'src/app/openApis/ServiceCatalogManagement/model
 import { ServiceCategoryService } from 'src/app/openApis/ServiceCatalogManagement/services';
 import { DeleteServiceCategoryComponent } from '../delete-service-category/delete-service-category.component';
 import { ToastrService } from 'ngx-toastr';
+import { trigger } from '@angular/animations';
+import { fadeIn } from 'src/app/shared/animations/animations';
 
 @Component({
   selector: 'app-list-service-categories',
   templateUrl: './list-service-categories.component.html',
-  styleUrls: ['./list-service-categories.component.scss']
+  styleUrls: ['./list-service-categories.component.scss'],
+  animations: [ trigger('fadeIn', fadeIn()) ]
 })
 export class ListServiceCategoriesComponent implements OnInit {
 

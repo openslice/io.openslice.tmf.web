@@ -249,7 +249,7 @@
                                             </div>
 
                                             <div class="table-responsive">
-                                                <table mat-table [dataSource]="dataSource" matSort
+                                                <table mat-table [dataSource]="dataSource" matSort #specSort="matSort"
                                                     matSortActive="name" matSortDirection="asc" matSortDisableClear
                                                     class="table table-generic">
                                                     <ng-container matColumnDef="name">

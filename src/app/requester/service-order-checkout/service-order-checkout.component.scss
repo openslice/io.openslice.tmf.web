@@ -4,8 +4,12 @@
 
 .selected-spec {
     // color: #fff;
-    background-color: rgba(0, 0, 0, 0.03);
+    background-color: rgba(0, 0, 0, 0.06);
     border-color: #ddd;
+}
+
+.list-group-item {
+    cursor: pointer;
 }
 
 .container {

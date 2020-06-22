@@ -15,8 +15,6 @@ import { AssignServiceCandidatesComponent } from './assign-service-candidates/as
 import { ToastrService } from 'ngx-toastr';
 import { error } from 'protractor';
 
-const today = new Date()
-
 @Component({
   selector: 'app-edit-service-categories',
   templateUrl: './edit-service-categories.component.html',
@@ -46,7 +44,7 @@ export class EditServiceCategoriesComponent implements OnInit, OnDestroy {
     name: new FormControl(),
     parentId: new FormControl(),
     validFor: new FormGroup({
-      endDateTime: new FormControl(new Date(new Date().setFullYear(today.getFullYear()+20))),
+      endDateTime: new FormControl(new Date(new Date().setFullYear(new Date().getFullYear()+20))),
       startDateTime: new FormControl(new Date())
     }),
     serviceCandidate: new FormControl([]),

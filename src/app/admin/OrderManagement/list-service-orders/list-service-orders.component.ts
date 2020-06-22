@@ -9,8 +9,6 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { trigger } from '@angular/animations';
 import { fadeIn } from 'src/app/shared/animations/animations';
 
-const today = new Date()
-
 
 @Component({
   selector: 'app-list-service-orders',
@@ -38,8 +36,8 @@ export class ListServiceOrdersComponent implements OnInit {
 
   filterForm = new FormGroup({
     text: new FormControl(),
-    fromDate: new FormControl(new Date(new Date().setMonth(today.getMonth()-1))),
-    toDate: new FormControl(today),
+    fromDate: new FormControl(new Date(new Date().setMonth(new Date().getMonth()-1))),
+    toDate: new FormControl(new Date()),
   });
 
   get fromDate() { return this.filterForm.get('fromDate').value; }
@@ -47,6 +45,7 @@ export class ListServiceOrdersComponent implements OnInit {
   get text() { return this.filterForm.get('text').value; }
 
   ngOnInit() {
+    console.log(new Date())
     this.retrieveOrderList()
   }
 
@@ -105,6 +104,7 @@ export class ListServiceOrdersComponent implements OnInit {
           }
           
         }
+        this.applyPeriodFilter()
       }
     )
   }

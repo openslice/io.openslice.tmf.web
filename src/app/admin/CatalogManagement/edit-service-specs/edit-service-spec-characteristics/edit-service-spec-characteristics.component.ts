@@ -7,7 +7,6 @@ import { ToastrService } from 'ngx-toastr';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
-const today = new Date()
 
 @Component({
   selector: 'app-edit-service-spec-characteristics',
@@ -34,7 +33,7 @@ export class EditServiceSpecCharacteristicsComponent implements OnInit {
     maxCardinality: new FormControl(1),
     minCardinality: new FormControl(0),
     validFor: new FormGroup({
-      endDateTime: new FormControl(new Date(new Date().setFullYear(today.getFullYear()+20))),
+      endDateTime: new FormControl(new Date(new Date().setFullYear(new Date().getFullYear()+20))),
       startDateTime: new FormControl(new Date())
     }),
     valueType: new FormControl(),

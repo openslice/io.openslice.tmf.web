@@ -47,7 +47,6 @@ export class AuthService {
     ) 
   {
     window.addEventListener('storage', (event) => {
-      console.log(event)
       // The `key` is `null` if the event was caused by `.clear()`
       if (event.key !== 'access_token' && event.key !== null) {
         return;
@@ -191,6 +190,7 @@ export class AuthService {
     //   data => console.log(data)
     // )
     this.oauthService.logOut()
+    localStorage.clear()
 
     // this.http.delete(this.authConfigFile.tokenEndpoint).subscribe(
     //   data => { 

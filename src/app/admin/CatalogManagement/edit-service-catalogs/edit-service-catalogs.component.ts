@@ -9,8 +9,6 @@ import { MatAutocomplete, MatChipInputEvent, MatAutocompleteSelectedEvent, MatAu
 import { startWith, map } from 'rxjs/operators';
 import { AppService } from 'src/app/shared/services/app.service';
 
-const today = new Date()
-
 @Component({
   selector: 'app-edit-service-catalogs',
   templateUrl: './edit-service-catalogs.component.html',
@@ -37,7 +35,7 @@ export class EditServiceCatalogsComponent implements OnInit {
     name: new FormControl(),
     relatedParty: new FormControl(),
     validFor: new FormGroup({
-      endDateTime: new FormControl(new Date(new Date().setFullYear(today.getFullYear()+20))),
+      endDateTime: new FormControl(new Date(new Date().setFullYear(new Date().getFullYear()+20))),
       startDateTime: new FormControl(new Date())
     }),
     version: new FormControl("0.1.0")

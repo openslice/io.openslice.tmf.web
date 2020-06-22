@@ -7,7 +7,6 @@ import { FormGroup, FormControl } from '@angular/forms';
 import { ServiceCategory, ServiceCategoryCreate, ServiceCategoryUpdate } from 'src/app/openApis/ServiceCatalogManagement/models';
 import { ServiceCategoryService } from 'src/app/openApis/ServiceCatalogManagement/services';
 
-const today = new Date()
 
 @Component({
   selector: 'app-create-service-category-children',
@@ -30,7 +29,7 @@ export class CreateServiceCategoryChildrenComponent implements OnInit {
     name: new FormControl(),
     parentId: new FormControl({value:'', disabled: true}),
     validFor: new FormGroup({
-      endDateTime: new FormControl(new Date(new Date().setFullYear(today.getFullYear()+20))),
+      endDateTime: new FormControl(new Date(new Date().setFullYear(new Date().getFullYear()+20))),
       startDateTime: new FormControl(new Date())
     }),
     version: new FormControl("0.1.0")

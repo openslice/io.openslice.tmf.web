@@ -10,14 +10,12 @@ import { DeleteServiceSpecCharacteristicsComponent } from './delete-service-spec
 import { ToastrService } from 'ngx-toastr';
 import { Observable, Subscription, timer } from 'rxjs';
 import { startWith, map } from 'rxjs/operators';
-import { delay } from 'q';
 import { AssignServiceRelationshipsComponent } from './assign-service-relationships/assign-service-relationships.component';
 import { FileUploadControl, FileUploadValidators } from '@iplab/ngx-file-upload';
 import { trigger } from '@angular/animations';
 import { fadeIn } from 'src/app/shared/animations/animations';
 import { DeleteAttachmentComponent } from './delete-attachment/delete-attachment.component';
 
-const today = new Date()
 
 @Component({
   selector: 'app-edit-service-specs',
@@ -45,7 +43,7 @@ export class EditServiceSpecsComponent implements OnInit {
     name: new FormControl(),
     isBundle: new FormControl(),
     validFor: new FormGroup({
-      endDateTime: new FormControl(new Date(new Date().setFullYear(today.getFullYear()+20))),
+      endDateTime: new FormControl(new Date(new Date().setFullYear(new Date().getFullYear()+20))),
       startDateTime: new FormControl(new Date())
     }),
     version: new FormControl("0.1.0")
@@ -64,10 +62,12 @@ export class EditServiceSpecsComponent implements OnInit {
   tagFiltervalue:string = "All"
 
 
-  @ViewChild(MatSort, {static: true}) sort: MatSort;
+  @ViewChild('specSort', {static: false}) set matSort(ms: MatSort) {
+    this.dataSource.sort = ms;
+  } 
   // @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
 
-  @ViewChild('specRelationshipsPanel', {static: true}) specRelationshipsPanel: MatExpansionPanel
+  @ViewChild('specRelationshipsPanel', {static: false}) specRelationshipsPanel: MatExpansionPanel
 
   newSpecification = false
 
@@ -128,7 +128,6 @@ export class EditServiceSpecsComponent implements OnInit {
               this.logoImageCtrl.setValidators(FileUploadValidators.filesLimit(0))
             }
           }
-
         }
       }
     ))
@@ -171,7 +170,6 @@ export class EditServiceSpecsComponent implements OnInit {
         //populate Specification Characteristic Panel Info
         // filter Spec Characteristic that does not have defined Value Type (parent spec char)
         this.dataSource.data = this.spec.serviceSpecCharacteristic.filter(specCharacteristic => specCharacteristic.valueType)
-        this.dataSource.sort = this.sort
         // this.dataSource.paginator = this.paginator;
 
 

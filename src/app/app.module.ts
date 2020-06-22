@@ -83,11 +83,9 @@ import { CloneGstTemplateComponent } from './admin/CatalogManagement/edit-servic
 import { CloneVinniTemplateComponent } from './admin/CatalogManagement/edit-service-specs/clone-vinni-template/clone-vinni-template.component';
 import { PreviewServiceComponent } from './marketplaces/services-marketplace/preview-service/preview-service.component';
 import { AssignServiceRelationshipsComponent } from './admin/CatalogManagement/edit-service-specs/assign-service-relationships/assign-service-relationships.component';
-import { ConfigureServiceComponent } from './marketplaces/services-marketplace/preview-service/configure-service/configure-service.component';
 import { TokenInterceptor } from './shared/interceptors/token-interceptor';
 import { RequesterComponent } from './requester/requester.component';
 import { ServiceOrderCheckoutComponent } from './requester/service-order-checkout/service-order-checkout.component';
-import { MyServiceOrderOverviewComponent } from './requester/my-service-order-overview/my-service-order-overview.component';
 import { ListServiceOrdersComponent } from './admin/OrderManagement/list-service-orders/list-service-orders.component';
 import { PreviewServiceOrderComponent } from './admin/OrderManagement/preview-service-order/preview-service-order.component';
 import { PreviewSupportingServicesComponent } from './admin/OrderManagement/preview-supporting-services/preview-supporting-services.component';
@@ -105,6 +103,7 @@ import { ListIndividualsComponent } from './admin/PartyManagement/list-individua
 import { EditIndividualsComponent } from './admin/PartyManagement/edit-individuals/edit-individuals.component';
 import { DeleteIndividualComponent } from './admin/PartyManagement/delete-individual/delete-individual.component';
 import { DeleteAttachmentComponent } from './admin/CatalogManagement/edit-service-specs/delete-attachment/delete-attachment.component';
+import { EditOrdersServiceSpecCharacteristicsComponent } from './admin/OrderManagement/preview-service-order/edit-orders-service-spec-characteristics/edit-orders-service-spec-characteristics.component';
 
 
 
@@ -142,12 +141,11 @@ export function initializeApp(bootstrap: BootstrapService) {
     CloneVinniTemplateComponent,
     PreviewServiceComponent,
     AssignServiceRelationshipsComponent,
-    ConfigureServiceComponent,
     RequesterComponent,
     ServiceOrderCheckoutComponent,
-    MyServiceOrderOverviewComponent,
     ListServiceOrdersComponent,
     PreviewServiceOrderComponent,
+    EditOrdersServiceSpecCharacteristicsComponent,
     PreviewSupportingServicesComponent,
     jsonParsePipe,
     ListNsdComponent,
@@ -220,6 +218,7 @@ export function initializeApp(bootstrap: BootstrapService) {
     CloneVinniTemplateComponent,
     AssignServiceRelationshipsComponent,
     PreviewServiceComponent,
+    EditOrdersServiceSpecCharacteristicsComponent,
     PreviewSupportingServicesComponent,
     ImportNsdDialogComponent,
     EditPartyCharacteristicsComponent,

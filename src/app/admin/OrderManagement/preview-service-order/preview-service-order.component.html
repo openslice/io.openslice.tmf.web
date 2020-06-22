@@ -63,12 +63,12 @@
                                                         <p *ngIf="serviceOrder?.orderDate">{{serviceOrder?.orderDate | date:'d MMM y, h:mm a':'UTC'}} - UTC</p>
                                                     </div>
                                                     <div class="col-lg-3">
-                                                        <ng-container *ngIf="!admin">
+                                                        <ng-container *ngIf="!editMode">
                                                             <h6>Priority</h6>
                                                             <p>{{serviceOrder?.priority}}</p>
                                                         </ng-container>
                 
-                                                        <mat-form-field *ngIf="admin">
+                                                        <mat-form-field *ngIf="editMode">
                                                             <mat-label>Priority</mat-label>
                                                             <mat-select formControlName="priority">
                                                                 <mat-option *ngFor="let priority of availablePriorities"
@@ -79,12 +79,12 @@
                                                         </mat-form-field>
                                                     </div>
                                                     <div class="col-lg-3">
-                                                        <ng-container *ngIf="!admin">
+                                                        <ng-container *ngIf="!editMode">
                                                             <h6>State</h6>
                                                             <p [ngClass]="orderStateClassSelector(serviceOrder?.state)"><b>{{serviceOrder?.state}}</b></p>
                                                         </ng-container>
                 
-                                                        <mat-form-field *ngIf="admin">
+                                                        <mat-form-field *ngIf="editMode">
                                                             <mat-label>State</mat-label>
                                                             <mat-select formControlName="state">
                                                                 <ng-container *ngIf="serviceOrder?.state === 'INITIAL'">
@@ -123,13 +123,13 @@
                                                     </div>
                 
                                                     <div class="col-lg-6">
-                                                        <ng-container *ngIf="!admin">
+                                                        <ng-container *ngIf="!editMode">
                                                             <h6>Starting Date</h6>
                                                             <p [class.mb-0]="serviceOrder?.startDate" *ngIf="serviceOrder?.startDate">{{serviceOrder?.startDate | date:'d MMM y, h:mm a'}} - Local Time</p>
                                                             <p *ngIf="serviceOrder?.startDate">{{serviceOrder?.startDate | date:'d MMM y, h:mm a':'UTC'}} - UTC</p>                                                      
                                                         </ng-container>
                 
-                                                        <mat-form-field *ngIf="admin" [owlDateTimeTrigger]="pickerFrom" class="mb-2">
+                                                        <mat-form-field *ngIf="editMode" [owlDateTimeTrigger]="pickerFrom" class="mb-2">
                                                             <mat-label>Starting Date</mat-label>
                                                             <input matInput [owlDateTime]="pickerFrom" placeholder="Date Time"
                                                                 formControlName="startDate">
@@ -140,14 +140,14 @@
                                                     </div>
                 
                                                     <div class="col-lg-6">
-                                                        <ng-container *ngIf="!admin">
+                                                        <ng-container *ngIf="!editMode">
                                                             <h6>Expected Completion Date</h6>
                                                             <p [class.mb-0]="serviceOrder?.expectedCompletionDate" *ngIf="serviceOrder?.expectedCompletionDate">{{serviceOrder?.expectedCompletionDate | date:'d MMM y, h:mm a'}} - Local Time</p>
                                                             <p *ngIf="serviceOrder?.expectedCompletionDate">{{serviceOrder?.expectedCompletionDate | date:'d MMM y, h:mm a':'UTC'}} - UTC</p>                                                      
 
                                                         </ng-container>
                 
-                                                        <mat-form-field *ngIf="admin" [owlDateTimeTrigger]="pickerUntil" class="mb-2">
+                                                        <mat-form-field *ngIf="editMode" [owlDateTimeTrigger]="pickerUntil" class="mb-2">
                                                             <mat-label>Expected Completion Date </mat-label>
                                                             <input matInput [owlDateTime]="pickerUntil" placeholder="Date Time"
                                                                 formControlName="expectedCompletionDate">
@@ -170,13 +170,13 @@
                                                                 </div>
                                                             </div>
                                                         </div>
-                                                        <div *ngIf="admin">
-                                                            <button *ngIf="!adminNote" type="button"
+                                                        <div *ngIf="editMode">
+                                                            <button *ngIf="!editModeNotes" type="button"
                                                                 class="btn btn-primary btn-sm btn-block mb-2"
                                                                 (click)="triggerAdminNote()"><i class="far fa-sticky-note mr-2"></i>Add
                                                                 Note</button>
                 
-                                                            <div *ngIf="adminNote" class="card card-paper mb-2">
+                                                            <div *ngIf="editModeNotes" class="card card-paper mb-2">
                                                                 <div class="note-card-body pb-0">
                                                                     <div class="d-flex justify-content-center align-items-center">
                                                                         <mat-form-field>
@@ -198,11 +198,11 @@
                 
                                             <div class="container-fluid mt-2">
                                                 <div class="row justify-content-end">
-                                                    <button *ngIf="!admin" class="btn btn-warning" (click)="enableOrderEditing()"><i
+                                                    <button *ngIf="!editMode" class="btn btn-warning" (click)="enableOrderEditing()"><i
                                                             class="far fa-edit mr-1"></i>edit</button>
-                                                    <button *ngIf="admin" class="btn btn-danger mr-2"
+                                                    <button *ngIf="editMode" class="btn btn-danger mr-2"
                                                         (click)="cancelOrderEditing()">Cancel</button>
-                                                    <button *ngIf="admin" class="btn btn-success"
+                                                    <button *ngIf="editMode" class="btn btn-success"
                                                         (click)="submitOrderEditing()">Submit</button>
                                                 </div>
                                             </div>
@@ -282,16 +282,19 @@
                                                         <mat-expansion-panel expanded="true" class="no-shadow">
                                                             <mat-expansion-panel-header>
                                                                 <mat-panel-title>
-                                                                    Service Specification Characteristics allocated with Service
+                                                                    Service Specification Characteristics allocated with Order Item's Service
                                                                 </mat-panel-title>
                                                             </mat-expansion-panel-header>
                     
                                                             <div *ngIf="orderItem?.service.serviceCharacteristic.length === 0" class="pt-2">
-                                                                There are no configurable characteristics assigned to Service Specification.
+                                                                There are not any Service Specification Characteristics allocated.
                                                             </div>
                     
                     
                                                             <div class="table-responsive" *ngIf="orderItem?.service.serviceCharacteristic.length > 0">
+                                                                <button class="btn btn-warning mb-4" (click)="openOrdersSpecCharacteristicsDialog(orderItem)"><i
+                                                                    class="far fa-edit mr-1"></i>Edit Service Order Characteristics</button>
+        
                                                                 <table class="table  table-inverse">
                                                                     <thead class="thead-inverse">
                                                                         <tr class="table-light">

@@ -4,18 +4,18 @@
     <h2 class="h2 text-center shadowed mb-5">Service Order Checkout</h2>
 
     <!--Grid row-->
-    <h4 class="row justify-content-center" *ngIf="requesterService.serviceConfigurationList.length === 0">
+    <h4 class="row justify-content-center" *ngIf="orderedSpecsConfigurationList.length === 0">
         Service Order List is empty
     </h4>
 
-    <ng-container *ngIf="requesterService.serviceConfigurationList.length">
+    <ng-container *ngIf="orderedSpecsConfigurationList.length">
         
         <div class="row">
             <div class="col-md-8 mb-4">
                 <div class="card card-paper shadow">
                     <h5 class="card-header">
                         Selected Service Configuration
-                        <small class="text-muted d-block">{{requesterService.selectedSpecToView?.spec.name}}</small>
+                        <small class="text-muted d-block">{{selectedOrderSpecToView?.spec.name}}</small>
                     </h5>
                     <div class="card-body">
         
@@ -112,14 +112,14 @@
                 <!-- Heading -->
                 <h5 class="d-flex justify-content-between align-items-center mb-3">
                     <span class="text-muted">Order Item List</span>
-                    <span class="badge badge-secondary badge-pill">{{requesterService.serviceConfigurationList.length}}</span>
+                    <span class="badge badge-secondary badge-pill">{{orderedSpecsConfigurationList.length}}</span>
                 </h5>
         
                 <!-- Cart -->
                 <ul class="list-group mb-3 card card-paper shadow">
                     <li class="list-group-item d-flex justify-content-between align-items-center"
-                        *ngFor="let item of requesterService.serviceConfigurationList" (click)="viewAndConfigureSpec(item)"
-                        [ngClass]="{'selected-spec': requesterService.selectedSpecToView === item}">
+                        *ngFor="let item of orderedSpecsConfigurationList" (click)="viewAndConfigureSpec(item)"
+                        [ngClass]="{'selected-spec': selectedOrderSpecToView === item}">
                         <div>
                             <h6 class="my-0">{{item.spec.name}}</h6>
                             <small class="text-muted">{{item.spec.version}}</small>
@@ -133,7 +133,7 @@
             </div>
         </div>
         
-        <div class="row" *ngIf="requesterService.serviceConfigurationList.length">
+        <div class="row" *ngIf="orderedSpecsConfigurationList.length">
             <div class="col-md-12 mb-4">
                 <div class="card card-paper shadow">
                     <h5 class="card-header">
@@ -176,7 +176,7 @@
     </ng-container>
 
 
-    <div class="row justify-content-center" *ngIf="requesterService.serviceConfigurationList.length">
+    <div class="row justify-content-center" *ngIf="orderedSpecsConfigurationList.length">
         <div class="col-12">
             <button class="btn btn-primary btn-block shadow" type="submit" (click)="submitOrder()">Order Service</button>
         </div>

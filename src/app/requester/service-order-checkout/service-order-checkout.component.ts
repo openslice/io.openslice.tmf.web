@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { RequesterService, serviceConfigurationItem } from '../services/requester.service';
-import { ServiceSpecCharacteristic } from 'src/app/openApis/ServiceCatalogManagement/models';
+import { RequesterService, serviceSpecConfigurationListItem } from '../services/requester.service';
+import { ServiceSpecCharacteristic, ServiceSpecCharacteristicValue } from 'src/app/openApis/ServiceCatalogManagement/models';
 import { FormControl, FormArray, FormGroup } from '@angular/forms';
 import { ServiceOrderCreate, ServiceOrderItem } from 'src/app/openApis/ServiceOrderingManagement/models';
 import { AuthService } from 'src/app/shared/services/auth.service';
@@ -8,6 +8,7 @@ import { ServiceOrderService } from 'src/app/openApis/ServiceOrderingManagement/
 import { ToastrService } from 'ngx-toastr';
 import { Router } from '@angular/router';
 import { SortingService } from 'src/app/shared/functions/sorting.service';
+import { Subscription } from 'rxjs';
 
 const today = new Date()
 
@@ -16,6 +17,7 @@ const today = new Date()
   templateUrl: './service-order-checkout.component.html',
   styleUrls: ['./service-order-checkout.component.scss']
 })
+
 export class ServiceOrderCheckoutComponent implements OnInit {
 
   constructor(
@@ -26,6 +28,8 @@ export class ServiceOrderCheckoutComponent implements OnInit {
     private router: Router,
     private sortingService: SortingService
   ) { }
+  
+  subscription = new Subscription
 
   serviceNoteCtrl = new FormControl('')
   reqStartDate = new FormControl(new Date())
@@ -35,33 +39,76 @@ export class ServiceOrderCheckoutComponent implements OnInit {
 
   configurableSpecChar: ServiceSpecCharacteristic[] = []
 
+  orderedSpecsConfigurationList: serviceSpecConfigurationListItem[] = []
+  selectedOrderSpecToView: serviceSpecConfigurationListItem
 
+  
   ngOnInit() {
-    this.requesterService.selectedSpecToView = this.requesterService.serviceConfigurationList[0]
-
-    if (this.requesterService.serviceConfigurationList.length) 
-    this.initValuesForm()  
-  }
-
-  viewAndConfigureSpec(item: serviceConfigurationItem) {
     
-    this.updateActiveServiceInList()
-
-    this.requesterService.selectedSpecToView = item
-    this.initValuesForm()
+    if (this.requesterService.orderedSpecsList.length === 0) {
+      this.freshLoadOrderListChanges()
+    }
+    
+    this.populateOrderedSpecsConfigurationList()
   }
 
-  removeSpecFromCart(item: serviceConfigurationItem) {
-    const toBeRemovedSpecIndex = this.requesterService.serviceConfigurationList.findIndex(el => el.spec.id === item.spec.id)
-    this.requesterService.selectedSpecToView = null
-    this.requesterService.serviceConfigurationList.splice(toBeRemovedSpecIndex, 1)
-    if (toBeRemovedSpecIndex === this.requesterService.serviceConfigurationList.length) {
-      this.requesterService.selectedSpecToView = this.requesterService.serviceConfigurationList[toBeRemovedSpecIndex-1]
-    } else {
-      this.requesterService.selectedSpecToView = this.requesterService.serviceConfigurationList[toBeRemovedSpecIndex]
+  freshLoadOrderListChanges () {
+    let storageOrderArray = []
+    storageOrderArray = JSON.parse(localStorage.getItem('orderedSpecsList')) || []
+    
+    this.subscription = this.requesterService.orderListUpdated$.subscribe(
+      () => {
+        if (storageOrderArray.length && (storageOrderArray.length === this.requesterService.orderedSpecsList.length)){ 
+          this.populateOrderedSpecsConfigurationList()
+        }
+      }
+    )
+  }
+
+  populateOrderedSpecsConfigurationList() {
+    this.requesterService.orderedSpecsList.forEach( orderedSpec => {
+      this.orderedSpecsConfigurationList.push({
+        spec: orderedSpec,
+        checked: false,
+        specCharacteristics:  this.initCharacteristicsValue(orderedSpec)
+      })      
+    })
+
+    this.selectedOrderSpecToView = this.orderedSpecsConfigurationList[0]
+    
+    if (this.orderedSpecsConfigurationList.length) {
+      this.initValuesForm()
     }
   }
 
+  initCharacteristicsValue(orderedSpec) {
+    let initialCharValues: {
+      name: string,
+      valueType: string,
+      value: ServiceSpecCharacteristicValue[]
+    }[] = []
+
+    const configurableSpecChar = orderedSpec.serviceSpecCharacteristic.filter(specChar => specChar.configurable)
+
+    configurableSpecChar.forEach( confSpecChar => {
+      
+      const charDefaultValueArray = confSpecChar.serviceSpecCharacteristicValue.filter( val => val.isDefault )
+      
+      //In case there are no Default Values assigned, initiate Default Value Array with null values
+      if (charDefaultValueArray.length === 0) {charDefaultValueArray[0] = {value: {value:'' , alias:''}}}
+      
+      initialCharValues.push({
+        name: confSpecChar.name,
+        valueType: confSpecChar.valueType,
+        value: charDefaultValueArray
+      })
+    })
+
+
+    // initialCharValues.sort(this.sortingService.ascStringSortingFunctionByNameProperty())
+
+    return initialCharValues
+  }
 
   initValuesForm() {
     // console.log(this.requesterService.serviceConfigurationList)
@@ -69,25 +116,20 @@ export class ServiceOrderCheckoutComponent implements OnInit {
     
     const formArray = this.specCharFormArray as FormArray
     
-    this.configurableSpecChar = this.requesterService.selectedSpecToView.spec.serviceSpecCharacteristic.filter(specChar => specChar.configurable)
+    this.configurableSpecChar = this.selectedOrderSpecToView.spec.serviceSpecCharacteristic.filter(specChar => specChar.configurable)
+    
+    //Sort Configurable Characteristics by Asc Name Order
     this.configurableSpecChar.sort(this.sortingService.ascStringSortingFunctionByNameProperty())
     
-    console.log(this.configurableSpecChar)
-    this.configurableSpecChar.forEach( (confSpecChar, charIndex) => {
-      formArray.push(this.updateFormArrayItem(confSpecChar, charIndex))
+    this.configurableSpecChar.forEach( (confSpecChar) => {
+      formArray.push(this.updateFormArrayItem(confSpecChar))
     })
     
   }
 
-  updateFormArrayItem( specChar: ServiceSpecCharacteristic, index: number): FormGroup {
-
-    const charValueArray = this.requesterService.serviceConfigurationList.find(listItem => listItem.spec.id === this.requesterService.selectedSpecToView.spec.id).specCharacteristics[index].value
+  updateFormArrayItem( specChar: ServiceSpecCharacteristic): FormGroup {
+    const charValueArray = this.orderedSpecsConfigurationList.find(listItem => listItem.spec.id === this.selectedOrderSpecToView.spec.id).specCharacteristics.find(char => char.name === specChar.name).value
     
-    // let controlValue: ServiceSpecCharacteristicValue[] | ServiceSpecCharacteristicValue
-    // if (charValueArray.value.length === 1) controlValue = charValueArray.value
-    // if (charValueArray.value.length > 1) controlValue = charValueArray.value
-    // controlValue = charValueArray.value
-
     return new FormGroup({
       name: new FormControl(specChar.name),
       valueType: new FormControl(specChar.valueType),
@@ -95,11 +137,45 @@ export class ServiceOrderCheckoutComponent implements OnInit {
     })
   }
 
+  viewAndConfigureSpec(item: serviceSpecConfigurationListItem) {
+    
+    this.updateActiveServiceInList()
+
+    this.selectedOrderSpecToView = item
+    this.initValuesForm()
+  }
+
+  removeSpecFromCart(item: serviceSpecConfigurationListItem) {
+    const toBeRemovedSpecIndex = this.orderedSpecsConfigurationList.findIndex(el => el.spec.id === item.spec.id)
+    this.selectedOrderSpecToView = null
+    
+    this.orderedSpecsConfigurationList.splice(toBeRemovedSpecIndex, 1)
+    this.requesterService.orderedSpecsList.splice(toBeRemovedSpecIndex, 1)
+    this.removeOrderFromLocalStorage(item.spec.id)
+    
+    if (toBeRemovedSpecIndex === this.orderedSpecsConfigurationList.length) {
+      this.selectedOrderSpecToView = this.orderedSpecsConfigurationList[toBeRemovedSpecIndex-1]
+    } else {
+      this.selectedOrderSpecToView = this.orderedSpecsConfigurationList[toBeRemovedSpecIndex]
+    }
+  }
+
+  removeOrderFromLocalStorage(specId) {
+    let orderArray = []
+    orderArray = JSON.parse(localStorage.getItem('orderedSpecsList')) || []
+    if (orderArray.length){
+      orderArray.splice(orderArray.findIndex(el => el === specId), 1)
+    }
+
+    localStorage.setItem('orderedSpecsList', JSON.stringify(orderArray))
+  }
+
+
   submitOrder() {
 
     this.updateActiveServiceInList()
     
-    console.log(this.requesterService.serviceConfigurationList)
+    // console.log(this.orderedSpecsConfigurationList)
     
     let newOrder: ServiceOrderCreate = {
       orderItem:[], 
@@ -114,7 +190,7 @@ export class ServiceOrderCheckoutComponent implements OnInit {
 
     let newOrderItem: ServiceOrderItem 
     // = { service: {}, action: 'add'}
-    this.requesterService.serviceConfigurationList.forEach(serviceItem => {
+    this.orderedSpecsConfigurationList.forEach(serviceItem => {
       // console.log(serviceItem)
       newOrderItem = { service: {
         serviceSpecification: {
@@ -144,7 +220,7 @@ export class ServiceOrderCheckoutComponent implements OnInit {
       newOrder.orderItem.push(newOrderItem)
     })
     
-    console.log(newOrder)
+    // console.log(newOrder)
 
 
     this.orderService.createServiceOrder(newOrder).subscribe(
@@ -152,14 +228,22 @@ export class ServiceOrderCheckoutComponent implements OnInit {
       error => { console.error(error); this.toast.error("An error occurred while processing your Service Order") },
       () => {
         this.toast.success("Service Order was successfully placed")
-        this.requesterService.serviceConfigurationList = []
+        
+        // clear order lists
+        this.orderedSpecsConfigurationList = []
+        this.requesterService.orderedSpecsList = []
+        localStorage.removeItem('orderedSpecsList')
+
         this.router.navigate(['services_marketplace'])
       }
     )
   }
 
   updateActiveServiceInList() {
-    this.requesterService.serviceConfigurationList.find(listItem => listItem.spec.id === this.requesterService.selectedSpecToView.spec.id).specCharacteristics = this.specCharFormArray.value
+    this.orderedSpecsConfigurationList.find(listItem => listItem.spec.id === this.selectedOrderSpecToView.spec.id).specCharacteristics = this.specCharFormArray.value
   }
 
+  ngOnDestroy() {
+    this.subscription.unsubscribe()
+  }
 }

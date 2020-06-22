@@ -82,29 +82,33 @@ export class PreviewServiceComponent implements OnInit {
   }
 
   closeDialog() {
-    if (this.orderView) 
-      this.orderView = false
-    else 
       this.dialogRef.close()
   }
 
-  startConfiguration() {
-    this.orderView = true
-  }
 
   placeInOrderList() {
-    if (!this.requesterService.serviceConfigurationList.some(el => el.spec.id === this.spec.id)) {
+    if (!this.requesterService.orderedSpecsList.some(el => el.id === this.spec.id)) {
       // this.requesterService.serviceSpecsCart.push(this.spec)
-      this.requesterService.serviceConfigurationList.push({
-        spec: this.spec,
-        checked: false,
-        specCharacteristics:  this.initCharacteristicsValue()
-      })      
-      this.dialogRef.close("list_added")
+      
+      this.requesterService.orderedSpecsList.push(this.spec)
+      this.saveOrderToLocalStorage(this.spec.id)
+
+      // this.requesterService.serviceConfigurationList.push({
+      //   spec: this.spec,
+      //   checked: false,
+      //   specCharacteristics:  this.initCharacteristicsValue()
+      // })      
+      this.dialogRef.close("added_to_order_list")
     } else {
-      this.toastr.warning("This Service is already in your Service List")
+      this.toastr.warning("This Service is already in your Service Order List")
     }
-    
+  }
+
+  saveOrderToLocalStorage(specId) {
+    let orderArray = []
+    orderArray = JSON.parse(localStorage.getItem('orderedSpecsList')) || []
+    orderArray.push(specId)
+    localStorage.setItem('orderedSpecsList', JSON.stringify(orderArray))
   }
 
   initCharacteristicsValue() {

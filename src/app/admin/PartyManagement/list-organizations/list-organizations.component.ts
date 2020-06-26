@@ -5,11 +5,15 @@ import { Organization } from 'src/app/openApis/PartyManagement/models';
 import { ToastrService } from 'ngx-toastr';
 import { HttpErrorResponse } from '@angular/common/http';
 import { DeleteOrganizationComponent } from '../delete-organization/delete-organization.component';
+import { trigger } from '@angular/animations';
+import { fadeIn } from 'src/app/shared/animations/animations';
 
 @Component({
   selector: 'app-list-organizations',
   templateUrl: './list-organizations.component.html',
-  styleUrls: ['./list-organizations.component.scss']
+  styleUrls: ['./list-organizations.component.scss'],
+  animations: [ trigger('fadeIn', fadeIn()) ]
+
 })
 export class ListOrganizationsComponent implements OnInit {
 

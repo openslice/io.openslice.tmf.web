@@ -1,0 +1,47 @@
+
+<div class="container-fluid">
+    <h4 mat-dialog-title class="shadowed mb-3">
+        <i class="fa fa-tasks mr-2"></i>
+        <span>Edit Specification Characteristics of Selected Order Items' allocated Services </span>
+    </h4>
+    <!-- <div> -->
+<!-- 
+        <div class="nav nav-pills mb-3 mb-lg-0" id="v-pills-tab" role="tablist" aria-orientation="horizontal">
+            <a class="nav-link" [class.active]="item === activeListItem"
+                [class.mat-elevation-z2]="item === activeListItem" (click)="selectListitem(item)"
+                *ngFor="let item of selectedOrderItems" role="tab"
+                aria-selected="true">{{item.service.serviceSpecification.name}}</a>
+    
+        </div> -->
+        
+
+    <mat-tab-group (selectedTabChange)="changeTab($event)" >
+        
+        <mat-tab [label]="item.service.serviceSpecification.name"
+            *ngFor="let item of selectedOrderItems; let itemIndex = index" > 
+
+                <mat-dialog-content style="margin: 0;">
+    
+                        <app-edit-orders-service-spec-characteristics 
+                            *ngIf="activeTabIndex === itemIndex"
+                            (characteristicsWasEdited) = "orderItemCharsEdited($event)"
+                            [_activeListItem]="activeListItem">
+                        </app-edit-orders-service-spec-characteristics>
+                    
+                        <div *ngIf="activeTabIndex !== itemIndex" class="spinner-container">
+                            <mat-progress-spinner color="primary" mode="indeterminate" diameter="100"></mat-progress-spinner>
+                        </div>
+                </mat-dialog-content>
+        </mat-tab>
+    </mat-tab-group>
+        
+
+
+    <!-- </div> -->
+    <div class="container-fluid" >
+        <div class="row justify-content-end">
+            <button type="button" class="btn btn-danger m-2" (click)="closeDialog()">Cancel</button>
+            <button type="submit" class="btn btn-success m-2" (click)="submitDialog()">Submit</button>
+        </div>
+    </div>
+</div>

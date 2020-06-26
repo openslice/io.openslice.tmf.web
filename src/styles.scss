@@ -9,6 +9,15 @@
 $blue: #428bca;
 @import "~bootstrap/scss/bootstrap";
 
+.mat-chip-list-wrapper {
+    flex-wrap: nowrap !important;
+}
+
+.mat-chip {
+    overflow: unset !important;
+    white-space: nowrap !important;
+}
+
 * {
     font-family: 'Open Sans', sans-serif;
     font-weight: 300;
@@ -111,6 +120,13 @@ mat-panel-title {
     font-weight: bold;
 }
 
+.nav-link.active mat-checkbox .mat-checkbox-layout .mat-checkbox-inner-container .mat-checkbox-frame {
+    border-color:#fff 
+}
+
+.nav-link mat-checkbox label {
+    margin-bottom: 0 ;
+}
 
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }

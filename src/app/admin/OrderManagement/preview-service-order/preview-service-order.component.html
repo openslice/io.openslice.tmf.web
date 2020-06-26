@@ -28,17 +28,64 @@
                         <div class="col-xl-2 col-lg-3">
                             <div class="nav flex-column nav-pills mb-3 mb-lg-0" id="v-pills-tab" role="tablist"
                                 aria-orientation="vertical">
-                                <a class="nav-link" [class.active]="item === activeListItem" [class.mat-elevation-z2]="item === activeListItem"
-                                    (click)="selectListitem(item)" *ngFor="let item of staticListItems" role="tab" aria-selected="true">{{item}}</a>
-                                <a class="nav-link" [class.active]="orderItem.id === activeListItem" [class.mat-elevation-z2]="orderItem.id === activeListItem"
-                                    (click)="selectListitem(orderItem.id)" *ngFor="let orderItem of serviceOrder?.orderItem; let orderIndex = index;" role="tab" aria-selected="true">
-                                    Order Item #{{orderIndex+1}}
-                                    <div>
-                                        <b [ngClass]="orderStateClassSelector(orderItem?.state)" class="ml-1" >{{orderItem.state}}</b>
-                                        <!-- <b class="ml-1 badge" *ngIf="orderItem.id === activeListItem">{{orderItem.state}}</b> -->
-                                    </div>
+                                <div *ngFor="let item of staticListItems; let firstListItem = first;" class="nav-item" [class.pt-0]="firstListItem">
 
-                                </a>
+                                    <a class="nav-link" [class.active]="item === activeListItem" [class.mat-elevation-z2]="item === activeListItem"
+                                        (click)="selectListItem(item)"  role="tab" aria-selected="true">{{item}}</a>
+                                </div>
+                                <div class="nav-item border-bottom-0">
+                                    <a class="nav-link" [class.active]="orderItem.id === activeListItem" [class.mat-elevation-z2]="orderItem.id === activeListItem"
+                                        (click)="selectListItem(orderItem.id)" *ngFor="let orderItem of serviceOrder?.orderItem; let orderItemIndex = index;" role="tab" aria-selected="true">
+                                        <div class="d-flex align-items-center justify-content-between">
+                                            <div>
+                                                Order Item #{{orderItemIndex+1}}
+                                                <div>
+                                                    <b [ngClass]="orderStateClassSelector(orderItem?.state)" class="ml-1" >{{orderItem.state}}</b>
+                                                    <!-- <b class="ml-1 badge" *ngIf="orderItem.id === activeListItem">{{orderItem.state}}</b> -->
+                                                </div>
+                                            </div>
+                                            <mat-checkbox 
+                                                *ngIf="this.areOrderItemsEditable() || this.areOrderItemsTerminable()"
+                                                (click)="$event.stopPropagation()"
+                                                (change)="$event ? selection.toggle(orderItem) : null" 
+                                                [checked]="selection.isSelected(orderItem)"
+                                                color="primary"
+                                            >
+                                            </mat-checkbox>
+                                        </div>
+                                    </a>
+                                    <div *ngIf="!selection.hasValue()" class="small text-muted p-2 text-justify" [@fadeIn]>
+                                        <i class="fas fa-info-circle mr-1"></i>
+                                        You may select Order Item(s) to edit or terminate
+                                    </div>
+                                </div>
+                                <div *ngIf="selection.hasValue()" class="d-flex align-items-center justify-content-between p-3" [@fadeIn]>
+                                    <div>
+                                        <button 
+                                            class="btn btn-warning btn-sm mr-1" 
+                                            (click)="openEditServiceOrderItemsDialog()" 
+                                            matTooltip="Edit selected Service Order Item(s)"
+                                            *ngIf="this.areOrderItemsEditable()"
+                                        >
+                                            <i class="far fa-edit "></i>
+                                        </button>
+                                        <button 
+                                            class="btn btn-danger btn-sm ml-1" 
+                                            (click)="terminateServiceOrderItemsDialog()" 
+                                            matTooltip="Terminate services of selected Service Order Item(s)"
+                                            *ngIf="this.areOrderItemsTerminable()"
+                                        >
+                                            <i class="fa fa-ban"></i>
+                                        </button>
+                                    </div>
+                                    <mat-checkbox color="primary" 
+                                    (change)="$event ? masterCheckboxToggle() : null"
+                                    [checked]="selection.hasValue() && isAllSelected()"
+                                    [indeterminate]="selection.hasValue() && !isAllSelected()"
+                                    ></mat-checkbox>
+                                </div>
+
+                            
 
                                 <!-- editForm.controls.isBundle.value for Service Specification Relationships -->
                             </div>
@@ -292,8 +339,8 @@
                     
                     
                                                             <div class="table-responsive" *ngIf="orderItem?.service.serviceCharacteristic.length > 0">
-                                                                <button class="btn btn-warning mb-4" (click)="openOrdersSpecCharacteristicsDialog(orderItem)"><i
-                                                                    class="far fa-edit mr-1"></i>Edit Service Order Characteristics</button>
+                                                                <!-- <button class="btn btn-warning mb-4" (click)="openOrdersSpecCharacteristicsDialog(orderItem)"><i
+                                                                    class="far fa-edit mr-1"></i>Edit Service Order Characteristics</button> -->
         
                                                                 <table class="table  table-inverse">
                                                                     <thead class="thead-inverse">

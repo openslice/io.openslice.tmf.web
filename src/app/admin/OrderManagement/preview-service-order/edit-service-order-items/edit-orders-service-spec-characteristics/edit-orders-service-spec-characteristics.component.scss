@@ -1,6 +1,10 @@
-mat-dialog-content.spinner-container {
+.spinner-container {
     display: flex;
     justify-content: center;
     align-items: center;
+    min-height: 20vh;
+}
+
+.service-spec-container {
     min-height: 20vh;
 }

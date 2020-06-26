@@ -179,13 +179,16 @@ export class ServiceOrderCheckoutComponent implements OnInit {
     
     let newOrder: ServiceOrderCreate = {
       orderItem:[], 
-      note: [{
+      requestedStartDate: this.reqStartDate.value,
+      requestedCompletionDate: this.reqCompletionDate.value
+    }
+
+    if (this.serviceNoteCtrl.value) {
+      newOrder.note = [{
         author:this.authService.portalUserJWT.preferred_username,
         text: this.serviceNoteCtrl.value,
         date: new Date().toISOString()
-      }],
-      requestedStartDate: this.reqStartDate.value,
-      requestedCompletionDate: this.reqCompletionDate.value
+      }]
     }
 
     let newOrderItem: ServiceOrderItem 

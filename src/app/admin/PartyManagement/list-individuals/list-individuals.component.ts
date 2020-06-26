@@ -5,13 +5,16 @@ import { ToastrService } from 'ngx-toastr';
 import { Individual } from 'src/app/openApis/PartyManagement/models';
 import { DeleteIndividualComponent } from '../delete-individual/delete-individual.component';
 import { HttpErrorResponse } from '@angular/common/http';
+import { trigger } from '@angular/animations';
+import { fadeIn } from 'src/app/shared/animations/animations';
 
 
 
 @Component({
   selector: 'app-list-individuals',
   templateUrl: './list-individuals.component.html',
-  styleUrls: ['./list-individuals.component.scss']
+  styleUrls: ['./list-individuals.component.scss'],
+  animations: [ trigger('fadeIn', fadeIn()) ]
 })
 export class ListIndividualsComponent implements OnInit {
 

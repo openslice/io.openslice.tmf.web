@@ -9,20 +9,25 @@ import { Service } from 'src/app/openApis/ServiceInventoryManagement/models';
 import { delay } from 'rxjs/operators';
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { MatDialog } from '@angular/material';
-import { PreviewSupportingServicesComponent } from '../preview-supporting-services/preview-supporting-services.component';
 
 import { timer, Subscription } from 'rxjs';
 import { SortingService } from 'src/app/shared/functions/sorting.service';
 import { trigger } from '@angular/animations';
-import { fadeIn } from 'src/app/shared/animations/animations';
-import { EditOrdersServiceSpecCharacteristicsComponent } from './edit-orders-service-spec-characteristics/edit-orders-service-spec-characteristics.component';
-import { importExpr } from '@angular/compiler/src/output/output_ast';
+import { fadeIn, simpleFade } from 'src/app/shared/animations/animations';
+import { EditOrdersServiceSpecCharacteristicsComponent } from './edit-service-order-items/edit-orders-service-spec-characteristics/edit-orders-service-spec-characteristics.component';
+import { SelectionModel } from '@angular/cdk/collections';
+import { EditServiceOrderItemsComponent } from './edit-service-order-items/edit-service-order-items.component';
+import { PreviewSupportingServicesComponent } from '../../InventoryManagement/preview-supporting-services/preview-supporting-services.component';
+import { TerminateServiceOrderItemsComponent } from './terminate-service-order-items/terminate-service-order-items.component';
 
 @Component({
   selector: 'app-preview-service-order',
   templateUrl: './preview-service-order.component.html',
   styleUrls: ['./preview-service-order.component.scss'],
-  animations: [ trigger('fadeIn', fadeIn()) ]
+  animations: [ 
+    trigger('fadeIn', fadeIn()),
+    trigger('simpleFade', simpleFade()),
+   ]
 
 })
 export class PreviewServiceOrderComponent implements OnInit {
@@ -63,6 +68,9 @@ export class PreviewServiceOrderComponent implements OnInit {
     note: new FormControl()
   })
 
+  checkboxesOrderItemList: {orderItem: ServiceOrderItem, isChecked: boolean}[] = []
+  selection = new SelectionModel<ServiceOrderItem>(true, []);
+
   subscription = new Subscription
 
   
@@ -78,19 +86,19 @@ export class PreviewServiceOrderComponent implements OnInit {
     }
   }
 
-  selectListitem(item: string) {
+  selectListItem(item: string) {
     this.activeListItem = item
     
     if (!this.staticListItems.includes(item))
-    console.log(this.serviceOrder.orderItem.find(it => it.id === item).service.serviceCharacteristic)
+     this.serviceOrder.orderItem.find(it => it.id === item).service.serviceCharacteristic
   } 
 
   retrieveServiceOrder() {
+    this.selection.clear()
     this.orderService.retrieveServiceOrder({id: this.orderID}).subscribe(
       data => this.serviceOrder = data,
       error => { console.error(error) },
       () => { 
-        console.log(this.serviceOrder)
         if (this.serviceOrder) {
           this.editForm.patchValue({
             state: this.serviceOrder.state,
@@ -98,9 +106,10 @@ export class PreviewServiceOrderComponent implements OnInit {
             expectedCompletionDate: this.serviceOrder.requestedCompletionDate
           })
   
+          this.checkboxesOrderItemList = []
           this.serviceOrder.orderItem.forEach((orderItem, index) => {
-            // this.listItems.push(`Order Item #${orderItem.id}`)
-            //sort serviceOrderItem Characteristics
+            this.checkboxesOrderItemList.push({orderItem: orderItem, isChecked: false})
+
             orderItem.service.serviceCharacteristic.sort(this.sortingService.ascStringSortingFunctionByNameProperty())
   
             orderItem.service.supportingService.forEach( (supService, serviceIndex) => {
@@ -163,7 +172,6 @@ export class PreviewServiceOrderComponent implements OnInit {
   }
 
   submitOrderEditing() {
-    // console.log(this.editForm)
     this.editMode = false
     let orderUpdate: ServiceOrderUpdate = {
       state: this.editForm.get('state').value,
@@ -211,36 +219,141 @@ export class PreviewServiceOrderComponent implements OnInit {
     )
   }
 
-  openOrdersSpecCharacteristicsDialog(orderItem: ServiceOrderItem) {
-    const dialogRef = this.dialog.open(EditOrdersServiceSpecCharacteristicsComponent, {
-      data: { orderItem }, disableClose: true
+  // openOrdersSpecCharacteristicsDialog(orderItem: ServiceOrderItem) {
+    
+  //   const dialogRef = this.dialog.open(EditOrdersServiceSpecCharacteristicsComponent, {
+  //     data: { orderItem }
+  //   })
+
+  //   dialogRef.afterClosed().subscribe(
+  //     result => {
+  //       // console.log(result)
+  //       // console.log()
+  //       // if (result) {
+  //       //   orderItem.service.serviceCharacteristic = result
+  //       // }
+  //       console.log(this.serviceOrder)
+  //       if (result) {
+
+  //         let newOrderUpdate: ServiceOrderUpdate = {
+  //           orderItem: []
+  //         }
+
+  //         this.serviceOrder.orderItem.find(item => item.id === orderItem.id).service.serviceCharacteristic = result
+  //         newOrderUpdate.orderItem = this.serviceOrder.orderItem
+
+  //         this.orderService.patchServiceOrder({serviceOrder: newOrderUpdate, id: this.serviceOrder.id}).subscribe(
+  //           data => { this.retrieveServiceOrder() },
+  //           error => console.error(error)
+  //         )
+  //       }
+  //     }
+  //   )
+  // }
+
+  areOrderItemsEditable() {
+    // states > 'INITIAL'|'ACKNOWLEDGED'|'REJECTED'|'PENDING'|'HELD'|'INPROGRESS'|'CANCELLED'|'COMPLETED'|'FAILED'|'PARTIAL'
+    // return ['INITIAL', 'REJECTED','CANCELLED', 'COMPLETED', 'FAILED', 'PARTIAL'].includes(this.serviceOrder.state)
+    return ['INITIAL', 'COMPLETED', 'FAILED', 'PARTIAL'].includes(this.serviceOrder.state)
+  }
+
+  areOrderItemsTerminable() {
+    return ['COMPLETED', 'FAILED', 'PARTIAL'].includes(this.serviceOrder.state)
+  }
+
+  openEditServiceOrderItemsDialog() {
+    const dialogRef = this.dialog.open(EditServiceOrderItemsComponent, {
+      data: this.selection.selected
     })
 
     dialogRef.afterClosed().subscribe(
-      result => {
-        // console.log(result)
-        // console.log()
-        // if (result) {
-        //   orderItem.service.serviceCharacteristic = result
-        // }
-        console.log(this.serviceOrder)
-        if (result) {
+      (editedOrderItems: {orderItemID: string, serviceSpecChars:[]}[]) => {
+
+        // console.log(editedOrderItems)
+        if (editedOrderItems) {
 
           let newOrderUpdate: ServiceOrderUpdate = {
             orderItem: []
           }
+          editedOrderItems.forEach( editedOrderItem => {
+            this.serviceOrder.orderItem.find(item => item.id === editedOrderItem.orderItemID).service.serviceCharacteristic = editedOrderItem.serviceSpecChars
+            // Decide orderItem action verb
+            if (this.serviceOrder.state === "COMPLETED") {
+              this.serviceOrder.orderItem.find(item => item.id === editedOrderItem.orderItemID).action = "modify"
+            }
 
-          this.serviceOrder.orderItem.find(item => item.id === orderItem.id).service.serviceCharacteristic = result
+            // newOrderUpdate.orderItem.push(this.serviceOrder.orderItem.find(item => item.id === editedOrderItem.orderItemID))
+          })
+
           newOrderUpdate.orderItem = this.serviceOrder.orderItem
 
+          console.log(newOrderUpdate)
+
           this.orderService.patchServiceOrder({serviceOrder: newOrderUpdate, id: this.serviceOrder.id}).subscribe(
-            data => { this.retrieveServiceOrder() },
-            error => console.error(error)
+            data => { 
+              this.toast.success("Selected Order Items were successfully updated")
+              this.retrieveServiceOrder() 
+            },
+            error => {
+              this.toast.error("An error occurred while updating Service Order Items")
+              this.retrieveServiceOrder() 
+              console.error(error)
+            }
+          )
+        }
+      }
+    )
+
+  }
+
+  terminateServiceOrderItemsDialog() {
+    const dialogRef = this.dialog.open(TerminateServiceOrderItemsComponent, {
+      data: this.selection.selected
+    })
+
+    dialogRef.afterClosed().subscribe(
+      result => {
+        if (result) {
+          let newOrderUpdate: ServiceOrderUpdate = {
+            orderItem: []
+          }
+          this.selection.selected.forEach( selectedOrderItem => {
+            this.serviceOrder.orderItem.find(item => item.id === selectedOrderItem.id).action = "delete"
+          })
+
+          newOrderUpdate.orderItem = this.serviceOrder.orderItem
+
+          console.log(newOrderUpdate)
+
+          this.orderService.patchServiceOrder({serviceOrder: newOrderUpdate, id: this.serviceOrder.id}).subscribe(
+            data => { 
+              this.toast.success("Selected Order Items were successfully updated")
+              this.retrieveServiceOrder() 
+            },
+            error => {
+              this.toast.error("An error occurred while updating Service Order Items")
+              this.retrieveServiceOrder() 
+              console.error(error)
+            }
           )
         }
       }
     )
   }
+
+  //checkBoxSelection Logic
+  isAllSelected() {
+    const numSelected = this.selection.selected.length
+    const numItems = this.serviceOrder.orderItem.length
+    return numSelected === numItems
+  }
+
+  masterCheckboxToggle() {
+    this.isAllSelected() ? 
+      this.selection.clear() :
+      this.serviceOrder.orderItem.forEach (item => this.selection.select(item))
+  }
+  //---checkBoxSelection Logic
 
   enableOrderRefreshTimer() {
     this.subscription.unsubscribe()
@@ -255,6 +368,4 @@ export class PreviewServiceOrderComponent implements OnInit {
   ngOnDestroy() {
     this.subscription.unsubscribe()
   }
-  
-
 }

@@ -27,7 +27,6 @@ export class LandingComponent implements OnInit {
   }
 
   login() {
-    console.log('login')
     this.authService.login()
   }
 }

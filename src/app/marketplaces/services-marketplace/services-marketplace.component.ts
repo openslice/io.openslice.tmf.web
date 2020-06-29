@@ -11,6 +11,8 @@ import { SortingService } from 'src/app/shared/functions/sorting.service';
 import { trigger } from '@angular/animations';
 import { fadeIn } from 'src/app/shared/animations/animations';
 import { ServiceCandidateWithLogo } from 'src/app/models/service-candidate-with-logo.model';
+import { AppService } from 'src/app/shared/services/app.service';
+import { IAppConfig } from 'src/app/models/app-config.model';
 
 @Component({
   selector: 'app-services-marketplace',
@@ -22,6 +24,7 @@ import { ServiceCandidateWithLogo } from 'src/app/models/service-candidate-with-
 export class ServicesMarketplaceComponent implements OnInit {
 
   constructor(
+    private appService: AppService,
     private catalogService: ServiceCatalogService,
     // private categoryService: ServiceCategoryService,
     private candidateService: ServiceCandidateService,
@@ -44,8 +47,11 @@ export class ServicesMarketplaceComponent implements OnInit {
   filteredServiceCandidates$: Observable<ServiceCandidateWithLogo[]>
 
   specServiceRootUrl : string
+  config: IAppConfig
 
   ngOnInit() {
+    this.config = this.appService.config
+
     this.specServiceRootUrl = this.specificationService.rootUrl
 
     this.retrieveCatalogsList()

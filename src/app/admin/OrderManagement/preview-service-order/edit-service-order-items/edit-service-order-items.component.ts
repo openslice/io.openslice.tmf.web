@@ -29,7 +29,6 @@ export class EditServiceOrderItemsComponent implements OnInit {
 
   ngOnInit() {
     // this.activeListItem = this.selectedOrderItems[0]
-    console.log(this.selectedOrderItems)
     this.retrieveSpecsFromOrderItems()
   }
 

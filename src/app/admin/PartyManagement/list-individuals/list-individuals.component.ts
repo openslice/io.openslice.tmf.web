@@ -24,8 +24,8 @@ export class ListIndividualsComponent implements OnInit {
     private toast: ToastrService
   ) { }
 
-  displayedColumns = ['fullName', 'organization', 'location', 'actions']
-  dataSource  = new MatTableDataSource<Individual>()
+  displayedColumns = ['familyName', 'organization', 'location', 'actions']
+  dataSource = new MatTableDataSource<Individual>()
 
   individuals: Individual[]
 
@@ -35,7 +35,7 @@ export class ListIndividualsComponent implements OnInit {
 
 
   ngOnInit() {
-    this.retrieveIndividuals()
+    this.retrieveIndividuals()    
   }
 
   retrieveIndividuals() {
@@ -46,6 +46,19 @@ export class ListIndividualsComponent implements OnInit {
         this.dataSource.data = this.individuals
         this.dataSource.sort = this.sort
         this.dataSource.paginator = this.paginator
+        this.dataSource.sortingDataAccessor = (item, property): string | number => {
+          if (property === 'organization' && item.partyCharacteristic[0]) {
+            return item.partyCharacteristic[0].value.value
+          } else 
+          return item[property]
+        }
+
+        // custom filter for custom table fields
+        this.dataSource.filterPredicate = (data, filter) => {
+          let filterValue = filter.trim()
+          filterValue = filterValue.toLowerCase()  
+          return (data.familyName+data.givenName).toLowerCase().includes(filterValue) || (data.location && data.location.toLowerCase().includes(filterValue)) || (data.partyCharacteristic[0] && data.partyCharacteristic[0].value.value.toLowerCase().includes(filterValue)) 
+        }
       }
     )
   }

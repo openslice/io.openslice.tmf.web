@@ -45,7 +45,6 @@ export class ListServiceOrdersComponent implements OnInit {
   get text() { return this.filterForm.get('text').value; }
 
   ngOnInit() {
-    console.log(new Date())
     this.retrieveOrderList()
   }
 
@@ -59,6 +58,7 @@ export class ListServiceOrdersComponent implements OnInit {
         this.dataSource.paginator = this.paginator
         this.dataSource.sortingDataAccessor = (item, property): string | number => {
           switch (property) {
+            case 'placed_by': return item.relatedParty[0].name
             case 'order_date': return new Date(item.orderDate).getTime()
             case 'requested_startdate': return new Date(item.requestedStartDate).getTime()
             case 'requested_enddate': return new Date(item.requestedCompletionDate).getTime()
@@ -112,17 +112,16 @@ export class ListServiceOrdersComponent implements OnInit {
   applyTextFilter(filterValue: string) {
     filterValue = filterValue.trim();
     filterValue = filterValue.toLowerCase();
-    console.log('text')
-    console.log(filterValue)
-    if (filterValue)
-    this.dataSource.filter = filterValue;
+    if (filterValue) {
+      this.dataSource.filter = filterValue;
+    }
   }
 
   applyPeriodFilter() {
-    console.log("applied Date filter")
-    if (this.fromDate && this.toDate) 
+    if (this.fromDate && this.toDate)  {
+      this.dataSource.filter = "applyPeriodFilter"
+    }
     // this.dataSource.filterPredicate = this.filterPeriod
-    this.dataSource.filter = "applyPeriodFilter"
   } 
 
   filterPeriod (data: ServiceOrder, filter: string) {
@@ -134,7 +133,6 @@ export class ListServiceOrdersComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe (
       result => {
-        console.log(result)
         if (result) {
           if (result instanceof HttpErrorResponse) {
             this.toastr.error("An error occurred while attempting to delete Service Order")

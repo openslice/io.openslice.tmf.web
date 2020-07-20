@@ -114,49 +114,6 @@ export class AuthService {
           return Promise.reject();
         }
 
-      //   // 2. SILENT LOGIN:
-      //   // Try to log in via silent refresh because the IdServer
-      //   // might have a cookie to remember the user, so we can
-      //   // prevent doing a redirect:
-      //   console.log('silentRefresh')
-      //   return this.oauthService.silentRefresh()
-      //     .then(() => {
-      //       console.log('silentRefresh Fulfilled')
-      //       Promise.resolve()
-      //     })
-      //     .catch(result => {
-      //       // Subset of situations from https://openid.net/specs/openid-connect-core-1_0.html#AuthError
-      //       // Only the ones where it's reasonably sure that sending the
-      //       // user to the IdServer will help.
-      //       const errorResponsesRequiringUserInteraction = [
-      //         'interaction_required',
-      //         'login_required',
-      //         'account_selection_required',
-      //         'consent_required',
-      //       ];
-
-      //       if (result
-      //         && result.reason
-      //         && errorResponsesRequiringUserInteraction.includes(result.reason.error)) {
-
-      //         // 3. ASK FOR LOGIN:
-      //         // At this point we know for sure that we have to ask the
-      //         // user to log in, so we redirect them to the IdServer to
-      //         // enter credentials.
-      //         //
-      //         // Enable this to ALWAYS force a user to login.
-      //         // this.oauthService.initImplicitFlow();
-      //         //
-      //         // Instead, we'll now do this:
-      //         console.warn('User interaction is needed to log in, we will wait for the user to manually log in.');
-      //         return Promise.resolve();
-      //       }
-
-      //       // We can't handle the truth, just pass on the problem to the
-      //       // next handler.
-      //       console.error(result)
-      //       return Promise.reject(result);
-      //     });
     })
     .then( _ => {
       this.isDoneLoadingSubject$.next(true)

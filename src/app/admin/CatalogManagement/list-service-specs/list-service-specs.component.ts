@@ -25,7 +25,7 @@ export class ListServiceSpecsComponent implements OnInit {
     private toast: ToastrService
   ) { }
 
-  displayedColumns = ['name', 'description', 'version', 'type', 'lastUpdate',  'lifecycleStatus', 'actions']
+  displayedColumns = ['name', 'description', 'version', '@type', 'lastUpdate',  'lifecycleStatus', 'actions']
   dataSource  = new MatTableDataSource<ServiceSpecification>()
 
   serviceSpecs: ServiceSpecification[]
@@ -48,11 +48,9 @@ export class ListServiceSpecsComponent implements OnInit {
         // console.log(this.sort)
         this.dataSource.paginator = this.paginator;
         this.dataSource.sortingDataAccessor = (item, property): string | number => {
-          // console.log(property)
-          // console.log(item)
-          // console.log(item[property])
           switch (property) {
             case 'lastUpdate': return new Date(item.lastUpdate).getTime();
+            case '@type': return item[property] === 'CustomerFacingServiceSpecification' ? 'CFSS': 'RFSS';
             default: return item[property];
           }
         }

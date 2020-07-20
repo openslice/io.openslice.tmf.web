@@ -7,11 +7,14 @@ import { Individual, Organization, IndividualCreate, IndividualUpdate } from 'sr
 import { FormGroup, FormControl } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { AuthService } from 'src/app/shared/services/auth.service';
+import { trigger } from '@angular/animations';
+import { fadeIn } from 'src/app/shared/animations/animations';
 
 @Component({
   selector: 'app-edit-individuals',
   templateUrl: './edit-individuals.component.html',
-  styleUrls: ['./edit-individuals.component.scss']
+  styleUrls: ['./edit-individuals.component.scss'],
+  animations: [ trigger('fadeIn', fadeIn()) ]
 })
 export class EditIndividualsComponent implements OnInit {
 

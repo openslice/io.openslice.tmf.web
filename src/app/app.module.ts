@@ -81,7 +81,7 @@ import { TreeSidenavComponent } from './marketplaces/shared/tree-sidenav/tree-si
 import { AssignServiceCandidatesComponent } from './admin/CatalogManagement/edit-service-categories/assign-service-candidates/assign-service-candidates.component';
 import { CloneGstTemplateComponent } from './admin/CatalogManagement/edit-service-specs/clone-gst-template/clone-gst-template.component';
 import { CloneVinniTemplateComponent } from './admin/CatalogManagement/edit-service-specs/clone-vinni-template/clone-vinni-template.component';
-import { PreviewServiceComponent } from './marketplaces/services-marketplace/preview-service/preview-service.component';
+import { PreviewMarketplaceItemComponent } from './marketplaces/services-marketplace/preview-marketplace-item/preview-marketplace-item.component';
 import { AssignServiceRelationshipsComponent } from './admin/CatalogManagement/edit-service-specs/assign-service-relationships/assign-service-relationships.component';
 import { TokenInterceptor } from './shared/interceptors/token-interceptor';
 import { ServiceOrderCheckoutComponent } from './requester/service-order-checkout/service-order-checkout.component';
@@ -106,6 +106,9 @@ import { EditOrdersServiceSpecCharacteristicsComponent } from './admin/OrderMana
 import { EditServiceOrderItemsComponent } from './admin/OrderManagement/preview-service-order/edit-service-order-items/edit-service-order-items.component';
 import { TerminateServiceOrderItemsComponent } from './admin/OrderManagement/preview-service-order/terminate-service-order-items/terminate-service-order-items.component';
 
+import { PreviewServiceComponent } from './admin/ServiceActivationAndConfiguration/preview-service/preview-service.component';
+import { EditServiceCharacteristicsComponent } from './admin/ServiceActivationAndConfiguration/edit-service-characteristics/edit-service-characteristics.component';
+import { ListServiceInventoryComponent } from './admin/InventoryManagement/list-service-inventory/list-service-inventory.component';
 
 
 export function initializeApp(bootstrap: BootstrapService) {
@@ -140,7 +143,7 @@ export function initializeApp(bootstrap: BootstrapService) {
     AssignServiceCandidatesComponent,
     CloneGstTemplateComponent,
     CloneVinniTemplateComponent,
-    PreviewServiceComponent,
+    PreviewMarketplaceItemComponent,
     AssignServiceRelationshipsComponent,
     ServiceOrderCheckoutComponent,
     ListServiceOrdersComponent,
@@ -162,7 +165,10 @@ export function initializeApp(bootstrap: BootstrapService) {
     DeleteAttachmentComponent,
     DiscardChangesComponent,
     EditServiceOrderItemsComponent,
-    TerminateServiceOrderItemsComponent
+    TerminateServiceOrderItemsComponent,
+    PreviewServiceComponent,
+    EditServiceCharacteristicsComponent,
+    ListServiceInventoryComponent
   ],
   imports: [
     BrowserModule,
@@ -219,7 +225,7 @@ export function initializeApp(bootstrap: BootstrapService) {
     CloneGstTemplateComponent,
     CloneVinniTemplateComponent,
     AssignServiceRelationshipsComponent,
-    PreviewServiceComponent,
+    PreviewMarketplaceItemComponent,
     EditOrdersServiceSpecCharacteristicsComponent,
     PreviewSupportingServicesComponent,
     ImportNsdDialogComponent,
@@ -231,7 +237,8 @@ export function initializeApp(bootstrap: BootstrapService) {
     DeleteAttachmentComponent,
     DiscardChangesComponent,
     EditServiceOrderItemsComponent,
-    TerminateServiceOrderItemsComponent
+    TerminateServiceOrderItemsComponent,
+    EditServiceCharacteristicsComponent
   ],
   providers: [
     AuthService,

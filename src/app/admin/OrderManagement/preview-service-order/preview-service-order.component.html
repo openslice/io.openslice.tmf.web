@@ -1,4 +1,12 @@
-<div class="container-fluid py-5">
+<div class="container-fluid py-5" *ngIf="serviceOrderNotFound" [@fadeIn]>
+    <div class="row align-items-center justify-content-center minh-40vh">
+        <div class="col-12 text-center">
+            <h4>Service Order with id #{{orderID}} is not found</h4>
+        </div>
+    </div>
+</div>
+
+<div class="container-fluid py-5" *ngIf="!serviceOrderNotFound">
     <div class="row">
         <div class="col-12">
 
@@ -9,10 +17,10 @@
                     <div class="container-fluid">
                         <div class="row justify-content-between align-items-center">
                             <div>
-                                <h2 class="shadowed">Service Order Overview</h2>
+                                <h2 class="shadowed">Service Order Overview And Management</h2>
 
 
-                                <p class="shadowed mb-0">Preview and Manage Service Order <b>#{{serviceOrder?.id}}</b></p>
+                                <p class="shadowed mb-0">Overview and Manage Service Order <b>#{{serviceOrder?.id}}</b></p>
 
                                 <!-- <div class="card-stats">
                                                 <i class="far fa-calendar mr-2"></i>Placed at
@@ -109,7 +117,28 @@
                                                         <p [class.mb-0]="serviceOrder?.orderDate">{{serviceOrder?.orderDate | date:'d MMM y, h:mm a'}} - Local Time</p>
                                                         <p *ngIf="serviceOrder?.orderDate">{{serviceOrder?.orderDate | date:'d MMM y, h:mm a':'UTC'}} - UTC</p>
                                                     </div>
+
                                                     <div class="col-lg-3">
+                                                        <h6>Requested Starting Date</h6>
+                                                        <p [class.mb-0]="serviceOrder?.requestedStartDate" *ngIf="serviceOrder?.requestedStartDate">{{serviceOrder?.requestedStartDate | date:'d MMM y, h:mm a'}} - Local Time</p>
+                                                        <p *ngIf="serviceOrder?.requestedStartDate">{{serviceOrder?.requestedStartDate | date:'d MMM y, h:mm a':'UTC'}} - UTC</p>
+                                                    </div>
+                                                    <div class="col-lg-3">
+                                                        <h6>Requested Completion Date</h6>
+                                                        <p [class.mb-0]="serviceOrder?.requestedCompletionDate" *ngIf="serviceOrder?.requestedCompletionDate">{{serviceOrder?.requestedCompletionDate | date:'d MMM y, h:mm a'}} - Local Time</p>
+                                                        <p *ngIf="serviceOrder?.requestedCompletionDate">{{serviceOrder?.requestedCompletionDate | date:'d MMM y, h:mm a':'UTC'}} - UTC</p>                                                      
+                                                    </div>
+
+                                                    <div class="col-lg-6">
+                                                        <h6>Description</h6>
+                                                        <p>{{serviceOrder?.description}}</p>
+                                                    </div>
+                                                    <div class="col-lg-6">
+                                                        <h6>Notification Contact</h6>
+                                                        <p>{{serviceOrder?.notificationContact}}</p>
+                                                    </div>
+
+                                                    <div class="col-lg-6">
                                                         <ng-container *ngIf="!editMode">
                                                             <h6>Priority</h6>
                                                             <p>{{serviceOrder?.priority}}</p>
@@ -125,7 +154,7 @@
                                                             </mat-select>
                                                         </mat-form-field>
                                                     </div>
-                                                    <div class="col-lg-3">
+                                                    <div class="col-lg-6">
                                                         <ng-container *ngIf="!editMode">
                                                             <h6>State</h6>
                                                             <p [ngClass]="orderStateClassSelector(serviceOrder?.state)"><b>{{serviceOrder?.state}}</b></p>
@@ -149,24 +178,6 @@
                                                                 </ng-container>
                                                             </mat-select>
                                                         </mat-form-field>
-                                                    </div>
-                                                    <div class="col-lg-6">
-                                                        <h6>Description</h6>
-                                                        <p>{{serviceOrder?.description}}</p>
-                                                    </div>
-                                                    <div class="col-lg-6">
-                                                        <h6>Notification Contact</h6>
-                                                        <p>{{serviceOrder?.notificationContact}}</p>
-                                                    </div>
-                                                    <div class="col-lg-6">
-                                                        <h6>Requested Starting Date</h6>
-                                                        <p [class.mb-0]="serviceOrder?.requestedStartDate" *ngIf="serviceOrder?.requestedStartDate">{{serviceOrder?.requestedStartDate | date:'d MMM y, h:mm a'}} - Local Time</p>
-                                                        <p *ngIf="serviceOrder?.requestedStartDate">{{serviceOrder?.requestedStartDate | date:'d MMM y, h:mm a':'UTC'}} - UTC</p>
-                                                    </div>
-                                                    <div class="col-lg-6">
-                                                        <h6>Requested Completion Date</h6>
-                                                        <p [class.mb-0]="serviceOrder?.requestedCompletionDate" *ngIf="serviceOrder?.requestedCompletionDate">{{serviceOrder?.requestedCompletionDate | date:'d MMM y, h:mm a'}} - Local Time</p>
-                                                        <p *ngIf="serviceOrder?.requestedCompletionDate">{{serviceOrder?.requestedCompletionDate | date:'d MMM y, h:mm a':'UTC'}} - UTC</p>                                                      
                                                     </div>
                 
                                                     <div class="col-lg-6">
@@ -298,14 +309,21 @@
                                                                 </mat-panel-title>
                                                             </mat-expansion-panel-header>
                     
-                                                            <div class="row justify-content-center">
-                                                                <div class="col-lg-6">
+                                                            <div class="row">
+                                                                <div class="col-lg-4">
                                                                     <h6>ID</h6>
                                                                     <p>{{orderItem?.service.id}}</p>
                                                                 </div>
-                                                                <div class="col-lg-6">
+                                                                <div class="col-lg-4">
                                                                     <h6>Name</h6>
                                                                     <p>{{orderItem?.service.serviceSpecification.name}}</p>
+                                                                </div>
+                                                                <div class="col-lg-4">
+                                                                    <h6>State</h6>
+                                                                    <div class="d-flex">
+                                                                        <p [ngClass]="orderItemStateClassSelector(orderItem?.service.state)"
+                                                                            style="font-size: .8rem;">{{orderItem?.service.state}}</p>
+                                                                    </div>
                                                                 </div>
                                                                 <div class="col-lg-4">
                                                                     <h6>Service Type</h6>
@@ -314,13 +332,6 @@
                                                                 <div class="col-lg-4">
                                                                     <h6>Category</h6>
                                                                     <p>{{orderItem?.service.category}}</p>
-                                                                </div>
-                                                                <div class="col-lg-4">
-                                                                    <h6>State</h6>
-                                                                    <div class="d-flex">
-                                                                        <p [ngClass]="orderItemStateClassSelector(orderItem?.service.state)"
-                                                                            style="font-size: .8rem;">{{orderItem?.service.state}}</p>
-                                                                    </div>
                                                                 </div>
                                                             </div>
                     
@@ -346,13 +357,13 @@
                                                                     <thead class="thead-inverse">
                                                                         <tr class="table-light">
                                                                             <th><h6 class="mb-0">Characteristic</h6></th>
-                                                                            <th><h6 class="mb-0">Value ( - Alias )</h6></th>
+                                                                            <th><h6 class="mb-0">Value (Alias)</h6></th>
                                                                             
                                                                         </tr>
                                                                     </thead>
                                                                     <tbody>
                                                                         <tr *ngFor="let specCharacteristic of orderItem?.service.serviceCharacteristic">
-                                                                            <td class="align-middle">{{specCharacteristic.name}}</td>
+                                                                            <td class="align-middle"><b>{{specCharacteristic.name}}</b></td>
                                                                             <ng-container [ngSwitch]="specCharacteristic.valueType">
                                                                                 
                                                                                 <ng-container *ngSwitchCase="'SET'">
@@ -365,7 +376,7 @@
                                                     
                                                                                 <ng-container *ngSwitchDefault>
                                                                                     <td class="align-middle">
-                                                                                        {{specCharacteristic.value.value}} <span *ngIf="specCharacteristic.value.alias">- {{specCharacteristic.value.alias}}</span> 
+                                                                                        {{specCharacteristic.value.value}} <span *ngIf="specCharacteristic.value.alias">({{specCharacteristic.value.alias}})</span> 
                         
                                                                                     </td>
                     
@@ -382,7 +393,7 @@
                                                                                             <tbody>
                                                                                                 <tr *ngFor="let value of (specCharacteristic.value.value | jsonParse)">
                                                                                                     <td>
-                                                                                                        {{value.value}} - {{value.alias}}
+                                                                                                        {{value.value}} <span *ngIf="value.alias">({{value.alias}})</span>
                                                                                                     </td>
                                                                                                 </tr>
                                                                                             </tbody>
@@ -415,8 +426,8 @@
                     
                                                             <div *ngFor="let supportingService of orderItem?.service.supportingService; let ServiceIndex=index"
                                                                 class="pt-2">
-                                                                <div class="card card-paper mb-1 bg-light supporting-service-card"
-                                                                    (click)="openSupportingServiceDialog(supportingService)">
+                                                                <a class="card card-paper mb-1 bg-light supporting-service-card"
+                                                                    routerLink='/service/{{supportingService.id}}'>
                                                                     <div class="note-card-body">
                                                                         <div class="container-fluid">
                                                                             <div class="row justify-content-between">
@@ -444,12 +455,13 @@
                                                                             </div>
                                                                             
                                                                         </div>
-                                                                        <div class="ml-1" *ngFor="let characteristic of supportingServices[orderIndex][ServiceIndex]?.serviceCharacteristic">
+                                                                        <div class="small">{{supportingServices[orderIndex][ServiceIndex]?.category}}</div>
+                                                                        <!-- <div class="ml-1" *ngFor="let characteristic of supportingServices[orderIndex][ServiceIndex]?.serviceCharacteristic">
                                                                             {{characteristic.name}}:
                                                                             <b>{{characteristic.value.value}}</b>
-                                                                        </div>
+                                                                        </div> -->
                                                                     </div>
-                                                                </div>
+                                                                </a>
                                                             </div>
                                                         </mat-expansion-panel>
                                                     </mat-accordion>

@@ -113,7 +113,7 @@
                     <div  
                     *ngFor="let val of editFormCharacteristic.get('serviceSpecCharacteristicValue')['controls']; let i = index;" 
                     [formGroupName]="i" 
-                    class="row align-items-center justify-content-center">
+                    class="row align-items-center justify-content-center" [@fadeIn] >
                         <div formGroupName="value" class="col-md-6">
                             <div class="row">
                                 <mat-form-field class="col-md-6">

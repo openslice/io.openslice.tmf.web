@@ -6,7 +6,7 @@ import { Observable } from 'rxjs';
 import { FormControl } from '@angular/forms';
 import { startWith, map } from 'rxjs/operators';
 import { MatDialog } from '@angular/material';
-import { PreviewServiceComponent } from './preview-service/preview-service.component';
+import { PreviewMarketplaceItemComponent } from './preview-marketplace-item/preview-marketplace-item.component';
 import { SortingService } from 'src/app/shared/functions/sorting.service';
 import { trigger } from '@angular/animations';
 import { fadeIn } from 'src/app/shared/animations/animations';
@@ -124,7 +124,7 @@ export class ServicesMarketplaceComponent implements OnInit {
   }
 
   previewServiceSpec(candidate: ServiceCandidate) {
-    const dialogRef = this.dialog.open(PreviewServiceComponent, {
+    const dialogRef = this.dialog.open(PreviewMarketplaceItemComponent, {
       data: {
         serviceCandidate: candidate
       },

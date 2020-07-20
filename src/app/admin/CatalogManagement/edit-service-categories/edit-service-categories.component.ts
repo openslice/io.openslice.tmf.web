@@ -14,11 +14,14 @@ import { DeleteServiceCategoryComponent } from '../delete-service-category/delet
 import { AssignServiceCandidatesComponent } from './assign-service-candidates/assign-service-candidates.component';
 import { ToastrService } from 'ngx-toastr';
 import { error } from 'protractor';
+import { trigger } from '@angular/animations';
+import { fadeIn } from 'src/app/shared/animations/animations';
 
 @Component({
   selector: 'app-edit-service-categories',
   templateUrl: './edit-service-categories.component.html',
-  styleUrls: ['./edit-service-categories.component.scss']
+  styleUrls: ['./edit-service-categories.component.scss'],
+  animations: [ trigger('fadeIn', fadeIn()) ]
 })
 export class EditServiceCategoriesComponent implements OnInit, OnDestroy {
 

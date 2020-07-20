@@ -6,12 +6,15 @@ import { ServiceSpecificationService } from 'src/app/openApis/ServiceCatalogMana
 import { ToastrService } from 'ngx-toastr';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import { trigger } from '@angular/animations';
+import { fadeIn } from 'src/app/shared/animations/animations';
 
 
 @Component({
   selector: 'app-edit-service-spec-characteristics',
   templateUrl: './edit-service-spec-characteristics.component.html',
-  styleUrls: ['./edit-service-spec-characteristics.component.scss']
+  styleUrls: ['./edit-service-spec-characteristics.component.scss'],
+  animations: [ trigger('fadeIn', fadeIn()) ]
 })
 export class EditServiceSpecCharacteristicsComponent implements OnInit {
 

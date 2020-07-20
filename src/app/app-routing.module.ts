@@ -18,6 +18,8 @@ import { ListOrganizationsComponent } from './admin/PartyManagement/list-organiz
 import { EditOrganizationsComponent } from './admin/PartyManagement/edit-organizations/edit-organizations.component';
 import { ListIndividualsComponent } from './admin/PartyManagement/list-individuals/list-individuals.component';
 import { EditIndividualsComponent } from './admin/PartyManagement/edit-individuals/edit-individuals.component';
+import { PreviewServiceComponent } from './admin/ServiceActivationAndConfiguration/preview-service/preview-service.component';
+import { ListServiceInventoryComponent } from './admin/InventoryManagement/list-service-inventory/list-service-inventory.component';
 
 
 const routes: Routes = [
@@ -49,6 +51,9 @@ const routes: Routes = [
   { path: 'individual_update/:id', component: EditIndividualsComponent, canActivate: [AuthGuardService], runGuardsAndResolvers: 'always' },
   { path: 'individual_update', component: EditIndividualsComponent, canActivate: [AuthGuardService], runGuardsAndResolvers: 'always' },
 
+  { path: 'service/:id', component: PreviewServiceComponent, canActivate: [AuthGuardService], runGuardsAndResolvers: 'always' },
+
+  { path: 'service_inventory', component: ListServiceInventoryComponent, canActivate: [AuthGuardService], runGuardsAndResolvers: 'always'},
  
   { path: '**', component: LandingComponent }
   

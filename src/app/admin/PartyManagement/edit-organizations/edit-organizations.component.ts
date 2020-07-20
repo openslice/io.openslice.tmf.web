@@ -8,6 +8,8 @@ import { FormGroup, FormControl, FormArray } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { EditPartyCharacteristicsComponent } from './edit-party-characteristics/edit-party-characteristics.component';
 import { DeletePartyCharacteristicComponent } from './delete-party-characteristic/delete-party-characteristic.component';
+import { trigger } from '@angular/animations';
+import { fadeIn } from 'src/app/shared/animations/animations';
 
 // const defaultPartyCharacteristics = ['EXTERNAL_TMFAPI_BASEURL', 'EXTERNAL_TMFAPI_CLIENTREGISTRATIONID', 'EXTERNAL_TMFAPI_OAUTH2CLIENTID', 'EXTERNAL_TMFAPI_OAUTH2CLIENTSECRET', 'EXTERNAL_TMFAPI_OAUTH2SCOPES', 'EXTERNAL_TMFAPI_OAUTH2TOKENURI', 'EXTERNAL_TMFAPI_USERNAME', 'EXTERNAL_TMFAPI_PASSWORD', 'EXTERNAL_TMFAPI_SERVICE_CATALOG_URLS', 'EXTERNAL_TMFAPI_SERVICE_ORDER_URLS', 'EXTERNAL_TMFAPI_SERVICE_SPEC']
 
@@ -15,7 +17,8 @@ import { DeletePartyCharacteristicComponent } from './delete-party-characteristi
 @Component({
   selector: 'app-edit-organizations',
   templateUrl: './edit-organizations.component.html',
-  styleUrls: ['./edit-organizations.component.scss']
+  styleUrls: ['./edit-organizations.component.scss'],
+  animations: [ trigger('fadeIn', fadeIn()) ]
 })
 export class EditOrganizationsComponent implements OnInit {
 

@@ -14,7 +14,6 @@ import { timer, Subscription } from 'rxjs';
 import { SortingService } from 'src/app/shared/functions/sorting.service';
 import { trigger } from '@angular/animations';
 import { fadeIn, simpleFade } from 'src/app/shared/animations/animations';
-import { EditOrdersServiceSpecCharacteristicsComponent } from './edit-service-order-items/edit-orders-service-spec-characteristics/edit-orders-service-spec-characteristics.component';
 import { SelectionModel } from '@angular/cdk/collections';
 import { EditServiceOrderItemsComponent } from './edit-service-order-items/edit-service-order-items.component';
 import { PreviewSupportingServicesComponent } from '../../InventoryManagement/preview-supporting-services/preview-supporting-services.component';
@@ -54,6 +53,8 @@ export class PreviewServiceOrderComponent implements OnInit {
 
   serviceOrder: ServiceOrder
   orderID: string
+  serviceOrderNotFound: boolean = false
+
   supportingServices: Service[][] = [[]]
 
   editMode: boolean = false
@@ -102,7 +103,7 @@ export class PreviewServiceOrderComponent implements OnInit {
         if (this.serviceOrder) {
           this.editForm.patchValue({
             state: this.serviceOrder.state,
-            startDate: this.serviceOrder.requestedStartDate,
+            startDate: this.serviceOrder.startDate,
             expectedCompletionDate: this.serviceOrder.requestedCompletionDate
           })
   
@@ -118,8 +119,14 @@ export class PreviewServiceOrderComponent implements OnInit {
               )
             })
           })
+          
+          if (this.activatedRoute.snapshot.queryParams &&  this.serviceOrder.orderItem.some(item => item.id === this.activatedRoute.snapshot.queryParams.item)) {
+            // console.log(this.activatedRoute.snapshot.queryParams)
+            this.activeListItem = this.activatedRoute.snapshot.queryParams.item
+            
+          }
         } else {
-          this.router.navigate(['service_orders'])
+          this.serviceOrderNotFound = true
         }
       }
     )
@@ -205,7 +212,8 @@ export class PreviewServiceOrderComponent implements OnInit {
 
   openSupportingServiceDialog(supportingServiceRef: ServiceRef) {
     const dialogRef = this.dialog.open(PreviewSupportingServicesComponent, {
-      data : { serviceRef: supportingServiceRef }, disableClose: true
+      data : { serviceRef: supportingServiceRef }, 
+      disableClose: true
     })
 
     dialogRef.afterClosed().subscribe(
@@ -263,7 +271,8 @@ export class PreviewServiceOrderComponent implements OnInit {
 
   openEditServiceOrderItemsDialog() {
     const dialogRef = this.dialog.open(EditServiceOrderItemsComponent, {
-      data: this.selection.selected
+      data: this.selection.selected,
+      minWidth: "60vw"
     })
 
     dialogRef.afterClosed().subscribe(

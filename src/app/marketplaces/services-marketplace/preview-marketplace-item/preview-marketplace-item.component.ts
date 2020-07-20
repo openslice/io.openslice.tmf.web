@@ -12,18 +12,18 @@ import { AuthService } from 'src/app/shared/services/auth.service';
 
 @Component({
   selector: 'app-preview-service',
-  templateUrl: './preview-service.component.html',
-  styleUrls: ['./preview-service.component.scss'],
+  templateUrl: './preview-marketplace-item.component.html',
+  styleUrls: ['./preview-marketplace-item.component.scss'],
   animations: [ trigger('fadeIn', fadeIn()) ]
 
 })
-export class PreviewServiceComponent implements OnInit {
+export class PreviewMarketplaceItemComponent implements OnInit {
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: {
       serviceCandidate: ServiceCandidate
     },
-    private dialogRef: MatDialogRef<PreviewServiceComponent>,
+    private dialogRef: MatDialogRef<PreviewMarketplaceItemComponent>,
     private specService: ServiceSpecificationService,
     private requesterService: RequesterService,
     private toastr: ToastrService,

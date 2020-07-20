@@ -1,0 +1,14 @@
+table.table-borderless tbody tr td {
+    padding: 0;
+}
+
+mat-dialog-content {
+    min-height: 15vw;
+}
+
+mat-dialog-content .spinner-container{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+}

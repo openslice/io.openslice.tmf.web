@@ -7,7 +7,6 @@ import { ServiceCatalog, ServiceCatalogUpdate, ServiceCategory, ServiceCatalogCr
 import { Observable } from 'rxjs';
 import { MatAutocomplete, MatChipInputEvent, MatAutocompleteSelectedEvent, MatAutocompleteTrigger, MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
 import { startWith, map } from 'rxjs/operators';
-import { AppService } from 'src/app/shared/services/app.service';
 
 @Component({
   selector: 'app-edit-service-catalogs',
@@ -21,7 +20,6 @@ export class EditServiceCatalogsComponent implements OnInit {
     private catalogService: ServiceCatalogService,
     private categoryService: ServiceCategoryService, 
     private dialogRef: MatDialogRef<EditServiceCatalogsComponent>,
-    private appService: AppService
   ) { }
 
   catalogID: string

@@ -82,8 +82,7 @@ export class EditOrdersServiceSpecCharacteristicsComponent implements OnInit {
 
     this.nonConfSpecCharacteristics.forEach((nonConfSpecChar) => {
       nonConfSpecFA.push(this.updateFormArrayItem(nonConfSpecChar, this.nonConfSpecCharacteristics))
-    })
-    
+    })    
   }
 
   updateFormArrayItem( specChar: ServiceSpecCharacteristic, specCharList: ServiceSpecCharacteristic[]): FormGroup {
@@ -121,7 +120,7 @@ export class EditOrdersServiceSpecCharacteristicsComponent implements OnInit {
     let newServiceCharacteristics = []
     let editedCharValue 
     editedCharsFA.forEach( editedChar => {
-      let editedCharValue = editedChar.value
+      editedCharValue = editedChar.value
       if (editedChar.valueType  === "SET" || editedChar.valueType === "ARRAY") {
         editedCharValue = {
           value: JSON.stringify( editedChar.value.map(el => {return {'value': el.value, 'alias': el.alias}}) ),

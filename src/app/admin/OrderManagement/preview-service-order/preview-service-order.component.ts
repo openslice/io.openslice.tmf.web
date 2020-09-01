@@ -327,7 +327,8 @@ export class PreviewServiceOrderComponent implements OnInit {
             orderItem: []
           }
           this.selection.selected.forEach( selectedOrderItem => {
-            this.serviceOrder.orderItem.find(item => item.id === selectedOrderItem.id).action = "delete"
+            this.serviceOrder.orderItem.find(item => item.id === selectedOrderItem.id).action = "modify"
+            this.serviceOrder.orderItem.find(item => item.id === selectedOrderItem.id).service.state = "terminated"
           })
 
           newOrderUpdate.orderItem = this.serviceOrder.orderItem

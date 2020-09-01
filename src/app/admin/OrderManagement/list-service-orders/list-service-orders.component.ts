@@ -36,7 +36,7 @@ export class ListServiceOrdersComponent implements OnInit {
 
   filterForm = new FormGroup({
     text: new FormControl(),
-    fromDate: new FormControl(new Date(new Date().setMonth(new Date().getMonth()-1))),
+    fromDate: new FormControl(new Date(new Date().setMonth(new Date().getMonth()-3))),
     toDate: new FormControl(new Date()),
   });
 

@@ -1,8 +1,12 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import { NgModule, LOCALE_ID } from '@angular/core';
 
 import { APP_INITIALIZER } from '@angular/core'
 import { BootstrapService } from './bootstrap/bootstrap.service';
+
+import enGB from '@angular/common/locales/en-GB';
+import { registerLocaleData } from '@angular/common';
+
 
 import { 
   NgbCollapseModule,
@@ -110,7 +114,7 @@ import { PreviewServiceComponent } from './admin/ServiceActivationAndConfigurati
 import { EditServiceCharacteristicsComponent } from './admin/ServiceActivationAndConfiguration/edit-service-characteristics/edit-service-characteristics.component';
 import { ListServiceInventoryComponent } from './admin/InventoryManagement/list-service-inventory/list-service-inventory.component';
 
-
+registerLocaleData(enGB);
 export function initializeApp(bootstrap: BootstrapService) {
   return () => bootstrap.loadConfig();
 }
@@ -243,6 +247,7 @@ export function initializeApp(bootstrap: BootstrapService) {
   providers: [
     AuthService,
     BootstrapService,
+    { provide: LOCALE_ID, useValue: 'en-GB' },
     { provide: APP_INITIALIZER, useFactory: initializeApp, deps: [BootstrapService], multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true },
     { provide: OWL_DATE_TIME_LOCALE, useValue: 'en-GB'}

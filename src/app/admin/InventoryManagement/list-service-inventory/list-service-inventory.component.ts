@@ -28,7 +28,6 @@ export class ListServiceInventoryComponent implements OnInit {
   @ViewChild(MatSort, {static: true}) sort: MatSort;
   @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
 
-
   ngOnInit() {
     this.retrieveServiceList()
   }
@@ -41,6 +40,7 @@ export class ListServiceInventoryComponent implements OnInit {
         this.dataSource.data = this.services
         this.dataSource.sort = this.sort
         this.dataSource.paginator = this.paginator
+        
         this.dataSource.sortingDataAccessor = (item, property): string | number => {
           switch (property) {
             case 'serviceDate': return new Date(item.serviceDate).getTime();
@@ -48,7 +48,6 @@ export class ListServiceInventoryComponent implements OnInit {
             default: return item[property];
           }
         }
-
       }
     )
   }

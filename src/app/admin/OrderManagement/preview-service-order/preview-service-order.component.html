@@ -139,12 +139,12 @@
                                                     </div>
 
                                                     <div class="col-lg-6">
-                                                        <ng-container *ngIf="!editMode">
+                                                        <ng-container>
                                                             <h6>Priority</h6>
                                                             <p>{{serviceOrder?.priority}}</p>
                                                         </ng-container>
                 
-                                                        <mat-form-field *ngIf="editMode">
+                                                        <!-- <mat-form-field *ngIf="editMode">
                                                             <mat-label>Priority</mat-label>
                                                             <mat-select formControlName="priority">
                                                                 <mat-option *ngFor="let priority of availablePriorities"
@@ -152,7 +152,7 @@
                                                                     {{priority | uppercase}}
                                                                 </mat-option>
                                                             </mat-select>
-                                                        </mat-form-field>
+                                                        </mat-form-field> -->
                                                     </div>
                                                     <div class="col-lg-6">
                                                         <ng-container *ngIf="!editMode">
@@ -183,8 +183,10 @@
                                                     <div class="col-lg-6">
                                                         <ng-container *ngIf="!editMode">
                                                             <h6>Starting Date</h6>
-                                                            <p [class.mb-0]="serviceOrder?.startDate" *ngIf="serviceOrder?.startDate">{{serviceOrder?.startDate | date:'d MMM y, h:mm a'}} - Local Time</p>
-                                                            <p *ngIf="serviceOrder?.startDate">{{serviceOrder?.startDate | date:'d MMM y, h:mm a':'UTC'}} - UTC</p>                                                      
+                                                            <div *ngIf="serviceOrder?.startDate">
+                                                                <p class="mb-0">{{serviceOrder?.startDate | date:'d MMM y, h:mm a'}} - Local Time</p>
+                                                                <p>{{serviceOrder?.startDate | date:'d MMM y, h:mm a':'UTC'}} - UTC</p>                                                      
+                                                            </div>
                                                         </ng-container>
                 
                                                         <mat-form-field *ngIf="editMode" [owlDateTimeTrigger]="pickerFrom" class="mb-2">
@@ -200,8 +202,10 @@
                                                     <div class="col-lg-6">
                                                         <ng-container *ngIf="!editMode">
                                                             <h6>Expected Completion Date</h6>
-                                                            <p [class.mb-0]="serviceOrder?.expectedCompletionDate" *ngIf="serviceOrder?.expectedCompletionDate">{{serviceOrder?.expectedCompletionDate | date:'d MMM y, h:mm a'}} - Local Time</p>
-                                                            <p *ngIf="serviceOrder?.expectedCompletionDate">{{serviceOrder?.expectedCompletionDate | date:'d MMM y, h:mm a':'UTC'}} - UTC</p>                                                      
+                                                            <div *ngIf="serviceOrder?.expectedCompletionDate">
+                                                                <p class="mb-0">{{serviceOrder?.expectedCompletionDate | date:'d MMM y, h:mm a'}} - Local Time</p>
+                                                                <p>{{serviceOrder?.expectedCompletionDate | date:'d MMM y, h:mm a':'UTC'}} - UTC</p>                                                      
+                                                            </div>
 
                                                         </ng-container>
                 

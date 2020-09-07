@@ -103,9 +103,13 @@ export class PreviewServiceOrderComponent implements OnInit {
         if (this.serviceOrder) {
           this.editForm.patchValue({
             state: this.serviceOrder.state,
-            startDate: this.serviceOrder.startDate,
-            expectedCompletionDate: this.serviceOrder.requestedCompletionDate
+            startDate: this.serviceOrder.startDate ? this.serviceOrder.startDate : this.serviceOrder.requestedStartDate,
+            expectedCompletionDate: this.serviceOrder.expectedCompletionDate ? this.serviceOrder.expectedCompletionDate : this.serviceOrder.completionDate
           })
+
+          if (!this.serviceOrder.startDate) { this.serviceOrder.startDate = this.serviceOrder.requestedStartDate }
+
+          if (!this.serviceOrder.expectedCompletionDate) { this.serviceOrder.expectedCompletionDate = this.serviceOrder.requestedCompletionDate }
   
           this.checkboxesOrderItemList = []
           this.serviceOrder.orderItem.forEach((orderItem, index) => {

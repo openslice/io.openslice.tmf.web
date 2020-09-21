@@ -137,6 +137,21 @@ export class ServiceOrderCheckoutComponent implements OnInit {
     })
   }
 
+  addToArrayCharacteristicValue(characteristic: ServiceSpecCharacteristic) {
+    this.orderedSpecsConfigurationList.find(listItem => listItem.spec.id === this.selectedOrderSpecToView.spec.id).specCharacteristics.find(char => char.name === characteristic.name).value.push(
+      {
+        isDefault: true,
+        valueType: characteristic.serviceSpecCharacteristicValue[0].valueType,
+        value: {value: '', alias: ''}
+      }
+    )
+  }
+
+  deleteFromArrayCharacteristicValue(characteristic: ServiceSpecCharacteristic, index) {
+    this.orderedSpecsConfigurationList.find(listItem => listItem.spec.id === this.selectedOrderSpecToView.spec.id).specCharacteristics.find(char => char.name === characteristic.name).value.splice(index, 1)
+  }
+
+
   viewAndConfigureSpec(item: serviceSpecConfigurationListItem) {
     
     this.updateActiveServiceInList()
@@ -174,9 +189,6 @@ export class ServiceOrderCheckoutComponent implements OnInit {
   submitOrder() {
 
     this.updateActiveServiceInList()
-    
-    // console.log(this.orderedSpecsConfigurationList)
-    
     let newOrder: ServiceOrderCreate = {
       orderItem:[], 
       requestedStartDate: this.reqStartDate.value,
@@ -222,6 +234,7 @@ export class ServiceOrderCheckoutComponent implements OnInit {
       })
       newOrder.orderItem.push(newOrderItem)
     })
+    // console.log(newOrderItem)
     
     // console.log(newOrder)
 

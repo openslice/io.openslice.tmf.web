@@ -102,6 +102,19 @@ export class EditOrdersServiceSpecCharacteristicsComponent implements OnInit {
     })
   }
 
+  addToArrayCharacteristicValue(characteristic: ServiceSpecCharacteristic) {
+    this.confSpecFormArray.value.concat(this.nonConfSpecFormArray.value).find(char => char.name === characteristic.name).value.push(
+      {
+        value: '',
+        alias: ''
+      }
+    )
+  }
+
+  deleteFromArrayCharacteristicValue(characteristic: ServiceSpecCharacteristic, index) {
+    this.confSpecFormArray.value.concat(this.nonConfSpecFormArray.value).find(char => char.name === characteristic.name).value.splice(index, 1)
+  }
+
   compareFn( optionOne, optionTwo ) : boolean {
     return (optionOne.value === optionTwo.value) || (optionOne.alias === optionTwo.alias);
   }

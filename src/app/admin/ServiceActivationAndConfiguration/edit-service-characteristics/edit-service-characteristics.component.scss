@@ -10,5 +10,9 @@ mat-dialog-content .spinner-container{
     display: flex;
     align-items: center;
     justify-content: center;
+}
 
+.border-bottom {
+    border-bottom: 1px dotted rgba(0, 0, 0, 0.125);
+    margin-bottom: .75rem;
 }

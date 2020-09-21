@@ -85,6 +85,20 @@ export class EditServiceCharacteristicsComponent implements OnInit {
     })
   }
 
+  addToArrayCharacteristicValue(characteristic: ServiceSpecCharacteristic) {
+    this.specCharFormArray.value.find(char => char.name === characteristic.name).value.push(
+      {
+        value: '',
+        alias: ''
+      }
+    )
+  }
+
+  deleteFromArrayCharacteristicValue(characteristic: ServiceSpecCharacteristic, index) {
+    this.specCharFormArray.value.find(char => char.name === characteristic.name).value.splice(index, 1)
+  }
+
+
   compareFn( optionOne, optionTwo ) : boolean {
     return (optionOne.value === optionTwo.value) || (optionOne.alias === optionTwo.alias);
   }

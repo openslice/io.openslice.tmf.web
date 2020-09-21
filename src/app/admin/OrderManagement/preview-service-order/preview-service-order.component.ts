@@ -266,7 +266,7 @@ export class PreviewServiceOrderComponent implements OnInit {
   areOrderItemsEditable() {
     // states > 'INITIAL'|'ACKNOWLEDGED'|'REJECTED'|'PENDING'|'HELD'|'INPROGRESS'|'CANCELLED'|'COMPLETED'|'FAILED'|'PARTIAL'
     // return ['INITIAL', 'REJECTED','CANCELLED', 'COMPLETED', 'FAILED', 'PARTIAL'].includes(this.serviceOrder.state)
-    return ['INITIAL', 'COMPLETED', 'FAILED', 'PARTIAL'].includes(this.serviceOrder.state)
+    return ['INITIAL'].includes(this.serviceOrder.state)
   }
 
   areOrderItemsTerminable() {
@@ -300,7 +300,7 @@ export class PreviewServiceOrderComponent implements OnInit {
 
           newOrderUpdate.orderItem = this.serviceOrder.orderItem
 
-          console.log(newOrderUpdate)
+          // console.log(newOrderUpdate)
 
           this.orderService.patchServiceOrder({serviceOrder: newOrderUpdate, id: this.serviceOrder.id}).subscribe(
             data => { 
@@ -337,7 +337,7 @@ export class PreviewServiceOrderComponent implements OnInit {
 
           newOrderUpdate.orderItem = this.serviceOrder.orderItem
 
-          console.log(newOrderUpdate)
+          // console.log(newOrderUpdate)
 
           this.orderService.patchServiceOrder({serviceOrder: newOrderUpdate, id: this.serviceOrder.id}).subscribe(
             data => { 

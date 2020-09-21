@@ -125,7 +125,7 @@ export class EditServiceSpecCharacteristicsComponent implements OnInit {
         value: new FormControl(CharValue.value.value),
       }),
       unitOfMeasure: new FormControl(CharValue.unitOfMeasure),
-      isDefault: new FormControl(CharValue.isDefault),
+      isDefault: new FormControl({value: (CharValue.isDefault || this.data.specToBeUpdated.valueType === 'ARRAY'), disabled: this.data.specToBeUpdated.valueType === 'ARRAY'}),
       valueType: new FormControl(CharValue.valueType)
     })
   }
@@ -149,7 +149,7 @@ export class EditServiceSpecCharacteristicsComponent implements OnInit {
           value: new FormControl(),
         }),
         unitOfMeasure: new FormControl(),
-        isDefault: new FormControl(),
+        isDefault: new FormControl({value: this.editFormCharacteristic.get('valueType').value === 'ARRAY', disabled: this.editFormCharacteristic.get('valueType').value === 'ARRAY'}),
         valueType: new FormControl(subType)
       })
     )
@@ -178,10 +178,10 @@ export class EditServiceSpecCharacteristicsComponent implements OnInit {
     console.log('submit')
     
     if (this.newSpec) {
-      this.data.serviceSpec.serviceSpecCharacteristic.push(this.editFormCharacteristic.value)
+      this.data.serviceSpec.serviceSpecCharacteristic.push(this.editFormCharacteristic.getRawValue())
     } else {
       const updateCharacteristIndex = this.data.serviceSpec.serviceSpecCharacteristic.findIndex(char => char.id === this.data.specToBeUpdated.id)
-      this.data.serviceSpec.serviceSpecCharacteristic[updateCharacteristIndex] = this.editFormCharacteristic.value
+      this.data.serviceSpec.serviceSpecCharacteristic[updateCharacteristIndex] = this.editFormCharacteristic.getRawValue()
     }
 
     const updateCharacteristicObj: ServiceSpecificationUpdate = {

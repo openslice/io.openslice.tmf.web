@@ -24,7 +24,6 @@
         "useHttpBasicAuth": true,
         "clearHashAfterLogin": false,
       
-        "scope": "read write admin openapi",
         "showDebugInformation": true
     }
 }

@@ -1,0 +1,136 @@
+<div class="container-fluid py-5" *ngIf="alarmNotFound" [@fadeIn]>
+    <div class="row align-items-center justify-content-center minh-30vh">
+        <div class="col-12 text-center">
+            <h4>Action rule with id #{{actionRuleId}} is not found</h4>
+        </div>
+    </div>
+</div>
+
+<div class="container py-5" *ngIf="!alarmNotFound" [@fadeIn]>
+    <div class="row minh-30vh">
+        <div class="col-12">
+            <form [formGroup]="editForm">
+                <div class="card card-paper mb-0">
+                    
+                    <div class="card-header">
+                        <div class="container-fluid">
+                            <div class="row justify-content-between align-items-center">
+                                <div>
+                                    <h2 class="shadowed">Action Rule Designer</h2>
+                                    <p class="shadowed mb-0" *ngIf="newActionRule">Design a new action rule</p>
+                                    <p class="shadowed mb-0" *ngIf="!newActionRule">Review and manage action rule #{{actionRuleId}}</p>
+                                </div>
+                            </div>        
+                        </div>
+                    </div>
+
+                    <div class="card-body">
+                        <mat-accordion multi="true">
+                            <mat-expansion-panel expanded="true" class="bg-light" [@fadeIn]>
+                                <mat-expansion-panel-header>
+                                    <mat-panel-title>
+                                        Main action rule properties
+                                    </mat-panel-title>
+                                </mat-expansion-panel-header>
+                            
+                                <div class="row">
+
+                                    <mat-form-field appearance="" class="col-md-4">
+                                        <mat-label>Name</mat-label>
+                                        <input matInput formControlName="name">
+                                    </mat-form-field>
+
+                                    <mat-form-field appearance="" class="col-md-4">
+                                        <mat-label>Scope</mat-label>
+                                        <input matInput formControlName="scope">
+                                    </mat-form-field>
+
+                                    <mat-form-field appearance="" class="col-md-4">
+                                        <mat-label>Openslice Event Type</mat-label>
+                                        <mat-select formControlName="eventType">
+                                            <mat-option *ngFor="let eventType of availableEventTypes" [value]="eventType">{{eventType}}
+                                            </mat-option>
+                                        </mat-select>
+                                    </mat-form-field>
+
+                                    <mat-form-field appearance="" class="col-md-12">
+                                        <mat-label>Description</mat-label>
+                                        <textarea matTextareaAutosize="true" matAutosizeMinRows="2" matInput
+                                            formControlName="description"></textarea>
+                                    </mat-form-field>
+                                </div>
+                                
+                                <h6>Conditions</h6>
+                                <div formArrayName="condition">
+                                    <div *ngFor="let condition of editForm.get('condition')['controls']; let i = index" [formGroupName]="i" class="row align-items-center justify-content-center">
+                                        <mat-form-field class="col-md-3">
+                                            <mat-label>Event Attribute Name</mat-label>
+                                            <mat-select formControlName="eventAttributeName">
+                                                <mat-option *ngFor="let eventAttributeName of availableAttrNameConditions" [value]="eventAttributeName">{{eventAttributeName}}
+                                                </mat-option>
+                                            </mat-select>
+                                        </mat-form-field>
+                                        <mat-form-field class="col-md-2">
+                                            <mat-label>Comparison Operator</mat-label>
+                                            <mat-select formControlName="operator">
+                                                <mat-option *ngFor="let comparisonOp of comparisonOperators" [value]="comparisonOp">{{comparisonOp}}
+                                                </mat-option>
+                                            </mat-select>
+                                        </mat-form-field>
+
+                                        <mat-form-field class="col-md-3">
+                                            <mat-label>Event Attribute Value</mat-label>
+                                            <mat-select formControlName="eventAttributeValue">
+                                                <mat-option *ngFor="let eventAttributeValue of availableConditions[condition.value.eventAttributeName]" [value]="eventAttributeValue" >{{eventAttributeValue}}
+                                                </mat-option>
+                                            </mat-select>
+                                        </mat-form-field>
+
+                                        <mat-form-field class="col-md-2">
+                                            <mat-label>Boolean Operator</mat-label>
+                                            <mat-select formControlName="booleanOperator">
+                                                <mat-option *ngFor="let booleanOp of booleanOperators" [value]="booleanOp">{{booleanOp}}
+                                                </mat-option>
+                                            </mat-select>
+                                        </mat-form-field>
+                    
+                                        <div class="col-md-2 text-center">
+                                            <button mat-icon-button><i class="material-icons" (click)="deleteFromActionRuleConditionsArray(i)" aria-label="Clear Parameter">clear</i></button>
+                                        </div>
+                    
+                                    </div>
+                    
+                                    <button type="button" class="btn btn-success btn-sm btn-block mb-4" (click)="addToActionRuleConditionsArray()">
+                                        <i class="far fa-sticky-note mr-2"></i>Add Action Rule Condition
+                                    </button>
+                                </div>   
+
+                                <div class="row">                                   
+                                    <mat-form-field appearance="" class="col-md-12">
+                                        <mat-label>Action on met conditions</mat-label>
+                                        <mat-select formControlName="actions" multiple>
+                                            <mat-option *ngFor="let action of actions" [value]="action">{{action.name}}
+                                            </mat-option>
+                                        </mat-select>
+                                    </mat-form-field>
+                                </div>
+
+
+                  
+                                <div class="container-fluid">
+                                    <div class="row justify-content-end">
+                                            <button type="submit" class="btn btn-primary"
+                                        (click)="updateActionRule()"><i class="fas fa-check mr-2"></i>Submit</button>
+                                    </div>
+                                </div>
+                            </mat-expansion-panel>
+                        </mat-accordion>
+
+                    </div>
+                    <div class="card-footer"></div>
+                </div>
+            </form>
+
+        </div>
+    </div>
+</div>

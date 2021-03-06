@@ -35,7 +35,7 @@ export class PreviewServiceComponent implements OnInit {
   serviceID: string
   service: Service
   newService: boolean = false
-  serviceNotFound: boolean = false
+  serviceNotFound: boolean
 
   editForm = new FormGroup({
     state: new FormControl(),

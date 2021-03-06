@@ -83,6 +83,17 @@
                         </ul>
                     </a>
                 </li>
+
+                <li class="nav-item dropdown" ngbDropdown *ngIf="(authService.isAuthenticated$ | async) && authService.portalUserJWT?.realm_access.roles.includes('ADMIN')" [@fadeIn]>
+                    <a class="nav-link dropdown-toggle" id="navbarDropdown" aria-haspopup="true" ngbDropdownToggle tabindex="0">Monitoring
+                        <ul class="dropdown-menu" aria-labelledby="navbarDropdown" ngbDropdownMenu>
+                            <li><a class="dropdown-item" tabindex="0" routerLink="/alarms">Alarms</a></li>
+                            <li><a class="dropdown-item" tabindex="0" routerLink="/actions">Actions</a></li>
+                            <li><a class="dropdown-item" tabindex="0" routerLink="/action_rules">Action Rules</a></li>
+                            <!-- <li><a class="dropdown-item" tabindex="-1" routerLink="/service_specs">Service Specifications</a></li> -->
+                        </ul>
+                    </a>
+                </li>
             </ul>
             <!-- <ul class="nav navbar-nav">
                 <li ><a routerLink="/experiments_marketplace">Experiments</a></li>

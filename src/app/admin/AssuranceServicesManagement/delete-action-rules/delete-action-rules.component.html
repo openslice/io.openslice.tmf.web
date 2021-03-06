@@ -1,0 +1,12 @@
+<h4 mat-dialog-title class="shadowed mb-3">
+    <i class="far fa-trash-alt mr-2"></i>
+    <span>Confirm deletion</span>
+</h4>
+<div mat-dialog-content>
+    Are you sure you want to permanently delete action rule <dfn>{{data.name}}</dfn>?
+</div>
+
+<div mat-dialog-actions class="d-flex justify-content-end">
+    <button type="button" class="btn btn-outline-primary m-2" (click)="closeDialog()">Cancel</button>
+    <button type="button" class="btn btn-danger m-2" (click)="confirmDeletion()">Delete</button>
+</div>

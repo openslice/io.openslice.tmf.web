@@ -6,9 +6,9 @@ export interface IAppConfig {
     "WIKI": string,
     "BUGZILLA": string,
     "STATUS": string,
-    "APIURL": string, 
     "WEBURL": string,
-    "APIOAUTHURL":  string,
+    "PORTAL_REPO_APIURL": string,
+    "ASSURANCE_SERVICE_MGMT_APIURL": string,
     "APITMFURL": string,
     "OAUTH_CONFIG": AuthConfig
 }

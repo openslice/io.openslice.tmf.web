@@ -8,6 +8,7 @@ import { DeleteServiceOrderComponent } from '../delete-service-order/delete-serv
 import { HttpErrorResponse } from '@angular/common/http';
 import { trigger } from '@angular/animations';
 import { fadeIn } from 'src/app/shared/animations/animations';
+import { CacheSearchParametersService } from '../../shared/cache-search-parameters.service';
 
 
 @Component({
@@ -21,7 +22,8 @@ export class ListServiceOrdersComponent implements OnInit {
   constructor(
     private serviceOrder: ServiceOrderService,
     private dialog: MatDialog,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    private cacheService: CacheSearchParametersService
   ) { }
 
   displayedColumns = ['id', 'placed_by', 'order_date', 'state', 'requested_startdate', 'requested_enddate', 'actions']
@@ -36,8 +38,8 @@ export class ListServiceOrdersComponent implements OnInit {
 
   filterForm = new FormGroup({
     text: new FormControl(),
-    fromDate: new FormControl(new Date(new Date().setMonth(new Date().getMonth()-3))),
-    toDate: new FormControl(new Date()),
+    fromDate: new FormControl(this.cacheService.serviceOrderListDateFrom),
+    toDate: new FormControl(this.cacheService.serviceOrderListDateTo),
   });
 
   get fromDate() { return this.filterForm.get('fromDate').value; }
@@ -121,6 +123,8 @@ export class ListServiceOrdersComponent implements OnInit {
     if (this.fromDate && this.toDate)  {
       this.dataSource.filter = "applyPeriodFilter"
     }
+    this.cacheService.serviceOrderListDateFrom = this.fromDate
+    this.cacheService.serviceOrderListDateTo = this.toDate
     // this.dataSource.filterPredicate = this.filterPeriod
   } 
 

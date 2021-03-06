@@ -198,7 +198,7 @@ export class PreviewServiceOrderComponent implements OnInit {
     }
 
     this.orderService.patchServiceOrder({serviceOrder: orderUpdate, id: this.orderID}).subscribe(
-      data => { this.toast.success("Service Order was successfully updated")},
+      data => {this.toast.success("Service Order was successfully updated")},
       error => {console.error(error); this.toast.error("An error occurred while editing Service Order")},
       () => {
         this.enableOrderRefreshTimer()

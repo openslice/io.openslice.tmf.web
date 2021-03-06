@@ -4,31 +4,34 @@
 
             <div class="card card-paper">
                 <div class="catalog-tree-header shadowed"><h5 class="mb-0">Service Catalog Explorer</h5></div> 
-                <div class="catalog-tree-container"><app-tree-sidenav></app-tree-sidenav></div>
+                <div class="catalog-tree-container">
+                    <app-tree-sidenav></app-tree-sidenav>
+                </div>
             </div>
 
         </div>
         <div class="col-md-8 col-xl-10">
             <div class="jumbotron card card-paper bg-light shadowed">
-                <h2>Welcome to the {{config.TITLE}}!</h2>
+                <h2>Welcome to the {{config.TITLE}}</h2>
                 <h5>Browse available services and sign in to order</h5>
             </div>
 
             <div class="card1" *ngIf="selectedCategory">
                 <div class="card-header">
                     <div>Service Specifications of <b>{{selectedCategory.name}}</b> category</div>
-                    <small>{{selectedCategory.description}}</small>
+                    <small *ngIf="selectedCategory.description">{{selectedCategory.description}}</small>
+                    <small *ngIf="!selectedCategory.description"><i>Description not available</i></small>
                 </div>
-                <div class="row" *ngIf="serviceCandidates.length > 0">
+                <div class="row" >
                     <mat-form-field appearance="outline" class="white-background col-12">
                         <mat-label>Filter services...</mat-label>
                         <input matInput placeholder="Start typing your preferred service name"  [formControl]="serviceCandidatesFilterCtrl">
                     </mat-form-field>
                 </div>
                 
-                <div class="card-body1" >                
+                <div class="card-body1">                
                     <div class="row align-items-center">
-                        <div class="col-xl-4 col-lg-6 col-md-12" *ngFor="let candidate of filteredServiceCandidates$ | async; let index = index" [@fadeIn]>
+                        <div class="col-xl-4 col-lg-6 col-md-12" *ngFor="let candidate of filteredServiceCandidates$ | async; let index = index" [@simpleFade]>
                             <div class="card card-paper">
                                 <div class="card-header appTitle">
                                     {{candidate.name}}
@@ -89,7 +92,7 @@
                         </div>
                     </div>
 
-                    <div class="card-body" *ngIf="serviceCandidates.length === 0">
+                    <div class="card-body1" *ngIf="resultsNotFound" [@simpleFade]>
                         No results found...
                     </div>
 

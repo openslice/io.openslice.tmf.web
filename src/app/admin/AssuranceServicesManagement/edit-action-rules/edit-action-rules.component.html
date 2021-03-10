@@ -42,7 +42,11 @@
 
                                     <mat-form-field appearance="" class="col-md-4">
                                         <mat-label>Scope</mat-label>
-                                        <input matInput formControlName="scope">
+                                        <mat-select formControlName="scope">
+                                            <mat-option *ngFor="let service of activeRFSsFromInventory" [value]="service.uuid">{{service.name}} ({{service.serviceDate | date:'d/M/yy, HH:mm'}})
+
+                                            </mat-option>
+                                        </mat-select>
                                     </mat-form-field>
 
                                     <mat-form-field appearance="" class="col-md-4">
@@ -107,12 +111,30 @@
 
                                 <div class="row">                                   
                                     <mat-form-field appearance="" class="col-md-12">
-                                        <mat-label>Action on met conditions</mat-label>
-                                        <mat-select formControlName="actions" multiple>
-                                            <mat-option *ngFor="let action of actions" [value]="action">{{action.name}}
+                                        <mat-label>Actions on met conditions</mat-label>
+                                        <mat-select [(ngModel)]="selectedActionSpecs" [ngModelOptions]="{standalone: true}" multiple>
+                                            <mat-option *ngFor="let actionSpec of actionSpecs" [value]="actionSpec" (onSelectionChange)="selectedActionSpecChanged($event)" >{{actionSpec.name}}
                                             </mat-option>
                                         </mat-select>
                                     </mat-form-field>
+                                </div>
+
+                                <div class="row" formArrayName="actions">
+                                    <div class="col-12" *ngFor="let action of editForm.get('actions')['controls']; let i = index" [formGroupName]="i">
+                                            <h6 class="mb-1">{{action.value.name}}</h6>
+                                            <div formArrayName="actionCharacteristics">
+                                                <div *ngIf="action.get('actionCharacteristics')['controls'].length === 0" class="mb-3"> Action does not have any configurable parameters.</div>
+                                                <div  class="row" *ngFor="let actionChar of action.get('actionCharacteristics')['controls']; let j = index" [formGroupName]="j">
+                                                    
+                                                    <mat-form-field appearance="fill" class="col-12">
+                                                        <mat-label>{{actionChar.value.name}}</mat-label>
+                                                        <input matInput formControlName="value">
+                                                    </mat-form-field>
+                                                </div>
+                                            </div>
+
+                                        <!-- </div> -->
+                                    </div>
                                 </div>
 
 

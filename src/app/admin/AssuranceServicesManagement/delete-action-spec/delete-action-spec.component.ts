@@ -5,15 +5,15 @@ import { ActionSpecificationService } from 'src/app/openApis/AssuranceServicesMa
 
 @Component({
   selector: 'app-delete-actions',
-  templateUrl: './delete-actions.component.html',
-  styleUrls: ['./delete-actions.component.scss']
+  templateUrl: './delete-action-spec.component.html',
+  styleUrls: ['./delete-action-spec.component.scss']
 })
-export class DeleteActionsComponent implements OnInit {
+export class DeleteActionSpecComponent implements OnInit {
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: ActionSpecification,
     private actionSpecificationService: ActionSpecificationService,
-    private dialogRef: MatDialogRef<DeleteActionsComponent>
+    private dialogRef: MatDialogRef<DeleteActionSpecComponent>
   ) { }
 
   ngOnInit() {

@@ -6,15 +6,15 @@ import { ActionSpecificationService } from 'src/app/openApis/AssuranceServicesMa
 
 @Component({
   selector: 'app-edit-actions',
-  templateUrl: './edit-actions.component.html',
-  styleUrls: ['./edit-actions.component.scss']
+  templateUrl: './edit-action-specs.component.html',
+  styleUrls: ['./edit-action-specs.component.scss']
 })
-export class EditActionsComponent implements OnInit {
+export class EditActionSpecsComponent implements OnInit {
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: ActionSpecification,
     private actionSpecificationService: ActionSpecificationService,
-    private dialogRef: MatDialogRef<EditActionsComponent>
+    private dialogRef: MatDialogRef<EditActionSpecsComponent>
   ) { }
 
   editForm = new FormGroup({
@@ -86,7 +86,7 @@ export class EditActionsComponent implements OnInit {
 
     if (this.newAction) {
       this.actionSpecificationService.createActionSpecification(updateObj).subscribe(
-        data => console.log(data),
+        data => {},
         error => console.error(error),
         () => this.dialogRef.close('created')
       )
@@ -94,7 +94,7 @@ export class EditActionsComponent implements OnInit {
     
     else {
       this.actionSpecificationService.patchActionSpecification({id: this.actionId, body: updateObj}).subscribe(
-        data => console.log(data),
+        data => {},
         error => console.error(error),
         () => this.dialogRef.close('updated')
       )

@@ -72,13 +72,13 @@ export class ListAlarmsComponent implements OnInit {
       probableCause: "thresholdCrossed",
       ackState: "unacknowledged",
       perceivedSeverity: severities[Math.floor(Math.random()*5)],
-      sourceSystemId: "NFVOp",
+      sourceSystemId: "mano-client-service",
       alarmDetails: "NSID=a1dqw1eqw2e21asdg2opoqwe1,DeploymentRequestID=sd23d1ed221he2g2opo11eaa",
       specificProblem: "action=scaledOut"
     }
 
     this.alarmService.createAlarm(dummyAlarm).subscribe(
-      data => console.log(data),
+      data => {},
       error => console.error(error),
       () => this.retrieveAlarmsList()
     )

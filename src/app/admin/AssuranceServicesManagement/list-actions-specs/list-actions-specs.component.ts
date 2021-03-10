@@ -5,16 +5,16 @@ import { ToastrService } from 'ngx-toastr';
 import { ActionSpecification } from 'src/app/openApis/AssuranceServicesManagementAPI/models';
 import { ActionSpecificationService } from 'src/app/openApis/AssuranceServicesManagementAPI/services';
 import { fadeIn } from 'src/app/shared/animations/animations';
-import { DeleteActionsComponent } from '../delete-actions/delete-actions.component';
-import { EditActionsComponent } from '../edit-actions/edit-actions.component';
+import { DeleteActionSpecComponent } from '../delete-action-spec/delete-action-spec.component';
+import { EditActionSpecsComponent } from '../edit-action-specs/edit-action-specs.component';
 
 @Component({
   selector: 'app-list-actions',
-  templateUrl: './list-actions.component.html',
-  styleUrls: ['./list-actions.component.scss'],
+  templateUrl: './list-actions-specs.component.html',
+  styleUrls: ['./list-actions-specs.component.scss'],
   animations: [ trigger('fadeIn', fadeIn()) ]
 })
-export class ListActionsComponent implements OnInit {
+export class ListActionsSpecsComponent implements OnInit {
 
   constructor(
     private actionSpecService: ActionSpecificationService,
@@ -55,7 +55,7 @@ export class ListActionsComponent implements OnInit {
 
 
   openDeleteActionDialog(action: ActionSpecification) {
-    const dialogRef = this.dialog.open(DeleteActionsComponent, {data: action})
+    const dialogRef = this.dialog.open(DeleteActionSpecComponent, {data: action})
 
     dialogRef.afterClosed().subscribe(
       res => {
@@ -68,7 +68,7 @@ export class ListActionsComponent implements OnInit {
   }
 
   openUpdateActionDialog(element: ActionSpecification) {
-    const dialogRef = this.dialog.open(EditActionsComponent, {data: element})
+    const dialogRef = this.dialog.open(EditActionSpecsComponent, {data: element})
 
     dialogRef.afterClosed().subscribe (
       result => {

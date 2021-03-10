@@ -1,3 +1,5 @@
+export { Action } from './models/action';
+export { ActionCharacteristic } from './models/action-characteristic';
 export { ActionParam } from './models/action-param';
 export { ActionSpecification } from './models/action-specification';
 export { ActionSpecificationCreate } from './models/action-specification-create';

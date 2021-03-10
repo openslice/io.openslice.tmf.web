@@ -117,9 +117,9 @@ import { ListAlarmsComponent } from './admin/AlarmManagement/list-alarms/list-al
 import { EditAlarmComponent } from './admin/AlarmManagement/edit-alarm/edit-alarm.component';
 import { CacheSearchParametersService } from './admin/shared/cache-search-parameters.service';
 import { DeleteAlarmComponent } from './admin/AlarmManagement/delete-alarm/delete-alarm.component';
-import { ListActionsComponent } from './admin/AssuranceServicesManagement/list-actions/list-actions.component';
-import { DeleteActionsComponent } from './admin/AssuranceServicesManagement/delete-actions/delete-actions.component';
-import { EditActionsComponent } from './admin/AssuranceServicesManagement/edit-actions/edit-actions.component';
+import { ListActionsSpecsComponent } from './admin/AssuranceServicesManagement/list-actions-specs/list-actions-specs.component';
+import { DeleteActionSpecComponent } from './admin/AssuranceServicesManagement/delete-action-spec/delete-action-spec.component';
+import { EditActionSpecsComponent } from './admin/AssuranceServicesManagement/edit-action-specs/edit-action-specs.component';
 import { ListActionRulesComponent } from './admin/AssuranceServicesManagement/list-action-rules/list-action-rules.component';
 import { EditActionRulesComponent } from './admin/AssuranceServicesManagement/edit-action-rules/edit-action-rules.component';
 import { DeleteActionRulesComponent } from './admin/AssuranceServicesManagement/delete-action-rules/delete-action-rules.component';
@@ -186,9 +186,9 @@ export function initializeApp(bootstrap: BootstrapService) {
     ListAlarmsComponent,
     EditAlarmComponent,
     DeleteAlarmComponent,
-    ListActionsComponent,
-    DeleteActionsComponent,
-    EditActionsComponent,
+    ListActionsSpecsComponent,
+    DeleteActionSpecComponent,
+    EditActionSpecsComponent,
     ListActionRulesComponent,
     EditActionRulesComponent,
     DeleteActionRulesComponent
@@ -263,9 +263,9 @@ export function initializeApp(bootstrap: BootstrapService) {
     TerminateServiceOrderItemsComponent,
     EditServiceCharacteristicsComponent,
     DeleteAlarmComponent,
-    DeleteActionsComponent,
+    DeleteActionSpecComponent,
     DeleteActionRulesComponent,
-    EditActionsComponent
+    EditActionSpecsComponent
   ],
   providers: [
     AuthService,

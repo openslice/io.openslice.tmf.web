@@ -4,10 +4,11 @@ import { FormArray, FormControl, FormGroup } from '@angular/forms';
 import { MatOptionSelectionChange, MatSelectChange } from '@angular/material';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
-import { ActionSpecification, RuleSpecification, RuleSpecificationCreate, RuleSpecificationUpdate } from 'src/app/openApis/AssuranceServicesManagementAPI/models';
+import { Action, ActionSpecification, RuleSpecification, RuleSpecificationCreate, RuleSpecificationUpdate } from 'src/app/openApis/AssuranceServicesManagementAPI/models';
 import { ActionSpecificationService, RuleSpecificationService } from 'src/app/openApis/AssuranceServicesManagementAPI/services';
 import { Service } from 'src/app/openApis/ServiceInventoryManagement/models';
 import { ServiceService } from 'src/app/openApis/ServiceInventoryManagement/services';
+import { ServiceOrderService } from 'src/app/openApis/ServiceOrderingManagement/services';
 import { fadeIn } from 'src/app/shared/animations/animations';
 
 @Component({
@@ -22,6 +23,7 @@ export class EditActionRulesComponent implements OnInit {
     private actionSpecService: ActionSpecificationService,
     private serviceService: ServiceService,
     private ruleSpecService: RuleSpecificationService,
+    private serviceOrderService: ServiceOrderService,
     private toast: ToastrService,
     private activatedRoute: ActivatedRoute,
     private router: Router
@@ -36,6 +38,7 @@ export class EditActionRulesComponent implements OnInit {
   selectedActionSpecs: ActionSpecification[]
 
   activeRFSsFromInventory: Service[]
+  scopeRelatedSupportingServices = []
 
   editForm = new FormGroup({
     name: new FormControl(""),
@@ -102,11 +105,46 @@ export class EditActionRulesComponent implements OnInit {
             // actions: this.actions.filter( action => this.actionRule.actions.map( actionRuleAction => actionRuleAction.actionId).includes(action.uuid))
           })
           this.initConditionsValueFA()
+          this.initActionsValueFA()
+          this.initSelectedActionSpec()
         } else {
           this.alarmNotFound = true
         }
       }
     )
+  }
+
+  initSelectedActionSpec() {
+    this.selectedActionSpecs =  this.actionSpecs.filter( actionSpec => this.actionRule.actions.some( actionRuleAction => actionRuleAction.actionSpecificationRef.actionId === actionSpec.uuid))
+  }
+
+  initActionsValueFA() {
+    this.editForm.setControl('actions', new FormArray([]))
+    const formArray = this.editForm.get('actions') as FormArray
+
+    this.actionRule.actions.forEach( (action) => {
+      formArray.push(
+        new FormGroup({
+          name: new FormControl(action.name),
+          actionSpecificationRef: new FormControl({actionId:action.actionSpecificationRef.actionId}),
+          actionCharacteristics: pushToActionCharArray(action)
+        })
+      )
+    })
+
+
+    function pushToActionCharArray(action: Action) {
+      let charArr = new FormArray([])
+      action.actionCharacteristics.forEach(char => {
+        charArr.push(
+          new FormGroup({
+            name: new FormControl(char.name),
+            value: new FormControl(char.value)
+          })
+        )
+      })
+      return charArr
+    }
   }
 
   initConditionsValueFA() {
@@ -123,6 +161,30 @@ export class EditActionRulesComponent implements OnInit {
         })
       )
     })
+  }
+
+  onScopeSelect(event:MatOptionSelectionChange) {
+    if (event.isUserInput) {
+      this.scopeRelatedSupportingServices = []
+      const selectedRFS = this.activeRFSsFromInventory.find(el => el.id === event.source.value)
+  
+      selectedRFS.serviceOrder.forEach (so => {
+        this.serviceOrderService.retrieveServiceOrder({id: so.id}).subscribe(
+          data => {
+            if (data && data.orderItem) {
+              data.orderItem.forEach(orderItem => {
+                orderItem.service.supportingService.forEach( suppService => {
+                  this.scopeRelatedSupportingServices.push(suppService)
+                })
+              })
+            }
+          },
+          error => console.error(error)
+        )
+      })
+
+    }
+
   }
 
   addToActionRuleConditionsArray() {
@@ -144,11 +206,12 @@ export class EditActionRulesComponent implements OnInit {
   }
 
   selectedActionSpecChanged(event: MatOptionSelectionChange) {
-    console.log(event)
-    if (event.source.selected) {
-      this.addToActionSpecArray(event.source.value)
-    } else {
-      this.deleteFromSpecArray(event.source.value)
+    if (event.isUserInput) {
+      if (event.source.selected) {
+        this.addToActionSpecArray(event.source.value)
+      } else {
+        this.deleteFromSpecArray(event.source.value)
+      }
     }
   }
 
@@ -158,7 +221,7 @@ export class EditActionRulesComponent implements OnInit {
     formArray.push(
       new FormGroup({
         name: new FormControl(actionSpec.name),
-        actionSpecificationRef: new FormControl({actionId:actionSpec.uuid, uuid:actionSpec.uuid}),
+        actionSpecificationRef: new FormControl({actionId:actionSpec.uuid}),
         actionCharacteristics: pushToActionCharArray()
       })
     )
@@ -169,7 +232,7 @@ export class EditActionRulesComponent implements OnInit {
         paramsArr.push(
           new FormGroup({
             name: new FormControl(param.paramName),
-            value: new FormControl()
+            value: new FormControl(param.paramValue)
           })
         )
       })
@@ -183,9 +246,6 @@ export class EditActionRulesComponent implements OnInit {
   }
 
   updateActionRule() {
-    // console.log(this.editForm)
-    // console.log(this.editForm.value)
-    // console.log(this.selectedActionSpecs)
 
     const updateObj: RuleSpecificationCreate | RuleSpecificationUpdate = {
       // actions: this.editForm.value.actions.map( act => { return {actionId: act.uuid, uuid: act.uuid}} ),
@@ -196,8 +256,6 @@ export class EditActionRulesComponent implements OnInit {
       name: this.editForm.value.name,
       scope: {"entityUUID": this.editForm.value.scope}
     }
-
-    console.log(updateObj)
 
     if (this.newActionRule) {
       this.ruleSpecService.createRuleSpecification(updateObj).subscribe(

@@ -42,8 +42,9 @@
 
                                     <mat-form-field appearance="" class="col-md-4">
                                         <mat-label>Scope</mat-label>
+                                        <!-- <mat-select formControlName="scope" (selectionChange)="onScopeSelect($event)"> -->
                                         <mat-select formControlName="scope">
-                                            <mat-option *ngFor="let service of activeRFSsFromInventory" [value]="service.uuid">{{service.name}} ({{service.serviceDate | date:'d/M/yy, HH:mm'}})
+                                            <mat-option *ngFor="let service of activeRFSsFromInventory" [value]="service.uuid" (onSelectionChange)="onScopeSelect($event)">{{service.name}} ({{service.serviceDate | date:'d/M/yy, HH:mm'}})
 
                                             </mat-option>
                                         </mat-select>
@@ -112,8 +113,8 @@
                                 <div class="row">                                   
                                     <mat-form-field appearance="" class="col-md-12">
                                         <mat-label>Actions on met conditions</mat-label>
-                                        <mat-select [(ngModel)]="selectedActionSpecs" [ngModelOptions]="{standalone: true}" multiple>
-                                            <mat-option *ngFor="let actionSpec of actionSpecs" [value]="actionSpec" (onSelectionChange)="selectedActionSpecChanged($event)" >{{actionSpec.name}}
+                                        <mat-select [(ngModel)]="selectedActionSpecs" [ngModelOptions]="{standalone: true}" multiple [disabled]="!editForm.get('scope').value">
+                                            <mat-option *ngFor="let actionSpec of actionSpecs" [value]="actionSpec" (onSelectionChange)="selectedActionSpecChanged($event)">{{actionSpec.name}}
                                             </mat-option>
                                         </mat-select>
                                     </mat-form-field>
@@ -128,7 +129,12 @@
                                                     
                                                     <mat-form-field appearance="fill" class="col-12">
                                                         <mat-label>{{actionChar.value.name}}</mat-label>
-                                                        <input matInput formControlName="value">
+                                                        <input matInput formControlName="value" *ngIf="(actionChar.value.name | lowercase) !== 'serviceid'">
+
+                                                        <mat-select formControlName="value" *ngIf="(actionChar.value.name | lowercase) === 'serviceid'">
+                                                            <mat-option *ngFor="let suppService of scopeRelatedSupportingServices" [value]="suppService.uuid" >{{suppService.name}}
+                                                            </mat-option>
+                                                        </mat-select>
                                                     </mat-form-field>
                                                 </div>
                                             </div>

@@ -8,6 +8,7 @@ import { stricterDefinedAlarm } from 'src/app/models/augmentedOpenAPImodels/stri
 import { AlarmUpdate } from 'src/app/openApis/AlarmManagement/models';
 import { AlarmService } from 'src/app/openApis/AlarmManagement/services';
 import { fadeIn } from 'src/app/shared/animations/animations';
+import { SortingService } from 'src/app/shared/functions/sorting.service';
 import { AuthService } from 'src/app/shared/services/auth.service';
 
 @Component({
@@ -25,7 +26,8 @@ export class EditAlarmComponent implements OnInit {
     private router: Router,
     private alarmService: AlarmService,
     private authService: AuthService,
-    private toast: ToastrService
+    private toast: ToastrService,
+    private sortingService: SortingService
   ) { }
 
   alarmId: string
@@ -66,6 +68,7 @@ export class EditAlarmComponent implements OnInit {
             perceivedSeverity: this.alarm.perceivedSeverity,
             ackState: this.alarm.ackState     
           })
+          this.alarm.comment.sort(this.sortingService.ascDateSortingFuncByTimeProperty())
         } else {
           this.alarmNotFound = true
         }

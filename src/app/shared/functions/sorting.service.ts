@@ -17,4 +17,12 @@ export class SortingService {
     }
   }
 
+  ascDateSortingFuncByDateProperty() {
+    return (a,b) => new Date(a.date).getTime() - new Date(b.date).getTime()
+  }
+
+  ascDateSortingFuncByTimeProperty() {
+    return (a,b) => new Date(a.time).getTime() - new Date(b.time).getTime()
+  }
+
 }

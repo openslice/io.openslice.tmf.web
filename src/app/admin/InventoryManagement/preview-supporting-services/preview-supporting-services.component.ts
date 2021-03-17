@@ -40,7 +40,7 @@ export class PreviewSupportingServicesComponent implements OnInit {
         data => { this.supportingService = data },
         error => { console.error(error); this.toastr.error("An error occurred retrieving supporting Service information")},
         () => { 
-          console.log(this.supportingService)
+          // console.log(this.supportingService)
           this.editForm.patchValue({
             state: this.supportingService.state
           })

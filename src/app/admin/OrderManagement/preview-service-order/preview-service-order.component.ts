@@ -107,6 +107,8 @@ export class PreviewServiceOrderComponent implements OnInit {
             expectedCompletionDate: this.serviceOrder.expectedCompletionDate ? this.serviceOrder.expectedCompletionDate : this.serviceOrder.completionDate
           })
 
+          this.serviceOrder.note.sort(this.sortingService.ascDateSortingFuncByDateProperty())
+
           if (!this.serviceOrder.startDate) { this.serviceOrder.startDate = this.serviceOrder.requestedStartDate }
 
           if (!this.serviceOrder.expectedCompletionDate) { this.serviceOrder.expectedCompletionDate = this.serviceOrder.requestedCompletionDate }

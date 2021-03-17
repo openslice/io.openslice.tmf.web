@@ -142,6 +142,7 @@ export class PreviewServiceComponent implements OnInit {
           this.serviceNotFound = true
         }
         this.service.serviceCharacteristic.sort(this.sortingService.ascStringSortingFunctionByNameProperty())
+        this.service.note.sort(this.sortingService.ascDateSortingFuncByDateProperty())
         this.editForm.patchValue({
           state: this.service.state,
           startDate: this.service.startDate,

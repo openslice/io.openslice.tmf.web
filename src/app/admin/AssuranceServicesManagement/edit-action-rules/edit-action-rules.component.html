@@ -132,7 +132,7 @@
                                                         <input matInput formControlName="value" *ngIf="(actionChar.value.name | lowercase) !== 'serviceid'">
 
                                                         <mat-select formControlName="value" *ngIf="(actionChar.value.name | lowercase) === 'serviceid'">
-                                                            <mat-option *ngFor="let suppService of scopeRelatedSupportingServices" [value]="suppService.uuid" >{{suppService.name}}
+                                                            <mat-option *ngFor="let suppService of scopeRelatedSupportingServices" [value]="suppService.id" >{{suppService.name}}
                                                             </mat-option>
                                                         </mat-select>
                                                     </mat-form-field>

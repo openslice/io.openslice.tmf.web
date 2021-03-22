@@ -33,8 +33,11 @@
 
                         <ng-container matColumnDef="perceivedSeverity">
                             <th mat-header-cell *matHeaderCellDef mat-sort-header> Severity </th>
-                            <td mat-cell *matCellDef="let element" ngClass="{{element.perceivedSeverity}}_alarm_color"> 
-                                <span class="severity_circle mr-1" ngClass="{{element.perceivedSeverity}}_alarm_bg" ></span>
+                            <!-- <td mat-cell *matCellDef="let element" ngClass="{{element.perceivedSeverity}}_alarm_color">  -->
+                            <td mat-cell *matCellDef="let element"> 
+
+                                <!-- <span class="severity_circle mr-1" ngClass="{{element.perceivedSeverity}}_alarm_bg" ></span> -->
+                                <span [ngClass]="sharedAlarmService.returnSeverityIconClass(element.perceivedSeverity)"></span>
                                 <b>{{element.perceivedSeverity}}</b>
                             </td>
                         </ng-container>
@@ -45,7 +48,10 @@
 
                         <ng-container matColumnDef="state">
                             <th mat-header-cell *matHeaderCellDef mat-sort-header> State </th>
-                            <td mat-cell *matCellDef="let element"> {{element.state}} </td>
+                            <td mat-cell *matCellDef="let element"> 
+                                <span [ngClass]="sharedAlarmService.returnStateIconClass(element.state)"></span>
+                                {{element.state}} 
+                            </td>
                         </ng-container>
 
                         <ng-container matColumnDef="alarmType">

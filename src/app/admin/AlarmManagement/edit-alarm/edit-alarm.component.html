@@ -69,12 +69,12 @@
                                     <mat-form-field appearance="" class="col-md-4">
                                         <mat-label>Severity</mat-label>
                                         <mat-select formControlName="perceivedSeverity" (selectionChange)="onAlarmClearSelection($event)">
-                                            <mat-select-trigger ngClass="{{editForm.value.perceivedSeverity}}_alarm_color">
-                                                <span class="severity_circle mr-1" ngClass="{{editForm.value.perceivedSeverity}}_alarm_bg" ></span>
+                                            <mat-select-trigger>
+                                                <span [ngClass]="sharedAlarmService.returnSeverityIconClass(editForm.value.perceivedSeverity)" class="fa-1x"></span>
                                                 {{editForm.value.perceivedSeverity}}
                                             </mat-select-trigger>
-                                            <mat-option *ngFor="let severity of severitiesList" [value]=severity ngClass="{{severity}}_alarm_color">
-                                                <span class="severity_circle mr-1" ngClass="{{severity}}_alarm_bg" ></span>
+                                            <mat-option *ngFor="let severity of severitiesList" [value]=severity>
+                                                <span [ngClass]="sharedAlarmService.returnSeverityIconClass(severity)"></span>
                                                 {{severity}}
                                             </mat-option>
                                         </mat-select>
@@ -90,7 +90,14 @@
                                     <mat-form-field appearance="" class="col-md-4">
                                         <mat-label>State</mat-label>
                                         <mat-select formControlName="state" (selectionChange)="onAlarmClearSelection($event)">
-                                            <mat-option *ngFor="let state of stateList" [value]=state>{{state}}
+                                            <mat-select-trigger>
+                                                <span [ngClass]="sharedAlarmService.returnStateIconClass(editForm.value.state)" class="fa-1x"></span>
+                                                {{editForm.value.state}}
+                                            </mat-select-trigger>
+
+                                            <mat-option *ngFor="let state of stateList" [value]=state>
+                                                <span [ngClass]="sharedAlarmService.returnStateIconClass(state)"></span>
+                                                {{state}}
                                             </mat-option>
                                         </mat-select>
                                     </mat-form-field>

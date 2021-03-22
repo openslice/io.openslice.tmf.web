@@ -10,6 +10,7 @@ import { AlarmService } from 'src/app/openApis/AlarmManagement/services';
 import { fadeIn } from 'src/app/shared/animations/animations';
 import { SortingService } from 'src/app/shared/functions/sorting.service';
 import { AuthService } from 'src/app/shared/services/auth.service';
+import { SharedAlarmService } from '../shared/shared-alarm.service';
 
 @Component({
   selector: 'app-edit-alarm',
@@ -27,7 +28,8 @@ export class EditAlarmComponent implements OnInit {
     private alarmService: AlarmService,
     private authService: AuthService,
     private toast: ToastrService,
-    private sortingService: SortingService
+    private sortingService: SortingService,
+    public sharedAlarmService: SharedAlarmService
   ) { }
 
   alarmId: string

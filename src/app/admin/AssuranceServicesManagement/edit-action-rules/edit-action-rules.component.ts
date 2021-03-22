@@ -10,6 +10,7 @@ import { Service } from 'src/app/openApis/ServiceInventoryManagement/models';
 import { ServiceService } from 'src/app/openApis/ServiceInventoryManagement/services';
 import { ServiceOrderService } from 'src/app/openApis/ServiceOrderingManagement/services';
 import { fadeIn } from 'src/app/shared/animations/animations';
+import { SortingService } from 'src/app/shared/functions/sorting.service';
 
 @Component({
   selector: 'app-edit-action-rules',
@@ -26,7 +27,8 @@ export class EditActionRulesComponent implements OnInit {
     private serviceOrderService: ServiceOrderService,
     private toast: ToastrService,
     private activatedRoute: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private sortingService: SortingService
   ) { }
 
   newActionRule = false
@@ -35,7 +37,7 @@ export class EditActionRulesComponent implements OnInit {
   actionRuleId: string
 
   actionSpecs: ActionSpecification[]
-  selectedActionSpecs: ActionSpecification[]
+  selectedActionSpec: ActionSpecification
 
   activeRFSsFromInventory: Service[]
   scopeRelatedSupportingServices = []
@@ -106,7 +108,7 @@ export class EditActionRulesComponent implements OnInit {
           })
           this.initConditionsValueFA()
           this.initActionsValueFA()
-          this.initSelectedActionSpec()
+          // this.initSelectedActionSpec()
         } else {
           this.alarmNotFound = true
         }
@@ -114,9 +116,9 @@ export class EditActionRulesComponent implements OnInit {
     )
   }
 
-  initSelectedActionSpec() {
-    this.selectedActionSpecs =  this.actionSpecs.filter( actionSpec => this.actionRule.actions.some( actionRuleAction => actionRuleAction.actionSpecificationRef.actionId === actionSpec.uuid))
-  }
+  // initSelectedActionSpec() {
+  //   this.selectedActionSpecs =  this.actionSpecs.filter( actionSpec => this.actionRule.actions.some( actionRuleAction => actionRuleAction.actionSpecificationRef.actionId === actionSpec.uuid))
+  // }
 
   initActionsValueFA() {
     this.editForm.setControl('actions', new FormArray([]))
@@ -127,14 +129,16 @@ export class EditActionRulesComponent implements OnInit {
         new FormGroup({
           name: new FormControl(action.name),
           actionSpecificationRef: new FormControl({actionId:action.actionSpecificationRef.actionId}),
-          actionCharacteristics: pushToActionCharArray(action)
+          actionCharacteristics: pushToActionCharArray(action, this.sortingService)
         })
       )
     })
 
 
-    function pushToActionCharArray(action: Action) {
+    function pushToActionCharArray(action: Action, sortingService: SortingService) {
       let charArr = new FormArray([])
+  
+      action.actionCharacteristics.sort(sortingService.ascStringSortingFunctionByNameProperty())
       action.actionCharacteristics.forEach(char => {
         charArr.push(
           new FormGroup({
@@ -184,7 +188,6 @@ export class EditActionRulesComponent implements OnInit {
       })
 
     }
-
   }
 
   addToActionRuleConditionsArray() {
@@ -205,14 +208,15 @@ export class EditActionRulesComponent implements OnInit {
     formArray.removeAt(conditionIndex)
   }
 
-  selectedActionSpecChanged(event: MatOptionSelectionChange) {
-    if (event.isUserInput) {
-      if (event.source.selected) {
-        this.addToActionSpecArray(event.source.value)
-      } else {
-        this.deleteFromSpecArray(event.source.value)
-      }
+  addToActionList(actionSpec: ActionSpecification) {
+    if (actionSpec) {
+      this.addToActionSpecArray(actionSpec)
+      this.selectedActionSpec = null
     }
+  }
+
+  removeFromActionList(index: number) {
+    this.deleteFromSpecArray(index)
   }
 
   addToActionSpecArray(actionSpec: ActionSpecification) {
@@ -240,9 +244,9 @@ export class EditActionRulesComponent implements OnInit {
     }
   }
 
-  deleteFromSpecArray(actionSpec: ActionSpecification) {
+  deleteFromSpecArray(index: number) {
     const formArray = this.editForm.get('actions') as FormArray
-    formArray.removeAt(formArray.value.findIndex( el => el.actionSpecificationRef.actionId === actionSpec.uuid))
+    formArray.removeAt(index)
   }
 
   updateActionRule() {
@@ -278,7 +282,6 @@ export class EditActionRulesComponent implements OnInit {
         }
       )
     }
-
   }
 
 }

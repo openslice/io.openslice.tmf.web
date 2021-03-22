@@ -7,6 +7,7 @@ import { Alarm, AlarmCreate } from 'src/app/openApis/AlarmManagement/models';
 import { AlarmService } from 'src/app/openApis/AlarmManagement/services';
 import { fadeIn } from 'src/app/shared/animations/animations';
 import { DeleteAlarmComponent } from '../delete-alarm/delete-alarm.component';
+import { SharedAlarmService } from '../shared/shared-alarm.service';
 
 @Component({
   selector: 'app-list-alarms',
@@ -19,7 +20,8 @@ export class ListAlarmsComponent implements OnInit {
   constructor(
     private alarmService: AlarmService,
     public dialog: MatDialog,
-    private toast: ToastrService
+    private toast: ToastrService,
+    public sharedAlarmService: SharedAlarmService
   ) { }
 
   displayedColumns = ['sourceSystemId', 'perceivedSeverity', 'ackState', 'state',  'alarmType', 'probableCause', 'alarmRaisedTime', 'actions']
@@ -72,7 +74,7 @@ export class ListAlarmsComponent implements OnInit {
       probableCause: "thresholdCrossed",
       ackState: "unacknowledged",
       perceivedSeverity: severities[Math.floor(Math.random()*5)],
-      sourceSystemId: "mano-client-service",
+      sourceSystemId: "mano-client-service-test",
       alarmDetails: "NSID=a1dqw1eqw2e21asdg2opoqwe1,DeploymentRequestID=sd23d1ed221he2g2opo11eaa",
       specificProblem: "action=scaledOut"
     }

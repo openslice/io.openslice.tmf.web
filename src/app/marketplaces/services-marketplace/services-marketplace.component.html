@@ -1,6 +1,6 @@
 <div class="container-fluid py-4">
     <div class="row">
-        <div class="col-md-4 col-xl-2">
+        <div class="col-lg-4 col-xl-2">
 
             <div class="card card-paper">
                 <div class="catalog-tree-header shadowed"><h5 class="mb-0">Service Catalog Explorer</h5></div> 
@@ -10,7 +10,7 @@
             </div>
 
         </div>
-        <div class="col-md-8 col-xl-10">
+        <div class="col-lg-8 col-xl-10">
             <div class="jumbotron card card-paper bg-light shadowed">
                 <h2>Welcome to the {{config.TITLE}}</h2>
                 <h5>Browse available services and sign in to order</h5>
@@ -30,7 +30,7 @@
                 </div>
                 
                 <div class="card-body1">                
-                    <div class="row align-items-center">
+                    <div class="row">
                         <div class="col-xl-4 col-lg-6 col-md-12" *ngFor="let candidate of filteredServiceCandidates$ | async; let index = index" [@simpleFade]>
                             <div class="card card-paper">
                                 <div class="card-header appTitle">

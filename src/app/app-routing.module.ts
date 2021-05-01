@@ -20,6 +20,12 @@ import { ListIndividualsComponent } from './admin/PartyManagement/list-individua
 import { EditIndividualsComponent } from './admin/PartyManagement/edit-individuals/edit-individuals.component';
 import { PreviewServiceComponent } from './admin/ServiceActivationAndConfiguration/preview-service/preview-service.component';
 import { ListServiceInventoryComponent } from './admin/InventoryManagement/list-service-inventory/list-service-inventory.component';
+import { ListAlarmsComponent } from './admin/AlarmManagement/list-alarms/list-alarms.component';
+import { EditAlarmComponent } from './admin/AlarmManagement/edit-alarm/edit-alarm.component';
+import { ListActionsSpecsComponent } from './admin/AssuranceServicesManagement/list-actions-specs/list-actions-specs.component';
+import { EditActionSpecsComponent } from './admin/AssuranceServicesManagement/edit-action-specs/edit-action-specs.component';
+import { ListActionRulesComponent } from './admin/AssuranceServicesManagement/list-action-rules/list-action-rules.component';
+import { EditActionRulesComponent } from './admin/AssuranceServicesManagement/edit-action-rules/edit-action-rules.component';
 
 
 const routes: Routes = [
@@ -54,6 +60,17 @@ const routes: Routes = [
   { path: 'service/:id', component: PreviewServiceComponent, canActivate: [AuthGuardService], runGuardsAndResolvers: 'always' },
 
   { path: 'service_inventory', component: ListServiceInventoryComponent, canActivate: [AuthGuardService], runGuardsAndResolvers: 'always'},
+
+  { path: 'alarms', component: ListAlarmsComponent, canActivate: [AuthGuardService], runGuardsAndResolvers: 'always'},
+  { path: 'alarm/:id', component: EditAlarmComponent, canActivate: [AuthGuardService], runGuardsAndResolvers: 'always'},
+
+  { path: 'action_specs', component: ListActionsSpecsComponent, canActivate: [AuthGuardService], runGuardsAndResolvers: 'always'},
+  { path: 'action_specs/:id', component: EditActionSpecsComponent, canActivate: [AuthGuardService], runGuardsAndResolvers: 'always'},
+  { path: 'action_specs', component: EditActionSpecsComponent, canActivate: [AuthGuardService], runGuardsAndResolvers: 'always'},
+
+  { path: 'action_rules', component: ListActionRulesComponent, canActivate: [AuthGuardService], runGuardsAndResolvers: 'always'},
+  { path: 'action_rule/:id', component: EditActionRulesComponent, canActivate: [AuthGuardService], runGuardsAndResolvers: 'always'},
+  { path: 'action_rule', component: EditActionRulesComponent, canActivate: [AuthGuardService], runGuardsAndResolvers: 'always'},
  
   { path: '**', component: LandingComponent }
   

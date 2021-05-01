@@ -1,4 +1,4 @@
-<nav class="navbar navbar-expand-md navbar-light bg-light fixed-top mat-elevation-z4" role="navigation">
+<nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top mat-elevation-z4" role="navigation">
 				
     <!-- <div class="container-fluid"> -->
         <!-- Brand and toggle get grouped for better mobile display -->
@@ -83,56 +83,19 @@
                         </ul>
                     </a>
                 </li>
-            </ul>
-            <!-- <ul class="nav navbar-nav">
-                <li ><a routerLink="/experiments_marketplace">Experiments</a></li>
-            </ul>
-            <ul class="nav navbar-nav">
-                <li ><a routerLink="/vxf_marketplace">VxFs</a></li>
-            </ul> -->
-            <!-- <ul class="nav navbar-nav" >
-                <li ng-class="navClass('services_marketplace')" ><a href="#!/services_marketplace">Services</a></li>
-                
-                    <li ng-class="navClass('experiments_marketplace')" ><a href="#!/experiments_marketplace">Experiments</a></li> -->
-                    
-                    <!-- li ng-show="loggedIn && ( (loggedinportaluser.role === 'ROLE_EXPERIMENTER')|| (loggedinportaluser.roles.indexOf('ROLE_ADMIN')>-1) )" ng-class="navClass('vxf_marketplace')" ><a href="#!/vxf_marketplace">VxFs</a></li -->
-                    <!-- <li ng-class="navClass('vxf_marketplace')" ><a href="#!/vxf_marketplace">VxFs</a></li>
-                    
-                    
-                    <li ng-show="loggedIn  && ( ( loggedinportaluser.roles.indexOf('ROLE_EXPERIMENTER')>-1)  || (loggedinportaluser.roles.indexOf('ROLE_ADMIN')>-1))" class="dropdown">
-                        <a class="dropdown-toggle"	href="" data-toggle="dropdown">Deployments <span class="caret"></span></a>
-                        <ul class="dropdown-menu" role="menu">								
-                            <li ng-class="navClass('deployments')" ><a href="#!/deployments">Deploy Experiments</a></li>
+
+                <li class="nav-item dropdown" ngbDropdown *ngIf="(authService.isAuthenticated$ | async) && authService.portalUserJWT?.realm_access.roles.includes('ADMIN')" [@fadeIn]>
+                    <a class="nav-link dropdown-toggle" id="navbarDropdown" aria-haspopup="true" ngbDropdownToggle tabindex="0">Monitoring
+                        <ul class="dropdown-menu" aria-labelledby="navbarDropdown" ngbDropdownMenu>
+                            <li><a class="dropdown-item" tabindex="0" routerLink="/alarms">Alarms</a></li>
+                            <li><a class="dropdown-item" tabindex="0" routerLink="/action_specs">Action Specifications</a></li>
+                            <li><a class="dropdown-item" tabindex="0" routerLink="/action_rules">Action Rules</a></li>
+                            <!-- <li><a class="dropdown-item" tabindex="-1" routerLink="/service_specs">Service Specifications</a></li> -->
                         </ul>
-                    </li>
-                        
-                    <li ng-show="loggedIn" class="dropdown">
-                        <a class="dropdown-toggle" href="" data-toggle="dropdown">Admin <span class="caret"></span></a>
-                        <ul class="dropdown-menu" role="menu">
-                            <li ng-show="loggedinportaluser.roles.indexOf('ROLE_ADMIN')>-1" ><a href="#!/users">System Users</a></li>
-                            <li><a ng-show="( (loggedinportaluser.roles.indexOf('ROLE_EXPERIMENTER')>-1 ) || (loggedinportaluser.roles.indexOf('ROLE_ADMIN')>-1)  )" href="#!/experiments">Registered Experiment Descriptors</a></li>
-                            <li><a ng-show="( (loggedinportaluser.roles.indexOf('ROLE_NFV_DEVELOPER')>-1 ) || (loggedinportaluser.roles.indexOf('ROLE_ADMIN')>-1)  )" href="#!/vxfs">Registered VxFs</a></li>
-                            <li><a ng-show="( (loggedinportaluser.roles.indexOf('ROLE_NFV_DEVELOPER')>-1 ) || (loggedinportaluser.roles.indexOf('ROLE_ADMIN')>-1)  )" href="#!/vfimages">Registered Images</a></li>
-                            <li><a ng-show="( (loggedinportaluser.roles.indexOf('ROLE_ADMIN')>-1 ) || (loggedinportaluser.roles.indexOf('ROLE_MENTOR')>-1)  )" href="#!/deployments_admin">Registered Deployed Experiments</a></li>
-                            <li ng-show="loggedinportaluser.roles.indexOf('ROLE_ADMIN')>-1" class="divider"></li>
-                            <li ng-show="loggedinportaluser.roles.indexOf('ROLE_ADMIN')>-1"><a href="#!/categories">Manage Categories</a></li>		
-                            <li ng-show="loggedinportaluser.roles.indexOf('ROLE_ADMIN')>-1"><a href="#!/manoplatforms">Manage MANO Platforms</a></li>
-                            <li ng-show="loggedinportaluser.roles.indexOf('ROLE_ADMIN')>-1"><a href="#!/manoproviders">Manage MANO Providers</a></li>
-                            <li ng-show="loggedinportaluser.roles.indexOf('ROLE_ADMIN')>-1"><a href="#!/infrastructures">Manage Infrastructures</a></li>		
-                            <li ng-show="loggedinportaluser.roles.indexOf('ROLE_ADMIN')>-1" class="divider"></li>
-                            <li ng-show="loggedinportaluser.roles.indexOf('ROLE_ADMIN')>-1"  ><a href="#!/deployments">All pending requests</a></li>
-                            <li ng-show="loggedinportaluser.roles.indexOf('ROLE_ADMIN')>-1"><a href="#!/systeminfo">System info</a></li>
-                        </ul></li>
-                        
-                    <li  class="dropdown">
-                        <a class="dropdown-toggle" href="" data-toggle="dropdown">Manage Services <span class="caret"></span></a>
-                        <ul class="dropdown-menu" role="menu">
-                            <li><a href="#!/service_catalogs">Service Catalogs</a></li>		
-                            <li><a href="#!/service_categories">Service Categories</a></li>	
-                            <li><a href="#!/service_specs">Service Specifications</a></li>	
-                            <li><a href="#!/service_related_parties">Related Parties</a></li>	
-                        </ul></li>
-            </ul> -->            
+                    </a>
+                </li>
+            </ul>
+
             <ng-container *ngIf="authService.isAuthenticated$ | async; else elseTemplate">
                 <ul class="navbar-nav">
 
@@ -178,26 +141,6 @@
                 </ul> 
             </ng-template>
 
-            <!-- <ul class="nav navbar-nav navbar-right">
-                <li ng-show="!loggedIn"><a href="#!/login" >Sign In</a></li>
-                <li ng-show="loggedIn" class="dropdown"><a href="" class="dropdown-toggle" 
-                    data-toggle="dropdown">{{loggedinportaluser.name}}<span class="caret"></span></a>
-                    <ul class="dropdown-menu" role="menu">
-                        <li><span style="color: black;font-size: 1.0em;white-space: pre;">User: <b>{{loggedinportaluser.name}}</b></span>
-                        <br>
-                        <li><span style="color: black;font-size: 1.0em;white-space: pre;">email: <b>{{loggedinportaluser.email}}</b></span>
-                        <br>
-                        <span style="color: black;font-size: 1.0em;white-space: pre;">Organization: <b>{{loggedinportaluser.organization}}</b></span>
-                        <br>
-                        <span style="color: black;font-size: 1.0em;white-space: pre;">APIKEY: <b>{{loggedinportaluser.apikey}}</b></span>
-                        <br>
-                        <span style="color: black;font-size: 1.0em;white-space: pre;">Roles: <b><span ng-repeat="r in loggedinportaluser.roles">{{r}} {{$last ? '' : ', '}}</b> </span></span>
-                        </li>
-                        <li class="divider"></li>
-                        <li><a href="#!/logout">Logout</a></li>
-                    </ul>
-                </li>
-            </ul> -->
         </div>
 
     <!-- </div> -->

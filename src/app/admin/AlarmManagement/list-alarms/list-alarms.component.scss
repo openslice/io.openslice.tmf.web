@@ -1,0 +1,56 @@
+.critical_alarm_color {
+    color: #780000
+}
+
+.major_alarm_color {
+    // color:#dc3545
+    color: #ee0000
+}
+
+.minor_alarm_color {
+    color: #fd8f00
+}
+
+.warning_alarm_color {
+    color: #fdc500;
+}
+
+.cleared_alarm_color {
+    color: #28a745
+}
+
+.indeterminate_alarm_color {
+    color: #666
+}
+
+.critical_alarm_bg {
+    background-color: #780000
+}
+
+.major_alarm_bg {
+    // color:#dc3545
+    background-color: #ee0000
+}
+
+.minor_alarm_bg {
+    background-color: #fd8f00
+}
+
+.warning_alarm_bg {
+    background-color: #fdc500;
+}
+
+.cleared_alarm_bg {
+    background-color: #28a745
+}
+
+.indeterminate_alarm_bg {
+    background-color: currentColor;
+}
+
+.severity_circle {
+    border-radius: 50%;
+    width: 10px;
+    height: 10px;
+    display: inline-block;
+}

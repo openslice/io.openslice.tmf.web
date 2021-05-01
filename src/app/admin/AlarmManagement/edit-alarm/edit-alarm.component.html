@@ -1,0 +1,159 @@
+<div class="container-fluid py-5" *ngIf="alarmNotFound" [@fadeIn]>
+    <div class="row align-items-center justify-content-center minh-30vh">
+        <div class="col-12 text-center">
+            <h4>Alarm with id #{{alarmId}} is not found</h4>
+        </div>
+    </div>
+</div>
+
+<div class="container py-5" *ngIf="!alarmNotFound" [@fadeIn]>
+    <div class="row minh-30vh">
+        <div class="col-12">
+            <form [formGroup]="editForm">
+                <div class="card card-paper mb-0">
+                    
+                    <div class="card-header">
+                        <div class="container-fluid">
+                            <div class="row justify-content-between align-items-center">
+                                <div>
+                                    <h2 class="shadowed">Alarm Management</h2>
+                                    <p class="shadowed mb-0" >Review and manage alarm #{{alarmId}}</p>
+                                </div>
+                            </div>        
+                        </div>
+                    </div>
+
+                    <div class="card-body">
+                        <mat-accordion multi="true">
+                            <mat-expansion-panel expanded="true" class="bg-light" [@fadeIn]>
+                                <mat-expansion-panel-header>
+                                    <mat-panel-title>
+                                        Main Alarm properties
+                                    </mat-panel-title>
+                                </mat-expansion-panel-header>
+                            
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <h6>Source System</h6>
+                                        <p>{{alarm?.sourceSystemId}}</p>
+                                    </div>
+
+                                    <div class="col-md-4">
+                                        <h6>Alarm Type</h6>
+                                        <p>{{alarm?.alarmType}}</p>
+                                    </div>
+
+                                    <div class="col-md-4">
+                                        <h6>Probable Cause</h6>
+                                        <p>{{alarm?.probableCause}}</p>
+                                    </div>
+
+                                    <div class="col-md-4">
+                                        <h6>Raised Time</h6>
+                                        <p [class.mb-0]="alarm?.alarmRaisedTime" *ngIf="alarm?.alarmRaisedTime">{{alarm.alarmRaisedTime | date:'d MMM y, h:mm:ss a'}} - Local Time</p>
+                                        <p *ngIf="alarm?.alarmRaisedTime">{{alarm.alarmRaisedTime | date:'d MMM y, h:mm:ss a':'UTC'}} - UTC</p>
+                                    </div>
+
+                                    <div class="col-md-4">
+                                        <h6>Reporting Time</h6>
+                                        <p [class.mb-0]="alarm?.alarmReportingTime" *ngIf="alarm?.alarmReportingTime">{{alarm.alarmReportingTime | date:'d MMM y, h:mm:ss a'}} - Local Time</p>
+                                        <p *ngIf="alarm?.alarmReportingTime">{{alarm.alarmReportingTime | date:'d MMM y, h:mm:ss a':'UTC'}} - UTC</p>
+                                    </div>
+
+                                    <div class="col-md-4">
+                                        <h6>Updated Time</h6>
+                                        <p [class.mb-0]="alarm?.alarmChangedTime" *ngIf="alarm?.alarmChangedTime">{{alarm.alarmChangedTime | date:'d MMM y, h:mm:ss a'}} - Local Time</p>
+                                        <p *ngIf="alarm?.alarmChangedTime">{{alarm.alarmChangedTime | date:'d MMM y, h:mm:ss a':'UTC'}} - UTC</p>
+                                    </div>
+
+                                    <mat-form-field appearance="" class="col-md-4">
+                                        <mat-label>Severity</mat-label>
+                                        <mat-select formControlName="perceivedSeverity" (selectionChange)="onAlarmClearSelection($event)">
+                                            <mat-select-trigger>
+                                                <span [ngClass]="sharedAlarmService.returnSeverityIconClass(editForm.value.perceivedSeverity)" class="fa-1x"></span>
+                                                {{editForm.value.perceivedSeverity}}
+                                            </mat-select-trigger>
+                                            <mat-option *ngFor="let severity of severitiesList" [value]=severity>
+                                                <span [ngClass]="sharedAlarmService.returnSeverityIconClass(severity)"></span>
+                                                {{severity}}
+                                            </mat-option>
+                                        </mat-select>
+                                    </mat-form-field>
+
+                                    <mat-form-field appearance="" class="col-md-4">
+                                        <mat-label>Ack State</mat-label>
+                                        <mat-select formControlName="ackState" (selectionChange)="onAlarmStateUpdateSelection($event)">
+                                            <mat-option *ngFor="let ackState of ackStateList" [value]=ackState>{{ackState}}</mat-option>
+                                        </mat-select>
+                                    </mat-form-field>
+
+                                    <mat-form-field appearance="" class="col-md-4">
+                                        <mat-label>State</mat-label>
+                                        <mat-select formControlName="state" (selectionChange)="onAlarmClearSelection($event)">
+                                            <mat-select-trigger>
+                                                <span [ngClass]="sharedAlarmService.returnStateIconClass(editForm.value.state)" class="fa-1x"></span>
+                                                {{editForm.value.state}}
+                                            </mat-select-trigger>
+
+                                            <mat-option *ngFor="let state of stateList" [value]=state>
+                                                <span [ngClass]="sharedAlarmService.returnStateIconClass(state)"></span>
+                                                {{state}}
+                                            </mat-option>
+                                        </mat-select>
+                                    </mat-form-field>
+
+                                    <div class="col-md-12">
+                                        <h6>Comments</h6>
+                                        <div class="notes-container">
+                                            <div *ngFor="let comment of alarm?.comment">
+                                                <div class="card card-paper mb-2">
+                                                    <div class="note-card-body">
+                                                        {{comment.comment}}
+                                                        <div class="small">written by 
+                                                            <span *ngIf="comment.systemId">{{comment.systemId}}</span>
+                                                            <span *ngIf="comment.userId">{{comment.userId}}</span>
+                                                            @ {{comment.time | date:'d MMM y, h:mm:ss a'}} (Local Time)
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <button type="button" *ngIf="!addCommentModeActive" class="btn btn-success btn-sm btn-block mb-4" (click)="triggerNewComment()">
+                                            <i class="far fa-sticky-note mr-2"></i>Add Comment
+                                        </button>
+
+                                        <div *ngIf="addCommentModeActive" class="card card-paper mb-4">
+                                            <div class="note-card-body pb-0">
+                                                <div class="d-flex justify-content-center align-items-center">
+                                                    <mat-form-field>
+                                                        <mat-label>New Comment</mat-label>
+                                                        <textarea cdkTextareaAutosize
+                                                            #autosize="cdkTextareaAutosize" cdkAutosizeMinRows="2"
+                                                            matInput formControlName="comment"></textarea>
+                                                    </mat-form-field>
+                                                    <button type="button" class="btn btn-danger btn-sm ml-2 mb-1"
+                                                        (click)="triggerNewComment()"><i class="fas fa-times"></i></button>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <div class="container-fluid">
+                                    <div class="row justify-content-end">
+                                            <button type="submit" class="btn btn-primary"
+                                        (click)="updateAlarm()"><i class="fas fa-check mr-2"></i>Submit</button>
+                                    </div>
+                                </div>
+                            </mat-expansion-panel>
+                        </mat-accordion>
+
+                    </div>
+                    <div class="card-footer"></div>
+                </div>
+            </form>
+
+        </div>
+    </div>
+</div>

@@ -1,11 +1,11 @@
 <mat-tree [dataSource]="dataSource" [treeControl]="treeControl" >
-    <mat-tree-node *matTreeNodeDef="let node" matTreeNodePadding matTreeNodePaddingIndent="15" [class.catalog-divider]="node.level === 0">
+    <mat-tree-node *matTreeNodeDef="let node" matTreeNodePadding matTreeNodePaddingIndent="10" [class.catalog-divider]="node.level === 0">
         <button mat-icon-button disabled></button>
         <span *ngIf="node.level === 0" class="catalog-header">{{node.item}}</span>
         <span *ngIf="node.level !== 0" class="node-header" [class.active]="selectedTreeNodeID === node.info.id" (click)="selectTreeNode(node)">{{node.item}}</span>
     </mat-tree-node>
     
-    <mat-tree-node *matTreeNodeDef="let node; when: hasChild" matTreeNodePadding matTreeNodePaddingIndent="15" [class.catalog-divider]="node.level === 0">
+    <mat-tree-node *matTreeNodeDef="let node; when: hasChild" matTreeNodePadding matTreeNodePaddingIndent="10" [class.catalog-divider]="node.level === 0">
         <button mat-icon-button [attr.aria-label]="'toggle ' + node.filename" matTreeNodeToggle>
             <mat-icon class="mat-icon-rtl-mirror">
                 {{treeControl.isExpanded(node) ? 'expand_more' : 'chevron_right'}}

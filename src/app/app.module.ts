@@ -113,6 +113,16 @@ import { TerminateServiceOrderItemsComponent } from './admin/OrderManagement/pre
 import { PreviewServiceComponent } from './admin/ServiceActivationAndConfiguration/preview-service/preview-service.component';
 import { EditServiceCharacteristicsComponent } from './admin/ServiceActivationAndConfiguration/edit-service-characteristics/edit-service-characteristics.component';
 import { ListServiceInventoryComponent } from './admin/InventoryManagement/list-service-inventory/list-service-inventory.component';
+import { ListAlarmsComponent } from './admin/AlarmManagement/list-alarms/list-alarms.component';
+import { EditAlarmComponent } from './admin/AlarmManagement/edit-alarm/edit-alarm.component';
+import { CacheSearchParametersService } from './admin/shared/cache-search-parameters.service';
+import { DeleteAlarmComponent } from './admin/AlarmManagement/delete-alarm/delete-alarm.component';
+import { ListActionsSpecsComponent } from './admin/AssuranceServicesManagement/list-actions-specs/list-actions-specs.component';
+import { DeleteActionSpecComponent } from './admin/AssuranceServicesManagement/delete-action-spec/delete-action-spec.component';
+import { EditActionSpecsComponent } from './admin/AssuranceServicesManagement/edit-action-specs/edit-action-specs.component';
+import { ListActionRulesComponent } from './admin/AssuranceServicesManagement/list-action-rules/list-action-rules.component';
+import { EditActionRulesComponent } from './admin/AssuranceServicesManagement/edit-action-rules/edit-action-rules.component';
+import { DeleteActionRulesComponent } from './admin/AssuranceServicesManagement/delete-action-rules/delete-action-rules.component';
 
 registerLocaleData(enGB);
 export function initializeApp(bootstrap: BootstrapService) {
@@ -172,7 +182,16 @@ export function initializeApp(bootstrap: BootstrapService) {
     TerminateServiceOrderItemsComponent,
     PreviewServiceComponent,
     EditServiceCharacteristicsComponent,
-    ListServiceInventoryComponent
+    ListServiceInventoryComponent,
+    ListAlarmsComponent,
+    EditAlarmComponent,
+    DeleteAlarmComponent,
+    ListActionsSpecsComponent,
+    DeleteActionSpecComponent,
+    EditActionSpecsComponent,
+    ListActionRulesComponent,
+    EditActionRulesComponent,
+    DeleteActionRulesComponent
   ],
   imports: [
     BrowserModule,
@@ -242,11 +261,16 @@ export function initializeApp(bootstrap: BootstrapService) {
     DiscardChangesComponent,
     EditServiceOrderItemsComponent,
     TerminateServiceOrderItemsComponent,
-    EditServiceCharacteristicsComponent
+    EditServiceCharacteristicsComponent,
+    DeleteAlarmComponent,
+    DeleteActionSpecComponent,
+    DeleteActionRulesComponent,
+    EditActionSpecsComponent
   ],
   providers: [
     AuthService,
     BootstrapService,
+    CacheSearchParametersService,
     { provide: LOCALE_ID, useValue: 'en-GB' },
     { provide: APP_INITIALIZER, useFactory: initializeApp, deps: [BootstrapService], multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true },

@@ -9,7 +9,7 @@ import { MatDialog } from '@angular/material';
 import { PreviewMarketplaceItemComponent } from './preview-marketplace-item/preview-marketplace-item.component';
 import { SortingService } from 'src/app/shared/functions/sorting.service';
 import { trigger } from '@angular/animations';
-import { fadeIn } from 'src/app/shared/animations/animations';
+import { simpleFade } from 'src/app/shared/animations/animations';
 import { ServiceCandidateWithLogo } from 'src/app/models/service-candidate-with-logo.model';
 import { AppService } from 'src/app/shared/services/app.service';
 import { IAppConfig } from 'src/app/models/app-config.model';
@@ -18,7 +18,7 @@ import { IAppConfig } from 'src/app/models/app-config.model';
   selector: 'app-services-marketplace',
   templateUrl: './services-marketplace.component.html',
   styleUrls: ['./services-marketplace.component.scss'],
-  animations: [ trigger('fadeIn', fadeIn()) ]
+  animations: [ trigger('simpleFade', simpleFade()) ]
 })
 
 export class ServicesMarketplaceComponent implements OnInit {
@@ -49,6 +49,8 @@ export class ServicesMarketplaceComponent implements OnInit {
   specServiceRootUrl : string
   config: IAppConfig
 
+  resultsNotFound: boolean = false
+
   ngOnInit() {
     this.config = this.appService.config
 
@@ -61,6 +63,7 @@ export class ServicesMarketplaceComponent implements OnInit {
         this.selectedCategory = category
         this.serviceCandidates = []
         this.serviceCandidatesFilterCtrl.reset()
+        this.resultsNotFound = category.serviceCandidate.length === 0
         category.serviceCandidate.forEach((candidateRef) => {
           this.retrieveCandidateFromRef(candidateRef)
         })

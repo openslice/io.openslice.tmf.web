@@ -2,14 +2,16 @@
     <div class="row">
         <div class="col-12">
             <div class="jumbotron jumbotron-small jumbotron-list-container bg-light mat-elevation-z5 mb-0">
-                <div class="jumbotron-heading">
-                    <div>
+                <div class="jumbotron-heading lign-items-center justify-content-between row ">
+                    <div class="col-md-6">
                         <h2 class="shadowed">Service Categories</h2>
                         <p class="shadowed">View and manage service categories</p>
                     </div>
-                    <button type="button" class="btn btn-success btn-lg" routerLink='/service_categories_update'>
-                        <i class="fas fa-clipboard-list mr-2"></i>Create New Category
-                    </button>
+                    <div class="col-md-6 text-md-right">
+                        <button type="button" class="btn btn-success" routerLink='/service_categories_update'>
+                            <i class="fas fa-clipboard-list mr-2"></i>Create New Category
+                        </button>
+                    </div>
                 </div>
                 <div class="filter-container pt-3 px-3 row">
                     <!-- <input class="form-control " (keyup)="applyFilter($event.target.value)" placeholder="Apply Filter..."> -->

@@ -107,6 +107,8 @@ export class PreviewServiceOrderComponent implements OnInit {
             expectedCompletionDate: this.serviceOrder.expectedCompletionDate ? this.serviceOrder.expectedCompletionDate : this.serviceOrder.completionDate
           })
 
+          this.serviceOrder.note.sort(this.sortingService.ascDateSortingFuncByDateProperty())
+
           if (!this.serviceOrder.startDate) { this.serviceOrder.startDate = this.serviceOrder.requestedStartDate }
 
           if (!this.serviceOrder.expectedCompletionDate) { this.serviceOrder.expectedCompletionDate = this.serviceOrder.requestedCompletionDate }
@@ -198,7 +200,7 @@ export class PreviewServiceOrderComponent implements OnInit {
     }
 
     this.orderService.patchServiceOrder({serviceOrder: orderUpdate, id: this.orderID}).subscribe(
-      data => { this.toast.success("Service Order was successfully updated")},
+      data => {this.toast.success("Service Order was successfully updated")},
       error => {console.error(error); this.toast.error("An error occurred while editing Service Order")},
       () => {
         this.enableOrderRefreshTimer()

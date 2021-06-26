@@ -441,6 +441,47 @@
                                 </div>
                                 <!-- END OF Attachments Tab -->
 
+
+                                <!-- LCM Tab -->
+                                <div class="tab-pane active" *ngIf="activeListItem === 'Life Cycle Rules'" role="tabpanel"
+                                    [@fadeIn]>
+                                    <div class="card mat-elevation-z1 bg-light">
+                                        <div class="card-body">
+                                            <div class="filter-container row align-items-center justify-content-center">
+                                                <mat-form-field appearance=""
+                                                    class="white-background col-xl-9 col-lg-8">
+                                                    <mat-label>Apply Filter...</mat-label>
+                                                    <input matInput
+                                                        (keyup)="applyLCMRuleFilter($event.target.value)">
+                                                </mat-form-field>
+
+                                                <div class="text-right col-xl-3 col-lg-4">
+                                                    <button type="button" class="btn btn-success btn-sm "
+                                                        (click)="openCharacteristicDesignDialog(null)">
+                                                        <i class="fas fa-plus-circle mr-2"></i>Create New
+                                                        Characteristic
+                                                    </button>
+                                                </div>
+                                            
+                                            </div>
+                                            <div class="mb-3">
+                                                <mat-chip-list>
+                                                    <mat-chip *ngFor="let tag of lcmRulesTags"
+                                                        [selected]="tag === lcmRulesTagValue"
+                                                        (click)="filterCMRuleByTag(tag)">{{tag}}</mat-chip>
+                                                </mat-chip-list>
+                                            </div>
+
+                                            <div class="table-responsive">
+                                                <table 
+                                                    class="table table-generic">
+                                                </table>
+                                            </div>
+                                         </div>   
+                                        <div class="card-footer"></div>
+                                </div>
+                                <!-- END OF LCM Tab -->
+
                             </div>
                         </div>
                     </div>

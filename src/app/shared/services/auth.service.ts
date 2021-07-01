@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, ReplaySubject, combineLatest, Observable } from 'rxjs';
-import { OAuthService, OAuthErrorEvent, JwksValidationHandler, AuthConfig } from 'angular-oauth2-oidc';
+import { OAuthService, OAuthErrorEvent, AuthConfig } from 'angular-oauth2-oidc';
 import { Router } from '@angular/router';
 // import { authConfig } from 'src/assets/config/config.oauth';
 import { map } from 'rxjs/operators';

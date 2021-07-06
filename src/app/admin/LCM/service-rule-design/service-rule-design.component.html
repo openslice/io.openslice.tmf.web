@@ -1,0 +1,256 @@
+<div class="container">
+    <!-- toolbar -->
+    <mat-toolbar class="mat-elevation-z4" color="primary" fxLayout="row" fxLayoutAlign="start center">
+      <span fxFlex>{{ title }} - {{ programName }}</span>
+      <div fxFlex fxLayout="row" fxLayoutAlign="end start">
+        <button mat-flat-button (click)="saveProgram()">
+          Save
+        </button>
+      </div>
+    </mat-toolbar>
+  
+    <!-- main content -->
+    <mat-drawer-container class="container">
+      <mat-drawer-content style="height: 100%">
+        <div class="wrapper">
+          <div id="blocklyDiv" ></div>
+        
+          <div id="generatedCode" style="word-wrap: break-word;font-family: consolas;white-space: break-spaces;">
+            <p>{{ generatedCode }}</p>
+            
+          </div>
+  
+        </div>
+  
+        <xml id="toolbox" style="display: none">
+  
+  
+          <variables>
+            <variable id="F;)U+)(_^:3!Z~mxvyWO">zzzzasd</variable>
+          </variables>
+  
+          <category name="Service Spec" colour="210">          
+            <category name="Text" colour="230" custom="SPECCHARVARIABLES_TEXT" ></category>
+            <category name="Number" colour="210" custom="SPECCHARVARIABLES_NUM" >   
+            </category>
+            <category name="Boolean" colour="190" custom="SPECCHARVARIABLES_BOOL" >   
+            </category>
+            <category name="Set" colour="170" custom="SPECCHARVARIABLES_SET" >   
+            </category>
+            
+            <category name="Various" colour="210">   
+              <block type="changecharacteristicvalue"></block>        
+              <block type="characteristiccontains"></block>           
+              <block type="getcharacteristicvalue"></block>        
+              <block type="setcharacteristicvalue"></block>      
+              <block type="osm_nsd_config"></block>  
+              
+            </category>
+  
+            
+              
+                
+          </category>
+  
+          <category name="Literals" colour="210">   
+            <category name="Text" colour="210">    
+              <block type="variable_declare_string"></block>  
+              <block type="literal_text"></block>    
+              <button text="Create a String variable" callbackKey="CREATE_STRING_VARIABLE"></button> 
+          </category> 
+          <category name="Number" colour="210">    
+            <block type="literal_integer"></block> 
+          </category>     
+          <category name="Boolean" colour="210"> 
+            <block type="literal_boolean"></block> 
+          </category>  
+          <category name="Misc" colour="210">   
+  
+            <block type="variables_set_panda">
+              <field name="VAR_NAME" variabletype="String">myvar1</field>
+            </block>        
+             
+          </category>  
+            
+          </category>
+  
+  
+  
+          <category name="Logic" colour="210">
+            <block type="controls_if"></block>
+            <block type="logic_compare"></block>
+            <block type="logic_operation"></block>
+            <block type="logic_compare_strings"></block>
+            <block type="logic_set_contains_strings"></block>
+            <block type="logic_negate"></block>
+            <block type="logic_boolean"></block>
+            <block type="logic_null"></block>
+            
+          </category>
+          <category name="Loops" colour="120">
+            <block type="controls_repeat_ext">
+              <value name="TIMES">
+                <shadow type="math_number">
+                  <field name="NUM">10</field>
+                </shadow>
+              </value>
+            </block>
+            <block type="controls_whileUntil"></block>
+            <block type="controls_for">
+              <value name="FROM">
+                <shadow type="math_number">
+                  <field name="NUM">1</field>
+                </shadow>
+              </value>
+              <value name="TO">
+                <shadow type="math_number">
+                  <field name="NUM">10</field>
+                </shadow>
+              </value>
+              <value name="BY">
+                <shadow type="math_number">
+                  <field name="NUM">1</field>
+                </shadow>
+              </value>
+            </block>
+            <block type="controls_forEach"></block>
+            <block type="controls_flow_statements"></block>
+          </category>
+          
+          <category name="Text" colour="160">
+            <block type="text"></block>
+            <block type="text_join"></block>
+            <block type="text_append">
+              <value name="TEXT">
+                <shadow type="text"></shadow>
+              </value>
+            </block>
+            <block type="text_length">
+              <value name="VALUE">
+                <shadow type="text">
+                  <field name="TEXT">abc</field>
+                </shadow>
+              </value>
+            </block>
+            <block type="text_isEmpty">
+              <value name="VALUE">
+                <shadow type="text">
+                  <field name="TEXT"></field>
+                </shadow>
+              </value>
+            </block>
+            <block type="text_indexOf">
+              <value name="VALUE">
+                <block type="variables_get">
+                  <field name="VAR">textVariable</field>
+                </block>
+              </value>
+              <value name="FIND">
+                <shadow type="text">
+                  <field name="TEXT">abc</field>
+                </shadow>
+              </value>
+            </block>
+            <block type="text_charAt">
+              <value name="VALUE">
+                <block type="variables_get">
+                  <field name="VAR">textVariable</field>
+                </block>
+              </value>
+            </block>
+            <block type="text_getSubstring">
+              <value name="STRING">
+                <block type="variables_get">
+                  <field name="VAR">textVariable</field>
+                </block>
+              </value>
+            </block>
+            <block type="text_changeCase">
+              <value name="TEXT">
+                <shadow type="text">
+                  <field name="TEXT">abc</field>
+                </shadow>
+              </value>
+            </block>
+            <block type="text_trim">
+              <value name="TEXT">
+                <shadow type="text">
+                  <field name="TEXT">abc</field>
+                </shadow>
+              </value>
+            </block>
+            <block type="text_print">
+              <value name="TEXT">
+                <shadow type="text">
+                  <field name="TEXT">abc</field>
+                </shadow>
+              </value>
+            </block>
+            <block type="text_prompt_ext">
+              <value name="TEXT">
+                <shadow type="text">
+                  <field name="TEXT">abc</field>
+                </shadow>
+              </value>
+            </block>
+          </category>
+          <category name="Lists" colour="260">
+            <block type="lists_create_with">
+              <mutation items="0"></mutation>
+            </block>
+            <block type="lists_create_with"></block>
+            <block type="lists_repeat">
+              <value name="NUM">
+                <shadow type="math_number">
+                  <field name="NUM">5</field>
+                </shadow>
+              </value>
+            </block>
+            <block type="lists_length"></block>
+            <block type="lists_isEmpty"></block>
+            <block type="lists_indexOf">
+              <value name="VALUE">
+                <block type="variables_get">
+                  <field name="VAR">listVariable</field>
+                </block>
+              </value>
+            </block>
+            <block type="lists_getIndex">
+              <value name="VALUE">
+                <block type="variables_get">
+                  <field name="VAR">listVariable</field>
+                </block>
+              </value>
+            </block>
+            <block type="lists_setIndex">
+              <value name="LIST">
+                <block type="variables_get">
+                  <field name="VAR">listVariable</field>
+                </block>
+              </value>
+            </block>
+            <block type="lists_getSublist">
+              <value name="LIST">
+                <block type="variables_get">
+                  <field name="VAR">listVariable</field>
+                </block>
+              </value>
+            </block>
+            <block type="lists_split">
+              <value name="DELIM">
+                <shadow type="text">
+                  <field name="TEXT">,</field>
+                </shadow>
+              </value>
+            </block>
+            <block type="lists_sort"></block>
+          </category>
+          <sep></sep>
+          <category name="Variables" colour="330" custom="VARIABLE">
+          </category>
+          <!-- <category name="Functions" colour="290" custom="PROCEDURE"></category> -->
+          
+        </xml>
+      </mat-drawer-content>
+    </mat-drawer-container>
+  </div>

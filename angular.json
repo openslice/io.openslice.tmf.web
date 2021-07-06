@@ -34,7 +34,13 @@
               "node_modules/ngx-toastr/toastr.css"
             ],
             "scripts": [
-              "node_modules/marked/lib/marked.js"
+              "node_modules/marked/lib/marked.js",
+              "node_modules/blockly/blockly_compressed.js",
+              "node_modules/blockly/blocks_compressed.js",
+              "node_modules/blockly/msg/js/en.js",
+              "node_modules/blockly/javascript_compressed.js",        
+              "src/assets/blockly/custom_blocks.js",        
+              "src/assets/blockly/custom_java_blocks.js"
             ]
           },
           "configurations": {

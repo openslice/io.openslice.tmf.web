@@ -26,6 +26,7 @@ import { ListActionsSpecsComponent } from './admin/AssuranceServicesManagement/l
 import { EditActionSpecsComponent } from './admin/AssuranceServicesManagement/edit-action-specs/edit-action-specs.component';
 import { ListActionRulesComponent } from './admin/AssuranceServicesManagement/list-action-rules/list-action-rules.component';
 import { EditActionRulesComponent } from './admin/AssuranceServicesManagement/edit-action-rules/edit-action-rules.component';
+import { ServiceRuleDesignComponent } from './admin/LCM/service-rule-design/service-rule-design.component';
 
 
 const routes: Routes = [
@@ -72,6 +73,12 @@ const routes: Routes = [
   { path: 'action_rule/:id', component: EditActionRulesComponent, canActivate: [AuthGuardService], runGuardsAndResolvers: 'always'},
   { path: 'action_rule', component: EditActionRulesComponent, canActivate: [AuthGuardService], runGuardsAndResolvers: 'always'},
  
+
+  { path: 'service_rule_design/:id', component: ServiceRuleDesignComponent, canActivate: [AuthGuardService], runGuardsAndResolvers: 'always' },
+  { path: 'service_rule_design', component: ServiceRuleDesignComponent, canActivate: [AuthGuardService], runGuardsAndResolvers: 'always' },
+
+
+
   { path: '**', component: LandingComponent }
   
 ];

@@ -9,10 +9,10 @@
                     class="icon-bar"></span>
             </button> -->
         <a *ngIf="loggedIn" class="navbar-brand" routerLink="/">
-            <img src="assets/images/logo_clear.png" height="25px">
+            <img src="{{themeConfig.DEPLOYMENT_LOGO_PATH}}" height="25px">
         </a>
         <a *ngIf="!loggedIn" class="navbar-brand" routerLink="/">
-            <img src="assets/images/logo_clear.png" height="25px">
+            <img src="{{themeConfig.DEPLOYMENT_LOGO_PATH}}" height="25px">
         </a>
         <!-- Collect the nav links, forms, and other content for toggling -->
         <button class="navbar-toggler" type="button" (click)="isNavbarCollapsed = !isNavbarCollapsed" 

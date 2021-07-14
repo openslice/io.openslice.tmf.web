@@ -11,6 +11,10 @@ nav {
     z-index: 500;
 }
 
+.navbar-brand {
+    display: inline-flex;
+}
+
 .dropdown-submenu .dropdown-menu {
     top: 0;
     left: 100%;

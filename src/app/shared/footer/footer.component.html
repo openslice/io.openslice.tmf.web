@@ -1,6 +1,6 @@
 <footer id="footer">
     <section class="section_footer">
-        <div class="container">
+        <div *ngIf="!customFooterHTML" class="container">
             <div class="row align-items-center">
 
                 <div class="col-md-2">
@@ -25,8 +25,11 @@
                             title="openslice.io" class="font-weight-light">openslice.io</a>
                     </div>
                 </div>
+
             </div>
         </div>
+
+        <div *ngIf="customFooterHTML" [innerHTML]="customFooterHTML" class="container"></div>
     </section>
 
 </footer>

@@ -3,6 +3,8 @@ import { NgModule, LOCALE_ID } from '@angular/core';
 
 import { APP_INITIALIZER } from '@angular/core'
 import { BootstrapService } from './bootstrap/bootstrap.service';
+import { ThemingService } from './theming/theming.service';
+
 
 import enGB from '@angular/common/locales/en-GB';
 import { registerLocaleData } from '@angular/common';
@@ -126,7 +128,11 @@ import { DeleteActionRulesComponent } from './admin/AssuranceServicesManagement/
 
 registerLocaleData(enGB);
 export function initializeApp(bootstrap: BootstrapService) {
-  return () => bootstrap.loadConfig();
+  return () => bootstrap.loadConfig()
+}
+
+export function initializeAppTheme(bootstrap: BootstrapService) {
+  return () => bootstrap.loadConfig()
 }
 
 @NgModule({
@@ -270,9 +276,11 @@ export function initializeApp(bootstrap: BootstrapService) {
   providers: [
     AuthService,
     BootstrapService,
+    ThemingService,
     CacheSearchParametersService,
     { provide: LOCALE_ID, useValue: 'en-GB' },
     { provide: APP_INITIALIZER, useFactory: initializeApp, deps: [BootstrapService], multi: true },
+    { provide: APP_INITIALIZER, useFactory: initializeAppTheme, deps: [ThemingService], multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true },
     { provide: OWL_DATE_TIME_LOCALE, useValue: 'en-GB'}
   ],

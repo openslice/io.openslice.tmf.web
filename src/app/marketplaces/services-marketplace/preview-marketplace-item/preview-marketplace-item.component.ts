@@ -8,6 +8,7 @@ import { SortingService } from 'src/app/shared/functions/sorting.service';
 import { trigger } from '@angular/animations';
 import { fadeIn } from 'src/app/shared/animations/animations';
 import { AuthService } from 'src/app/shared/services/auth.service';
+import { ThemingService } from 'src/app/theming/theming.service';
 
 
 @Component({
@@ -28,7 +29,8 @@ export class PreviewMarketplaceItemComponent implements OnInit {
     private requesterService: RequesterService,
     private toastr: ToastrService,
     private sortingService: SortingService,
-    public authService: AuthService
+    public authService: AuthService,
+    private themingService: ThemingService
   ) { }
 
   candidate: ServiceCandidate
@@ -69,13 +71,13 @@ export class PreviewMarketplaceItemComponent implements OnInit {
         this.dataSourceConf.sort = this.sort1
         this.dataSourceNonConf.data = this.spec.serviceSpecCharacteristic.filter(spec => !spec.configurable)
         this.dataSourceNonConf.sort = this.sort2
-
+        
         //Check if spec has a defined logo
         this.specLogoRef = this.spec.attachment.find( att => att.name.includes('logo') )
         if (this.specLogoRef) {
           this.specLogoUrl = this.specServiceRootUrl+this.specLogoRef.url
         } else {
-          this.specLogoUrl = "assets/images/logo_icon_original.png"
+          this.specLogoUrl = this.themingService.getConfig().DEFAULT_SERVICE_LOGO_PATH
         }
       }
     )

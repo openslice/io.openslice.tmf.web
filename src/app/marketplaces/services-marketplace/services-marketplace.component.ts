@@ -13,6 +13,7 @@ import { simpleFade } from 'src/app/shared/animations/animations';
 import { ServiceCandidateWithLogo } from 'src/app/models/service-candidate-with-logo.model';
 import { AppService } from 'src/app/shared/services/app.service';
 import { IAppConfig } from 'src/app/models/app-config.model';
+import { ThemingService } from 'src/app/theming/theming.service';
 
 @Component({
   selector: 'app-services-marketplace',
@@ -31,7 +32,8 @@ export class ServicesMarketplaceComponent implements OnInit {
     private specificationService: ServiceSpecificationService,
     private treeMarketPlaceService: TreeServiceMarketPlaceService,
     private dialog: MatDialog,
-    private sortingService: SortingService
+    private sortingService: SortingService,
+    private themingService: ThemingService
   ) { }
 
   serviceCatalogs: ServiceCatalog[]
@@ -88,7 +90,7 @@ export class ServicesMarketplaceComponent implements OnInit {
         // console.log(data)
         let candidate: ServiceCandidateWithLogo = data
         candidate.fetchingLogo = true
-        candidate.logo = 'assets/images/logo_icon_original.png' //set Default App Image
+        candidate.logo = this.themingService.getConfig().DEFAULT_SERVICE_LOGO_PATH //set Default App Image, path defined in theming.service.ts
 
         this.serviceCandidates.push(candidate)
 
@@ -136,7 +138,7 @@ export class ServicesMarketplaceComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(
       result => {
-        console.log(result);    
+        // console.log(result);    
       }
     )
   }

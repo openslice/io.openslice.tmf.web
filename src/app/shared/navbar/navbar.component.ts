@@ -9,6 +9,8 @@ import { AuthService } from '../services/auth.service';
 import { RequesterService } from 'src/app/requester/services/requester.service';
 import { trigger } from '@angular/animations';
 import { fadeIn } from '../animations/animations';
+import { ThemingService } from 'src/app/theming/theming.service';
+import { IAppThemingConfig } from 'src/app/models/app-config-theming.model';
 
 @Component({
   selector: 'app-navbar',
@@ -23,11 +25,13 @@ export class NavbarComponent implements OnInit {
     private dialog: MatDialog,
     private toast: ToastrService,
     public authService: AuthService,
-    public requesterService: RequesterService
+    public requesterService: RequesterService,
+    private themingService: ThemingService
   ) { }
 
   loggedIn: boolean
   isNavbarCollapsed: boolean = true
+  themeConfig: IAppThemingConfig
 
   ngOnInit() {
     this.loggedIn = this.authService.hasValidToken()
@@ -39,6 +43,8 @@ export class NavbarComponent implements OnInit {
         }
       }
     )
+
+    this.themeConfig = this.themingService.getConfig()
   }
 
   onGSTtemplateClick() {

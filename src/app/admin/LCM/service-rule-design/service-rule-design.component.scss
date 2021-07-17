@@ -3,14 +3,44 @@ mat-toolbar {
     position: -webkit-sticky; /* For macOS/iOS Safari */
     top: 0; /* Sets the sticky toolbar to be on top */
     z-index: 2;
-  }
-  
-  .container {
-    height: 100%;
+    height: 50px;
+    background-color: #eee;
   }
 
-  .wrapper {
+    
+  .container-blockly-main {
+    display: block;
+    //min-height: 800px;
+    //height: calc(100% - 10px);
+    //height: 850px;
+    padding-top: 0px;
+    background-color: #eee;
+    overflow: auto;
+  }
+
+  .container-blockly {
+    display: block;
+    //min-height: 800px;
+    //height: 100%;
+    height: 800px;
+    padding-top: 4px;
+    background-color: #eee;
+  }
+
+
+  .wrapper-blockly {
     display: grid;
-    grid-template-columns: 1fr 1fr ;
+    grid-template-columns: 2fr 1fr ;
     height: 95%;
+  }
+
+  .generated-code {
+    word-wrap: break-word;
+    font-family: consolas;
+    white-space: break-spaces;
+    background-color: #ddd;
+    border-width: 1px;
+    border-style: solid;
+    border-color: #ddd;
+    padding: 5px
   }

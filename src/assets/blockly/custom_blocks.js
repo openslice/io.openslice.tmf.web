@@ -107,7 +107,7 @@ Blockly.defineBlocksWithJsonArray([
   Blockly.Blocks['getcharval_string'] = {
     init: function() {
       this.appendDummyInput()
-          .appendField("Get Value")
+          //.appendField("Get Value")
           .appendField(new Blockly.FieldLabelSerializable(""), "AVALUE")          
       //this.setOutput(true, ["Boolean", "SET", "String"]);
       this.setOutput(true, 'String');
@@ -122,7 +122,7 @@ Blockly.defineBlocksWithJsonArray([
     init: function() {
       this.appendValueInput("AVALUE")
           .setCheck("String")
-          .appendField("Set")
+          //.appendField("Set")
           .appendField(new Blockly.FieldLabelSerializable(""), "NAMELBL");
       this.setPreviousStatement(true, null);
       this.setNextStatement(true, null);
@@ -137,7 +137,7 @@ Blockly.defineBlocksWithJsonArray([
   Blockly.Blocks['getcharval_number'] = {
     init: function() {
       this.appendDummyInput()
-          .appendField("Get Value")
+          //.appendField("Get Value")
           .appendField(new Blockly.FieldLabelSerializable(""), "AVALUE")          
       //this.setOutput(true, ["Boolean", "SET", "String"]);
       this.setOutput(true, 'Number');
@@ -152,7 +152,7 @@ Blockly.defineBlocksWithJsonArray([
     init: function() {
       this.appendValueInput("AVALUE")
           .setCheck("Number")
-          .appendField("Set")
+          //.appendField("Set")
           .appendField(new Blockly.FieldLabelSerializable(""), "NAMELBL");
       this.setPreviousStatement(true, null);
       this.setNextStatement(true, null);
@@ -166,7 +166,7 @@ Blockly.defineBlocksWithJsonArray([
   Blockly.Blocks['getcharval_bool'] = {
     init: function() {
       this.appendDummyInput()
-          .appendField("Get Value")
+          //.appendField("Get Value")
           .appendField(new Blockly.FieldLabelSerializable(""), "AVALUE")          
       //this.setOutput(true, ["Boolean", "SET", "String"]);
       this.setOutput(true, 'Boolean');
@@ -181,7 +181,7 @@ Blockly.defineBlocksWithJsonArray([
     init: function() {
       this.appendValueInput("AVALUE")
           .setCheck("Boolean")
-          .appendField("Set")
+          //.appendField("Set")
           .appendField(new Blockly.FieldLabelSerializable(""), "NAMELBL");
       this.setPreviousStatement(true, null);
       this.setNextStatement(true, null);
@@ -195,7 +195,7 @@ Blockly.defineBlocksWithJsonArray([
   Blockly.Blocks['getcharval_set'] = {
     init: function() {
       this.appendDummyInput()
-          .appendField("Get Value")
+          //.appendField("Get Value")
           .appendField(new Blockly.FieldLabelSerializable(""), "AVALUE")          
       //this.setOutput(true, ["Boolean", "SET", "String"]);
       this.setOutput(true, 'SET');
@@ -210,7 +210,7 @@ Blockly.defineBlocksWithJsonArray([
     init: function() {
       this.appendValueInput("AVALUE")
           .setCheck("Array")
-          .appendField("Set")
+          //.appendField("Set")
           .appendField(new Blockly.FieldLabelSerializable(""), "NAMELBL");
       this.setPreviousStatement(true, null);
       this.setNextStatement(true, null);

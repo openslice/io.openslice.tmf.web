@@ -100,20 +100,20 @@ export class BlocklyJavaService {
       // to actual function names (to avoid collisions with user functions).
       Blockly.Java.functionNames_ = Object.create(null);
 
-      if (!Blockly.Java.variableDB_) {
-        Blockly.Java.variableDB_ =
+      if (!Blockly.Java.nameDB_) {
+        Blockly.Java.nameDB_ =
           new Blockly.Names(Blockly.Java.RESERVED_WORDS_);
       } else {
-        Blockly.Java.variableDB_.reset();
+        Blockly.Java.nameDB_.reset();
       }
 
       var defvars = [];
-      Blockly.Java.variableDB_.setVariableMap(ws.getVariableMap());
+      Blockly.Java.nameDB_.setVariableMap(ws.getVariableMap());
       var variables = ws.getVariableMap();
       for (var x = 0; x < variables.length; x++) {
-        defvars[x] = Blockly.Java.variableDB_.getName(variables[x],
+        defvars[x] = Blockly.Java.nameDB_.getName(variables[x],
           Blockly.Variables.NAME_TYPE) +
-          Blockly.Java.variableDB_.getName(variables[x],
+          Blockly.Java.nameDB_.getName(variables[x],
             Blockly.Variables.NAME_TYPE) + ';';
       }
 
@@ -315,7 +315,7 @@ export class BlocklyJavaService {
       var repeats = Number(block.getFieldValue('TIMES'));
       var branch = Blockly.Java.statementToCode(block, 'DO');
       branch = Blockly.Java.addLoopTrap(branch, block.id);
-      var loopVar = Blockly.Java.variableDB_.getDistinctName(
+      var loopVar = Blockly.Java.nameDB_.getDistinctName(
         'count', Blockly.Variables.NAME_TYPE);
       var code = 'for (var ' + loopVar + ' = 0; ' +
         loopVar + ' < ' + repeats + '; ' +
@@ -331,11 +331,11 @@ export class BlocklyJavaService {
       var branch = Blockly.Java.statementToCode(block, 'DO');
       branch = Blockly.Java.addLoopTrap(branch, block.id);
       var code = '';
-      var loopVar = Blockly.Java.variableDB_.getDistinctName(
+      var loopVar = Blockly.Java.nameDB_.getDistinctName(
         'count', Blockly.Variables.NAME_TYPE);
       var endVar = repeats;
       if (!repeats.match(/^\w+$/) && !Blockly.isNumber(repeats)) {
-        var endVar = Blockly.Java.variableDB_.getDistinctName(
+        var endVar = Blockly.Java.nameDB_.getDistinctName(
           'repeat_end', Blockly.Variables.NAME_TYPE);
         code += 'var ' + endVar + ' = ' + repeats + ';\n';
       }
@@ -364,7 +364,7 @@ export class BlocklyJavaService {
 
     Blockly.Java['controls_for'] = function (block: { getFieldValue: (arg0: string) => any; id: any; }) {
       // For loop.
-      var variable0 = Blockly.Java.variableDB_.getName(
+      var variable0 = Blockly.Java.nameDB_.getName(
         block.getFieldValue('VAR'), Blockly.Variables.NAME_TYPE);
       var argument0 = Blockly.Java.valueToCode(block, 'FROM',
         Blockly.Java.ORDER_ASSIGNMENT) || '0';
@@ -394,19 +394,19 @@ export class BlocklyJavaService {
         // Cache non-trivial values to variables to prevent repeated look-ups.
         var startVar = argument0;
         if (!argument0.match(/^\w+$/) && !Blockly.isNumber(argument0)) {
-          var startVar = Blockly.Java.variableDB_.getDistinctName(
+          var startVar = Blockly.Java.nameDB_.getDistinctName(
             variable0 + '_start', Blockly.Variables.NAME_TYPE);
           code += 'var ' + startVar + ' = ' + argument0 + ';\n';
         }
         var endVar = argument1;
         if (!argument1.match(/^\w+$/) && !Blockly.isNumber(argument1)) {
-          var endVar = Blockly.Java.variableDB_.getDistinctName(
+          var endVar = Blockly.Java.nameDB_.getDistinctName(
             variable0 + '_end', Blockly.Variables.NAME_TYPE);
           code += 'var ' + endVar + ' = ' + argument1 + ';\n';
         }
         // Determine loop direction at start, in case one of the bounds
         // changes during loop execution.
-        var incVar = Blockly.Java.variableDB_.getDistinctName(
+        var incVar = Blockly.Java.nameDB_.getDistinctName(
           variable0 + '_inc', Blockly.Variables.NAME_TYPE);
         code += 'var ' + incVar + ' = ';
         if (Blockly.isNumber(increment)) {
@@ -429,13 +429,13 @@ export class BlocklyJavaService {
 
     Blockly.Java['controls_forEach'] = function (block: { getFieldValue: (arg0: string) => any; id: any; }) {
       // For each loop.
-      var variable0 = Blockly.Java.variableDB_.getName(
+      var variable0 = Blockly.Java.nameDB_.getName(
         block.getFieldValue('VAR'), Blockly.Variables.NAME_TYPE);
       var argument0 = Blockly.Java.valueToCode(block, 'LIST',
         Blockly.Java.ORDER_ASSIGNMENT) || '[]';
       var branch = Blockly.Java.statementToCode(block, 'DO');
       branch = Blockly.Java.addLoopTrap(branch, block.id);
-      var indexVar = Blockly.Java.variableDB_.getDistinctName(
+      var indexVar = Blockly.Java.nameDB_.getDistinctName(
         variable0 + '_index', Blockly.Variables.NAME_TYPE);
       branch = Blockly.Java.INDENT + variable0 + ' = ' +
         argument0 + '[' + indexVar + '];\n' + branch;
@@ -462,7 +462,7 @@ export class BlocklyJavaService {
       var repeats = Number(block.getFieldValue('TIMES'));
       var branch = Blockly.Java.statementToCode(block, 'DO');
       branch = Blockly.Java.addLoopTrap(branch, block.id);
-      var loopVar = Blockly.Java.variableDB_.getDistinctName(
+      var loopVar = Blockly.Java.nameDB_.getDistinctName(
         'count', Blockly.Variables.NAME_TYPE);
       var code = 'for (var ' + loopVar + ' = 0; ' +
         loopVar + ' < ' + repeats + '; ' +
@@ -478,11 +478,11 @@ export class BlocklyJavaService {
       var branch = Blockly.Java.statementToCode(block, 'DO');
       branch = Blockly.Java.addLoopTrap(branch, block.id);
       var code = '';
-      var loopVar = Blockly.Java.variableDB_.getDistinctName(
+      var loopVar = Blockly.Java.nameDB_.getDistinctName(
         'count', Blockly.Variables.NAME_TYPE);
       var endVar = repeats;
       if (!repeats.match(/^\w+$/) && !Blockly.isNumber(repeats)) {
-        var endVar = Blockly.Java.variableDB_.getDistinctName(
+        var endVar = Blockly.Java.nameDB_.getDistinctName(
           'repeat_end', Blockly.Variables.NAME_TYPE);
         code += 'var ' + endVar + ' = ' + repeats + ';\n';
       }
@@ -511,7 +511,7 @@ export class BlocklyJavaService {
 
     Blockly.Java['controls_for'] = function (block: { getFieldValue: (arg0: string) => any; id: any; }) {
       // For loop.
-      var variable0 = Blockly.Java.variableDB_.getName(
+      var variable0 = Blockly.Java.nameDB_.getName(
         block.getFieldValue('VAR'), Blockly.Variables.NAME_TYPE);
       var argument0 = Blockly.Java.valueToCode(block, 'FROM',
         Blockly.Java.ORDER_ASSIGNMENT) || '0';
@@ -541,19 +541,19 @@ export class BlocklyJavaService {
         // Cache non-trivial values to variables to prevent repeated look-ups.
         var startVar = argument0;
         if (!argument0.match(/^\w+$/) && !Blockly.isNumber(argument0)) {
-          var startVar = Blockly.Java.variableDB_.getDistinctName(
+          var startVar = Blockly.Java.nameDB_.getDistinctName(
             variable0 + '_start', Blockly.Variables.NAME_TYPE);
           code += 'var ' + startVar + ' = ' + argument0 + ';\n';
         }
         var endVar = argument1;
         if (!argument1.match(/^\w+$/) && !Blockly.isNumber(argument1)) {
-          var endVar = Blockly.Java.variableDB_.getDistinctName(
+          var endVar = Blockly.Java.nameDB_.getDistinctName(
             variable0 + '_end', Blockly.Variables.NAME_TYPE);
           code += 'var ' + endVar + ' = ' + argument1 + ';\n';
         }
         // Determine loop direction at start, in case one of the bounds
         // changes during loop execution.
-        var incVar = Blockly.Java.variableDB_.getDistinctName(
+        var incVar = Blockly.Java.nameDB_.getDistinctName(
           variable0 + '_inc', Blockly.Variables.NAME_TYPE);
         code += 'var ' + incVar + ' = ';
         if (Blockly.isNumber(increment)) {
@@ -576,13 +576,13 @@ export class BlocklyJavaService {
 
     Blockly.Java['controls_forEach'] = function (block: { getFieldValue: (arg0: string) => any; id: any; }) {
       // For each loop.
-      var variable0 = Blockly.Java.variableDB_.getName(
+      var variable0 = Blockly.Java.nameDB_.getName(
         block.getFieldValue('VAR'), Blockly.Variables.NAME_TYPE);
       var argument0 = Blockly.Java.valueToCode(block, 'LIST',
         Blockly.Java.ORDER_ASSIGNMENT) || '[]';
       var branch = Blockly.Java.statementToCode(block, 'DO');
       branch = Blockly.Java.addLoopTrap(branch, block.id);
-      var indexVar = Blockly.Java.variableDB_.getDistinctName(
+      var indexVar = Blockly.Java.nameDB_.getDistinctName(
         variable0 + '_index', Blockly.Variables.NAME_TYPE);
       branch = Blockly.Java.INDENT + variable0 + ' = ' +
         argument0 + '[' + indexVar + '];\n' + branch;
@@ -642,7 +642,7 @@ export class BlocklyJavaService {
 
     Blockly.Java['text_append'] = function (block: { getFieldValue: (arg0: string) => any; }) {
       // Append to a variable in place.
-      var varName = Blockly.Java.variableDB_.getName(
+      var varName = Blockly.Java.nameDB_.getName(
         block.getFieldValue('VAR'), Blockly.Variables.NAME_TYPE);
       var argument0 = Blockly.Java.valueToCode(block, 'TEXT',
         Blockly.Java.ORDER_NONE) || '""';
@@ -852,7 +852,7 @@ export class BlocklyJavaService {
 
     Blockly.Java['variables_get'] = function (block: { getFieldValue: (arg0: string) => any; }) {
       // Variable getter.
-      var code = Blockly.Java.variableDB_.getName(block.getFieldValue('VAR'),
+      var code = Blockly.Java.nameDB_.getName(block.getFieldValue('VAR'),
         Blockly.Variables.NAME_TYPE);
       return [code, Blockly.Java.ORDER_ATOMIC];
     };
@@ -861,7 +861,7 @@ export class BlocklyJavaService {
       // Variable setter.
       var argument0 = Blockly.Java.valueToCode(block, 'VALUE',
         Blockly.Java.ORDER_ASSIGNMENT) || '0';
-      var varName = Blockly.Java.variableDB_.getName(
+      var varName = Blockly.Java.nameDB_.getName(
         block.getFieldValue('VAR'), Blockly.Variables.NAME_TYPE);
       return varName + ' = ' + argument0 + ';\n';
     };
@@ -1057,7 +1057,7 @@ export class BlocklyJavaService {
       // Add to a variable in place.
       var argument0 = Blockly.Java.valueToCode(block, 'DELTA',
           Blockly.Java.ORDER_ADDITION) || '0';
-      var varName = Blockly.Java.variableDB_.getName(
+      var varName = Blockly.Java.nameDB_.getName(
           block.getFieldValue('VAR'), Blockly.Variables.NAME_TYPE);
       return varName + ' = (typeof ' + varName + ' == \'number\' ? ' + varName +
           ' : 0) + ' + argument0 + ';\n';
@@ -1418,7 +1418,7 @@ Blockly.Java['lists_setIndex'] = function(block: { getFieldValue: (arg0: string)
     if (list.match(/^\w+$/)) {
       return '';
     }
-    var listVar = Blockly.Java.variableDB_.getDistinctName(
+    var listVar = Blockly.Java.nameDB_.getDistinctName(
         'tmp_list', Blockly.Variables.NAME_TYPE);
     var code = 'var ' + listVar + ' = ' + list + ';\n';
     list = listVar;
@@ -1464,7 +1464,7 @@ Blockly.Java['lists_setIndex'] = function(block: { getFieldValue: (arg0: string)
     }
   } else if (where == 'RANDOM') {
     var code = cacheList();
-    var xVar = Blockly.Java.variableDB_.getDistinctName(
+    var xVar = Blockly.Java.nameDB_.getDistinctName(
         'tmp_x', Blockly.Variables.NAME_TYPE);
     code += 'var ' + xVar + ' = Math.floor(Math.random() * ' + list +
         '.length);\n';
@@ -1534,7 +1534,7 @@ Blockly.Java['lists_getSublist'] = function(block: { getFieldValue: (arg0: strin
     included in final version: YES
   */
     Blockly.Java['variable_get'] = function(block: { getFieldValue: (arg0: string) => any; }) {
-      var code = Blockly.Java.variableDB_.getName(block.getFieldValue('VAR'),
+      var code = Blockly.Java.nameDB_.getName(block.getFieldValue('VAR'),
           Blockly.Variables.NAME_TYPE);
       return [code, Blockly.Java.ORDER_ATOMIC];
     };
@@ -1551,7 +1551,7 @@ Blockly.Java['lists_getSublist'] = function(block: { getFieldValue: (arg0: strin
       */
     Blockly.Java['create_var'] = function(block: { getFieldValue: (arg0: string) => any; getTitleValue: (arg0: string) => any; }) {
       var value_const_value = Blockly.Java.valueToCode(block, 'const_value', Blockly.Java.ORDER_ASSIGNMENT);
-      var text_const__name = Blockly.Java.variableDB_.getName(block.getFieldValue('const__name'), Blockly.Variables.NAME_TYPE);
+      var text_const__name = Blockly.Java.nameDB_.getName(block.getFieldValue('const__name'), Blockly.Variables.NAME_TYPE);
     
       var dropdown_const_type = block.getTitleValue('const_type');
       var code = dropdown_const_type + ' ' +text_const__name+'=' + value_const_value+';\n';
@@ -1567,7 +1567,7 @@ Blockly.Java['lists_getSublist'] = function(block: { getFieldValue: (arg0: strin
       */
     Blockly.Java['create_constant_arith'] = function(block: { getFieldValue: (arg0: string) => any; getTitleValue: (arg0: string) => any; }) {
       var value_const_value = Blockly.Java.valueToCode(block, 'const_value', Blockly.Java.ORDER_ASSIGNMENT);
-      var text_const__name = Blockly.Java.variableDB_.getName(
+      var text_const__name = Blockly.Java.nameDB_.getName(
           block.getFieldValue('const__name'), Blockly.Variables.NAME_TYPE);
     
       var dropdown_const_type = block.getTitleValue('const_type');
@@ -1585,7 +1585,7 @@ Blockly.Java['lists_getSublist'] = function(block: { getFieldValue: (arg0: strin
         included in final version: NO
       */
     Blockly.Java['get_int'] = function(block: { getFieldValue: (arg0: string) => any; }) {
-      var variable_name = Blockly.Java.variableDB_.getName(block.getFieldValue('NAME'), Blockly.Variables.NAME_TYPE);
+      var variable_name = Blockly.Java.nameDB_.getName(block.getFieldValue('NAME'), Blockly.Variables.NAME_TYPE);
       var code = variable_name;
       return [code, Blockly.Java.ORDER_FUNCTION_CALL];;
     };
@@ -1780,7 +1780,7 @@ Blockly.Java['lists_getSublist'] = function(block: { getFieldValue: (arg0: strin
         included in final version: NO
       */
     Blockly.Java['get_boolean'] = function(block: { getFieldValue: (arg0: string) => any; }) {
-      var variable_name = Blockly.Java.variableDB_.getName(block.getFieldValue('NAME'), Blockly.Variables.NAME_TYPE);
+      var variable_name = Blockly.Java.nameDB_.getName(block.getFieldValue('NAME'), Blockly.Variables.NAME_TYPE);
       var code = variable_name;
       return [code, Blockly.Java.ORDER_FUNCTION_CALL];;
     };
@@ -1819,7 +1819,7 @@ Blockly.Java['lists_getSublist'] = function(block: { getFieldValue: (arg0: strin
         included in final version: NO
       */
     Blockly.Java['get_string'] = function(block: { getFieldValue: (arg0: string) => any; }) {
-      var variable_name = Blockly.Java.variableDB_.getName(block.getFieldValue('NAME'), Blockly.Variables.NAME_TYPE);
+      var variable_name = Blockly.Java.nameDB_.getName(block.getFieldValue('NAME'), Blockly.Variables.NAME_TYPE);
       var code = variable_name;
       return [code, Blockly.Java.ORDER_FUNCTION_CALL];;
     };
@@ -1877,7 +1877,7 @@ Blockly.Java['lists_getSublist'] = function(block: { getFieldValue: (arg0: strin
         included in final version: YES
       */
         Blockly.Java['procedures_defnoreturn'] = function(block: { getFieldValue: (arg0: any, arg1?: any | undefined) => any; id: string; arguments_: string | any[]; }) {
-          var funcName = Blockly.Java.variableDB_.getName(
+          var funcName = Blockly.Java.nameDB_.getName(
               block.getFieldValue('NAME'), Blockly.Procedures.NAME_TYPE);
           var branch = Blockly.Java.statementToCode(block, 'STACK');
           if (Blockly.Java.STATEMENT_PREFIX) {
@@ -1901,7 +1901,7 @@ Blockly.Java['lists_getSublist'] = function(block: { getFieldValue: (arg0: strin
           }
           var args = [];
           for (var x = 0; x < block.arguments_.length; x++) {
-            args[x] = Blockly.Java.variableDB_.getName(block.arguments_[x],
+            args[x] = Blockly.Java.nameDB_.getName(block.arguments_[x],
                 Blockly.Variables.NAME_TYPE);
             args[x] = (typeof args[x])+' '+args[x];
           }
@@ -1924,7 +1924,7 @@ Blockly.Java['lists_getSublist'] = function(block: { getFieldValue: (arg0: strin
         included in final version: YES
       */
     Blockly.Java['procedures_nodefreturn'] = function(block: { getFieldValue: (arg0: any, arg1?: any | undefined) => any; id: string; arguments_: string | any[]; }) {
-      var funcName = Blockly.Java.variableDB_.getName(
+      var funcName = Blockly.Java.nameDB_.getName(
           block.getFieldValue('NAME'), Blockly.Procedures.NAME_TYPE);
       var branch = Blockly.Java.statementToCode(block, 'STACK');
       if (Blockly.Java.STATEMENT_PREFIX) {
@@ -1948,7 +1948,7 @@ Blockly.Java['lists_getSublist'] = function(block: { getFieldValue: (arg0: strin
       }
       var args = [];
       for (var x = 0; x < block.arguments_.length; x++) {
-        args[x] = Blockly.Java.variableDB_.getName(block.arguments_[x],
+        args[x] = Blockly.Java.nameDB_.getName(block.arguments_[x],
             Blockly.Variables.NAME_TYPE);
         args[x] = (typeof args[x])+' '+args[x];
       }
@@ -1971,7 +1971,7 @@ Blockly.Java['lists_getSublist'] = function(block: { getFieldValue: (arg0: strin
         included in final version: YES
       */
     Blockly.Java['procedures_defreturn_Int'] = function(block: { getFieldValue: (arg0: any, arg1?: any | undefined) => any; id: string; arguments_: string | any[]; }) {
-      var funcName = Blockly.Java.variableDB_.getName(
+      var funcName = Blockly.Java.nameDB_.getName(
           block.getFieldValue('NAME'), Blockly.Procedures.NAME_TYPE);
       var branch = Blockly.Java.statementToCode(block, 'STACK');
       if (Blockly.Java.STATEMENT_PREFIX) {
@@ -1997,7 +1997,7 @@ Blockly.Java['lists_getSublist'] = function(block: { getFieldValue: (arg0: strin
       }
       var args = [];
       for (var x = 0; x < block.arguments_.length; x++) {
-        args[x] = Blockly.Java.variableDB_.getName(block.arguments_[x],
+        args[x] = Blockly.Java.nameDB_.getName(block.arguments_[x],
             Blockly.Variables.NAME_TYPE);
         args[x] = (typeof args[x])+' '+args[x];
       }
@@ -2019,7 +2019,7 @@ Blockly.Java['lists_getSublist'] = function(block: { getFieldValue: (arg0: strin
         included in final version: YES
       */
     Blockly.Java['procedures_defreturn_Boolean'] = function(block: { getFieldValue: (arg0: any, arg1?: any | undefined) => any; id: string; arguments_: string | any[]; }) {
-      var funcName = Blockly.Java.variableDB_.getName(
+      var funcName = Blockly.Java.nameDB_.getName(
           block.getFieldValue('NAME'), Blockly.Procedures.NAME_TYPE);
       var branch = Blockly.Java.statementToCode(block, 'STACK');
       if (Blockly.Java.STATEMENT_PREFIX) {
@@ -2045,7 +2045,7 @@ Blockly.Java['lists_getSublist'] = function(block: { getFieldValue: (arg0: strin
       }
       var args = [];
       for (var x = 0; x < block.arguments_.length; x++) {
-        args[x] = Blockly.Java.variableDB_.getName(block.arguments_[x],
+        args[x] = Blockly.Java.nameDB_.getName(block.arguments_[x],
             Blockly.Variables.NAME_TYPE);
         args[x] = (typeof args[x])+' '+args[x];
       }
@@ -2067,7 +2067,7 @@ Blockly.Java['lists_getSublist'] = function(block: { getFieldValue: (arg0: strin
         included in final version: YES
       */
     Blockly.Java['procedures_defreturn_String'] = function(block: { getFieldValue: (arg0: any, arg1?: any | undefined) => any; id: string; arguments_: string | any[]; }) {
-      var funcName = Blockly.Java.variableDB_.getName(
+      var funcName = Blockly.Java.nameDB_.getName(
           block.getFieldValue('NAME'), Blockly.Procedures.NAME_TYPE);
       var branch = Blockly.Java.statementToCode(block, 'STACK');
       if (Blockly.Java.STATEMENT_PREFIX) {
@@ -2093,7 +2093,7 @@ Blockly.Java['lists_getSublist'] = function(block: { getFieldValue: (arg0: strin
       }
       var args = [];
       for (var x = 0; x < block.arguments_.length; x++) {
-        args[x] = Blockly.Java.variableDB_.getName(block.arguments_[x],
+        args[x] = Blockly.Java.nameDB_.getName(block.arguments_[x],
             Blockly.Variables.NAME_TYPE);
         args[x] = (typeof args[x])+' '+args[x];
       }
@@ -2140,10 +2140,10 @@ Blockly.Java['variable_declare_string'] = function(block: any) {
     var argument0 = Blockly.Java.valueToCode(block, 'VALUE',
     Blockly.Java.ORDER_ASSIGNMENT) || '""';
     
-    // var varName = Blockly.Java.variableDB_.getName(
+    // var varName = Blockly.Java.nameDB_.getName(
     //   block.getFieldValue('VAR'), Blockly.Variables.NAME_TYPE);
     // var varName = block.getFieldValue('VAR');
-      var varName = Blockly.Java.variableDB_.getName(
+      var varName = Blockly.Java.nameDB_.getName(
       block.getFieldValue('VAR'), Blockly.Variables.NAME_TYPE);
 
     if(string_variables.indexOf(varName) < 0) {
@@ -2155,7 +2155,7 @@ Blockly.Java['variable_declare_string'] = function(block: any) {
 
   Blockly.Java['variable_get_string'] = function(block: { getFieldValue: (arg0: string) => any; }) {
     // Variable getter.
-    var code = Blockly.Java.variableDB_.getName(block.getFieldValue('VAR'),
+    var code = Blockly.Java.nameDB_.getName(block.getFieldValue('VAR'),
     Blockly.Variables.NAME_TYPE);
     return [code, Blockly.Java.ORDER_ATOMIC];
   };
@@ -2164,7 +2164,7 @@ Blockly.Java['variable_declare_string'] = function(block: any) {
     // Variable setter.
     var argument0 = Blockly.Java.valueToCode(block, 'VALUE',
         Blockly.Java.ORDER_ASSIGNMENT) || '""';
-    var varName = Blockly.Java.variableDB_.getName(
+    var varName = Blockly.Java.nameDB_.getName(
         block.getFieldValue('VAR'), Blockly.Variables.NAME_TYPE);
     return varName + ' = ' + argument0 + ';\n';
   };
@@ -2176,7 +2176,7 @@ Blockly.Java['variable_declare_string'] = function(block: any) {
 Blockly.Java['variable_declare_int'] = function(block: { getFieldValue: (arg0: string) => any; }) {
   var argument0 = Blockly.Java.valueToCode(block, 'VALUE',
       Blockly.Java.ORDER_ASSIGNMENT) || '0';
-  var varName = Blockly.Java.variableDB_.getName(
+  var varName = Blockly.Java.nameDB_.getName(
       block.getFieldValue('VAR'), Blockly.Variables.NAME_TYPE);
   if(int_variables.indexOf(varName) < 0) {
       int_variables[int_variables.length] = varName;
@@ -2187,7 +2187,7 @@ Blockly.Java['variable_declare_int'] = function(block: { getFieldValue: (arg0: s
 
 Blockly.Java['variable_get_int'] = function(block: { getFieldValue: (arg0: string) => any; }) {
   // Variable getter.
-  var code = Blockly.Java.variableDB_.getName(block.getFieldValue('VAR'),
+  var code = Blockly.Java.nameDB_.getName(block.getFieldValue('VAR'),
   Blockly.Variables.NAME_TYPE);
   return [code, Blockly.Java.ORDER_ATOMIC];
 };
@@ -2196,7 +2196,7 @@ Blockly.Java['variable_set_int'] = function(block: { getFieldValue: (arg0: strin
   // Variable setter.
   var argument0 = Blockly.Java.valueToCode(block, 'VALUE',
       Blockly.Java.ORDER_ASSIGNMENT) || '0';
-  var varName = Blockly.Java.variableDB_.getName(
+  var varName = Blockly.Java.nameDB_.getName(
       block.getFieldValue('VAR'), Blockly.Variables.NAME_TYPE);
   return varName + ' = ' + argument0 + ';\n';
 };
@@ -2211,7 +2211,7 @@ Blockly.Java['variable_set_int'] = function(block: { getFieldValue: (arg0: strin
 Blockly.Java['variable_declare_boolean'] = function(block: { getFieldValue: (arg0: string) => any; }) {
   var argument0 = Blockly.Java.valueToCode(block, 'VALUE',
       Blockly.Java.ORDER_ASSIGNMENT) || 'true';
-  var varName = Blockly.Java.variableDB_.getName(
+  var varName = Blockly.Java.nameDB_.getName(
       block.getFieldValue('VAR'), Blockly.Variables.NAME_TYPE);
   if(boolean_variables.indexOf(varName) < 0) {
       boolean_variables[boolean_variables.length] = varName;
@@ -2222,7 +2222,7 @@ Blockly.Java['variable_declare_boolean'] = function(block: { getFieldValue: (arg
 
 Blockly.Java['variable_get_boolean'] = function(block: { getFieldValue: (arg0: string) => any; }) {
   // Variable getter.
-  var code = Blockly.Java.variableDB_.getName(block.getFieldValue('VAR'),
+  var code = Blockly.Java.nameDB_.getName(block.getFieldValue('VAR'),
   Blockly.Variables.NAME_TYPE);
   return [code, Blockly.Java.ORDER_ATOMIC];
 };
@@ -2231,7 +2231,7 @@ Blockly.Java['variable_set_boolean'] = function(block: { getFieldValue: (arg0: s
   // Variable setter.
   var argument0 = Blockly.Java.valueToCode(block, 'VALUE',
       Blockly.Java.ORDER_ASSIGNMENT) || 'true';
-  var varName = Blockly.Java.variableDB_.getName(
+  var varName = Blockly.Java.nameDB_.getName(
       block.getFieldValue('VAR'), Blockly.Variables.NAME_TYPE);
   return varName + ' = ' + argument0 + ';\n';
 };

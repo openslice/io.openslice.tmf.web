@@ -1,21 +1,20 @@
-<div class="container">
+<div  class="container-blockly-main">
     <!-- toolbar -->
-    <mat-toolbar class="mat-elevation-z4" color="primary" fxLayout="row" fxLayoutAlign="start center">
-      <span fxFlex>{{ title }} - {{ programName }}</span>
-      <div fxFlex fxLayout="row" fxLayoutAlign="end start">
-        <button mat-flat-button (click)="saveProgram()">
-          Save
-        </button>
+    <mat-toolbar  class="mat-elevation-z0" >
+      <span class="mr-auto p-2">{{ title }} - {{ programName }}</span>
+      <div class = "d-flex">
+        <button type="button" class="btn btn-danger m-2  btn-block" style="width: 80px" (click)="cancelProgram()">Cancel</button>
+        <button type="button" class="btn btn-success m-2 btn-block" style="width: 80px" (click)="saveProgram()">Save</button>
       </div>
     </mat-toolbar>
   
     <!-- main content -->
-    <mat-drawer-container class="container">
-      <mat-drawer-content style="height: 100%">
-        <div class="wrapper">
+    <mat-drawer-container class="container-blockly">
+      <mat-drawer-content >
+        <div class="wrapper-blockly">
           <div id="blocklyDiv" ></div>
         
-          <div id="generatedCode" style="word-wrap: break-word;font-family: consolas;white-space: break-spaces;">
+          <div id="generatedCode" class="generated-code">
             <p>{{ generatedCode }}</p>
             
           </div>
@@ -30,9 +29,10 @@
           </variables>
   
           <category name="Service Spec" colour="210">          
-            <category name="Text" colour="230" custom="SPECCHARVARIABLES_TEXT" ></category>
             <category name="Number" colour="210" custom="SPECCHARVARIABLES_NUM" >   
             </category>
+            <category name="Text" colour="230" custom="SPECCHARVARIABLES_TEXT" ></category>
+           
             <category name="Boolean" colour="190" custom="SPECCHARVARIABLES_BOOL" >   
             </category>
             <category name="Set" colour="170" custom="SPECCHARVARIABLES_SET" >   

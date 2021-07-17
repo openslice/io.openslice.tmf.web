@@ -1,8 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { ServiceSpecCharacteristic, ServiceSpecification } from 'src/app/openApis/ServiceCatalogManagement/models';
+import { ServiceSpecificationService } from 'src/app/openApis/ServiceCatalogManagement/services';
 import { IRuleProgram } from '../models/IRuleProgram';
 import { BlocklyJavaService } from '../services/blockly-java.service';
 import { RuleProgramService } from '../services/rule-program.service';
+
 
 
 //Imported code from:
@@ -32,15 +35,30 @@ export class ServiceRuleDesignComponent implements OnInit {
 
   generatedCode = '';
 
+  specID: string;
+  spec: ServiceSpecification;
+
+  charsListInteger: ServiceSpecCharacteristic[];
+  charsListSmallint: ServiceSpecCharacteristic[];
+  charsListLongint: ServiceSpecCharacteristic[];
+  charsListFloat: ServiceSpecCharacteristic[];
+  charsListBinary: ServiceSpecCharacteristic[];
+  charsListBoolean: ServiceSpecCharacteristic[];
+  charsListArray: ServiceSpecCharacteristic[];
+  charsListSet: ServiceSpecCharacteristic[];
+  charsListText: ServiceSpecCharacteristic[];
+  charsListLongText: ServiceSpecCharacteristic[];
+  charsListTimestamp: ServiceSpecCharacteristic[];
 
   constructor(
     private route: ActivatedRoute,    
     private programService: RuleProgramService,
     private router: Router,
-    bs: BlocklyJavaService) {
+    bs: BlocklyJavaService,
+    private specService: ServiceSpecificationService) {
       
     this.blocklyJavaService = bs;
-    this.title = 'Openslice: Create Service Specification Constraints. Scope: pre-Creation';
+    this.title = 'Create Service Specification LCM Rule. Scope: pre-Creation';
     this.route.params.subscribe(params => {
       this.programName = params['programName'];
       this.program = this.programService.getOne(this.programName);
@@ -64,10 +82,18 @@ export class ServiceRuleDesignComponent implements OnInit {
 
 
     ngOnInit() {
+
       this.workspace = Blockly.inject('blocklyDiv', {
         toolbox: document.getElementById('toolbox'),
-        scrollbars: false
+        scrollbars: true
       });
+
+      if (this.route.snapshot.queryParams['specid']){
+        this.specID = this.route.snapshot.queryParams['specid']; 
+        this.blocklyJavaService.createJava(this.workspace, Blockly);
+        this.createOpensliceJava(this.workspace, Blockly);       
+        this.retrieveServiceSpec();        
+      }
   
       if (this.program.xmlData) {
         this.workspace.clear();
@@ -92,8 +118,6 @@ export class ServiceRuleDesignComponent implements OnInit {
         
       });
   
-      this.blocklyJavaService.createJava(this.workspace, Blockly);
-      this.createOpensliceJava(this.workspace, Blockly);
   
     }
   
@@ -104,96 +128,133 @@ export class ServiceRuleDesignComponent implements OnInit {
     }
   
   
-    
+    retrieveServiceSpec() {
+      this.specService.retrieveServiceSpecification({id: this.specID}).subscribe(
+        data => this.spec = data,
+        error => console.error(error),
+        () => {
+          
+  
+
+          // valueTypes = ['INTEGER', '', '', 'FLOAT', 'BINARY', 'BOOLEAN', 'ARRAY', 'SET', 'TEXT', 'LONGTEXT', 'ENUM', 'TIMESTAMP']
+          //populate Specification Characteristic Panel Info
+          // filter Spec Characteristic that does not have defined Value Type (parent spec char)
+          this.spec.serviceSpecCharacteristic.filter(specCharacteristic => specCharacteristic.valueType)
+          // this.dataSource.paginator = this.paginator;
+          this.charsListInteger= this.spec.serviceSpecCharacteristic.filter(specCharacteristic => specCharacteristic.valueType == 'INTEGER');
+          this.charsListSmallint= this.spec.serviceSpecCharacteristic.filter(specCharacteristic => specCharacteristic.valueType == 'SMALLINT');
+          this.charsListLongint= this.spec.serviceSpecCharacteristic.filter(specCharacteristic => specCharacteristic.valueType == 'LONGINT');
+          this.charsListFloat= this.spec.serviceSpecCharacteristic.filter(specCharacteristic => specCharacteristic.valueType == 'FLOAT');
+          this.charsListBinary= this.spec.serviceSpecCharacteristic.filter(specCharacteristic => specCharacteristic.valueType == 'BINARY');
+          this.charsListBoolean= this.spec.serviceSpecCharacteristic.filter(specCharacteristic => specCharacteristic.valueType == 'BOOLEAN');
+          this.charsListArray= this.spec.serviceSpecCharacteristic.filter(specCharacteristic => specCharacteristic.valueType == 'ARRAY');
+          this.charsListSet= this.spec.serviceSpecCharacteristic.filter(specCharacteristic => specCharacteristic.valueType == 'SET');
+          this.charsListText= this.spec.serviceSpecCharacteristic.filter(specCharacteristic => specCharacteristic.valueType == 'TEXT');
+          this.charsListLongText= this.spec.serviceSpecCharacteristic.filter(specCharacteristic => specCharacteristic.valueType == 'LONGTEXT');
+          this.charsListTimestamp= this.spec.serviceSpecCharacteristic.filter(specCharacteristic => specCharacteristic.valueType == 'TIMESTAMP');
+
+  
+          this.workspace.charsListText = this.charsListText;
+          this.workspace.charsListText.concat( this.charsListLongText );
+          
+          this.workspace.charsListNumber = this.charsListInteger;
+          this.workspace.charsListNumber.concat( this.charsListSmallint );
+          this.workspace.charsListNumber.concat( this.charsListLongint );
+          this.workspace.charsListNumber.concat( this.charsListFloat );
+
+          this.workspace.charsListSet = this.charsListSet;
+
+          this.workspace.charsListBoolean = this.charsListBoolean;
+          
+
+          this.workspace.registerToolboxCategoryCallback( 'SPECCHARVARIABLES_TEXT', this.charvarsTextFunction );
+          this.workspace.registerToolboxCategoryCallback( 'SPECCHARVARIABLES_NUM', this.charvarsNumberFunction );
+          this.workspace.registerToolboxCategoryCallback( 'SPECCHARVARIABLES_BOOL', this.charvarsBoolFunction);
+          this.workspace.registerToolboxCategoryCallback( 'SPECCHARVARIABLES_SET', this.charvarsSetFunction);
+      
+
+        }
+      )
+    }
+
+
   
       /**
      * Construct the blocks required by the flyout for the colours category.
      * @param {!Blockly.Workspace} workspace The workspace this flyout is for.
      * @return {!Array.<!Element>} Array of XML block elements.
      */
-       charvarsText = function(workspace: any) {
-      // Returns an array of hex colours, e.g. ['#4286f4', '#ef0447']
-      var charsList = [ 'Area of Service', 
-                      'Area of Service: Region specification',
-                    'Delay tolerance',
-                    'NSD_5GCORE::CONFIG', 
-                    'Slice quality of service parameters: 3GPP 5QI' ];
-      var xmlList = [];
-      
-      
-      if (Blockly.Blocks['getcharval_string']) {
-        for (var i = 0; i < charsList.length; i++) {
-          var blockText = '<block type="getcharval_string">' +
-          '<field name="AVALUE">' + charsList[i] + '</field>' +
-              '</block>';
-          var block = Blockly.Xml.textToDom(blockText);
-          xmlList.push(block);
+       charvarsTextFunction = function(workspace: any) {
+        var xmlList = [];            
+        var chars: ServiceSpecCharacteristic[] = workspace.charsListText;
+
+        if (Blockly.Blocks['getcharval_string']) {
+          for (var i = 0; i < chars.length; i++) {
+            var blockText = '<block type="getcharval_string">' +
+            '<field name="AVALUE">' + chars[i].name + '</field>' +
+                '</block>';
+            var block = Blockly.Xml.textToDom(blockText);
+            xmlList.push(block);
+          }
         }
-      }
-  
-      if (Blockly.Blocks['setcharval_string']) {
-        for (var i = 0; i < charsList.length; i++) {
-          var blockText = '<block type="setcharval_string">' +
-          '<field name="NAMELBL">' + charsList[i] + '</field>' +
-              '</block>';
-          var block = Blockly.Xml.textToDom(blockText);
-          xmlList.push(block);
+    
+        if (Blockly.Blocks['setcharval_string']) {
+          for (var i = 0; i < chars.length; i++) {
+            var blockText = '<block type="setcharval_string">' +
+            '<field name="NAMELBL">' + chars[i].name + '</field>' +
+                '</block>';
+            var block = Blockly.Xml.textToDom(blockText);
+            xmlList.push(block);
+          }
         }
-      }
-  
-      return xmlList;
-    };
-  
+    
+        return xmlList;
+      };
   
   
-    charvarsNum = function(workspace: any) {
-      // Returns an array of hex colours, e.g. ['#4286f4', '#ef0447']
-      var charsList = [ 'Area of Service', 
-                      'Area of Service: Region specification',
-                    'Delay tolerance',
-                    'NSD_5GCORE::CONFIG', 
-                    'Slice quality of service parameters: 3GPP 5QI' ];
-      var xmlList = [];
-      
-      
-      if (Blockly.Blocks['getcharval_number']) {
-        for (var i = 0; i < charsList.length; i++) {
-          var blockText = '<block type="getcharval_number">' +
-          '<field name="AVALUE">' + charsList[i] + '</field>' +
-              '</block>';
-          var block = Blockly.Xml.textToDom(blockText);
-          xmlList.push(block);
+  
+      charvarsNumberFunction = function(workspace: any) {
+        // Returns an array of hex colours, e.g. ['#4286f4', '#ef0447']
+        
+        var charsList: ServiceSpecCharacteristic[] = workspace.charsListNumber;
+        
+        var xmlList = [];
+        
+        
+        if (Blockly.Blocks['getcharval_number']) {
+          for (var i = 0; i < charsList.length; i++) {
+            var blockText = '<block type="getcharval_number">' +
+            '<field name="AVALUE">' + charsList[i].name + '</field>' +
+                '</block>';
+            var block = Blockly.Xml.textToDom(blockText);
+            xmlList.push(block);
+          }
         }
-      }
-  
-      if (Blockly.Blocks['setcharval_number']) {
-        for (var i = 0; i < charsList.length; i++) {
-          var blockText = '<block type="setcharval_number">' +
-          '<field name="NAMELBL">' + charsList[i] + '</field>' +
-              '</block>';
-          var block = Blockly.Xml.textToDom(blockText);
-          xmlList.push(block);
+    
+        if (Blockly.Blocks['setcharval_number']) {
+          for (var i = 0; i < charsList.length; i++) {
+            var blockText = '<block type="setcharval_number">' +
+            '<field name="NAMELBL">' + charsList[i].name + '</field>' +
+                '</block>';
+            var block = Blockly.Xml.textToDom(blockText);
+            xmlList.push(block);
+          }
         }
-      }
-  
-      return xmlList;
+    
+        return xmlList;
     };
   
     
-    charvarsBool = function(workspace: any) {
+    charvarsBoolFunction = function(workspace: any) {
       // Returns an array of hex colours, e.g. ['#4286f4', '#ef0447']
-      var charsList = [ 'Area of Service', 
-                      'Area of Service: Region specification',
-                    'Delay tolerance',
-                    'NSD_5GCORE::CONFIG', 
-                    'Slice quality of service parameters: 3GPP 5QI' ];
+      var charsList: ServiceSpecCharacteristic[] = workspace.charsListBoolean;
       var xmlList = [];
       
       
       if (Blockly.Blocks['getcharval_bool']) {
         for (var i = 0; i < charsList.length; i++) {
           var blockText = '<block type="getcharval_bool">' +
-          '<field name="AVALUE">' + charsList[i] + '</field>' +
+          '<field name="AVALUE">' + charsList[i].name + '</field>' +
               '</block>';
           var block = Blockly.Xml.textToDom(blockText);
           xmlList.push(block);
@@ -203,7 +264,7 @@ export class ServiceRuleDesignComponent implements OnInit {
       if (Blockly.Blocks['setcharval_bool']) {
         for (var i = 0; i < charsList.length; i++) {
           var blockText = '<block type="setcharval_bool">' +
-          '<field name="NAMELBL">' + charsList[i] + '</field>' +
+          '<field name="NAMELBL">' + charsList[i].name + '</field>' +
               '</block>';
           var block = Blockly.Xml.textToDom(blockText);
           xmlList.push(block);
@@ -214,20 +275,17 @@ export class ServiceRuleDesignComponent implements OnInit {
     };
   
     
-    charvarsSet = function(workspace: any) {
+    charvarsSetFunction = function(workspace: any) {
       // Returns an array of hex colours, e.g. ['#4286f4', '#ef0447']
-      var charsList = [ 'Area of Service', 
-                      'Area of Service: Region specification',
-                    'Delay tolerance',
-                    'NSD_5GCORE::CONFIG', 
-                    'Slice quality of service parameters: 3GPP 5QI' ];
+      
+      var charsList: ServiceSpecCharacteristic[] = workspace.charsListSet;
       var xmlList = [];
       
       
       if (Blockly.Blocks['getcharval_set']) {
         for (var i = 0; i < charsList.length; i++) {
           var blockText = '<block type="getcharval_set">' +
-          '<field name="AVALUE">' + charsList[i] + '</field>' +
+          '<field name="AVALUE">' + charsList[i].name + '</field>' +
               '</block>';
           var block = Blockly.Xml.textToDom(blockText);
           xmlList.push(block);
@@ -237,7 +295,7 @@ export class ServiceRuleDesignComponent implements OnInit {
       if (Blockly.Blocks['setcharval_set']) {
         for (var i = 0; i < charsList.length; i++) {
           var blockText = '<block type="setcharval_set">' +
-          '<field name="NAMELBL">' + charsList[i] + '</field>' +
+          '<field name="NAMELBL">' + charsList[i].name + '</field>' +
               '</block>';
           var block = Blockly.Xml.textToDom(blockText);
           xmlList.push(block);
@@ -248,7 +306,7 @@ export class ServiceRuleDesignComponent implements OnInit {
       if (Blockly.Blocks['setcharval_sadd']) {
         for (var i = 0; i < charsList.length; i++) {
           var blockText = '<block type="setcharval_sadd">' +
-          '<field name="NAMELBL">' + charsList[i] + '</field>' +
+          '<field name="NAMELBL">' + charsList[i].name + '</field>' +
               '</block>';
           var block = Blockly.Xml.textToDom(blockText);
           xmlList.push(block);
@@ -258,7 +316,7 @@ export class ServiceRuleDesignComponent implements OnInit {
       if (Blockly.Blocks['setcharval_sremove']) {
         for (var i = 0; i < charsList.length; i++) {
           var blockText = '<block type="setcharval_sremove">' +
-          '<field name="NAMELBL">' + charsList[i] + '</field>' +
+          '<field name="NAMELBL">' + charsList[i].name + '</field>' +
               '</block>';
           var block = Blockly.Xml.textToDom(blockText);
           xmlList.push(block);
@@ -278,10 +336,10 @@ export class ServiceRuleDesignComponent implements OnInit {
       // workspace.createVariable('Region panda1', 'Panda', null);
       // workspace.createVariable('Region Panda2', 'Panda', null);
       // workspace.createVariable('Bandwidth', 'int');
-      workspace.registerToolboxCategoryCallback( 'SPECCHARVARIABLES_TEXT', this.charvarsText);
-      workspace.registerToolboxCategoryCallback( 'SPECCHARVARIABLES_NUM', this.charvarsNum);
-      workspace.registerToolboxCategoryCallback( 'SPECCHARVARIABLES_BOOL', this.charvarsBool);
-      workspace.registerToolboxCategoryCallback( 'SPECCHARVARIABLES_SET', this.charvarsSet);
+      //workspace.registerToolboxCategoryCallback( 'SPECCHARVARIABLES_TEXT', this.charvarsText(workspace) );
+      // workspace.registerToolboxCategoryCallback( 'SPECCHARVARIABLES_NUM', this.charvarsNum);
+      // workspace.registerToolboxCategoryCallback( 'SPECCHARVARIABLES_BOOL', this.charvarsBool);
+      // workspace.registerToolboxCategoryCallback( 'SPECCHARVARIABLES_SET', this.charvarsSet);
       
   
   
@@ -319,7 +377,7 @@ export class ServiceRuleDesignComponent implements OnInit {
       Blockly.Java['getcharval_string'] = function(block: any) {
         var dropdown_name = block.getFieldValue('AVALUE');
         var argument0 = Blockly.Java.quote_( dropdown_name );
-        var code = 'getcharval_string(' + argument0 + ')' ;
+        var code = 'getCharVal(' + argument0 + ')' ;
         return [code, Blockly.Java.ORDER_ATOMIC];
       };
   
@@ -331,14 +389,34 @@ export class ServiceRuleDesignComponent implements OnInit {
         var argument1 = Blockly.Java.valueToCode(block, 'AVALUE',
           Blockly.Java.ORDER_NONE) || '""';
           
-        return 'setcharval_string(' + argument0 + ', ' + argument1 + ');\n';
+        return 'setCharVall(' + argument0 + ', ' + argument1 + ');\n';
+      };
+
+
+      
+      Blockly.Java['getcharval_number'] = function(block: any) {
+        var dropdown_name = block.getFieldValue('AVALUE');
+        var argument0 = Blockly.Java.quote_( dropdown_name );
+        var code = 'getCharVal(' + argument0 + ')' ;
+        return [code, Blockly.Java.ORDER_ATOMIC];
+      };
+  
+      Blockly.Java['setcharval_number'] = function (block: any) {
+        // Print statement.
+        
+        var dropdown_name = block.getFieldValue('NAMELBL');
+        var argument0 = Blockly.Java.quote_( dropdown_name );
+        var argument1 = Blockly.Java.valueToCode(block, 'AVALUE',
+          Blockly.Java.ORDER_NONE) || '""';
+          
+        return 'setCharVal(' + argument0 + ', ' + argument1 + ');\n';
       };
   
   
       Blockly.Java['getcharval_set'] = function(block: any) {
         var dropdown_name = block.getFieldValue('AVALUE');
         var argument0 = Blockly.Java.quote_( dropdown_name );
-        var code = 'getcharval_set(' + argument0 + ')' ;
+        var code = 'getCharVal(' + argument0 + ')' ;
         return [code, Blockly.Java.ORDER_ATOMIC];
       };
   
@@ -350,7 +428,7 @@ export class ServiceRuleDesignComponent implements OnInit {
         var argument1 = Blockly.Java.valueToCode(block, 'AVALUE',
           Blockly.Java.ORDER_NONE) || '""';
           
-        return 'setcharval_set(' + argument0 + ', ' + argument1 + ');\n';
+        return 'setCharVal(' + argument0 + ', ' + argument1 + ');\n';
       };
   
       
@@ -407,7 +485,7 @@ export class ServiceRuleDesignComponent implements OnInit {
   Blockly.Java['variables_get'] = function(block: any) {
     // Variable getter.
         console.log('Variable getter CUSTOM')
-    var code = Blockly.Java.variableDB_.getName(block.getFieldValue('VAR'),
+    var code = Blockly.Java.nameDB_.getName(block.getFieldValue('VAR'),
         Blockly.Variables.NAME_TYPE);
     return [code, Blockly.Java.ORDER_ATOMIC];
   };
@@ -417,7 +495,7 @@ export class ServiceRuleDesignComponent implements OnInit {
         console.log('Variable setter CUSTOM')
     var argument0 = Blockly.Java.valueToCode(block, 'VALUE',
         Blockly.Java.ORDER_ASSIGNMENT) || '0';
-    var varName = Blockly.Java.variableDB_.getName(
+    var varName = Blockly.Java.nameDB_.getName(
         block.getFieldValue('VAR'), Blockly.Variables.NAME_TYPE);
     return varName + ' = ' + argument0 + ';\n';
   };
@@ -445,7 +523,13 @@ export class ServiceRuleDesignComponent implements OnInit {
      
       console.log('saving the program - ', JSON.stringify(this.program));
     }
+
+    
+    cancelProgram(): void {
   
+     
+      console.log('cancelProgram the program - ' );
+    }
     
   }
   

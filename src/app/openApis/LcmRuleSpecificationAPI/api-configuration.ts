@@ -8,7 +8,7 @@ import { Injectable } from '@angular/core';
   providedIn: 'root',
 })
 export class ApiConfiguration {
-  rootUrl: string = '//portal.openslice.io';
+  rootUrl: string = '//xxx';
 }
 
 export interface ApiConfigurationInterface {

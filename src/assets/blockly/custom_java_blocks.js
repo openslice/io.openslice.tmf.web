@@ -10,7 +10,7 @@
           ] : [
             ['is equal to(strings)', 'EQ']
           ];
-      this.setColour(77);
+      this.setColour(230);
       this.setOutput(true, 'Boolean');
       this.appendValueInput('A')
           .setCheck('String');

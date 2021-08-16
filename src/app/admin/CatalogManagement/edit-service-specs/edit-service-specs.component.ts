@@ -1,3 +1,5 @@
+import { LcmRuleSpecificationService } from 'src/app/openApis/LcmRuleSpecificationAPI/services';
+import { LCMRuleSpecification } from './../../../openApis/LcmRuleSpecificationAPI/models/lcmrule-specification';
 import { Component, OnInit, ViewChild } from '@angular/core';
 
 import { ActivatedRoute, Router, ActivationEnd } from '@angular/router';
@@ -29,6 +31,7 @@ export class EditServiceSpecsComponent implements OnInit {
   constructor(
     private activatedRoute: ActivatedRoute,
     private specService: ServiceSpecificationService,
+    private lcmRulesService: LcmRuleSpecificationService,
     private dialog: MatDialog,
     private toast: ToastrService,
     private router: Router
@@ -55,8 +58,11 @@ export class EditServiceSpecsComponent implements OnInit {
   lifecycleStatuses = ["In study", "In design", "In test", "Active", "Launched", "Retired", "Obsolete", "Rejected"]
 
 
+  ruleSpecsOfServiceSpec: LCMRuleSpecification[];
   displayedColumnsCharacteristics = ['name', 'type', 'defaultValues', 'configurable', 'actions']
   dataSource  = new MatTableDataSource<ServiceSpecCharacteristic>()
+  displayedColumnsLCMRules = ['name', 'lcmrulephase', 'description', 'actions']
+  dataSourceLCMRules  = new MatTableDataSource<LCMRuleSpecification>()
 
   specCharacteristicsTags: string[] = ["All"]
   tagFiltervalue:string = "All"
@@ -185,6 +191,8 @@ export class EditServiceSpecsComponent implements OnInit {
         if (this.specLogoRef) {
           this.currentSpecLogoAsDataUrl = this.specServiceRootUrl+this.specLogoRef.url
         }
+
+        this.retrieveLCMRulesSpecs();
 
         //populate Service Descriptor Panel Info
         // this.retrieveServiceDesriptor(this.spec.id)
@@ -503,6 +511,49 @@ export class EditServiceSpecsComponent implements OnInit {
       // this.dataSource.data = this.spec.serviceSpecCharacteristic.filter(specCharacteristic => specCharacteristic.valueType)
       // .filter(specChar => specChar.serviceSpecCharRelationship.some( rel => rel.name === tagName ))
     }
+  }
+
+
+  retrieveLCMRulesSpecs() {
+    this.lcmRulesService.listLCMRuleSpecificationByServiceSpecId ({id: this.specID}).subscribe(
+      data => this.ruleSpecsOfServiceSpec  = data,
+      error => console.error(error),
+      () => {
+        
+        //populate LCMRules
+        
+        this.dataSourceLCMRules.data = this.ruleSpecsOfServiceSpec;
+
+      }
+    )
+  }
+
+
+
+  openLCMRuleDeleteDialog(characteristic: LCMRuleSpecification) {
+    // const specToBeDeletedIndex = this.spec.serviceSpecCharacteristic.findIndex(char => char.id === characteristic.id)
+
+    // const newSpecCharacteristicArray: ServiceSpecCharacteristic[] = this.spec.serviceSpecCharacteristic.slice()
+    
+    // newSpecCharacteristicArray.splice(specToBeDeletedIndex, 1)
+
+    // const dialogRef = this.dialog.open(DeleteServiceSpecCharacteristicsComponent, {
+    //   data: {
+    //     serviceSpec: this.spec,
+    //     serviceSpecCharacteristicArray: newSpecCharacteristicArray, 
+    //     specToBeDeleted: this.spec.serviceSpecCharacteristic[specToBeDeletedIndex]
+    //   }
+    // })
+
+    // dialogRef.afterClosed().subscribe (
+    //   result => { 
+    //     console.log(result)
+    //     if (result){ 
+    //       this.toast.success("Service Specification Characteristics list was successfully updated")
+    //       this.retrieveServiceSpec()
+    //     }
+    //   }
+    // )
   }
 
 }

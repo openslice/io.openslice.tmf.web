@@ -14,7 +14,7 @@ export interface ServiceSpecificationRef {
   /**
    * The actual type of the target instance when needed for disambiguation.
    */
-  @referredType?: string;
+  '@referredType'?: string;
 
   /**
    * A URI to a JSON-Schema file that defines additional attributes and relationships

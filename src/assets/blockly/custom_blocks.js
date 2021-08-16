@@ -1,5 +1,5 @@
 
-coloursets = 170;
+coloursets = 260;
 
 Blockly.defineBlocksWithJsonArray([
     {
@@ -111,7 +111,7 @@ Blockly.defineBlocksWithJsonArray([
           .appendField(new Blockly.FieldLabelSerializable(""), "AVALUE")          
       //this.setOutput(true, ["Boolean", "SET", "String"]);
       this.setOutput(true, 'String');
-      this.setColour(230);
+      this.setColour(30);
    this.setTooltip("");
    this.setHelpUrl("");
     }
@@ -126,7 +126,7 @@ Blockly.defineBlocksWithJsonArray([
           .appendField(new Blockly.FieldLabelSerializable(""), "NAMELBL");
       this.setPreviousStatement(true, null);
       this.setNextStatement(true, null);
-      this.setColour(230);
+      this.setColour(30);
    this.setTooltip("");
    this.setHelpUrl("");
     }
@@ -141,7 +141,7 @@ Blockly.defineBlocksWithJsonArray([
           .appendField(new Blockly.FieldLabelSerializable(""), "AVALUE")          
       //this.setOutput(true, ["Boolean", "SET", "String"]);
       this.setOutput(true, 'Number');
-      this.setColour(210);
+      this.setColour(60);
    this.setTooltip("");
    this.setHelpUrl("");
     }
@@ -156,7 +156,7 @@ Blockly.defineBlocksWithJsonArray([
           .appendField(new Blockly.FieldLabelSerializable(""), "NAMELBL");
       this.setPreviousStatement(true, null);
       this.setNextStatement(true, null);
-      this.setColour(210);
+      this.setColour(60);
    this.setTooltip("");
    this.setHelpUrl("");
     }
@@ -170,7 +170,7 @@ Blockly.defineBlocksWithJsonArray([
           .appendField(new Blockly.FieldLabelSerializable(""), "AVALUE")          
       //this.setOutput(true, ["Boolean", "SET", "String"]);
       this.setOutput(true, 'Boolean');
-      this.setColour(190);
+      this.setColour(90);
    this.setTooltip("");
    this.setHelpUrl("");
     }
@@ -185,7 +185,7 @@ Blockly.defineBlocksWithJsonArray([
           .appendField(new Blockly.FieldLabelSerializable(""), "NAMELBL");
       this.setPreviousStatement(true, null);
       this.setNextStatement(true, null);
-      this.setColour(190);
+      this.setColour(90);
    this.setTooltip("");
    this.setHelpUrl("");
     }
@@ -252,18 +252,85 @@ Blockly.defineBlocksWithJsonArray([
 
   Blockly.Blocks['osm_nsd_config'] = {
     init: function() {
-      this.appendValueInput("NSD_ID")
+      this.appendValueInput("NSDID")
           .setCheck("String")
+          .setAlign(Blockly.ALIGN_RIGHT)
           .appendField("NSDID");
-      this.appendValueInput("VIM_ID")
+      this.appendValueInput("VIMID")
           .setCheck("String")
-          .appendField("VIM_ID");
-      this.appendValueInput("statement")
+          .setAlign(Blockly.ALIGN_RIGHT)
+          .appendField("VIMID");
+      this.appendValueInput("config")
           .setCheck("String")
+          .setAlign(Blockly.ALIGN_RIGHT)
           .appendField("config");
       this.setOutput(true, null);
       this.setColour(230);
    this.setTooltip("");
+   this.setHelpUrl("");
+    }
+  };
+
+
+  Blockly.Blocks['osm_nsd_config_detailed'] = {
+    init: function() {
+      this.appendValueInput("NSDID")
+          .setCheck("String")
+          .setAlign(Blockly.ALIGN_RIGHT)
+          .appendField("NSDID(Text)");
+      this.appendValueInput("VIMID")
+          .setCheck("String")
+          .setAlign(Blockly.ALIGN_RIGHT)
+          .appendField("VIMID(Text)");
+      this.appendValueInput("VNF")
+          .setCheck("Array")
+          .setAlign(Blockly.ALIGN_RIGHT)
+          .appendField("VNF(Array)");
+      this.appendValueInput("VLD")
+          .setCheck("Array")
+          .setAlign(Blockly.ALIGN_RIGHT)
+          .appendField("VLD(Array)");
+      this.appendValueInput("additionalParamsForVnf")
+          .setCheck("Array")
+          .setAlign(Blockly.ALIGN_RIGHT)
+          .appendField("additionalParamsForVnf(Array)");
+          
+      this.appendValueInput("additionalParamsForNs")
+      .setCheck("Array")
+      .setAlign(Blockly.ALIGN_RIGHT)
+      .appendField("additionalParamsForNs(Array)");
+          
+      this.appendValueInput("ssh_keys")
+      .setCheck("Array")
+      .setAlign(Blockly.ALIGN_RIGHT)
+      .appendField("ssh_keys(Array)");
+
+      this.setOutput(true, 'String');      
+      this.setColour(230);
+   this.setTooltip("Constructs a json string to be used for OSM conficuration during initialization.");
+   this.setHelpUrl("");
+    }
+  };
+
+  Blockly.Blocks['osm_nsd_config_vnf'] = {
+    init: function() {
+      this.appendValueInput("member-vnf-index")
+          .setCheck("String")
+          .setAlign(Blockly.ALIGN_RIGHT)
+          .appendField("member-vnf-index");
+      this.appendValueInput("vdu")
+          .setCheck("String")
+          .setAlign(Blockly.ALIGN_RIGHT)
+          .appendField("vdu");
+    
+      this.appendValueInput("VIMID")
+          .setCheck("String")
+          .setAlign(Blockly.ALIGN_RIGHT)
+          .appendField("VIMID(Text)");
+          
+      this.setOutput(true, 'String');      
+      this.setColour(230);
+   this.setTooltip("Constructs a json string to be used for OSM conficuration for member-vnf.");
    this.setHelpUrl("");
     }
   };

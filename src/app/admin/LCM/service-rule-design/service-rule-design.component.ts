@@ -1,11 +1,13 @@
+import { LCMRuleSpecificationUpdate } from './../../../openApis/LcmRuleSpecificationAPI/models/lcmrule-specification-update';
 import { Component, OnInit } from '@angular/core';
+import { FormGroup, FormControl, FormArray, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ServiceSpecCharacteristic, ServiceSpecification } from 'src/app/openApis/ServiceCatalogManagement/models';
 import { ServiceSpecificationService } from 'src/app/openApis/ServiceCatalogManagement/services';
-import { IRuleProgram } from '../models/IRuleProgram';
 import { BlocklyJavaService } from '../services/blockly-java.service';
-import { RuleProgramService } from '../services/rule-program.service';
-
+import { LCMRuleSpecification, LCMRuleSpecificationCreate, ServiceSpecificationRef } from 'src/app/openApis/LcmRuleSpecificationAPI/models';
+import { LcmRuleSpecificationService } from 'src/app/openApis/LcmRuleSpecificationAPI/services';
+import { ToastrService } from 'ngx-toastr';
 
 
 //Imported code from:
@@ -31,16 +33,30 @@ export class ServiceRuleDesignComponent implements OnInit {
   textVariable = 'temp';
   listVariable = 'temp';
   blocklyJavaService: BlocklyJavaService;
-  program: IRuleProgram = this.programService.getOne(this.programName);
 
-  generatedCode = '';
 
+  lcmRuleSpecID: string;
+  lcmRuleSpec: LCMRuleSpecification;
   specID: string;
   spec: ServiceSpecification;
+
+  editForm =  new FormGroup({
+    description: new FormControl(),
+    lcmphase: new FormControl("PRE_PROVISION"),
+    name: new FormControl(),
+    version: new FormControl("0.1.0")
+  })
+
+
+  lcmphases = ["PRE_PROVISION", "AFTER_ACTIVATION", "SUPERVISION", "AFTER_DEACTIVATION"];
+
+
+  newLCMRuleSpecification = false;
 
   charsListInteger: ServiceSpecCharacteristic[];
   charsListSmallint: ServiceSpecCharacteristic[];
   charsListLongint: ServiceSpecCharacteristic[];
+  charsListEnum: ServiceSpecCharacteristic[];
   charsListFloat: ServiceSpecCharacteristic[];
   charsListBinary: ServiceSpecCharacteristic[];
   charsListBoolean: ServiceSpecCharacteristic[];
@@ -49,31 +65,27 @@ export class ServiceRuleDesignComponent implements OnInit {
   charsListText: ServiceSpecCharacteristic[];
   charsListLongText: ServiceSpecCharacteristic[];
   charsListTimestamp: ServiceSpecCharacteristic[];
+  generatedCode: string;
 
   constructor(
-    private route: ActivatedRoute,    
-    private programService: RuleProgramService,
+    private activatedRoute: ActivatedRoute,    
     private router: Router,
-    bs: BlocklyJavaService,
+    bs: BlocklyJavaService,    
+    private toast: ToastrService,
+    private lcmRulesService: LcmRuleSpecificationService,
     private specService: ServiceSpecificationService) {
       
     this.blocklyJavaService = bs;
-    this.title = 'Create Service Specification LCM Rule. Scope: pre-Creation';
-    this.route.params.subscribe(params => {
+    this.title = 'Create LCM Rule';
+    this.activatedRoute.params.subscribe(params => {
       this.programName = params['programName'];
-      this.program = this.programService.getOne(this.programName);
-      if (!this.program) {
-        this.program = {
-          name: this.programName,
-          xmlData: ''
-        };
-      }
+      
+
       console.log(
-        'creating/editing the program - ',
-        JSON.stringify(this.program)
+        'creating/editing the program - '
       );
       
-      console.log( this.route.snapshot.queryParams['specid']  );
+      console.log( this.activatedRoute.snapshot.queryParams['specid']  );
     });
 
 
@@ -88,20 +100,44 @@ export class ServiceRuleDesignComponent implements OnInit {
         scrollbars: true
       });
 
-      if (this.route.snapshot.queryParams['specid']){
-        this.specID = this.route.snapshot.queryParams['specid']; 
+
+
+      if (this.activatedRoute.snapshot.params.id) 
+      {
+        this.lcmRuleSpecID = this.activatedRoute.snapshot.params.id
+        this.retrieveLCMRuleSpec();
+   
+      }
+       else {
+        this.newLCMRuleSpecification = true;
+        var serviceSpecsList: ServiceSpecificationRef[];
+        this.lcmRuleSpec = {
+          name: 'new rulespec',
+          description: 'new description',
+          serviceSpecs: serviceSpecsList
+        };
+        
+        this.editForm.patchValue(this.lcmRuleSpec)
+        this.editForm.markAsPristine()
+      }
+
+      
+      if (this.activatedRoute.snapshot.queryParams['specid']){
+        this.specID = this.activatedRoute.snapshot.queryParams['specid']; 
         this.blocklyJavaService.createJava(this.workspace, Blockly);
         this.createOpensliceJava(this.workspace, Blockly);       
         this.retrieveServiceSpec();        
       }
+
+      
   
-      if (this.program.xmlData) {
-        this.workspace.clear();
-        Blockly.Xml.domToWorkspace(
-          Blockly.Xml.textToDom(this.program.xmlData),
-          this.workspace
-        );
-      }
+      // if (this.program.xmlData) {
+      //   this.workspace.clear();
+      //   Blockly.Xml.domToWorkspace(
+      //     Blockly.Xml.textToDom(this.program.xmlData),
+      //     this.workspace
+      //   );
+      // }
   
       this.workspace.addChangeListener(() => {
         // var code = Blockly.JavaScript.workspaceToCode(this.workspace);
@@ -115,6 +151,7 @@ export class ServiceRuleDesignComponent implements OnInit {
         var code3 = Blockly.Java.workspaceToCode(this.workspace);
         console.log(code3)
         this.generatedCode = code3;
+        this.lcmRuleSpec.code = code3;
         
       });
   
@@ -144,6 +181,7 @@ export class ServiceRuleDesignComponent implements OnInit {
           this.charsListInteger= this.spec.serviceSpecCharacteristic.filter(specCharacteristic => specCharacteristic.valueType == 'INTEGER');
           this.charsListSmallint= this.spec.serviceSpecCharacteristic.filter(specCharacteristic => specCharacteristic.valueType == 'SMALLINT');
           this.charsListLongint= this.spec.serviceSpecCharacteristic.filter(specCharacteristic => specCharacteristic.valueType == 'LONGINT');
+          this.charsListEnum= this.spec.serviceSpecCharacteristic.filter(specCharacteristic => specCharacteristic.valueType == 'ENUM');
           this.charsListFloat= this.spec.serviceSpecCharacteristic.filter(specCharacteristic => specCharacteristic.valueType == 'FLOAT');
           this.charsListBinary= this.spec.serviceSpecCharacteristic.filter(specCharacteristic => specCharacteristic.valueType == 'BINARY');
           this.charsListBoolean= this.spec.serviceSpecCharacteristic.filter(specCharacteristic => specCharacteristic.valueType == 'BOOLEAN');
@@ -155,12 +193,13 @@ export class ServiceRuleDesignComponent implements OnInit {
 
   
           this.workspace.charsListText = this.charsListText;
-          this.workspace.charsListText.concat( this.charsListLongText );
+          this.workspace.charsListText = this.workspace.charsListText.concat( this.charsListLongText );
           
-          this.workspace.charsListNumber = this.charsListInteger;
-          this.workspace.charsListNumber.concat( this.charsListSmallint );
-          this.workspace.charsListNumber.concat( this.charsListLongint );
-          this.workspace.charsListNumber.concat( this.charsListFloat );
+          this.workspace.charsListNumber = this.charsListSmallint;
+          this.workspace.charsListNumber = this.workspace.charsListNumber.concat( this.charsListEnum );
+          this.workspace.charsListNumber = this.workspace.charsListNumber.concat( this.charsListInteger );
+          this.workspace.charsListNumber = this.workspace.charsListNumber.concat( this.charsListLongint );
+          this.workspace.charsListNumber = this.workspace.charsListNumber.concat( this.charsListFloat );
 
           this.workspace.charsListSet = this.charsListSet;
 
@@ -171,13 +210,50 @@ export class ServiceRuleDesignComponent implements OnInit {
           this.workspace.registerToolboxCategoryCallback( 'SPECCHARVARIABLES_NUM', this.charvarsNumberFunction );
           this.workspace.registerToolboxCategoryCallback( 'SPECCHARVARIABLES_BOOL', this.charvarsBoolFunction);
           this.workspace.registerToolboxCategoryCallback( 'SPECCHARVARIABLES_SET', this.charvarsSetFunction);
-      
+          this.title = 'Create LCM Rule for ' + this.spec.name;
+          if (this.newLCMRuleSpecification ){
+            var serviceSpecRef: ServiceSpecificationRef ;            
+            var serviceSpecsList: ServiceSpecificationRef[] = [];
+            serviceSpecRef = { id: this.spec.id, name: this.spec.name } ;
+            serviceSpecsList.push(serviceSpecRef);         
+            this.lcmRuleSpec.serviceSpecs = serviceSpecsList;   
+            this.lcmRuleSpec.name = "LCM Rule " +  this.spec.name;
+            this.lcmRuleSpec.description = "LCM Rule for specification " +  this.spec.name;
+            
+            this.editForm.patchValue(this.lcmRuleSpec)
+            this.editForm.markAsPristine()  
+          } 
 
         }
       )
     }
 
 
+    
+    retrieveLCMRuleSpec() {
+    this.lcmRulesService.retrieveLCMRuleSpecification ({id: this.lcmRuleSpecID}).subscribe(
+      data => this.lcmRuleSpec = data,
+      error => console.error(error),
+      () => {
+        //populate General Panel Info
+
+        if (this.lcmRuleSpec.content ) {
+          this.workspace.clear();
+          Blockly.Xml.domToWorkspace(
+            Blockly.Xml.textToDom(this.lcmRuleSpec.content),
+            this.workspace
+          );
+        }
+        
+        this.editForm.patchValue(this.lcmRuleSpec)
+        this.editForm.markAsPristine()
+
+
+        //populate Service Descriptor Panel Info
+        // this.retrieveServiceDesriptor(this.spec.id)
+      }
+    )
+  }
   
       /**
      * Construct the blocks required by the flyout for the colours category.
@@ -447,21 +523,65 @@ export class ServiceRuleDesignComponent implements OnInit {
         return [code, order];
       };
   
-   //{ "nsdId": "e855be91-567b-45cf-9f86-18653e7eacaa", "vimAccountId": "4efd8bf4-5292-4634-87b7-7b3d49108b36" , "vnf": [ {"member-vnf-index": "1", "vdu": [ {"id": "ForthnetCharmedVNF-VM", "interface": [{"name": "eth0", "floating-ip-required": true }]}]}]} 
-  
       Blockly.Java['osm_nsd_config'] = function(block: any) {
-        var NSD_ID = Blockly.Java.valueToCode(block, 'NSD_ID',
+        var NSDID = Blockly.Java.valueToCode(block, 'NSDID',
           Blockly.Java.ORDER_NONE) || '""';
-          var VIM_ID = Blockly.Java.valueToCode(block, 'VIM_ID',
+          var VIMID = Blockly.Java.valueToCode(block, 'VIMID',
             Blockly.Java.ORDER_NONE) || '""';
-            var statement = Blockly.Java.valueToCode(block, 'statement',
+            var config = Blockly.Java.valueToCode(block, 'config',
               Blockly.Java.ORDER_NONE) || '""';
-        var code = '{ "nsdId": '+NSD_ID+', "vimAccountId": '+VIM_ID+' , '+statement+' } ';
+        var code = '{ "nsdId": '+NSDID+', "vimAccountId": '+VIMID+' , '+config+' } ';
+        return [code, Blockly.Java.ORDER_ATOMIC];
+      };
+    
+  
+      Blockly.Java['osm_nsd_config_detailed'] = function(block: any) {
+        var NSDID = Blockly.Java.valueToCode(block, 'NSDID',
+          Blockly.Java.ORDER_NONE) || '""';
+        var VIMID = Blockly.Java.valueToCode(block, 'VIMID',
+            Blockly.Java.ORDER_NONE) || '""';
+            
+        var VNF = Blockly.Java.valueToCode(block, 'VNF',
+        Blockly.Java.ORDER_NONE)  || '[]';
+        
+        var VLD = Blockly.Java.valueToCode(block, 'VLD',
+        Blockly.Java.ORDER_NONE) || '[]';
+
+        var additionalParamsForVnf = Blockly.Java.valueToCode(block, 'additionalParamsForVnf',
+        Blockly.Java.ORDER_NONE) || '[]';
+
+        var osmconfig: any = { nsdId:'zzz' };
+
+        osmconfig.nsdId = NSDID.replaceAll('"', '');
+        osmconfig.vimAccountId = VIMID.replaceAll('"', '');
+        osmconfig.vnf = JSON.parse(VNF) ;
+        osmconfig.vld = [];
+        osmconfig.additionalParamsForVnf = [];
+
+        var code =  JSON.stringify( osmconfig );
+        
         return [code, Blockly.Java.ORDER_ATOMIC];
       };
     
   
       
+      Blockly.Java['osm_nsd_config_vnf'] = function(block: any) {
+        var membervnfindex = Blockly.Java.valueToCode(block, 'member-vnf-index',
+          Blockly.Java.ORDER_NONE) || '""';
+        var vdu = Blockly.Java.valueToCode(block, 'vdu',
+            Blockly.Java.ORDER_NONE) || '""';
+            
+        var code: any = { "member-vnf-index":membervnfindex.replaceAll('"', '')  };
+        vdu = vdu.replace('"', '');
+        vdu = vdu.substring(0, vdu.length-1);
+        code.vdu = JSON.parse( vdu  ) ;
+        //var code = '{ "member-vnf-index": '+membervnfindex+', "vdu": '+ vdu + ' } ';
+        code =  JSON.stringify( code );
+        return [code, Blockly.Java.ORDER_ATOMIC];
+      };
+    
+
+
       Blockly.Java['variables_get_panda'] = function(block: any) {
         console.log('Variable getter panda')
         var VAR_NAME = Blockly.Java.valueToCode(block, 'FIELD_NAME',
@@ -509,19 +629,56 @@ export class ServiceRuleDesignComponent implements OnInit {
   
   
     saveProgram(): void {
-      this.program.xmlData = Blockly.Xml.domToText(
-        Blockly.Xml.workspaceToDom(this.workspace)
-      );
-      console.log('saving the program - ', JSON.stringify(this.program));
-      this.programService.upsertOne(this.program);
-      this.router.navigate(['listProgram']);
+      // this.program.xmlData = Blockly.Xml.domToText(
+      //   Blockly.Xml.workspaceToDom(this.workspace)
+      // );
+      console.log('saving the program - ', JSON.stringify(this.lcmRuleSpec));
+      //this.programService.upsertOne(this.program);
+      //this.router.navigate(['listProgram']);
+
+      const updateObj: LCMRuleSpecificationUpdate | LCMRuleSpecificationCreate = {
+        content: Blockly.Xml.domToText( Blockly.Xml.workspaceToDom(this.workspace) ),
+        code: this.lcmRuleSpec.code,
+        description: this.editForm.value.description,
+        name: this.editForm.value.name,
+        lcmrulephase: this.editForm.value.lcmphase ,
+        serviceSpecs: this.lcmRuleSpec.serviceSpecs
+      }
+
+      if (this.newLCMRuleSpecification) {
+        this.lcmRulesService .createLCMRuleSpecification(updateObj).subscribe(
+          data => { this.lcmRuleSpec = data },
+          error => console.error(error),
+          () => { 
+            this.newLCMRuleSpecification = false
+            this.toast.success("Service Specification was successfully created") 
+            
+          }
+        )
+      } else
+      {
+        this.lcmRulesService.patchLCMRuleSpecification({id: this.lcmRuleSpec.id, body: updateObj}).subscribe(
+          data => console.log(data),
+          error => console.error(error),
+          () => { 
+            this.toast.success("Service Specification was successfully updated");
+            
+          }
+        )
+      }
+
+
+
+
+
+
     }
   
     addBlock(): void {
   
       this.workspace;
      
-      console.log('saving the program - ', JSON.stringify(this.program));
+      // console.log('saving the program - ', JSON.stringify(this.program));
     }
 
     
@@ -532,4 +689,4 @@ export class ServiceRuleDesignComponent implements OnInit {
     }
     
   }
-  
+

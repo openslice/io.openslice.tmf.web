@@ -1,7 +1,7 @@
 <div  class="container-blockly-main">
     <!-- toolbar -->
     <mat-toolbar  class="mat-elevation-z0" >
-      <span class="mr-auto p-2">{{ title }} - {{ programName }}</span>
+      <span class="mr-auto p-2">{{ title }}</span>
       <div class = "d-flex">
         <button type="button" class="btn btn-danger m-2  btn-block" style="width: 80px" (click)="cancelProgram()">Cancel</button>
         <button type="button" class="btn btn-success m-2 btn-block" style="width: 80px" (click)="saveProgram()">Save</button>
@@ -15,7 +15,46 @@
           <div id="blocklyDiv" ></div>
         
           <div id="generatedCode" class="generated-code">
-            <p>{{ generatedCode }}</p>
+            <mat-tab-group mat-align-tabs="start">
+              <mat-tab label="Properties">
+                
+                <form [formGroup]="editForm">              
+                  <mat-form-field class="col-md-6">
+                    <mat-label>Name</mat-label>
+                    <input matInput formControlName="name">
+                  </mat-form-field>
+              
+                  <mat-form-field class="col-md-12">
+                    <mat-label>Description </mat-label>
+                    <textarea matTextareaAutosize="true" matAutosizeMinRows="2"
+                        matInput formControlName="description"></textarea>
+                  </mat-form-field>
+
+                  
+                  <mat-form-field class="col-md-12">
+                    <mat-label>Lifecycle phase</mat-label>
+                    <mat-select formControlName="lcmphase">
+                        <mat-option *ngFor="let phase of lcmphases"
+                            [value]="phase">
+                            {{phase}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+                
+
+                <mat-form-field class="col-md-4 col-sm-6">
+                  <mat-label>Version</mat-label>
+                  <input matInput formControlName="version">
+              </mat-form-field>
+                </form>
+
+
+
+              </mat-tab>
+              <mat-tab label="Code"><p>{{ generatedCode }}</p></mat-tab>
+            </mat-tab-group>
+
+            
             
           </div>
   
@@ -29,39 +68,45 @@
           </variables>
   
           <category name="Service Spec" colour="210">          
-            <category name="Number" colour="210" custom="SPECCHARVARIABLES_NUM" >   
+            <category name="Number" colour="60" custom="SPECCHARVARIABLES_NUM" >   
             </category>
-            <category name="Text" colour="230" custom="SPECCHARVARIABLES_TEXT" ></category>
+            <category name="Text" colour="30" custom="SPECCHARVARIABLES_TEXT" ></category>
            
-            <category name="Boolean" colour="190" custom="SPECCHARVARIABLES_BOOL" >   
+            <category name="Boolean" colour="90" custom="SPECCHARVARIABLES_BOOL" >   
             </category>
-            <category name="Set" colour="170" custom="SPECCHARVARIABLES_SET" >   
+            <category name="Set" colour="260" custom="SPECCHARVARIABLES_SET" >   
             </category>
+            </category>
+            <category name="OSM" colour="210">       
+              <block type="osm_nsd_config"></block>  
+              <block type="osm_nsd_config_detailed"></block>
+              <block type="osm_nsd_config_vnf"></block>
+                
+              
+            </category>
+  
             
             <category name="Various" colour="210">   
               <block type="changecharacteristicvalue"></block>        
               <block type="characteristiccontains"></block>           
               <block type="getcharacteristicvalue"></block>        
-              <block type="setcharacteristicvalue"></block>      
-              <block type="osm_nsd_config"></block>  
+              <block type="setcharacteristicvalue"></block>   
               
-            </category>
-  
             
               
                 
           </category>
   
           <category name="Literals" colour="210">   
-            <category name="Text" colour="210">    
+            <category name="Text" colour="30">    
               <block type="variable_declare_string"></block>  
               <block type="literal_text"></block>    
               <button text="Create a String variable" callbackKey="CREATE_STRING_VARIABLE"></button> 
           </category> 
-          <category name="Number" colour="210">    
+          <category name="Number" colour="60">    
             <block type="literal_integer"></block> 
           </category>     
-          <category name="Boolean" colour="210"> 
+          <category name="Boolean" colour="90"> 
             <block type="literal_boolean"></block> 
           </category>  
           <category name="Misc" colour="210">   

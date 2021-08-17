@@ -14,7 +14,7 @@
         <div class="wrapper-blockly">
           <div id="blocklyDiv" ></div>
         
-          <div id="generatedCode" class="generated-code">
+          <div id="generatedCode" >
             <mat-tab-group mat-align-tabs="start">
               <mat-tab label="Properties">
                 
@@ -51,7 +51,9 @@
 
 
               </mat-tab>
-              <mat-tab label="Code"><p>{{ generatedCode }}</p></mat-tab>
+              <mat-tab label="Code" >
+                <textarea readonly class="generated-code">{{ generatedCode }}</textarea>
+              </mat-tab>
             </mat-tab-group>
 
             
@@ -80,7 +82,11 @@
             <category name="OSM" colour="210">       
               <block type="osm_nsd_config"></block>  
               <block type="osm_nsd_config_detailed"></block>
-              <block type="osm_nsd_config_vnf"></block>
+              <block type="osm_nsd_config_vnf"></block>                
+              <block type="osm_nsd_config_vld"></block>     
+              <block type="osm_nsd_config_paramvnf"></block>
+              <block type="osm_nsd_config_param"></block>
+              
                 
               
             </category>

@@ -255,15 +255,15 @@ Blockly.defineBlocksWithJsonArray([
       this.appendValueInput("NSDID")
           .setCheck("String")
           .setAlign(Blockly.ALIGN_RIGHT)
-          .appendField("NSDID");
+          .appendField("NSDID(Text)");
       this.appendValueInput("VIMID")
           .setCheck("String")
           .setAlign(Blockly.ALIGN_RIGHT)
-          .appendField("VIMID");
+          .appendField("VIMID(Text)");
       this.appendValueInput("config")
           .setCheck("String")
           .setAlign(Blockly.ALIGN_RIGHT)
-          .appendField("config");
+          .appendField("config(Text/json)");
       this.setOutput(true, null);
       this.setColour(230);
    this.setTooltip("");
@@ -307,7 +307,7 @@ Blockly.defineBlocksWithJsonArray([
 
       this.setOutput(true, 'String');      
       this.setColour(230);
-   this.setTooltip("Constructs a json string to be used for OSM conficuration during initialization.");
+   this.setTooltip("Constructs a json string to be used for OSM configuration during initialization.");
    this.setHelpUrl("");
     }
   };
@@ -317,12 +317,11 @@ Blockly.defineBlocksWithJsonArray([
       this.appendValueInput("member-vnf-index")
           .setCheck("String")
           .setAlign(Blockly.ALIGN_RIGHT)
-          .appendField("member-vnf-index");
+          .appendField("member-vnf-index(Text)");
       this.appendValueInput("vdu")
           .setCheck("String")
           .setAlign(Blockly.ALIGN_RIGHT)
-          .appendField("vdu");
-    
+          .appendField("vdu(Text/json)");    
       this.appendValueInput("VIMID")
           .setCheck("String")
           .setAlign(Blockly.ALIGN_RIGHT)
@@ -330,11 +329,73 @@ Blockly.defineBlocksWithJsonArray([
           
       this.setOutput(true, 'String');      
       this.setColour(230);
-   this.setTooltip("Constructs a json string to be used for OSM conficuration for member-vnf.");
+   this.setTooltip("Constructs a json string to be used for OSM configuration for member-vnf.");
    this.setHelpUrl("");
     }
   };
 
+
+
+  Blockly.Blocks['osm_nsd_config_vld'] = {
+    init: function() {
+      this.appendValueInput("name")
+          .setCheck("String")
+          .setAlign(Blockly.ALIGN_RIGHT)
+          .appendField("vld name(Text)");
+      this.appendValueInput("vim-network-name")
+          .setCheck("String")
+          .setAlign(Blockly.ALIGN_RIGHT)
+          .appendField("vim-network-name(Text)");
+    
+      this.appendValueInput("config")
+          .setCheck("String")
+          .setAlign(Blockly.ALIGN_RIGHT)
+          .appendField("config(Text/json)");
+          
+      this.setOutput(true, 'String');      
+      this.setColour(230);
+   this.setTooltip("Constructs a json string to be used for OSM configuration for member-vld.");
+   this.setHelpUrl("");
+    }
+  };
+
+  Blockly.Blocks['osm_nsd_config_paramvnf'] = {
+    init: function() {
+      this.appendValueInput("member-vnf-index")
+          .setCheck("String")
+          .setAlign(Blockly.ALIGN_RIGHT)
+          .appendField("additionalParamsForVnf member-vnf-index(Text)");
+      this.appendValueInput("additionalParams")
+          .setCheck("Array")
+          .setAlign(Blockly.ALIGN_RIGHT)
+          .appendField("additionalParams(array)");    
+     
+          
+      this.setOutput(true, 'String');      
+      this.setColour(230);
+   this.setTooltip("Constructs a json string to be used for OSM configuration for member-additionalParamsForVnf.");
+   this.setHelpUrl("");
+    }
+  };
+
+  Blockly.Blocks['osm_nsd_config_param'] = {
+    init: function() {
+      this.appendValueInput("paramname")
+          .setCheck("String")
+          .setAlign(Blockly.ALIGN_RIGHT)
+          .appendField("param name(Text)");
+      this.appendValueInput("paramvalue")
+          .setCheck("String")
+          .setAlign(Blockly.ALIGN_RIGHT)
+          .appendField("param value(Text)");    
+     
+          
+      this.setOutput(true, 'String');      
+      this.setColour(230);
+   this.setTooltip("Constructs a json string to be used for OSM configuration for a parameter in additionalParamsForVnf.");
+   this.setHelpUrl("");
+    }
+  };
 
 
   Blockly.Blocks['logic_set_contains_strings'] = {

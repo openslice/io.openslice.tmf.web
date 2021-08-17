@@ -453,7 +453,7 @@ export class ServiceRuleDesignComponent implements OnInit {
       Blockly.Java['getcharval_string'] = function(block: any) {
         var dropdown_name = block.getFieldValue('AVALUE');
         var argument0 = Blockly.Java.quote_( dropdown_name );
-        var code = 'getCharVal(' + argument0 + ')' ;
+        var code = 'getCharValString(' + argument0 + ')' ;
         return [code, Blockly.Java.ORDER_ATOMIC];
       };
   
@@ -465,7 +465,7 @@ export class ServiceRuleDesignComponent implements OnInit {
         var argument1 = Blockly.Java.valueToCode(block, 'AVALUE',
           Blockly.Java.ORDER_NONE) || '""';
           
-        return 'setCharVall(' + argument0 + ', ' + argument1 + ');\n';
+        return 'setCharValString(' + argument0 + ', ' + argument1 + ');\n';
       };
 
 
@@ -473,7 +473,7 @@ export class ServiceRuleDesignComponent implements OnInit {
       Blockly.Java['getcharval_number'] = function(block: any) {
         var dropdown_name = block.getFieldValue('AVALUE');
         var argument0 = Blockly.Java.quote_( dropdown_name );
-        var code = 'getCharVal(' + argument0 + ')' ;
+        var code = 'getCharValNumber(' + argument0 + ')' ;
         return [code, Blockly.Java.ORDER_ATOMIC];
       };
   
@@ -485,14 +485,14 @@ export class ServiceRuleDesignComponent implements OnInit {
         var argument1 = Blockly.Java.valueToCode(block, 'AVALUE',
           Blockly.Java.ORDER_NONE) || '""';
           
-        return 'setCharVal(' + argument0 + ', ' + argument1 + ');\n';
+        return 'setCharValNumber(' + argument0 + ', ' + argument1 + ');\n';
       };
   
   
       Blockly.Java['getcharval_set'] = function(block: any) {
         var dropdown_name = block.getFieldValue('AVALUE');
         var argument0 = Blockly.Java.quote_( dropdown_name );
-        var code = 'getCharVal(' + argument0 + ')' ;
+        var code = 'getCharValSet(' + argument0 + ')' ;
         return [code, Blockly.Java.ORDER_ATOMIC];
       };
   
@@ -504,7 +504,7 @@ export class ServiceRuleDesignComponent implements OnInit {
         var argument1 = Blockly.Java.valueToCode(block, 'AVALUE',
           Blockly.Java.ORDER_NONE) || '""';
           
-        return 'setCharVal(' + argument0 + ', ' + argument1 + ');\n';
+        return 'setCharValSet(' + argument0 + ', ' + argument1 + ');\n';
       };
   
       
@@ -526,11 +526,29 @@ export class ServiceRuleDesignComponent implements OnInit {
       Blockly.Java['osm_nsd_config'] = function(block: any) {
         var NSDID = Blockly.Java.valueToCode(block, 'NSDID',
           Blockly.Java.ORDER_NONE) || '""';
-          var VIMID = Blockly.Java.valueToCode(block, 'VIMID',
+        var VIMID = Blockly.Java.valueToCode(block, 'VIMID',
             Blockly.Java.ORDER_NONE) || '""';
-            var config = Blockly.Java.valueToCode(block, 'config',
-              Blockly.Java.ORDER_NONE) || '""';
-        var code = '{ "nsdId": '+NSDID+', "vimAccountId": '+VIMID+' , '+config+' } ';
+        var config = Blockly.Java.valueToCode(block, 'config',
+              Blockly.Java.ORDER_NONE) || null;
+        
+        var osmconfig: any = { nsdId:'zzz' };
+
+        osmconfig.nsdId = NSDID.replaceAll('"', '');
+        osmconfig.vimAccountId = VIMID.replaceAll('"', '');
+
+        var code =  JSON.stringify( osmconfig, null, 4 );
+        if (config){
+          //it will replace all
+          config = config.replace('"', '');
+          config = config.substring(0, config.length-1);
+          //code = config;
+          var configAsObj = JSON.parse(config);
+          code = JSON.stringify( configAsObj, null, 4 );
+        }
+
+        
+        var code = '"""\n' +  code + '\n"""' ;
+
         return [code, Blockly.Java.ORDER_ATOMIC];
       };
     
@@ -542,23 +560,41 @@ export class ServiceRuleDesignComponent implements OnInit {
             Blockly.Java.ORDER_NONE) || '""';
             
         var VNF = Blockly.Java.valueToCode(block, 'VNF',
-        Blockly.Java.ORDER_NONE)  || '[]';
+        Blockly.Java.ORDER_NONE)  || null;
         
         var VLD = Blockly.Java.valueToCode(block, 'VLD',
-        Blockly.Java.ORDER_NONE) || '[]';
+        Blockly.Java.ORDER_NONE) || null;
 
         var additionalParamsForVnf = Blockly.Java.valueToCode(block, 'additionalParamsForVnf',
-        Blockly.Java.ORDER_NONE) || '[]';
+        Blockly.Java.ORDER_NONE) || null;
+
+        
+        var additionalParamsForNs = Blockly.Java.valueToCode(block, 'additionalParamsForNs',
+        Blockly.Java.ORDER_NONE) || null;
+        
+        var ssh_keys = Blockly.Java.valueToCode(block, 'ssh_keys',
+        Blockly.Java.ORDER_NONE) || null;
 
         var osmconfig: any = { nsdId:'zzz' };
 
         osmconfig.nsdId = NSDID.replaceAll('"', '');
         osmconfig.vimAccountId = VIMID.replaceAll('"', '');
-        osmconfig.vnf = JSON.parse(VNF) ;
-        osmconfig.vld = [];
-        osmconfig.additionalParamsForVnf = [];
-
-        var code =  JSON.stringify( osmconfig );
+        if (VNF){          
+          osmconfig.vnf =JSON.parse(VNF) ;
+        }
+        if (VLD){
+          osmconfig.vld = JSON.parse(VLD) ;
+        }
+        if (additionalParamsForVnf){
+          osmconfig.additionalParamsForVnf = JSON.parse(additionalParamsForVnf) ;
+        }
+        if (additionalParamsForNs){
+          osmconfig.additionalParamsForNs = JSON.parse(additionalParamsForNs) ;
+        }        
+        if (ssh_keys){
+          osmconfig.ssh_keys = JSON.parse(ssh_keys) ;
+        }
+        var code = '"""\n' +  JSON.stringify( osmconfig, null, 4 ) + '\n"""' ;
         
         return [code, Blockly.Java.ORDER_ATOMIC];
       };
@@ -567,19 +603,108 @@ export class ServiceRuleDesignComponent implements OnInit {
       
       Blockly.Java['osm_nsd_config_vnf'] = function(block: any) {
         var membervnfindex = Blockly.Java.valueToCode(block, 'member-vnf-index',
-          Blockly.Java.ORDER_NONE) || '""';
+          Blockly.Java.ORDER_NONE) || '"1"';
         var vdu = Blockly.Java.valueToCode(block, 'vdu',
-            Blockly.Java.ORDER_NONE) || '""';
+            Blockly.Java.ORDER_NONE) || null;            
+        var vimAccountId = Blockly.Java.valueToCode(block, 'VIMID',
+        Blockly.Java.ORDER_NONE) || null;
             
         var code: any = { "member-vnf-index":membervnfindex.replaceAll('"', '')  };
-        vdu = vdu.replace('"', '');
-        vdu = vdu.substring(0, vdu.length-1);
-        code.vdu = JSON.parse( vdu  ) ;
-        //var code = '{ "member-vnf-index": '+membervnfindex+', "vdu": '+ vdu + ' } ';
-        code =  JSON.stringify( code );
+
+        if ( vimAccountId ){
+          code.vimAccountId = vimAccountId.replaceAll('"', '');
+        }
+        if (vdu){
+          vdu = vdu.replace('"', '');
+          vdu = vdu.substring(0, vdu.length-1);
+          code.vdu = JSON.parse( vdu  ) ;
+        }
+        code =  JSON.stringify( code, null, 4 );
         return [code, Blockly.Java.ORDER_ATOMIC];
       };
     
+      Blockly.Java['osm_nsd_config_vld'] = function(block: any) {
+        var name = Blockly.Java.valueToCode(block, 'name',
+          Blockly.Java.ORDER_NONE) || '""';
+        var vimnetworkname = Blockly.Java.valueToCode(block, 'vim-network-name',
+            Blockly.Java.ORDER_NONE) || null;        
+        var config = Blockly.Java.valueToCode(block, 'config',
+              Blockly.Java.ORDER_NONE) || null;
+            
+        var code: any = { "name":name.replaceAll('"', '')  };
+
+        if ( vimnetworkname ){
+          code = { "name":name.replaceAll('"', '') , "vim-network-name" : vimnetworkname.replaceAll('"', '')  };
+        }
+
+        if (config){
+          //it will replace all
+          config = config.replace('"', '');
+          config = config.substring(0, config.length-1);
+          code = JSON.parse( config  );
+        }
+      
+        code =  JSON.stringify( code, null, 4 );
+        return [code, Blockly.Java.ORDER_ATOMIC];
+      };
+
+
+      Blockly.Java['osm_nsd_config_paramvnf'] = function(block: any) {
+        var membervnfindex = Blockly.Java.valueToCode(block, 'member-vnf-index',
+          Blockly.Java.ORDER_NONE) || '"1"';
+        var additionalParams = Blockly.Java.valueToCode(block, 'additionalParams',
+            Blockly.Java.ORDER_NONE)  || null;    
+            
+        var config = Blockly.Java.valueToCode(block, 'config',
+         Blockly.Java.ORDER_NONE) || null;
+
+        var code: any = { "member-vnf-index":membervnfindex.replaceAll('"', '')  };
+        //we must transform here the key value array to a json object with atributes and values
+        var additionalParamsAsObject= null;
+        if (additionalParams){
+            var dd = JSON.parse( additionalParams);
+            dd.forEach(element => {
+            
+             console.log('Variable additionalParams element = ' + element.paramname );
+             if (additionalParamsAsObject){
+              additionalParamsAsObject =additionalParamsAsObject + ','  + '"' + element.paramname + '" : "' + element.paramvalue + '"';
+             }else{
+              additionalParamsAsObject = '"' + element.paramname + '" : "' + element.paramvalue + '"';
+             }
+           });
+           
+           additionalParamsAsObject = "{" + additionalParamsAsObject + "}";
+
+          code.additionalParams = JSON.parse( additionalParamsAsObject ) ;
+        }
+        code =  JSON.stringify( code, null, 4 );
+
+        if (config){
+          //it will replace all
+          config = config.replace('"', '');
+          config = config.substring(0, config.length-1);
+          code = JSON.parse( config  );
+        }
+
+        return [code, Blockly.Java.ORDER_ATOMIC];
+      };
+    
+
+      
+      Blockly.Java['osm_nsd_config_param'] = function(block: any) {
+        var paramname = Blockly.Java.valueToCode(block, 'paramname',
+          Blockly.Java.ORDER_NONE) || '""';
+        
+          var paramvalue = Blockly.Java.valueToCode(block, 'paramvalue',
+          Blockly.Java.ORDER_NONE) || '""'; 
+            
+        
+        
+        var code: any = { "paramname":paramname.replaceAll('"', ''), "paramvalue":paramvalue.replaceAll('"', ''),   };
+
+        code =  JSON.stringify( code, null, 4 );
+        return [code, Blockly.Java.ORDER_ATOMIC];
+      };
 
 
       Blockly.Java['variables_get_panda'] = function(block: any) {

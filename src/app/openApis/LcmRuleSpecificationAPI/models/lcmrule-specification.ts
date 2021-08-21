@@ -47,6 +47,11 @@ export interface LCMRuleSpecification {
    */
   name?: string;
 
+    /**
+   * priority of the entity
+   */
+  priority?: number;
+
   /**
    * List of service specs associated with this rule
    */

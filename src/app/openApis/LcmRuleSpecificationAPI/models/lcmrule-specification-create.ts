@@ -15,6 +15,7 @@ export interface LCMRuleSpecificationCreate {
   lcmrulephase?: string;
   lifecycleStatus?: string;
   name?: string;
+  priority?: number;
   serviceSpecs?: Array<ServiceSpecificationRef>;
   validFor?: TimePeriod;
   version?: string;

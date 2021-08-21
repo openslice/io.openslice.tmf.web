@@ -61,7 +61,7 @@ export class EditServiceSpecsComponent implements OnInit {
   ruleSpecsOfServiceSpec: LCMRuleSpecification[];
   displayedColumnsCharacteristics = ['name', 'type', 'defaultValues', 'configurable', 'actions']
   dataSource  = new MatTableDataSource<ServiceSpecCharacteristic>()
-  displayedColumnsLCMRules = ['name', 'lcmrulephase', 'description', 'actions']
+  displayedColumnsLCMRules = ['name', 'lcmrulephase', 'description', 'priority', 'actions']
   dataSourceLCMRules  = new MatTableDataSource<LCMRuleSpecification>()
 
   specCharacteristicsTags: string[] = ["All"]

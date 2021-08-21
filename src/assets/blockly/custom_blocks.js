@@ -370,6 +370,10 @@ Blockly.defineBlocksWithJsonArray([
           .setAlign(Blockly.ALIGN_RIGHT)
           .appendField("additionalParams(array)");    
      
+      this.appendValueInput("config")
+          .setCheck("String")
+          .setAlign(Blockly.ALIGN_RIGHT)
+          .appendField("config(Text/json)");
           
       this.setOutput(true, 'String');      
       this.setColour(230);

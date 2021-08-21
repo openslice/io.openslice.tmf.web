@@ -44,6 +44,7 @@ export class ServiceRuleDesignComponent implements OnInit {
     description: new FormControl(),
     lcmphase: new FormControl("PRE_PROVISION"),
     name: new FormControl(),
+    priority: new FormControl("0"),
     version: new FormControl("0.1.0")
   })
 
@@ -766,6 +767,7 @@ export class ServiceRuleDesignComponent implements OnInit {
         code: this.lcmRuleSpec.code,
         description: this.editForm.value.description,
         name: this.editForm.value.name,
+        priority: this.editForm.value.priority,
         lcmrulephase: this.editForm.value.lcmphase ,
         serviceSpecs: this.lcmRuleSpec.serviceSpecs
       }

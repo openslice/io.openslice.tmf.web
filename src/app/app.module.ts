@@ -1,5 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule, LOCALE_ID } from '@angular/core';
+import { NgModule, LOCALE_ID, NO_ERRORS_SCHEMA } from '@angular/core';
 
 import { APP_INITIALIZER } from '@angular/core'
 import { BootstrapService } from './bootstrap/bootstrap.service';
@@ -125,6 +125,7 @@ import { EditActionSpecsComponent } from './admin/AssuranceServicesManagement/ed
 import { ListActionRulesComponent } from './admin/AssuranceServicesManagement/list-action-rules/list-action-rules.component';
 import { EditActionRulesComponent } from './admin/AssuranceServicesManagement/edit-action-rules/edit-action-rules.component';
 import { DeleteActionRulesComponent } from './admin/AssuranceServicesManagement/delete-action-rules/delete-action-rules.component';
+import { ServiceRuleDesignComponent } from './admin/LCM/service-rule-design/service-rule-design.component';
 
 registerLocaleData(enGB);
 export function initializeApp(bootstrap: BootstrapService) {
@@ -197,7 +198,8 @@ export function initializeAppTheme(bootstrap: BootstrapService) {
     EditActionSpecsComponent,
     ListActionRulesComponent,
     EditActionRulesComponent,
-    DeleteActionRulesComponent
+    DeleteActionRulesComponent,
+    ServiceRuleDesignComponent
   ],
   imports: [
     BrowserModule,
@@ -284,6 +286,7 @@ export function initializeAppTheme(bootstrap: BootstrapService) {
     { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true },
     { provide: OWL_DATE_TIME_LOCALE, useValue: 'en-GB'}
   ],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  schemas: [NO_ERRORS_SCHEMA]
 })
 export class AppModule { }

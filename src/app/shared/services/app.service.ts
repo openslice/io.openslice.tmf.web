@@ -8,6 +8,8 @@ import { ApiConfiguration as PartyManagementAPIconfig} from 'src/app/openApis/Pa
 import { ApiConfiguration as ServiceActivationAndConfigurationAPIconfig } from 'src/app/openApis/ServiceActivationAndConfiguration/api-configuration'
 import { ApiConfiguration as AlarmManagementAPIconfig} from 'src/app/openApis/AlarmManagement/api-configuration'
 import { ApiConfiguration as AssuranceServicesManagementAPIconfig} from 'src/app/openApis/AssuranceServicesManagementAPI/api-configuration'
+import { ApiConfiguration as lcmRuleSpecificationAPIConfig } from 'src/app/openApis/LcmRuleSpecificationAPI/api-configuration'
+
 
 @Injectable({
   providedIn: 'root'
@@ -23,7 +25,8 @@ export class AppService {
     private tmfPartyManagementConfig: PartyManagementAPIconfig,
     private tmfServiceActivationAndConfigurationConfig: ServiceActivationAndConfigurationAPIconfig,
     private tmfAlarmManagementConfig: AlarmManagementAPIconfig,
-    private assuranceServicesManagementAPIConfig: AssuranceServicesManagementAPIconfig
+    private assuranceServicesManagementAPIConfig: AssuranceServicesManagementAPIconfig,
+    private lcmRuleSpecificationAPIConfig: lcmRuleSpecificationAPIConfig
   ) { 
     this.setAPIurls()
   }
@@ -39,5 +42,6 @@ export class AppService {
     this.tmfServiceActivationAndConfigurationConfig.rootUrl = this.config.APITMFURL
     this.tmfAlarmManagementConfig.rootUrl = this.config.APITMFURL
     this.assuranceServicesManagementAPIConfig.rootUrl = this.config.ASSURANCE_SERVICE_MGMT_APIURL
+    this.lcmRuleSpecificationAPIConfig.rootUrl = this.config.APITMFURL
   }
 }

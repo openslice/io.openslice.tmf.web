@@ -54,6 +54,7 @@ export class ServiceRuleDesignComponent implements OnInit {
 
   newLCMRuleSpecification = false;
 
+  charsListAllSpecs: ServiceSpecCharacteristic[];
   charsListInteger: ServiceSpecCharacteristic[];
   charsListSmallint: ServiceSpecCharacteristic[];
   charsListLongint: ServiceSpecCharacteristic[];
@@ -102,33 +103,19 @@ export class ServiceRuleDesignComponent implements OnInit {
       });
 
 
-
-      if (this.activatedRoute.snapshot.params.id) 
-      {
-        this.lcmRuleSpecID = this.activatedRoute.snapshot.params.id
-        this.retrieveLCMRuleSpec();
-   
-      }
-       else {
-        this.newLCMRuleSpecification = true;
-        var serviceSpecsList: ServiceSpecificationRef[];
-        this.lcmRuleSpec = {
-          name: 'new rulespec',
-          description: 'new description',
-          serviceSpecs: serviceSpecsList
-        };
-        
-        this.editForm.patchValue(this.lcmRuleSpec)
-        this.editForm.markAsPristine()
-      }
-
-      
       if (this.activatedRoute.snapshot.queryParams['specid']){
         this.specID = this.activatedRoute.snapshot.queryParams['specid']; 
         this.blocklyJavaService.createJava(this.workspace, Blockly);
         this.createOpensliceJava(this.workspace, Blockly);       
         this.retrieveServiceSpec();        
+      } else {
+        this.initializeLCMRuleSpec();
       }
+
+      
+
+      
+      
 
       
   
@@ -159,7 +146,41 @@ export class ServiceRuleDesignComponent implements OnInit {
   
     }
   
+    initializeLCMRuleSpec() {
+      if (this.activatedRoute.snapshot.params.id) 
+          {
+            this.lcmRuleSpecID = this.activatedRoute.snapshot.params.id
+            this.retrieveLCMRuleSpec();
+       
+          }
+           else {
+            this.newLCMRuleSpecification = true;
+            var serviceSpecsList: ServiceSpecificationRef[];
+            this.lcmRuleSpec = {
+              name: 'new rulespec',
+              description: 'new description',
+              serviceSpecs: serviceSpecsList
+            };
+            
+            this.editForm.patchValue(this.lcmRuleSpec)
+            this.editForm.markAsPristine()
     
+            
+              var serviceSpecRef: ServiceSpecificationRef ;            
+              var serviceSpecsList: ServiceSpecificationRef[] = [];
+              serviceSpecRef = { id: this.spec.id, name: this.spec.name } ;
+              serviceSpecsList.push(serviceSpecRef);         
+              this.lcmRuleSpec.serviceSpecs = serviceSpecsList;   
+              this.lcmRuleSpec.name = "LCM Rule " +  this.spec.name;
+              this.lcmRuleSpec.description = "LCM Rule for specification " +  this.spec.name;
+              
+              this.editForm.patchValue(this.lcmRuleSpec)
+              this.editForm.markAsPristine()  
+            
+          }
+    }
+
+
     myFirstButtonPressed(ws: any){
       Blockly.Variables.createVariableButtonHandler( ws, null, 'String');
       //Blockly.Variables.createVariable( ws, null, 'panda');
@@ -178,6 +199,8 @@ export class ServiceRuleDesignComponent implements OnInit {
           //populate Specification Characteristic Panel Info
           // filter Spec Characteristic that does not have defined Value Type (parent spec char)
           this.spec.serviceSpecCharacteristic.filter(specCharacteristic => specCharacteristic.valueType)
+          
+          this.workspace.charsListAllSpecs = this.spec.serviceSpecCharacteristic;
           // this.dataSource.paginator = this.paginator;
           this.charsListInteger= this.spec.serviceSpecCharacteristic.filter(specCharacteristic => specCharacteristic.valueType == 'INTEGER');
           this.charsListSmallint= this.spec.serviceSpecCharacteristic.filter(specCharacteristic => specCharacteristic.valueType == 'SMALLINT');
@@ -206,24 +229,26 @@ export class ServiceRuleDesignComponent implements OnInit {
 
           this.workspace.charsListBoolean = this.charsListBoolean;
           
+          
+          this.workspace.charsListNumber = this.charsListSmallint;
+          this.workspace.charsListNumber = this.workspace.charsListNumber.concat( this.charsListEnum );
+          this.workspace.charsListNumber = this.workspace.charsListNumber.concat( this.charsListInteger );
+          this.workspace.charsListNumber = this.workspace.charsListNumber.concat( this.charsListLongint );
+          this.workspace.charsListNumber = this.workspace.charsListNumber.concat( this.charsListFloat );
 
+
+          this.charvarsAllFunction(this.workspace); //calling this function here causes a preloading of the blocks in the model in a synchronous manner. Asynchronously it is recalled later in the blockly toolbar
+          this.workspace.registerToolboxCategoryCallback( 'SPECCHARALLVARS', this.charvarsAllFunction);
           this.workspace.registerToolboxCategoryCallback( 'SPECCHARVARIABLES_TEXT', this.charvarsTextFunction );
           this.workspace.registerToolboxCategoryCallback( 'SPECCHARVARIABLES_NUM', this.charvarsNumberFunction );
           this.workspace.registerToolboxCategoryCallback( 'SPECCHARVARIABLES_BOOL', this.charvarsBoolFunction);
           this.workspace.registerToolboxCategoryCallback( 'SPECCHARVARIABLES_SET', this.charvarsSetFunction);
           this.title = 'Create LCM Rule for ' + this.spec.name;
-          if (this.newLCMRuleSpecification ){
-            var serviceSpecRef: ServiceSpecificationRef ;            
-            var serviceSpecsList: ServiceSpecificationRef[] = [];
-            serviceSpecRef = { id: this.spec.id, name: this.spec.name } ;
-            serviceSpecsList.push(serviceSpecRef);         
-            this.lcmRuleSpec.serviceSpecs = serviceSpecsList;   
-            this.lcmRuleSpec.name = "LCM Rule " +  this.spec.name;
-            this.lcmRuleSpec.description = "LCM Rule for specification " +  this.spec.name;
-            
-            this.editForm.patchValue(this.lcmRuleSpec)
-            this.editForm.markAsPristine()  
-          } 
+
+          //the spec is loaded, so proceed to load the LCM Rule spec
+          this.initializeLCMRuleSpec();
+
+
 
         }
       )
@@ -255,7 +280,66 @@ export class ServiceRuleDesignComponent implements OnInit {
       }
     )
   }
+
   
+   /**
+     * Construct the blocks required by the flyout for the colours category.
+     * @param {!Blockly.Workspace} workspace The workspace this flyout is for.
+     * @return {!Array.<!Element>} Array of XML block elements.
+     */
+    charvarsAllFunction = function(workspace: any) {
+      var xmlList = [];            
+      var chars: ServiceSpecCharacteristic[] = workspace.charsListAllSpecs ;
+
+      var options = [];
+
+      for (var i = 0; i < chars.length; i++) {
+        options.push([ chars[i].name, chars[i].name ]);
+      }
+
+        var sortedArray: string[] = options.sort((n1,n2) => {
+            if (n1 > n2) {
+                return 1;
+            }
+        
+            if (n1 < n2) {
+                return -1;
+            }
+        
+            return 0;
+        });
+
+      // dynamically create here a block! Ensure that the equivalent java also exis
+      Blockly.Blocks['getcharacteristicvalueAsString'] = {
+        init: function() {
+          this.appendDummyInput()
+              .appendField("Get Value as String", "TXTLBL")
+              .appendField(new Blockly.FieldLabelSerializable(""), "NAMELBL")
+              .appendField(new Blockly.FieldDropdown( sortedArray ), "OPTIONEDVALUE");
+          
+          this.setOutput(true, 'String');
+          this.setColour(30);
+       this.setTooltip("");
+       this.setHelpUrl("");
+        }
+      };
+
+      
+      if (Blockly.Blocks['getcharacteristicvalueAsString']) {
+
+        
+
+          var blockText = '<block type="getcharacteristicvalueAsString">' +
+              '</block>';
+
+           var block = Blockly.Xml.textToDom(blockText);
+          xmlList.push(block);
+      }
+  
+
+  
+      return xmlList;
+    };
       /**
      * Construct the blocks required by the flyout for the colours category.
      * @param {!Blockly.Workspace} workspace The workspace this flyout is for.
@@ -265,9 +349,9 @@ export class ServiceRuleDesignComponent implements OnInit {
         var xmlList = [];            
         var chars: ServiceSpecCharacteristic[] = workspace.charsListText;
 
-        if (Blockly.Blocks['getcharval_string']) {
+        if (Blockly.Blocks['getcharval_string_type']) {
           for (var i = 0; i < chars.length; i++) {
-            var blockText = '<block type="getcharval_string">' +
+            var blockText = '<block type="getcharval_string_type">' +
             '<field name="AVALUE">' + chars[i].name + '</field>' +
                 '</block>';
             var block = Blockly.Xml.textToDom(blockText);
@@ -275,9 +359,9 @@ export class ServiceRuleDesignComponent implements OnInit {
           }
         }
     
-        if (Blockly.Blocks['setcharval_string']) {
+        if (Blockly.Blocks['setcharval_string_type']) {
           for (var i = 0; i < chars.length; i++) {
-            var blockText = '<block type="setcharval_string">' +
+            var blockText = '<block type="setcharval_string_type">' +
             '<field name="NAMELBL">' + chars[i].name + '</field>' +
                 '</block>';
             var block = Blockly.Xml.textToDom(blockText);
@@ -427,15 +511,15 @@ export class ServiceRuleDesignComponent implements OnInit {
         var argument1 = Blockly.Java.valueToCode(block, 'value',
           Blockly.Java.ORDER_NONE) || '""';
           console.log( argument0 );
-        return 'changeCharacteristicValue(' + argument0 + ', ' + argument1 + ');\n';
+        return 'changeCharacteristicValue(' + argument0 + ', ' + argument1 + ')';
       };
   
   
-      Blockly.Java['getcharacteristicvalue'] = function(block: any) {
-        var dropdown_name = block.getFieldValue('NAME');
+      Blockly.Java['getcharacteristicvalueAsString'] = function(block: any) {
+        var dropdown_name = block.getFieldValue('OPTIONEDVALUE');
         var comment_name = block.getFieldValue('NAMELBL');
         var argument0 = Blockly.Java.quote_( dropdown_name );
-        var code = 'getCharacteristicValue(' + argument0 + '); // ' + comment_name;
+        var code = 'getCharValAsString(' + argument0 + ')';
         return [code, Blockly.Java.ORDER_ATOMIC];
       };
   
@@ -447,18 +531,18 @@ export class ServiceRuleDesignComponent implements OnInit {
         var argument1 = Blockly.Java.valueToCode(block, 'NAME',
           Blockly.Java.ORDER_NONE) || '""';
           
-        return 'setcharacteristicvalue(' + argument0 + ', ' + argument1 + ');\n';
+        return 'setcharacteristicvalue(' + argument0 + ', ' + argument1 + ')';
       };
   
   
-      Blockly.Java['getcharval_string'] = function(block: any) {
+      Blockly.Java['getcharval_string_type'] = function(block: any) {
         var dropdown_name = block.getFieldValue('AVALUE');
         var argument0 = Blockly.Java.quote_( dropdown_name );
-        var code = 'getCharValString(' + argument0 + ')' ;
+        var code = 'getCharValFromStringType(' + argument0 + ')' ;
         return [code, Blockly.Java.ORDER_ATOMIC];
       };
   
-      Blockly.Java['setcharval_string'] = function (block: any) {
+      Blockly.Java['setcharval_string_type'] = function (block: any) {
         // Print statement.
         
         var dropdown_name = block.getFieldValue('NAMELBL');
@@ -466,7 +550,7 @@ export class ServiceRuleDesignComponent implements OnInit {
         var argument1 = Blockly.Java.valueToCode(block, 'AVALUE',
           Blockly.Java.ORDER_NONE) || '""';
           
-        return 'setCharValString(' + argument0 + ', ' + argument1 + ');\n';
+        return 'setCharValFromStringType(' + argument0 + ', ' + argument1 + ')';
       };
 
 
@@ -486,7 +570,7 @@ export class ServiceRuleDesignComponent implements OnInit {
         var argument1 = Blockly.Java.valueToCode(block, 'AVALUE',
           Blockly.Java.ORDER_NONE) || '""';
           
-        return 'setCharValNumber(' + argument0 + ', ' + argument1 + ');\n';
+        return 'setCharValNumber(' + argument0 + ', ' + argument1 + ')';
       };
   
   
@@ -708,22 +792,6 @@ export class ServiceRuleDesignComponent implements OnInit {
       };
 
 
-      Blockly.Java['variables_get_panda'] = function(block: any) {
-        console.log('Variable getter panda')
-        var VAR_NAME = Blockly.Java.valueToCode(block, 'FIELD_NAME',
-          Blockly.Java.ORDER_NONE) || '""';
-        var code = '{ "nsdId": '+VAR_NAME+' } ';
-        return [code, Blockly.Java.ORDER_ATOMIC];
-      };
-  
-      
-      
-      Blockly.Java['variables_set_panda'] = function(block: any) {
-        console.log('Variable setter panda')
-        var VAR_NAME = 'test';
-        var code = '{ "nsdId": '+VAR_NAME+' } ';
-        return [code, Blockly.Java.ORDER_ATOMIC];
-      };
   
   
       
@@ -731,9 +799,10 @@ export class ServiceRuleDesignComponent implements OnInit {
   Blockly.Java['variables_get'] = function(block: any) {
     // Variable getter.
         console.log('Variable getter CUSTOM')
-    var code = Blockly.Java.nameDB_.getName(block.getFieldValue('VAR'),
+    var code =  Blockly.Java.nameDB_.getName(block.getFieldValue('VAR'),
         Blockly.Variables.NAME_TYPE);
-    return [code, Blockly.Java.ORDER_ATOMIC];
+        code = '$EVAL_' + code + '_EVAL$';
+    return  [code, Blockly.Java.ORDER_ATOMIC];
   };
   
   Blockly.Java['variables_set'] = function(block: any) {
@@ -816,4 +885,6 @@ export class ServiceRuleDesignComponent implements OnInit {
     }
     
   }
+
+
 

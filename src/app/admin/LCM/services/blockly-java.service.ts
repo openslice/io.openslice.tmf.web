@@ -635,7 +635,7 @@ export class BlocklyJavaService {
             Blockly.Java.ORDER_COMMA) || '""';
         }
         //code = '[' + code.join(',') + '].join("")';
-        code ='String.join("", ' + code.join(',') + '';
+        code ='String.join("", ' + code.join(',') + ')';
         return [code, Blockly.Java.ORDER_FUNCTION_CALL];
       }
     };

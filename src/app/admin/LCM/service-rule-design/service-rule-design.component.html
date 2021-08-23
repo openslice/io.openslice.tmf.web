@@ -75,6 +75,10 @@
           </variables>
   
           <category name="Service Spec" colour="210">          
+            
+            
+            <category name="Characteristics" colour="60" custom="SPECCHARALLVARS" >   
+            </category>
             <category name="Number" colour="60" custom="SPECCHARVARIABLES_NUM" >   
             </category>
             <category name="Text" colour="30" custom="SPECCHARVARIABLES_TEXT" ></category>
@@ -97,37 +101,24 @@
             </category>
   
             
-            <category name="Various" colour="210">   
-              <block type="changecharacteristicvalue"></block>        
-              <block type="characteristiccontains"></block>           
-              <block type="getcharacteristicvalue"></block>        
-              <block type="setcharacteristicvalue"></block>   
-              
-            
-              
-                
-          </category>
   
           <category name="Literals" colour="210">   
-            <category name="Text" colour="30">    
-              <block type="variable_declare_string"></block>  
-              <block type="literal_text"></block>    
-              <button text="Create a String variable" callbackKey="CREATE_STRING_VARIABLE"></button> 
-          </category> 
-          <category name="Number" colour="60">    
-            <block type="literal_integer"></block> 
-          </category>     
-          <category name="Boolean" colour="90"> 
-            <block type="literal_boolean"></block> 
-          </category>  
-          <category name="Misc" colour="210">   
-  
-            <block type="variables_set_panda">
-              <field name="VAR_NAME" variabletype="String">myvar1</field>
-            </block>        
-             
-          </category>  
-            
+              <category name="Text" colour="30">                    
+                <block type="literal_text"></block>    
+                <block type="variable_declare_string"></block>  
+                <block type="variable_get_string"></block>  
+                <block type="variable_set_string"></block>  
+            </category> 
+            <category name="Number" colour="60">    
+              <block type="literal_integer"></block> 
+              <block type="variable_declare_int"></block>  
+              <block type="variable_get_int"></block>  
+              <block type="variable_set_int"></block> 
+            </category>     
+            <category name="Boolean" colour="90"> 
+              <block type="literal_boolean"></block> 
+            </category>  
+              
           </category>
   
   
@@ -173,8 +164,8 @@
             <block type="controls_flow_statements"></block>
           </category>
           
-          <category name="Text" colour="160">
-            <block type="text"></block>
+          <category name="Text functions" colour="160">
+            <!-- <block type="text"></block> -->
             <block type="text_join"></block>
             <block type="text_append">
               <value name="TEXT">
@@ -302,8 +293,8 @@
             <block type="lists_sort"></block>
           </category>
           <sep></sep>
-          <category name="Variables" colour="330" custom="VARIABLE">
-          </category>
+
+          <!-- <category name="Variables" colour="330" custom="VARIABLE"></category>  -->
           <!-- <category name="Functions" colour="290" custom="PROCEDURE"></category> -->
           
         </xml>

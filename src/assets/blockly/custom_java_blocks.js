@@ -526,7 +526,7 @@ Blockly.Blocks['variable_declare_string'] = {
   init: function() {
     this.setHelpUrl(Blockly.Msg.VARIABLES_SET_HELPURL);
     this.setColour(30);
-    var name = Blockly.Variables.generateUniqueName(Blockly.getMainWorkspace() );
+    var name = 'strvar' + Blockly.Variables.generateUniqueName(Blockly.getMainWorkspace() );
     var newString = new Blockly.FieldVariable( name, null, null, 'string');
     // this.interpolateMsg(
     //   'define String '+
@@ -536,7 +536,7 @@ Blockly.Blocks['variable_declare_string'] = {
     
 
       this.appendValueInput('VALUE')
-      .appendField("Create")
+      .appendField("Create String variable")
       .appendField(newString, "VAR")
       .appendField("=")
       .setCheck("String");
@@ -580,9 +580,13 @@ Blockly.Blocks['variable_get_string'] = {
       this.setHelpUrl(Blockly.Msg.VARIABLES_GET_HELPURL);
       this.setColour(30);
       // var name = Blockly.VariablesString.randomVariablesString();
+      
+      var name = 'strvar' + Blockly.Variables.generateUniqueName(Blockly.getMainWorkspace() );
+      var newString = new Blockly.FieldVariable( name, null, null, 'string');
+
       this.appendDummyInput()
       .appendField(Blockly.Msg.VARIABLES_GET_TITLE)
-      .appendField(new Blockly.FieldVariable(null,null,null,'aName'), 'VAR')
+      .appendField( newString, 'VAR')
         .appendField(Blockly.Msg.VARIABLES_GET_TAIL);
         this.setOutput(true,'String');
         this.setTooltip(Blockly.Msg.VARIABLES_GET_TOOLTIP);
@@ -642,7 +646,13 @@ Blockly.Blocks['variable_set_string'] = {
     //     'set' + ' %1 ',
     //     ['VAR', new Blockly. FieldVariable(null,null,null,'String')],
     //     Blockly.ALIGN_RIGHT);
+    
+    var name = 'strvar' + Blockly.Variables.generateUniqueName(Blockly.getMainWorkspace() );
+    var newString = new Blockly.FieldVariable( name, null, null, 'string');
+    
     this.appendValueInput('VALUE')
+    .appendField( newString, 'VAR')
+    .appendField("=")
         .setCheck("String");
     this.setInputsInline(true);
     this.setPreviousStatement(true);
@@ -685,12 +695,17 @@ Blockly.Blocks['variable_declare_int'] = {
     init: function() {
       this.setHelpUrl(Blockly.Msg.VARIABLES_SET_HELPURL);
       this.setColour(60);
-      this.interpolateMsg(
-        'define int '+
-        'called' + ' %1' ,//+
-        ['VAR', new Blockly.FieldVariableInteger(null)],
-        Blockly.ALIGN_RIGHT);
+      var name = Blockly.Variables.generateUniqueName(Blockly.getMainWorkspace() );
+      var newString = new Blockly.FieldVariable( name, null, null, 'Number');
+      // this.interpolateMsg(
+      //   'define int '+
+      //   'called' + ' %1' ,//+
+      //   ['VAR', new Blockly.FieldVariableInteger(null)],
+      //   Blockly.ALIGN_RIGHT);
         this.appendValueInput('VALUE')
+        .appendField("Create Integer variable")
+        .appendField(newString, "VAR")
+        .appendField("=")
         .setCheck("Number");
         this.setInputsInline(true);
         this.setPreviousStatement(true);
@@ -731,11 +746,13 @@ Blockly.Blocks['variable_get_int'] = {
     init: function() {
       this.setHelpUrl(Blockly.Msg.VARIABLES_GET_HELPURL);
       this.setColour(60);
-      var name = Blockly.VariablesInteger.randomVariablesInteger();
+      var name = Blockly.Variables.generateUniqueName(Blockly.getMainWorkspace() );
+      var newString = new Blockly.FieldVariable( name, null, null, 'Number');
+
+      //var name = Blockly.VariablesInteger.randomVariablesInteger;
       this.appendDummyInput()
       .appendField(Blockly.Msg.VARIABLES_GET_TITLE)
-      .appendField(new Blockly.FieldVariableInteger(
-        name), 'VAR')
+      .appendField(newString, 'VAR')
         .appendField(Blockly.Msg.VARIABLES_GET_TAIL);
         this.setOutput(true,'Number');
         this.setTooltip(Blockly.Msg.VARIABLES_GET_TOOLTIP);
@@ -788,13 +805,18 @@ Blockly.Blocks['variable_set_int'] = {
   init: function() {
     this.setHelpUrl(Blockly.Msg.VARIABLES_SET_HELPURL);
     this.setColour(60);
-    var name = Blockly.VariablesInteger.randomVariablesInteger();
-    this.interpolateMsg(
-        // TODO: Combine these messages instead of using concatenation.
-        'set' + ' %1 ',
-        ['VAR', new Blockly.FieldVariableInteger(name)],
-        Blockly.ALIGN_RIGHT);
+    var name = Blockly.Variables.generateUniqueName(Blockly.getMainWorkspace() );
+    var newString = new Blockly.FieldVariable( name, null, null, 'Number');
+
+    //var name = Blockly.VariablesInteger.randomVariablesInteger();
+    // this.interpolateMsg(
+    //     // TODO: Combine these messages instead of using concatenation.
+    //     'set' + ' %1 ',
+    //     ['VAR', new Blockly.FieldVariableInteger(name)],
+    //     Blockly.ALIGN_RIGHT);
     this.appendValueInput('VALUE')
+    .appendField( newString, 'VAR')
+    .appendField("=")
         .setCheck("Number");
     this.setInputsInline(true);
     this.setPreviousStatement(true);

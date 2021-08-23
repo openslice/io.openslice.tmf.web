@@ -73,12 +73,13 @@ Blockly.defineBlocksWithJsonArray([
   };
 
 
-  Blockly.Blocks['getcharacteristicvalue'] = {
+  Blockly.Blocks['getcharacteristicvalueAsString'] = {
     init: function() {
       this.appendDummyInput()
-          .appendField("Get Value")
+          .appendField("Get Value", "TXTLBL")
           .appendField(new Blockly.FieldLabelSerializable(""), "NAMELBL")
-          .appendField(new Blockly.FieldDropdown([["Area of Service","Area of Service"], ["Area of Service: Region specification","Area of Service: Region specification"], ["Delay tolerance","Delay tolerance"], ["NSD_5GCORE::CONFIG","NSD_5GCORE::CONFIG"], ["Slice quality of service parameters: 3GPP 5QI","Slice quality of service parameters: 3GPP 5QI"] ]), "NAME");
+          .appendField(new Blockly.FieldLabelSerializable(""), "OPTIONEDVALUE")
+          //.appendField(new Blockly.FieldDropdown([["Area of Service","Area of Service"], ["Area of Service: Region specification","Area of Service: Region specification"], ["Delay tolerance","Delay tolerance"], ["NSD_5GCORE::CONFIG","NSD_5GCORE::CONFIG"], ["Slice quality of service parameters: 3GPP 5QI","Slice quality of service parameters: 3GPP 5QI"] ]), "OPTIONEDVALUE");
       //this.setOutput(true, ["Boolean", "SET", "String"]);
       this.setOutput(true, 'String');
       this.setColour(230);
@@ -93,7 +94,7 @@ Blockly.defineBlocksWithJsonArray([
       this.appendValueInput("NAME")
           .setCheck(null)
           .appendField("Set Value")
-          .appendField(new Blockly.FieldDropdown([["Area of Service","Area of Service"], ["Area of Service: Region specification","Area of Service: Region specification"], ["Delay tolerance","Delay tolerance"],["NSD_5GCORE::CONFIG","NSD_5GCORE::CONFIG"], ["Slice quality of service parameters: 3GPP 5QI","Slice quality of service parameters: 3GPP 5QI"] ]), "NAME");
+          .appendField(new Blockly.FieldDropdown([["Area of Service","Area of Service"], ["Area of Service: Region specification","Area of Service: Region specification"], ["Delay tolerance","Delay tolerance"],["NSD_5GCORE::CONFIG","NSD_5GCORE::CONFIG"], ["Slice quality of service parameters: 3GPP 5QI","Slice quality of service parameters: 3GPP 5QI"] ]), "OPTIONEDVALUE");
       this.setPreviousStatement(true, null);
       this.setNextStatement(true, null);
       this.setColour(230);
@@ -104,7 +105,7 @@ Blockly.defineBlocksWithJsonArray([
 
 
 
-  Blockly.Blocks['getcharval_string'] = {
+  Blockly.Blocks['getcharval_string_type'] = {
     init: function() {
       this.appendDummyInput()
           //.appendField("Get Value")
@@ -118,7 +119,7 @@ Blockly.defineBlocksWithJsonArray([
   };
 
 
-  Blockly.Blocks['setcharval_string'] = {
+  Blockly.Blocks['setcharval_string_type'] = {
     init: function() {
       this.appendValueInput("AVALUE")
           .setCheck("String")

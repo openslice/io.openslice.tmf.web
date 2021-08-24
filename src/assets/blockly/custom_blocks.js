@@ -262,7 +262,7 @@ Blockly.defineBlocksWithJsonArray([
           .setAlign(Blockly.ALIGN_RIGHT)
           .appendField("VIMID(Text)");
       this.appendValueInput("config")
-          .setCheck("String")
+          // .setCheck("String")
           .setAlign(Blockly.ALIGN_RIGHT)
           .appendField("config(Text/json)");
       this.setOutput(true, null);
@@ -349,7 +349,7 @@ Blockly.defineBlocksWithJsonArray([
           .appendField("vim-network-name(Text)");
     
       this.appendValueInput("config")
-          .setCheck("String")
+          //.setCheck("String")
           .setAlign(Blockly.ALIGN_RIGHT)
           .appendField("config(Text/json)");
           
@@ -372,7 +372,7 @@ Blockly.defineBlocksWithJsonArray([
           .appendField("additionalParams(array)");    
      
       this.appendValueInput("config")
-          .setCheck("String")
+          //.setCheck("String")
           .setAlign(Blockly.ALIGN_RIGHT)
           .appendField("config(Text/json)");
           
@@ -402,6 +402,34 @@ Blockly.defineBlocksWithJsonArray([
     }
   };
 
+  Blockly.Blocks['osm_nsd_param_from_variable'] = {
+    init: function() {      
+      this.appendValueInput("paramvariable")
+          .setAlign(Blockly.ALIGN_RIGHT)
+          .appendField("Compute Variable");    
+      this.setOutput(true, 'String');           
+      this.setInputsInline(true);
+      this.setColour(230);
+   this.setTooltip("Constructs a text parameter from a variable parameter. Use to compute variables inside json to additionalParamsForVnf");
+   this.setHelpUrl("");
+    }
+  };
+
+
+  Blockly.Blocks['text_escape'] = {
+    init: function() {      
+      this.appendValueInput("paramtxt")
+          .setAlign(Blockly.ALIGN_RIGHT)
+          .appendField("Escape text");    
+      this.setOutput(true, 'String');           
+      this.setInputsInline(true);
+      this.setColour(230);
+   this.setTooltip("Constructs a new text with escaped characters from another text");
+   this.setHelpUrl("");
+    }
+  };
+  
+  
 
   Blockly.Blocks['logic_set_contains_strings'] = {
     /**

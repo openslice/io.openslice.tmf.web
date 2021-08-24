@@ -2157,6 +2157,7 @@ Blockly.Java['variable_declare_string'] = function(block: any) {
     // Variable getter.
     var code = Blockly.Java.nameDB_.getName(block.getFieldValue('VAR'),
     Blockly.Variables.NAME_TYPE);
+    // code = '$EVAL_' + code + '_EVAL$';
     return [code, Blockly.Java.ORDER_ATOMIC];
   };
 
@@ -2189,6 +2190,7 @@ Blockly.Java['variable_get_int'] = function(block: { getFieldValue: (arg0: strin
   // Variable getter.
   var code = Blockly.Java.nameDB_.getName(block.getFieldValue('VAR'),
   Blockly.Variables.NAME_TYPE);
+  // code = '$EVAL_' + code + '_EVAL$';
   return [code, Blockly.Java.ORDER_ATOMIC];
 };
 

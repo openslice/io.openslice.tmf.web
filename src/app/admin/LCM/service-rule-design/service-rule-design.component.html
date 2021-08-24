@@ -75,7 +75,9 @@
           </variables>
   
           <category name="Service Spec" colour="210">          
-            
+           
+
+        
             
             <category name="Characteristics" colour="60" custom="SPECCHARALLVARS" >   
             </category>
@@ -95,8 +97,7 @@
               <block type="osm_nsd_config_vld"></block>     
               <block type="osm_nsd_config_paramvnf"></block>
               <block type="osm_nsd_config_param"></block>
-              
-                
+              <block type="osm_nsd_param_from_variable"></block>
               
             </category>
   
@@ -166,6 +167,7 @@
           
           <category name="Text functions" colour="160">
             <!-- <block type="text"></block> -->
+            <block type="text_escape"></block>
             <block type="text_join"></block>
             <block type="text_append">
               <value name="TEXT">

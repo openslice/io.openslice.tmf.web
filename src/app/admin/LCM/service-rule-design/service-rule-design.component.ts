@@ -224,17 +224,13 @@ export class ServiceRuleDesignComponent implements OnInit {
           this.workspace.charsListNumber = this.workspace.charsListNumber.concat( this.charsListInteger );
           this.workspace.charsListNumber = this.workspace.charsListNumber.concat( this.charsListLongint );
           this.workspace.charsListNumber = this.workspace.charsListNumber.concat( this.charsListFloat );
+          this.workspace.charsListNumber = this.workspace.charsListNumber.concat( this.charsListBinary );
 
           this.workspace.charsListSet = this.charsListSet;
+          this.workspace.charsListSet = this.workspace.charsListSet.concat( this.charsListArray );
 
           this.workspace.charsListBoolean = this.charsListBoolean;
-          
-          
-          this.workspace.charsListNumber = this.charsListSmallint;
-          this.workspace.charsListNumber = this.workspace.charsListNumber.concat( this.charsListEnum );
-          this.workspace.charsListNumber = this.workspace.charsListNumber.concat( this.charsListInteger );
-          this.workspace.charsListNumber = this.workspace.charsListNumber.concat( this.charsListLongint );
-          this.workspace.charsListNumber = this.workspace.charsListNumber.concat( this.charsListFloat );
+
 
 
           this.charvarsAllFunction(this.workspace); //calling this function here causes a preloading of the blocks in the model in a synchronous manner. Asynchronously it is recalled later in the blockly toolbar
@@ -550,7 +546,8 @@ export class ServiceRuleDesignComponent implements OnInit {
         var argument1 = Blockly.Java.valueToCode(block, 'AVALUE',
           Blockly.Java.ORDER_NONE) || '""';
           
-        return 'setCharValFromStringType(' + argument0 + ', ' + argument1 + ')';
+        var code: String =  'setCharValFromStringType(' + argument0 + ', ' + argument1 + ');\n';
+        return code;
       };
 
 
@@ -570,7 +567,7 @@ export class ServiceRuleDesignComponent implements OnInit {
         var argument1 = Blockly.Java.valueToCode(block, 'AVALUE',
           Blockly.Java.ORDER_NONE) || '""';
           
-        return 'setCharValNumber(' + argument0 + ', ' + argument1 + ')';
+        return 'setCharValNumber(' + argument0 + ', ' + argument1 + ');\n';
       };
   
   
@@ -622,17 +619,20 @@ export class ServiceRuleDesignComponent implements OnInit {
         osmconfig.vimAccountId = VIMID.replaceAll('"', '');
 
         var code =  JSON.stringify( osmconfig, null, 4 );
+        
+        code = '"""\n' +  code + '\n"""' ;
         if (config){
           //it will replace all
-          config = config.replace('"', '');
-          config = config.substring(0, config.length-1);
+          //config = config.replace('"', '');
+          //config = config.substring(0, config.length-1);
           //code = config;
-          var configAsObj = JSON.parse(config);
-          code = JSON.stringify( configAsObj, null, 4 );
+          //var configAsObj = JSON.parse(config);
+          // code = JSON.stringify( configAsObj, null, 4 );
+
+          code = config;
         }
 
         
-        var code = '"""\n' +  code + '\n"""' ;
 
         return [code, Blockly.Java.ORDER_ATOMIC];
       };
@@ -750,11 +750,13 @@ export class ServiceRuleDesignComponent implements OnInit {
             var dd = JSON.parse( additionalParams);
             dd.forEach(element => {
             
+            var evalue = element.paramvalue;
+
              console.log('Variable additionalParams element = ' + element.paramname );
              if (additionalParamsAsObject){
-              additionalParamsAsObject =additionalParamsAsObject + ','  + '"' + element.paramname + '" : "' + element.paramvalue + '"';
+              additionalParamsAsObject =additionalParamsAsObject + ','  + '"' + element.paramname + '" : "' + evalue + '"';
              }else{
-              additionalParamsAsObject = '"' + element.paramname + '" : "' + element.paramvalue + '"';
+              additionalParamsAsObject = '"' + element.paramname + '" : "' + evalue + '"';
              }
            });
            
@@ -783,17 +785,36 @@ export class ServiceRuleDesignComponent implements OnInit {
           var paramvalue = Blockly.Java.valueToCode(block, 'paramvalue',
           Blockly.Java.ORDER_NONE) || '""'; 
             
-        
-        
-        var code: any = { "paramname":paramname.replaceAll('"', ''), "paramvalue":paramvalue.replaceAll('"', ''),   };
+          paramvalue = paramvalue.replaceAll('"', '')
+        var code: any = { "paramname":paramname.replaceAll('"', ''), "paramvalue": paramvalue ,   };
 
         code =  JSON.stringify( code, null, 4 );
         return [code, Blockly.Java.ORDER_ATOMIC];
       };
 
+      Blockly.Java['osm_nsd_param_from_variable'] = function(block: any) {
+        var paramvariable = Blockly.Java.valueToCode(block, 'paramvariable',
+          Blockly.Java.ORDER_NONE) || '""';
+        
+        
+        
+        paramvariable = paramvariable.replaceAll('"', '$$QUOTESTR$$')
+        var code: any = '$$XVALS_' + paramvariable+ '_XVALE$$';
 
+        return [code, Blockly.Java.ORDER_ATOMIC];
+      };
+
+      Blockly.Java['text_escape'] = function(block: any) {
+        var code = Blockly.Java.valueToCode(block, 'paramtxt',
+          Blockly.Java.ORDER_NONE) || '""';        
+          code = code.replace('"', '');
+          code = code.substring(0, code.length-1);
+          code = code.replaceAll('"', '\\"');
+          code = '"' + code + '"';
+        return [code, Blockly.Java.ORDER_ATOMIC];
+      };
   
-  
+      
       
   
   Blockly.Java['variables_get'] = function(block: any) {
@@ -801,7 +822,7 @@ export class ServiceRuleDesignComponent implements OnInit {
         console.log('Variable getter CUSTOM')
     var code =  Blockly.Java.nameDB_.getName(block.getFieldValue('VAR'),
         Blockly.Variables.NAME_TYPE);
-        code = '$EVAL_' + code + '_EVAL$';
+        //code = '$EVAL_' + code + '_EVAL$';
     return  [code, Blockly.Java.ORDER_ATOMIC];
   };
   

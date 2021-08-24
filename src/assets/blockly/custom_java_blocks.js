@@ -688,7 +688,7 @@ Blockly.Blocks['variable_set_string'] = {
 
 
 /*
- * --- INTEGER ---
+ * --- NUMBER ---
  *
 */
 Blockly.Blocks['variable_declare_int'] = {

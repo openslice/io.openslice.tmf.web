@@ -68,6 +68,7 @@ export class ServiceRuleDesignComponent implements OnInit {
   charsListLongText: ServiceSpecCharacteristic[];
   charsListTimestamp: ServiceSpecCharacteristic[];
   generatedCode: string;
+  blocklyCode: string;
 
   constructor(
     private activatedRoute: ActivatedRoute,    
@@ -140,6 +141,8 @@ export class ServiceRuleDesignComponent implements OnInit {
         console.log(code3)
         this.generatedCode = code3;
         this.lcmRuleSpec.code = code3;
+
+        this.blocklyCode = Blockly.Xml.domToText( Blockly.Xml.workspaceToDom(this.workspace) );
         
       });
   
@@ -314,7 +317,7 @@ export class ServiceRuleDesignComponent implements OnInit {
               .appendField(new Blockly.FieldDropdown( sortedArray ), "OPTIONEDVALUE");
           
           this.setOutput(true, 'String');
-          this.setColour(30);
+          this.setColour(160);
        this.setTooltip("");
        this.setHelpUrl("");
         }
@@ -408,9 +411,9 @@ export class ServiceRuleDesignComponent implements OnInit {
       var xmlList = [];
       
       
-      if (Blockly.Blocks['getcharval_bool']) {
+      if (Blockly.Blocks['getcharval_bool_type']) {
         for (var i = 0; i < charsList.length; i++) {
-          var blockText = '<block type="getcharval_bool">' +
+          var blockText = '<block type="getcharval_bool_type">' +
           '<field name="AVALUE">' + charsList[i].name + '</field>' +
               '</block>';
           var block = Blockly.Xml.textToDom(blockText);
@@ -418,9 +421,9 @@ export class ServiceRuleDesignComponent implements OnInit {
         }
       }
   
-      if (Blockly.Blocks['setcharval_bool']) {
+      if (Blockly.Blocks['setcharval_bool_type']) {
         for (var i = 0; i < charsList.length; i++) {
-          var blockText = '<block type="setcharval_bool">' +
+          var blockText = '<block type="setcharval_bool_type">' +
           '<field name="NAMELBL">' + charsList[i].name + '</field>' +
               '</block>';
           var block = Blockly.Xml.textToDom(blockText);
@@ -439,9 +442,9 @@ export class ServiceRuleDesignComponent implements OnInit {
       var xmlList = [];
       
       
-      if (Blockly.Blocks['getcharval_set']) {
+      if (Blockly.Blocks['getcharval_set_type']) {
         for (var i = 0; i < charsList.length; i++) {
-          var blockText = '<block type="getcharval_set">' +
+          var blockText = '<block type="getcharval_set_type">' +
           '<field name="AVALUE">' + charsList[i].name + '</field>' +
               '</block>';
           var block = Blockly.Xml.textToDom(blockText);
@@ -449,9 +452,9 @@ export class ServiceRuleDesignComponent implements OnInit {
         }
       }
   
-      if (Blockly.Blocks['setcharval_set']) {
+      if (Blockly.Blocks['setcharval_set_type']) {
         for (var i = 0; i < charsList.length; i++) {
-          var blockText = '<block type="setcharval_set">' +
+          var blockText = '<block type="setcharval_set_type">' +
           '<field name="NAMELBL">' + charsList[i].name + '</field>' +
               '</block>';
           var block = Blockly.Xml.textToDom(blockText);
@@ -570,15 +573,16 @@ export class ServiceRuleDesignComponent implements OnInit {
         return 'setCharValNumber(' + argument0 + ', ' + argument1 + ');\n';
       };
   
-  
-      Blockly.Java['getcharval_set'] = function(block: any) {
+
+      
+      Blockly.Java['getcharval_bool_type'] = function(block: any) {
         var dropdown_name = block.getFieldValue('AVALUE');
         var argument0 = Blockly.Java.quote_( dropdown_name );
-        var code = 'getCharValSet(' + argument0 + ')' ;
+        var code = 'getCharValFromBooleanType(' + argument0 + ')' ;
         return [code, Blockly.Java.ORDER_ATOMIC];
       };
   
-      Blockly.Java['setcharval_set'] = function (block: any) {
+      Blockly.Java['setcharval_bool_type'] = function (block: any) {
         // Print statement.
         
         var dropdown_name = block.getFieldValue('NAMELBL');
@@ -586,24 +590,53 @@ export class ServiceRuleDesignComponent implements OnInit {
         var argument1 = Blockly.Java.valueToCode(block, 'AVALUE',
           Blockly.Java.ORDER_NONE) || '""';
           
-        return 'setCharValSet(' + argument0 + ', ' + argument1 + ');\n';
+        var code: String =  'setCharValFromBooleanType(' + argument0 + ', ' + argument1 + ');\n';
+        return code;
+      };
+  
+      Blockly.Java['getcharval_set_type'] = function(block: any) {
+        var dropdown_name = block.getFieldValue('AVALUE');
+        var argument0 = Blockly.Java.quote_( dropdown_name );
+        var code = 'getCharValFromSetType(' + argument0 + ')' ;
+        return [code, Blockly.Java.ORDER_ATOMIC];
+      };
+  
+      Blockly.Java['setcharval_set_type'] = function (block: any) {
+        // Print statement.
+        
+        var dropdown_name = block.getFieldValue('NAMELBL');
+        var argument0 = Blockly.Java.quote_( dropdown_name );
+        var argument1 = Blockly.Java.valueToCode(block, 'AVALUE',
+          Blockly.Java.ORDER_NONE) || '""';
+          
+        return 'setCharValFromSetType(' + argument0 + ', ' + argument1 + ');\n';
       };
   
       
-      Blockly.Java['logic_set_contains_strings'] = function (block: { getFieldValue: (arg0: string) => string }) {
-        // Comparison operator strings.
-        var OPERATORS: { [index: string]: string } = {
-          'EQ': '.equals'
-        };
-  
-        var operator = OPERATORS[block.getFieldValue('OP')];
-        var order = (operator == '==') ?
-          Blockly.Java.ORDER_EQUALITY : Blockly.Java.ORDER_RELATIONAL;
-        var argument0 = Blockly.Java.valueToCode(block, 'A', order) || '0';
-        var argument1 = Blockly.Java.valueToCode(block, 'B', order) || '0';
-        var code = argument0 + operator + '(' + argument1 + ')==true';
-        return [code, order];
+      Blockly.Java['logic_set_contains_string'] = function (block: { getFieldValue: (arg0: string) => string }) {
+        
+
+        var argument0 = Blockly.Java.valueToCode(block, 'A', Blockly.Java.ORDER_NONE) || '0';
+        var argument1 = Blockly.Java.valueToCode(block, 'B', Blockly.Java.ORDER_NONE) || '0';
+        //var code = argument0 + operator + '(' + argument1 + ')==true';
+        //argument1 = 'new ArrayList<>( Arrays. asList("London", "Tokyo", "New York"))'
+        var code = 'checkIfSetContainsValue(' + argument0 + ', ' + argument1 + ')';
+        return [code, Blockly.Java.ORDER_ATOMIC];
       };
+
+
+      
+      Blockly.Java['so_log_string'] = function (block: any) {
+        // Print statement.
+        
+        var argument0 = Blockly.Java.valueToCode(block, 'txtlog',
+              Blockly.Java.ORDER_NONE) || null;
+          
+        var code: String =  'logtext(' + argument0 + ');\n';
+        return code;
+      };
+
+      
   
       Blockly.Java['osm_nsd_config'] = function(block: any) {
         var NSDID = Blockly.Java.valueToCode(block, 'NSDID',
@@ -815,6 +848,90 @@ export class ServiceRuleDesignComponent implements OnInit {
       };
   
       
+
+
+      
+      Blockly.Java['rest_config_client'] = function (block: any) {
+        // Print statement.
+        
+        var xbaseurl = Blockly.Java.valueToCode(block, 'baseurl',
+              Blockly.Java.ORDER_NONE) || null;
+              
+          
+              
+        var xOAUTH2CLIENTID = Blockly.Java.valueToCode(block, 'aOAUTH2CLIENTID',
+        Blockly.Java.ORDER_NONE) || null;
+        
+        var xOAUTHSECRET = Blockly.Java.valueToCode(block, 'aOAUTHSECRET',
+              Blockly.Java.ORDER_NONE) || null;
+              
+        var xscopes = Blockly.Java.valueToCode(block, 'scopes',
+        Blockly.Java.ORDER_NONE) || null;
+        
+        var xTOKEURI = Blockly.Java.valueToCode(block, 'aTOKENURI',
+              Blockly.Java.ORDER_NONE) || null;
+              
+        var xUSERNAME = Blockly.Java.valueToCode(block, 'aUSERNAME',
+        Blockly.Java.ORDER_NONE) || null;
+        
+        var xPASSWORD = Blockly.Java.valueToCode(block, 'aPASSWORD',
+              Blockly.Java.ORDER_NONE) || null;
+
+      
+
+        var code: any = { baseurl: xbaseurl };
+        code.aOAUTH2CLIENTID = xOAUTH2CLIENTID;
+        code.aOAUTHSECRET = xOAUTHSECRET;
+        code.scopes = xscopes;
+        code.aTOKENURI = xTOKEURI;
+        code.aUSERNAME = xUSERNAME;
+        code.aPASSWORD = xPASSWORD;
+        
+        code =  JSON.stringify( code, null, 4 );
+
+        return [code, Blockly.Java.ORDER_ATOMIC];
+      };
+
+      Blockly.Java['rest_block'] = function (block: any) {
+        // Print statement.
+        var dropdown_name = block.getFieldValue('VERBOPTION');
+        var argumentVERBOPTION = Blockly.Java.quote_( dropdown_name );
+
+        var argument0 = Blockly.Java.valueToCode(block, 'arest_config_client',
+              Blockly.Java.ORDER_NONE) || null;
+        var aurl = Blockly.Java.valueToCode(block, 'url',
+                    Blockly.Java.ORDER_NONE) || null;
+        var aheaders = Blockly.Java.valueToCode(block, 'headers',
+                    Blockly.Java.ORDER_NONE) || null;
+        var apayload = Blockly.Java.valueToCode(block, 'payload',
+                    Blockly.Java.ORDER_NONE) || null;
+                    
+  
+                    
+                    
+        var code: String = 'rest_block(' + argumentVERBOPTION + ',' + aurl + ',' + aheaders + ',' + apayload +  ')';
+        if ( argument0  ){        
+
+          argument0 = JSON.parse(argument0);
+           code =  'rest_block(' + argumentVERBOPTION 
+           +', ' + aurl
+           +', ' + aheaders
+           +', ' + apayload
+          +', ' + argument0.baseurl
+          +', ' + argument0.aOAUTH2CLIENTID
+          +', ' + argument0.aOAUTHSECRET
+          +', ' + argument0.scopes
+          +', ' + argument0.aTOKENURI
+          +', ' + argument0.aUSERNAME
+          +', ' + argument0.aPASSWORD
+           + ')';
+
+          }
+           
+         return [code, Blockly.Java.ORDER_ATOMIC];
+      };
+      
+
       
   
   Blockly.Java['variables_get'] = function(block: any) {

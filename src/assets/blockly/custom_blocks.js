@@ -1,5 +1,7 @@
 
 coloursets = 260;
+colouropenarions = 290;
+colourtexts = 160;
 
 Blockly.defineBlocksWithJsonArray([
     {
@@ -112,7 +114,7 @@ Blockly.defineBlocksWithJsonArray([
           .appendField(new Blockly.FieldLabelSerializable(""), "AVALUE")          
       //this.setOutput(true, ["Boolean", "SET", "String"]);
       this.setOutput(true, 'String');
-      this.setColour(30);
+      this.setColour(colourtexts);
    this.setTooltip("");
    this.setHelpUrl("");
     }
@@ -127,7 +129,7 @@ Blockly.defineBlocksWithJsonArray([
           .appendField(new Blockly.FieldLabelSerializable(""), "NAMELBL");
       this.setPreviousStatement(true, null);
       this.setNextStatement(true, null);
-      this.setColour(30);
+      this.setColour(colourtexts);
    this.setTooltip("");
    this.setHelpUrl("");
     }
@@ -164,7 +166,7 @@ Blockly.defineBlocksWithJsonArray([
   };
 
 
-  Blockly.Blocks['getcharval_bool'] = {
+  Blockly.Blocks['getcharval_bool_type'] = {
     init: function() {
       this.appendDummyInput()
           //.appendField("Get Value")
@@ -178,7 +180,7 @@ Blockly.defineBlocksWithJsonArray([
   };
 
 
-  Blockly.Blocks['setcharval_bool'] = {
+  Blockly.Blocks['setcharval_bool_type'] = {
     init: function() {
       this.appendValueInput("AVALUE")
           .setCheck("Boolean")
@@ -193,7 +195,7 @@ Blockly.defineBlocksWithJsonArray([
   };
 
   
-  Blockly.Blocks['getcharval_set'] = {
+  Blockly.Blocks['getcharval_set_type'] = {
     init: function() {
       this.appendDummyInput()
           //.appendField("Get Value")
@@ -207,7 +209,7 @@ Blockly.defineBlocksWithJsonArray([
   };
 
 
-  Blockly.Blocks['setcharval_set'] = {
+  Blockly.Blocks['setcharval_set_type'] = {
     init: function() {
       this.appendValueInput("AVALUE")
           .setCheck("Array")
@@ -271,6 +273,112 @@ Blockly.defineBlocksWithJsonArray([
    this.setHelpUrl("");
     }
   };
+
+
+  Blockly.Blocks['so_log_string'] = {
+    init: function() {
+      this.appendValueInput("txtlog")
+          .setCheck("String")
+          .setAlign(Blockly.ALIGN_RIGHT)
+          .appendField("Log");     
+      this.setOutput(false, null);
+      
+      this.setPreviousStatement(true, null);
+      this.setNextStatement(true, null);
+      this.setColour(colouropenarions);
+   this.setTooltip("Will log the input text to orchestrator log file");
+   this.setHelpUrl("");
+    }
+  };
+
+  
+  Blockly.Blocks['rest_config_client'] = {
+    init: function() {
+      this.appendDummyInput()
+        .appendField('Web config client');
+      this.appendValueInput("baseurl")
+          .setCheck("String")
+          .setAlign(Blockly.ALIGN_RIGHT)
+          .appendField("Base URL");     
+      
+      this.appendValueInput("aOAUTH2CLIENTID")
+          .setCheck("String")
+          .setAlign(Blockly.ALIGN_RIGHT)
+          .appendField("aOAUTH2CLIENTID");   
+          
+      this.appendValueInput("aOAUTHSECRET")
+      .setCheck("String")
+      .setAlign(Blockly.ALIGN_RIGHT)
+      .appendField("aOAUTHSECRET");   
+      
+      this.appendValueInput("scopes")
+          .setCheck("String")
+          .setAlign(Blockly.ALIGN_RIGHT)
+          .appendField("scopes");   
+          
+      this.appendValueInput("aTOKENURI")
+      .setCheck("String")
+      .setAlign(Blockly.ALIGN_RIGHT)
+      .appendField("TOKENURI");   
+      
+      this.appendValueInput("aUSERNAME")
+          .setCheck("String")
+          .setAlign(Blockly.ALIGN_RIGHT)
+          .appendField("Username");   
+          
+      this.appendValueInput("aPASSWORD")
+      .setCheck("String")
+      .setAlign(Blockly.ALIGN_RIGHT)
+      .appendField("Password");   
+
+
+      this.setOutput(true, "WEB_CLIENT_CONFIG");
+       
+      this.setColour(colouropenarions);
+   this.setTooltip("Configure a Web client");
+   this.setHelpUrl("");
+    }
+  };
+
+  Blockly.Blocks['rest_block'] = {
+    init: function() {
+      this.appendDummyInput()
+          //.setCheck(null)
+          .appendField("URL")
+          .appendField(new Blockly.FieldDropdown([["GET","GET"], 
+          ["POST","POST"], 
+          ["PUT","PUT"], 
+          ["PATCH","PATCH"], 
+          ["DELETE","DELETE"] 
+        ]), "VERBOPTION");
+
+      this.appendValueInput("arest_config_client")
+          .setCheck("WEB_CLIENT_CONFIG")
+          .setAlign(Blockly.ALIGN_RIGHT)
+          .appendField("Web config client");    
+      this.appendValueInput("headers")
+          .setCheck("String")
+          .setAlign(Blockly.ALIGN_RIGHT)
+          .appendField("Headers");  
+      this.appendValueInput("url")
+          .setCheck("String")
+          .setAlign(Blockly.ALIGN_RIGHT)
+          .appendField("Request URL"); 
+      this.appendValueInput("payload")
+          .setCheck("String")
+          .setAlign(Blockly.ALIGN_RIGHT)
+          .appendField("Payload");     
+      this.setOutput(true, "String");
+      
+      //this.setPreviousStatement(true, null);
+      //this.setNextStatement(true, null);
+      this.setColour(colouropenarions);
+   this.setTooltip("Make a Request (GET, POST, etc) towards a URL.  Header a string with Header1=value1;Header2=value2 \n Payload in POST, PATCH, etc, may be escaped as Text (use the Escape Text block )");
+   this.setHelpUrl("");
+    }
+  };
+
+  
 
 
   Blockly.Blocks['osm_nsd_config_detailed'] = {
@@ -423,7 +531,7 @@ Blockly.defineBlocksWithJsonArray([
           .appendField("Escape text");    
       this.setOutput(true, 'String');           
       this.setInputsInline(true);
-      this.setColour(230);
+      this.setColour(160);
    this.setTooltip("Constructs a new text with escaped characters from another text");
    this.setHelpUrl("");
     }
@@ -431,16 +539,16 @@ Blockly.defineBlocksWithJsonArray([
   
   
 
-  Blockly.Blocks['logic_set_contains_strings'] = {
+  Blockly.Blocks['logic_set_contains_string'] = {
     /**
      * Block for comparison operator.
      * @this Blockly.Block
      */
     init: function() {
       var OPERATORS = Blockly.RTL ? [
-            ['set contains(strings)', 'EQ']
+            ['set contains string', 'EQ']
           ] : [
-            ['set contains(strings)', 'EQ']
+            ['set contains string', 'EQ']
           ];
       this.setColour( coloursets );
       this.setOutput(true, 'Boolean');
@@ -448,7 +556,7 @@ Blockly.defineBlocksWithJsonArray([
           .setCheck('SET');
       this.appendValueInput('B')
           .appendField(new Blockly.FieldDropdown(OPERATORS), 'OP')
-          .setCheck('Array');
+          .setCheck('String');
       this.setInputsInline(true);
       var thisBlock = this;
       this.setTooltip(function() {

@@ -84,7 +84,7 @@
    */
    init: function() {
      this.setHelpUrl(Blockly.Msg.PROCEDURES_DEFRETURN_HELPURL);
-     this.setColour(30);
+     this.setColour(160);
      var name = Blockly.Procedures.findLegalName(
          Blockly.Msg.PROCEDURES_DEFRETURN_PROCEDURE, this);
      this.appendDummyInput()
@@ -420,7 +420,7 @@
    */
    init: function() {
      this.setHelpUrl('http://www.example.com/');
-     this.setColour(30);
+     this.setColour(160);
      this.appendDummyInput()
          .appendTitle("return string named")
          .appendTitle(new Blockly.FieldVariable("item"), "NAME");
@@ -457,7 +457,7 @@
    */
   init: function() {
     this.setHelpUrl(Blockly.Msg.TEXT_TEXT_HELPURL);
-    this.setColour(30);
+    this.setColour(160);
     this.appendDummyInput()
         .appendField(this.newQuote_(true))
         .appendField(new Blockly.FieldTextInput(''), 'TEXT')
@@ -525,7 +525,7 @@ Blockly.Blocks['literal_boolean'] = {
 Blockly.Blocks['variable_declare_string'] = {
   init: function() {
     this.setHelpUrl(Blockly.Msg.VARIABLES_SET_HELPURL);
-    this.setColour(30);
+    this.setColour(160);
     var name = 'strvar' + Blockly.Variables.generateUniqueName(Blockly.getMainWorkspace() );
     var newString = new Blockly.FieldVariable( name, null, null, 'string');
     // this.interpolateMsg(
@@ -578,7 +578,7 @@ Blockly.Blocks['variable_get_string'] = {
     */
     init: function() {
       this.setHelpUrl(Blockly.Msg.VARIABLES_GET_HELPURL);
-      this.setColour(30);
+      this.setColour(160);
       // var name = Blockly.VariablesString.randomVariablesString();
       
       var name = 'strvar' + Blockly.Variables.generateUniqueName(Blockly.getMainWorkspace() );
@@ -639,7 +639,7 @@ Blockly.Blocks['variable_set_string'] = {
    */
   init: function() {
     this.setHelpUrl(Blockly.Msg.VARIABLES_SET_HELPURL);
-    this.setColour(30);
+    this.setColour(160);
     //var name = Blockly.VariablesString.randomVariablesString();
     // this.interpolateMsg(
     //     // TODO: Combine these messages instead of using concatenation.

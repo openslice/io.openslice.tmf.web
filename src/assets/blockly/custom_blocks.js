@@ -42,6 +42,37 @@ Blockly.defineBlocksWithJsonArray([
     }
   ]);
 
+
+  /*************************************************************************** 
+  *
+  *   TEXT RELATED
+  * 
+  ****************************************************************************/
+
+
+   Blockly.Blocks['text_escape'] = {
+    init: function() {      
+      this.appendValueInput("paramtxt")
+          .setAlign(Blockly.ALIGN_RIGHT)
+          .appendField("Escape text");    
+      this.setOutput(true, 'String');           
+      this.setInputsInline(true);
+      this.setColour(160);
+   this.setTooltip("Constructs a new text with escaped characters from another text");
+   this.setHelpUrl("");
+    }
+  };
+  
+  
+
+  
+  /*************************************************************************** 
+  *
+  *   SERVICE SPEC RELATED
+  * 
+  ****************************************************************************/
+
+  
   Blockly.Blocks['changecharacteristicvalue'] = {
     init: function() {
       this.appendValueInput("spec")
@@ -253,27 +284,13 @@ Blockly.defineBlocksWithJsonArray([
   };
 
 
-  Blockly.Blocks['osm_nsd_config'] = {
-    init: function() {
-      this.appendValueInput("NSDID")
-          .setCheck("String")
-          .setAlign(Blockly.ALIGN_RIGHT)
-          .appendField("NSDID(Text)");
-      this.appendValueInput("VIMID")
-          .setCheck("String")
-          .setAlign(Blockly.ALIGN_RIGHT)
-          .appendField("VIMID(Text)");
-      this.appendValueInput("config")
-          // .setCheck("String")
-          .setAlign(Blockly.ALIGN_RIGHT)
-          .appendField("config(Text/json)");
-      this.setOutput(true, null);
-      this.setColour(230);
-   this.setTooltip("");
-   this.setHelpUrl("");
-    }
-  };
 
+  
+  /*************************************************************************** 
+  *
+  *   GENERIC OPERATIONS BLOCK RELATED
+  * 
+  ****************************************************************************/
 
   Blockly.Blocks['so_log_string'] = {
     init: function() {
@@ -292,6 +309,115 @@ Blockly.defineBlocksWithJsonArray([
   };
 
   
+  
+  Blockly.Blocks['payloadToService'] = {
+    init: function() {
+      this.appendDummyInput()
+          //.setCheck(null)
+          .appendField("Current Service")
+          .appendField(new Blockly.FieldDropdown([["ID", "id"], 
+          ["State", "state"], 
+          ["Name","name"], 
+          ["hasStarted","hasStarted"], 
+          ["isServiceEnabled","isServiceEnabled"], 
+          ["serviceType","serviceType"], 
+          ["startMode","startMode"], 
+          ["serviceCharacteristicValue","serviceCharacteristicValue"], 
+          ["serviceOrderID","serviceOrderID"], 
+          ["serviceSpecificationID","serviceSpecificationID"], 
+          ["serviceObjectasJSON","serviceObjectasJSON"]
+
+          
+        ], this.handleTypeSelection.bind(this) ), "VERBOPTION"); 
+
+        
+      this.appendValueInput("jsonpayload")
+        .setCheck("String")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("Payload(Text/json)");
+
+
+        // Initialize the value of this.columnType (used in updateShape)
+      this.columnType = this.getFieldValue('VERBOPTION');
+      // Avoid duplicating code by running updateShape to append your appropriate input
+      this.updateShape();
+      //this.setPreviousStatement(true, null);
+      //this.setNextStatement(true, null); 
+       this.setInputsInline(true);      
+      this.setOutput(true, "String");
+      this.setColour(colourtexts);
+      this.setTooltip("Get TMF Service Inventory entity details from a json payload.");
+      this.setHelpUrl("");
+
+    },
+    /**
+     * This function runs each time you select a new value in your type selection dropdown field.
+     * @param {string} newType This is the new value that the field will be set to.
+     * 
+     * Important note: this function will run BEFORE the field's value is updated. This means that if you call
+     * this.getFieldValue('typeSelector') within here, it will reflect the OLD value.
+     * 
+     */
+    handleTypeSelection: function (newType) {
+        // Avoid unnecessary updates if someone clicks the same field twice
+        if(this.columnType !== newType) {
+            // Update this.columnType to the new value
+            this.columnType = newType;
+            // Add or remove fields as appropriate
+            this.updateShape();
+        }
+    },
+    /**
+     * This will remove old inputs and add new inputs as you need, based on the columnType value selected
+     */
+    updateShape: function () {
+        // Remove the old input (so that you don't have inputs stack repeatedly)
+        if (this.getInput('characteristicName')) {
+            this.removeInput('characteristicName');
+        }
+        // Append the new input based on the value of this.columnType
+        if(this.columnType === 'serviceCharacteristicValue') {
+          this.appendValueInput("characteristicName")
+          .setCheck("String")
+          .setAlign(Blockly.ALIGN_RIGHT)
+          .appendField("Characteristic Name");  
+        } 
+    },
+    /**
+     * This function runs when saving your block to XML. This is important if you need to save your block to XML at any point and then either
+     * generate code from that XML or repopulate your workspace from that XML
+     */
+    mutationToDom: function () {
+        var container = document.createElement('mutation');
+        // Do not use camelCase values for attribute names.
+        container.setAttribute('column_type', this.columnType);
+        // ALWAYS return container; this will be the input for domToMutation.
+        return container;
+    },
+    /**
+     * This function runs when loading your block from XML, after running init.
+     * It's very important for updating your block in response to values selected in a field.
+     */
+    domToMutation: function (xmlElement) {
+        // This attribute should match the one you used in mutationToDom
+        var columnType = xmlElement.getAttribute('column_type');
+        // If, for whatever reason, you try to save an undefined value in column_type, it will actually be saved as the string 'undefined'
+        // If this is not an acceptable value, filter it out
+        if(columnType && columnType !== 'undefined') {
+            this.columnType = columnType;
+        }
+        // Run updateShape to append block values as needed
+        this.updateShape();
+    }
+  };
+  
+  /*************************************************************************** 
+  *
+  *   REST OPERATIONS BLOCK RELATED
+  * 
+  ****************************************************************************/
+
+
   Blockly.Blocks['rest_config_client'] = {
     init: function() {
       this.appendDummyInput()
@@ -378,7 +504,226 @@ Blockly.defineBlocksWithJsonArray([
     }
   };
 
+
   
+  /*************************************************************************** 
+  *
+  *   CONTEXT BLOCK RELATED
+  * 
+  ****************************************************************************/
+
+
+  Blockly.Blocks['currentServiceOrder'] = {
+    init: function() {
+      this.appendDummyInput()
+          //.setCheck(null)
+          .appendField("Current Service Order")
+          .appendField(new Blockly.FieldDropdown([["ID", "id"], 
+          ["State", "state"], 
+          ["externaId", "externaId"], 
+          ["serviceOrderObjectasJSON","serviceOrderObjectasJSON"]
+        ]), "VERBOPTION"); 
+
+      this.setOutput(true, "String");
+      
+      //this.setPreviousStatement(true, null);
+      //this.setNextStatement(true, null);
+      this.setColour(colourtexts);
+   this.setTooltip("Get Service Order detail from current context. If the Order is available from the state of the service.");
+   this.setHelpUrl("");
+    }
+  };
+
+
+  
+  Blockly.Blocks['currentServiceOrder'] = {
+    init: function() {
+      this.appendDummyInput()
+          //.setCheck(null)
+          .appendField("Current Service Order")
+          .appendField(new Blockly.FieldDropdown([["ID", "id"], 
+          ["State", "state"], 
+          ["externaId", "externaId"], 
+          ["serviceOrderObjectasJSON","serviceOrderObjectasJSON"]
+        ]), "VERBOPTION"); 
+
+      this.setOutput(true, "String");
+      
+      //this.setPreviousStatement(true, null);
+      //this.setNextStatement(true, null);
+      this.setColour(colourtexts);
+   this.setTooltip("Get Service Order detail from current context. If the Order is available from the state of the service.");
+   this.setHelpUrl("");
+    }
+  };
+  
+  
+
+
+  Blockly.Blocks['currentService'] = {
+    init: function() {
+      this.appendDummyInput()
+          //.setCheck(null)
+          .appendField("Current Service")
+          .appendField(new Blockly.FieldDropdown([["ID", "id"], 
+          ["State", "state"], 
+          ["Name","name"], 
+          ["hasStarted","hasStarted"], 
+          ["isServiceEnabled","isServiceEnabled"], 
+          ["serviceType","serviceType"], 
+          ["startMode","startMode"], 
+          ["serviceCharacteristicValue","serviceCharacteristicValue"], 
+          ["serviceOrderID","serviceOrderID"], 
+          ["serviceSpecificationID","serviceSpecificationID"], 
+          ["serviceObjectasJSON","serviceObjectasJSON"]
+
+          
+        ], this.handleTypeSelection.bind(this) ), "VERBOPTION"); 
+
+        // Initialize the value of this.columnType (used in updateShape)
+      this.columnType = this.getFieldValue('VERBOPTION');
+      // Avoid duplicating code by running updateShape to append your appropriate input
+      this.updateShape();
+      //this.setPreviousStatement(true, null);
+      //this.setNextStatement(true, null);    
+      this.setOutput(true, "String");
+      this.setColour(colourtexts);
+      this.setTooltip("Get Service details from current context, after instantiation. If the Service is available from the state of the service.");
+      this.setHelpUrl("");
+
+    },
+    /**
+     * This function runs each time you select a new value in your type selection dropdown field.
+     * @param {string} newType This is the new value that the field will be set to.
+     * 
+     * Important note: this function will run BEFORE the field's value is updated. This means that if you call
+     * this.getFieldValue('typeSelector') within here, it will reflect the OLD value.
+     * 
+     */
+    handleTypeSelection: function (newType) {
+        // Avoid unnecessary updates if someone clicks the same field twice
+        if(this.columnType !== newType) {
+            // Update this.columnType to the new value
+            this.columnType = newType;
+            // Add or remove fields as appropriate
+            this.updateShape();
+        }
+    },
+    /**
+     * This will remove old inputs and add new inputs as you need, based on the columnType value selected
+     */
+    updateShape: function () {
+        // Remove the old input (so that you don't have inputs stack repeatedly)
+        if (this.getInput('characteristicName')) {
+            this.removeInput('characteristicName');
+        }
+        // Append the new input based on the value of this.columnType
+        if(this.columnType === 'serviceCharacteristicValue') {
+          this.appendValueInput("characteristicName")
+          .setCheck("String")
+          .setAlign(Blockly.ALIGN_RIGHT)
+          .appendField("Characteristic Name");  
+          this.setInputsInline(true);   
+        } 
+    },
+    /**
+     * This function runs when saving your block to XML. This is important if you need to save your block to XML at any point and then either
+     * generate code from that XML or repopulate your workspace from that XML
+     */
+    mutationToDom: function () {
+        var container = document.createElement('mutation');
+        // Do not use camelCase values for attribute names.
+        container.setAttribute('column_type', this.columnType);
+        // ALWAYS return container; this will be the input for domToMutation.
+        return container;
+    },
+    /**
+     * This function runs when loading your block from XML, after running init.
+     * It's very important for updating your block in response to values selected in a field.
+     */
+    domToMutation: function (xmlElement) {
+        // This attribute should match the one you used in mutationToDom
+        var columnType = xmlElement.getAttribute('column_type');
+        // If, for whatever reason, you try to save an undefined value in column_type, it will actually be saved as the string 'undefined'
+        // If this is not an acceptable value, filter it out
+        if(columnType && columnType !== 'undefined') {
+            this.columnType = columnType;
+        }
+        // Run updateShape to append block values as needed
+        this.updateShape();
+    }
+  };
+  
+  
+  
+  
+
+  /*************************************************************************** 
+  *
+  *   OPENSLICE RELATED
+  * 
+  ****************************************************************************/
+
+
+   
+
+  
+   Blockly.Blocks['createServiceOrderJson'] = {
+    init: function() {
+      
+      this.appendValueInput("jsonpayload")
+          .setCheck("String")
+          .setAlign(Blockly.ALIGN_RIGHT)
+          .appendField("Create Service Order (Text/json)");    
+
+      this.setOutput(true, "String");
+      
+      //this.setPreviousStatement(true, null);
+      //this.setNextStatement(true, null);
+      this.setColour(colourtexts);
+   this.setTooltip("Openslice SO will create a new Service Order based on the request described by the json. The json is a createServiceOrder payload. The response will be the new Service Order created.");
+   this.setHelpUrl("");
+    }
+  };
+  
+
+    
+  Blockly.Blocks['createServiceOrder'] = {
+    init: function() {
+      this.appendDummyInput()
+      .appendField("Create Service Order"); 
+
+          
+      this.appendValueInput("serviceSpecificationid")
+      .setCheck("String")
+      .setAlign(Blockly.ALIGN_RIGHT)
+      .appendField("Service Specification id");     
+
+   this.appendValueInput("serviceCharacteristics")
+      .setCheck("Array")
+      .setAlign(Blockly.ALIGN_RIGHT)
+      .appendField("Service Characteristics");     
+
+      
+
+      
+
+      this.setOutput(true, "String");
+      
+      //this.setPreviousStatement(true, null);
+      //this.setNextStatement(true, null);
+      this.setColour(colourtexts);
+   this.setTooltip("Openslice SO will create a new Service Order based on the request described by the json. The json is a createServiceOrder payload. The response will be the new Service Order created.");
+   this.setHelpUrl("");
+    }
+  };
+  
+  
+  /*************************************************************************** 
+  *
+  *   OSM RELATED
+  * 
+  ****************************************************************************/
 
 
   Blockly.Blocks['osm_nsd_config_detailed'] = {
@@ -491,19 +836,20 @@ Blockly.defineBlocksWithJsonArray([
     }
   };
 
-  Blockly.Blocks['osm_nsd_config_param'] = {
+  Blockly.Blocks['param_value_tuple'] = {
     init: function() {
       this.appendValueInput("paramname")
           .setCheck("String")
           .setAlign(Blockly.ALIGN_RIGHT)
-          .appendField("param name(Text)");
+          .appendField("Param name");
       this.appendValueInput("paramvalue")
           .setCheck("String")
           .setAlign(Blockly.ALIGN_RIGHT)
-          .appendField("param value(Text)");    
+          .appendField("value(Text)");    
      
           
       this.setOutput(true, 'String');      
+      this.setInputsInline(true);
       this.setColour(230);
    this.setTooltip("Constructs a json string to be used for OSM configuration for a parameter in additionalParamsForVnf.");
    this.setHelpUrl("");
@@ -524,20 +870,38 @@ Blockly.defineBlocksWithJsonArray([
   };
 
 
-  Blockly.Blocks['text_escape'] = {
-    init: function() {      
-      this.appendValueInput("paramtxt")
+
+  
+  Blockly.Blocks['osm_nsd_config'] = {
+    init: function() {
+      this.appendValueInput("NSDID")
+          .setCheck("String")
           .setAlign(Blockly.ALIGN_RIGHT)
-          .appendField("Escape text");    
-      this.setOutput(true, 'String');           
-      this.setInputsInline(true);
-      this.setColour(160);
-   this.setTooltip("Constructs a new text with escaped characters from another text");
+          .appendField("NSDID(Text)");
+      this.appendValueInput("VIMID")
+          .setCheck("String")
+          .setAlign(Blockly.ALIGN_RIGHT)
+          .appendField("VIMID(Text)");
+      this.appendValueInput("config")
+          // .setCheck("String")
+          .setAlign(Blockly.ALIGN_RIGHT)
+          .appendField("config(Text/json)");
+      this.setOutput(true, null);
+      this.setColour(230);
+   this.setTooltip("");
    this.setHelpUrl("");
     }
   };
+
   
+
   
+  /*************************************************************************** 
+  *
+  *   LOGIC RELATED
+  * 
+  ****************************************************************************/
+
 
   Blockly.Blocks['logic_set_contains_string'] = {
     /**
@@ -620,3 +984,4 @@ Blockly.Blocks['example_variable_typed'] = {
       ), 'FIELDNAME');
   }
 };
+

@@ -100,7 +100,7 @@
               <block type="osm_nsd_config_vnf"></block>                
               <block type="osm_nsd_config_vld"></block>     
               <block type="osm_nsd_config_paramvnf"></block>
-              <block type="osm_nsd_config_param"></block>
+              <block type="param_value_tuple"></block>
               <block type="osm_nsd_param_from_variable"></block>
               
             </category>
@@ -289,15 +289,25 @@
           <!-- <category name="Functions" colour="290" custom="PROCEDURE"></category> -->
           
           <category name="Context" colour="210"> 
+            <block type="currentServiceOrder"></block>  
+            <block type="currentService"></block>  
           </category>
+
 
           <category name="Operations" colour="290">
             <category name="Generic" colour="290">
               <block type="so_log_string"></block>  
             </category>
+            
+          <category name="Openslice" colour="210"> 
+            <block type="createServiceOrder"></block> 
+            <block type="createServiceOrderJson"></block>      
+            <block type="param_value_tuple" ></block>       
+          </category>
             <category name="REST" colour="290">
               <block type="rest_config_client"></block>  
               <block type="rest_block"></block>  
+              <block type="payloadToService"></block>  
             </category>
           </category>
         </xml>

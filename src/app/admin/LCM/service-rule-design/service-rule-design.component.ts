@@ -8,6 +8,8 @@ import { BlocklyJavaService } from '../services/blockly-java.service';
 import { LCMRuleSpecification, LCMRuleSpecificationCreate, ServiceSpecificationRef } from 'src/app/openApis/LcmRuleSpecificationAPI/models';
 import { LcmRuleSpecificationService } from 'src/app/openApis/LcmRuleSpecificationAPI/services';
 import { ToastrService } from 'ngx-toastr';
+import { ServiceOrderCreate } from 'src/app/openApis/ServiceOrderingManagement/models/service-order-create';
+import { ServiceOrderItem } from 'src/app/openApis/ServiceOrderingManagement/models/service-order-item';
 
 
 //Imported code from:
@@ -151,36 +153,36 @@ export class ServiceRuleDesignComponent implements OnInit {
   
     initializeLCMRuleSpec() {
       if (this.activatedRoute.snapshot.params.id) 
-          {
-            this.lcmRuleSpecID = this.activatedRoute.snapshot.params.id
-            this.retrieveLCMRuleSpec();
+      {
+        this.lcmRuleSpecID = this.activatedRoute.snapshot.params.id
+        this.retrieveLCMRuleSpec();
        
-          }
-           else {
-            this.newLCMRuleSpecification = true;
-            var serviceSpecsList: ServiceSpecificationRef[];
-            this.lcmRuleSpec = {
-              name: 'new rulespec',
-              description: 'new description',
-              serviceSpecs: serviceSpecsList
-            };
-            
-            this.editForm.patchValue(this.lcmRuleSpec)
-            this.editForm.markAsPristine()
-    
-            
-              var serviceSpecRef: ServiceSpecificationRef ;            
-              var serviceSpecsList: ServiceSpecificationRef[] = [];
-              serviceSpecRef = { id: this.spec.id, name: this.spec.name } ;
-              serviceSpecsList.push(serviceSpecRef);         
-              this.lcmRuleSpec.serviceSpecs = serviceSpecsList;   
-              this.lcmRuleSpec.name = "LCM Rule " +  this.spec.name;
-              this.lcmRuleSpec.description = "LCM Rule for specification " +  this.spec.name;
+      }
+      else {
+        this.newLCMRuleSpecification = true;
+        var serviceSpecsList: ServiceSpecificationRef[];
+        this.lcmRuleSpec = {
+          name: 'new rulespec',
+          description: 'new description',
+          serviceSpecs: serviceSpecsList
+        };
               
-              this.editForm.patchValue(this.lcmRuleSpec)
-              this.editForm.markAsPristine()  
-            
-          }
+        this.editForm.patchValue(this.lcmRuleSpec)
+        this.editForm.markAsPristine()
+      
+              
+        var serviceSpecRef: ServiceSpecificationRef ;            
+        var serviceSpecsList: ServiceSpecificationRef[] = [];
+        serviceSpecRef = { id: this.spec.id, name: this.spec.name } ;
+        serviceSpecsList.push(serviceSpecRef);         
+        this.lcmRuleSpec.serviceSpecs = serviceSpecsList;   
+        this.lcmRuleSpec.name = "LCM Rule " +  this.spec.name;
+        this.lcmRuleSpec.description = "LCM Rule for specification " +  this.spec.name;
+        
+        this.editForm.patchValue(this.lcmRuleSpec)
+        this.editForm.markAsPristine()  
+    
+      }
     }
 
 
@@ -811,7 +813,7 @@ export class ServiceRuleDesignComponent implements OnInit {
     
 
       
-      Blockly.Java['osm_nsd_config_param'] = function(block: any) {
+      Blockly.Java['param_value_tuple'] = function(block: any) {
         var paramname = Blockly.Java.valueToCode(block, 'paramname',
           Blockly.Java.ORDER_NONE) || '""';
         
@@ -931,9 +933,123 @@ export class ServiceRuleDesignComponent implements OnInit {
          return [code, Blockly.Java.ORDER_ATOMIC];
       };
       
+  Blockly.Java['currentServiceOrder'] = function(block: any) {
+    // Variable getter.
+        console.log('Variable getter currentServiceOrder')
+    
+    var dropdown_name = block.getFieldValue('VERBOPTION');
+    var argumentVERBOPTION = Blockly.Java.quote_( dropdown_name );
+    
+    // var apayload =  Blockly.Java.nameDB_.getName(block.getFieldValue('payload'),
+    //     Blockly.Variables.NAME_TYPE);
 
+    var code = 'getCurrentServiceOrderPropValue(' + argumentVERBOPTION  +')';
+    return  [code, Blockly.Java.ORDER_ATOMIC];
+  };
       
+  Blockly.Java['currentService'] = function(block: any) {
+    // Variable getter.
+        console.log('currentService')
+
+    
+    //var acharname='""';
+    var dropdown_name = block.getFieldValue('VERBOPTION');
+    var argumentVERBOPTION = Blockly.Java.quote_( dropdown_name );
+    
+
+           
+    var acharname =  Blockly.Java.valueToCode(block, 'characteristicName',
+              Blockly.Java.ORDER_ASSIGNMENT) || '""';
+    
+    var code = 'getCurrentServicePropValue(' + argumentVERBOPTION +', '+acharname   +')';
+
+
+    return  [code, Blockly.Java.ORDER_ATOMIC];
+  };
+
   
+  Blockly.Java['payloadToService'] = function(block: any) {
+    // Variable getter.
+        console.log('payloadToService')
+
+    
+    //var acharname='""';
+    var dropdown_name = block.getFieldValue('VERBOPTION');
+    var argumentVERBOPTION = Blockly.Java.quote_( dropdown_name );
+
+    
+    var acharname =  Blockly.Java.valueToCode(block, 'characteristicName',
+              Blockly.Java.ORDER_ASSIGNMENT) || '""';
+              
+    var ajsonpayload =  Blockly.Java.valueToCode(block, 'jsonpayload',
+    Blockly.Java.ORDER_ASSIGNMENT) || '""';
+    
+    var code = 'getFromPayloadServicePropValue(' + ajsonpayload +', '+argumentVERBOPTION +', '+  acharname  +')';
+
+
+    return  [code, Blockly.Java.ORDER_ATOMIC];
+  };
+
+
+  Blockly.Java['createServiceOrder'] = function(block: any) {
+    
+      console.log('createServiceOrder')
+  
+      var serviceOrder: ServiceOrderCreate= {
+        orderItem:[]
+      };
+  
+      var serviceSpecificationid = Blockly.Java.valueToCode(block, 'serviceSpecificationid',
+                      Blockly.Java.ORDER_NONE) || null;
+        var aserviceCharacteristics = Blockly.Java.valueToCode(block, 'serviceCharacteristics',
+            Blockly.Java.ORDER_NONE)  || null;    
+  
+      
+      let newOrderItem: ServiceOrderItem ;
+      newOrderItem = { service: {
+        serviceSpecification: {
+          id: serviceSpecificationid.replaceAll('"', '')
+        },
+        serviceCharacteristic: []
+      }, action: 'add'}
+
+        //we must transform here the key value array to a json object with atributes and values
+        var additionalParamsAsObject= null;
+      if (aserviceCharacteristics){
+        console.log('aserviceCharacteristics = ' + aserviceCharacteristics );
+        var dd = JSON.parse( aserviceCharacteristics);
+        console.log('dd = ' + dd );
+        dd.forEach (element => {
+          if ( element ){
+            var evalue = element.paramvalue;            
+            newOrderItem.service.serviceCharacteristic.push({
+             name: element.paramname,
+             value: { value: evalue }
+           })
+          }           
+        });
+      }
+
+      serviceOrder.orderItem.push(newOrderItem);
+  
+      var acode = '"""\n' + JSON.stringify( serviceOrder, null, 4 ) + '\n"""';
+
+      var code = 'createServiceOrder('  + acode + ')';
+    return  [code, Blockly.Java.ORDER_ATOMIC];
+  };
+
+  
+  Blockly.Java['createServiceOrderJson'] = function(block: any) {
+    // Variable getter.
+        console.log('createServiceOrderJson')
+    
+        var jsonpayload = Blockly.Java.valueToCode(block, 'jsonpayload',
+        Blockly.Java.ORDER_NONE) || null;
+    
+        var code = 'createServiceOrder('  + jsonpayload + ')';
+    return  [code, Blockly.Java.ORDER_ATOMIC];
+  };
+
   Blockly.Java['variables_get'] = function(block: any) {
     // Variable getter.
         console.log('Variable getter CUSTOM')
@@ -989,6 +1105,7 @@ export class ServiceRuleDesignComponent implements OnInit {
             
           }
         )
+        
       } else
       {
         this.lcmRulesService.patchLCMRuleSpecification({id: this.lcmRuleSpec.id, body: updateObj}).subscribe(

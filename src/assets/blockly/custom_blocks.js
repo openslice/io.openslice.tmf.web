@@ -1,6 +1,6 @@
 
-coloursets = 260;
-colouropenarions = 290;
+coloursets = 185;
+colouropenarions = 205;
 colourtexts = 160;
 
 Blockly.defineBlocksWithJsonArray([
@@ -43,6 +43,50 @@ Blockly.defineBlocksWithJsonArray([
   ]);
 
 
+
+  
+  /*************************************************************************** 
+  *
+  *   Number RELATED
+  * 
+  ****************************************************************************/
+
+  
+Blockly.Blocks['string_to_integer'] = {
+  /**
+  * Block for numeric integer value.
+  * @this Blockly.Block
+  */
+
+    init: function() {      
+      this.appendValueInput("paramtxt")
+          .setAlign(Blockly.ALIGN_RIGHT)
+          .appendField("str to int");    
+      this.setOutput(true, 'Number');           
+      this.setInputsInline(true);
+      this.setColour(230);
+      this.setTooltip("Constructs a new integer value from another text");
+      this.setHelpUrl("");
+    }
+};
+
+Blockly.Blocks['string_to_float'] = {
+  /**
+  * Block for numeric integer value.
+  * @this Blockly.Block
+  */
+  init: function() {  
+    this.appendValueInput("paramtxt")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("str to float");    
+    this.setOutput(true, 'Number');           
+    this.setInputsInline(true);
+    this.setColour(230);
+    this.setTooltip("Constructs a new float value from another text");
+    this.setHelpUrl("");
+  }
+};
+
   /*************************************************************************** 
   *
   *   TEXT RELATED
@@ -62,6 +106,7 @@ Blockly.defineBlocksWithJsonArray([
    this.setHelpUrl("");
     }
   };
+  
   
   
 
@@ -116,26 +161,10 @@ Blockly.defineBlocksWithJsonArray([
       //this.setOutput(true, ["Boolean", "SET", "String"]);
       this.setOutput(true, 'String');
       this.setColour(230);
-   this.setTooltip("");
+   this.setTooltip("Get characteristic value as string");
    this.setHelpUrl("");
     }
   };
-
-
-  Blockly.Blocks['setcharacteristicvalue'] = {
-    init: function() {
-      this.appendValueInput("NAME")
-          .setCheck(null)
-          .appendField("Set Value")
-          .appendField(new Blockly.FieldDropdown([["Area of Service","Area of Service"], ["Area of Service: Region specification","Area of Service: Region specification"], ["Delay tolerance","Delay tolerance"],["NSD_5GCORE::CONFIG","NSD_5GCORE::CONFIG"], ["Slice quality of service parameters: 3GPP 5QI","Slice quality of service parameters: 3GPP 5QI"] ]), "OPTIONEDVALUE");
-      this.setPreviousStatement(true, null);
-      this.setNextStatement(true, null);
-      this.setColour(230);
-   this.setTooltip("");
-   this.setHelpUrl("");
-    }
-  };
-
 
 
   Blockly.Blocks['getcharval_string_type'] = {
@@ -146,7 +175,7 @@ Blockly.defineBlocksWithJsonArray([
       //this.setOutput(true, ["Boolean", "SET", "String"]);
       this.setOutput(true, 'String');
       this.setColour(colourtexts);
-   this.setTooltip("");
+   this.setTooltip("Get characteristic value");
    this.setHelpUrl("");
     }
   };
@@ -161,7 +190,7 @@ Blockly.defineBlocksWithJsonArray([
       this.setPreviousStatement(true, null);
       this.setNextStatement(true, null);
       this.setColour(colourtexts);
-   this.setTooltip("");
+   this.setTooltip("Set characteristic value");
    this.setHelpUrl("");
     }
   };
@@ -175,8 +204,8 @@ Blockly.defineBlocksWithJsonArray([
           .appendField(new Blockly.FieldLabelSerializable(""), "AVALUE")          
       //this.setOutput(true, ["Boolean", "SET", "String"]);
       this.setOutput(true, 'Number');
-      this.setColour(60);
-   this.setTooltip("");
+      this.setColour(230);
+   this.setTooltip("Get characteristic value");
    this.setHelpUrl("");
     }
   };
@@ -190,8 +219,8 @@ Blockly.defineBlocksWithJsonArray([
           .appendField(new Blockly.FieldLabelSerializable(""), "NAMELBL");
       this.setPreviousStatement(true, null);
       this.setNextStatement(true, null);
-      this.setColour(60);
-   this.setTooltip("");
+      this.setColour(230);
+   this.setTooltip("Set characteristic value");
    this.setHelpUrl("");
     }
   };
@@ -205,7 +234,7 @@ Blockly.defineBlocksWithJsonArray([
       //this.setOutput(true, ["Boolean", "SET", "String"]);
       this.setOutput(true, 'Boolean');
       this.setColour(90);
-   this.setTooltip("");
+   this.setTooltip("Get characteristic value");
    this.setHelpUrl("");
     }
   };
@@ -220,7 +249,7 @@ Blockly.defineBlocksWithJsonArray([
       this.setPreviousStatement(true, null);
       this.setNextStatement(true, null);
       this.setColour(90);
-   this.setTooltip("");
+   this.setTooltip("Set characteristic value");
    this.setHelpUrl("");
     }
   };
@@ -234,7 +263,7 @@ Blockly.defineBlocksWithJsonArray([
       //this.setOutput(true, ["Boolean", "SET", "String"]);
       this.setOutput(true, 'SET');
       this.setColour(coloursets);
-   this.setTooltip("");
+   this.setTooltip("Get characteristic value");
    this.setHelpUrl("");
     }
   };
@@ -249,7 +278,7 @@ Blockly.defineBlocksWithJsonArray([
       this.setPreviousStatement(true, null);
       this.setNextStatement(true, null);
       this.setColour(coloursets);
-   this.setTooltip("");
+   this.setTooltip("Set characteristic value");
    this.setHelpUrl("");
     }
   };
@@ -258,7 +287,7 @@ Blockly.defineBlocksWithJsonArray([
     init: function() {
       this.appendValueInput("AVALUE")
           .setCheck("Array")
-          .appendField("Add")
+          .appendField("Add to")
           .appendField(new Blockly.FieldLabelSerializable(""), "NAMELBL");
       this.setPreviousStatement(true, null);
       this.setNextStatement(true, null);
@@ -273,7 +302,7 @@ Blockly.defineBlocksWithJsonArray([
     init: function() {
       this.appendValueInput("AVALUE")
           .setCheck("Array")
-          .appendField("Remove")
+          .appendField("Remove from")
           .appendField(new Blockly.FieldLabelSerializable(""), "NAMELBL");
       this.setPreviousStatement(true, null);
       this.setNextStatement(true, null);
@@ -314,7 +343,7 @@ Blockly.defineBlocksWithJsonArray([
     init: function() {
       this.appendDummyInput()
           //.setCheck(null)
-          .appendField("Current Service")
+          .appendField("Service payload")
           .appendField(new Blockly.FieldDropdown([["ID", "id"], 
           ["State", "state"], 
           ["Name","name"], 
@@ -588,7 +617,7 @@ Blockly.defineBlocksWithJsonArray([
       //this.setNextStatement(true, null);    
       this.setOutput(true, "String");
       this.setColour(colourtexts);
-      this.setTooltip("Get Service details from current context, after instantiation. If the Service is available from the state of the service.");
+      this.setTooltip("Get Service details from current context running service, after instantiation.");
       this.setHelpUrl("");
 
     },
@@ -657,6 +686,32 @@ Blockly.defineBlocksWithJsonArray([
   
   
   
+  
+  Blockly.Blocks['setCharacteristicOfCurrentService'] = {
+    init: function() {
+      this.appendDummyInput()
+          //.setCheck(null)
+          .appendField("Set Service");
+
+
+      this.appendValueInput("characteristicName")
+          .setCheck("String")
+          .setAlign(Blockly.ALIGN_RIGHT)
+          .appendField("Characteristic Name");    
+
+      this.appendValueInput("avalue")
+          .setCheck("String")
+          .setAlign(Blockly.ALIGN_RIGHT)
+          .appendField("Value (String)");    
+      this.setPreviousStatement(true, null);
+      this.setNextStatement(true, null);    
+      this.setColour(colourtexts);
+      this.setTooltip("Set a characteristic value of the Service in current context.");
+      this.setHelpUrl("");
+
+    }
+   
+  };
 
   /*************************************************************************** 
   *
@@ -856,7 +911,7 @@ Blockly.defineBlocksWithJsonArray([
     }
   };
 
-  Blockly.Blocks['osm_nsd_param_from_variable'] = {
+  Blockly.Blocks['computeVariable'] = {
     init: function() {      
       this.appendValueInput("paramvariable")
           .setAlign(Blockly.ALIGN_RIGHT)
@@ -864,7 +919,7 @@ Blockly.defineBlocksWithJsonArray([
       this.setOutput(true, 'String');           
       this.setInputsInline(true);
       this.setColour(230);
-   this.setTooltip("Constructs a text parameter from a variable parameter. Use to compute variables inside json to additionalParamsForVnf");
+   this.setTooltip("Constructs a text parameter from a variable parameter. Use to compute variables inside texts ot json for example ");
    this.setHelpUrl("");
     }
   };

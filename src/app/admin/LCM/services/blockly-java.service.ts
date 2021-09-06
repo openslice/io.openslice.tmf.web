@@ -2174,6 +2174,8 @@ Blockly.Java['variable_declare_string'] = function(block: any) {
 * --- INTEGER ---
 *
 */
+
+
 Blockly.Java['variable_declare_int'] = function(block: { getFieldValue: (arg0: string) => any; }) {
   var argument0 = Blockly.Java.valueToCode(block, 'VALUE',
       Blockly.Java.ORDER_ASSIGNMENT) || '0';
@@ -2203,8 +2205,37 @@ Blockly.Java['variable_set_int'] = function(block: { getFieldValue: (arg0: strin
   return varName + ' = ' + argument0 + ';\n';
 };
 
+Blockly.Java['variable_declare_float'] = function(block: { getFieldValue: (arg0: string) => any; }) {
+  var argument0 = Blockly.Java.valueToCode(block, 'VALUE',
+      Blockly.Java.ORDER_ASSIGNMENT) || '0';
+  var varName = Blockly.Java.nameDB_.getName(
+      block.getFieldValue('VAR'), Blockly.Variables.NAME_TYPE);
+  if(int_variables.indexOf(varName) < 0) {
+      int_variables[int_variables.length] = varName;
+  }
+  var typeName = 'float';
+  return typeName+' '+varName + ' = ' + argument0 + ';\n';
+};
 
 
+Blockly.Java['string_to_integer'] = function(block: { getFieldValue: (arg0: string) => string; }) {
+  // Numeric value.
+  var argument0 = Blockly.Java.valueToCode(block, 'paramtxt',
+      Blockly.Java.ORDER_ASSIGNMENT) || '"0"';
+
+  var code = 'Integer.parseInt(' + argument0 + ')'  ;
+  return [code, Blockly.Java.ORDER_ATOMIC];
+};
+
+
+Blockly.Java['string_to_float'] = function(block: { getFieldValue: (arg0: string) => string; }) {
+  // Numeric value.
+  var argument0 = Blockly.Java.valueToCode(block, 'paramtxt',
+  Blockly.Java.ORDER_ASSIGNMENT) || '"0"';
+
+  var code = 'Float.parseFloat(' + argument0 + ')'  ;
+  return [code, Blockly.Java.ORDER_ATOMIC];
+};
 
 /*
 * --- BOOLEAN ---

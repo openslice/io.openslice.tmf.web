@@ -101,7 +101,7 @@
               <block type="osm_nsd_config_vld"></block>     
               <block type="osm_nsd_config_paramvnf"></block>
               <block type="param_value_tuple"></block>
-              <block type="osm_nsd_param_from_variable"></block>
+              <block type="computeVariable"></block>
               
             </category>
   
@@ -112,6 +112,7 @@
                 <block type="variable_declare_string"></block>  
                 <block type="variable_get_string"></block>  
                 <block type="variable_set_string"></block>  
+                <block type="computeVariable"></block> 
                 <block type="text_escape"></block>
                 <block type="text_join"></block>
                 <block type="text_append">
@@ -179,8 +180,28 @@
             <category name="Number" colour="60">    
               <block type="literal_integer"></block> 
               <block type="variable_declare_int"></block>  
+              <block type="variable_declare_float"></block>  
               <block type="variable_get_int"></block>  
               <block type="variable_set_int"></block> 
+
+              
+              <block type="string_to_integer" ></block>               
+              <block type="string_to_float" ></block> 
+
+              <block type="math_number" ></block> 
+              <block type="math_arithmetic"></block> 
+              <block type="math_single"></block> 
+              <block type="math_constant"></block> 
+              <block type="math_number_property"></block> 
+              <block type="math_change"></block> 
+              <block type="math_round"></block> 
+              <block type="math_on_list"></block> 
+              <block type="math_modulo"></block> 
+              <block type="math_constrain"></block> 
+              <block type="math_random_int"></block> 
+              <block type="math_random_float"></block> 
+
+
             </category>     
           
               
@@ -291,18 +312,20 @@
           <category name="Context" colour="210"> 
             <block type="currentServiceOrder"></block>  
             <block type="currentService"></block>  
+            <block type="setCharacteristicOfCurrentService"></block>  
           </category>
 
 
           <category name="Operations" colour="290">
             <category name="Generic" colour="290">
-              <block type="so_log_string"></block>  
+              <block type="so_log_string"></block>      
+              <block type="param_value_tuple" ></block>      
+              <block type="computeVariable"></block>
             </category>
             
           <category name="Openslice" colour="210"> 
             <block type="createServiceOrder"></block> 
-            <block type="createServiceOrderJson"></block>      
-            <block type="param_value_tuple" ></block>       
+            <block type="createServiceOrderJson"></block>   
           </category>
             <category name="REST" colour="290">
               <block type="rest_config_client"></block>  

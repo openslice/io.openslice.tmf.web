@@ -10,7 +10,7 @@
           ] : [
             ['is equal to(strings)', 'EQ']
           ];
-      this.setColour(230);
+      this.setColour(160);
       this.setOutput(true, 'Boolean');
       this.appendValueInput('A')
           .setCheck('String');
@@ -497,6 +497,7 @@ Blockly.Blocks['literal_integer'] = {
   }
 };
 
+
 Blockly.Blocks['literal_boolean'] = {
   /**
    * Block for boolean data type: true and false.
@@ -694,7 +695,7 @@ Blockly.Blocks['variable_set_string'] = {
 Blockly.Blocks['variable_declare_int'] = {
     init: function() {
       this.setHelpUrl(Blockly.Msg.VARIABLES_SET_HELPURL);
-      this.setColour(60);
+      this.setColour(230);
       var name = Blockly.Variables.generateUniqueName(Blockly.getMainWorkspace() );
       var newString = new Blockly.FieldVariable( name, null, null, 'Number');
       // this.interpolateMsg(
@@ -745,7 +746,7 @@ Blockly.Blocks['variable_get_int'] = {
     */
     init: function() {
       this.setHelpUrl(Blockly.Msg.VARIABLES_GET_HELPURL);
-      this.setColour(60);
+      this.setColour(230);
       var name = Blockly.Variables.generateUniqueName(Blockly.getMainWorkspace() );
       var newString = new Blockly.FieldVariable( name, null, null, 'Number');
 
@@ -804,7 +805,7 @@ Blockly.Blocks['variable_set_int'] = {
    */
   init: function() {
     this.setHelpUrl(Blockly.Msg.VARIABLES_SET_HELPURL);
-    this.setColour(60);
+    this.setColour(230);
     var name = Blockly.Variables.generateUniqueName(Blockly.getMainWorkspace() );
     var newString = new Blockly.FieldVariable( name, null, null, 'Number');
 
@@ -851,7 +852,55 @@ Blockly.Blocks['variable_set_int'] = {
 
 
 
+Blockly.Blocks['variable_declare_float'] = {
+  init: function() {
+    this.setHelpUrl(Blockly.Msg.VARIABLES_SET_HELPURL);
+    this.setColour(230);
+    var name = Blockly.Variables.generateUniqueName(Blockly.getMainWorkspace() );
+    var newString = new Blockly.FieldVariable( name, null, null, 'Number');
+    // this.interpolateMsg(
+    //   'define int '+
+    //   'called' + ' %1' ,//+
+    //   ['VAR', new Blockly.FieldVariableInteger(null)],
+    //   Blockly.ALIGN_RIGHT);
+      this.appendValueInput('VALUE')
+      .appendField("Create Float variable")
+      .appendField(newString, "VAR")
+      .appendField("=")
+      .setCheck("Number");
+      this.setInputsInline(true);
+      this.setPreviousStatement(true);
+      this.setNextStatement(true);
+      this.setTooltip(Blockly.Msg.VARIABLES_SET_TOOLTIP);
+      this.contextMenuMsg_ = Blockly.Msg.VARIABLES_SET_CREATE_GET;
+      this.contextMenuType_ = 'variables_get';
+    },
+    /**
+    * Return all variables referenced by this block.
+    * @return {!Array.<string>} List of variable names.
+    * @this Blockly.Block
+    */
+    getVars: function() {
+      return [this.getFieldValue('VAR')];
+    },
+    /**
+    * Notification that a variable is renaming.
+    * If the name matches one of this block's variables, rename it.
+    * @param {string} oldName Previous name of variable.
+    * @param {string} newName Renamed variable.
+    * @this Blockly.Block
+    */
+    renameVar: function(oldName, newName) {
+      if (Blockly.Names.equals(oldName, this.getFieldValue('VAR'))) {
+        this.setFieldValue(newName, 'VAR');
+      }
+    },
+    customContextMenu: Blockly.Blocks['variables_get'].customContextMenu
+  };
 
+
+
+  
 
 /*
 * --- BOOLEAN ---

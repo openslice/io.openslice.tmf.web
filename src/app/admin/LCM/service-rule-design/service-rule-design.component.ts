@@ -44,7 +44,7 @@ export class ServiceRuleDesignComponent implements OnInit {
 
   editForm =  new FormGroup({
     description: new FormControl(),
-    lcmphase: new FormControl("PRE_PROVISION"),
+    lcmrulephase: new FormControl("PRE_PROVISION"),
     name: new FormControl(),
     priority: new FormControl("0"),
     version: new FormControl("0.1.0")
@@ -1154,7 +1154,7 @@ export class ServiceRuleDesignComponent implements OnInit {
         description: this.editForm.value.description,
         name: this.editForm.value.name,
         priority: this.editForm.value.priority,
-        lcmrulephase: this.editForm.value.lcmphase ,
+        lcmrulephase: this.editForm.value.lcmrulephase ,
         serviceSpecs: this.lcmRuleSpec.serviceSpecs
       }
 

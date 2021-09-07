@@ -33,7 +33,7 @@
                   
                   <mat-form-field class="col-md-12">
                     <mat-label>Lifecycle phase</mat-label>
-                    <mat-select formControlName="lcmphase">
+                    <mat-select formControlName="lcmrulephase">
                         <mat-option *ngFor="let phase of lcmphases"
                             [value]="phase">
                             {{phase}}
@@ -177,7 +177,7 @@
 
 
             </category> 
-            <category name="Number" colour="60">    
+            <category name="Number" colour="230">    
               <block type="literal_integer"></block> 
               <block type="variable_declare_int"></block>  
               <block type="variable_declare_float"></block>  

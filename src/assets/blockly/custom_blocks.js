@@ -786,7 +786,7 @@ Blockly.Blocks['string_to_float'] = {
       this.appendValueInput("NSDID")
           .setCheck("String")
           .setAlign(Blockly.ALIGN_RIGHT)
-          .appendField("NSDID(Text)");
+          .appendField("OSMNSDID(Text)");
       this.appendValueInput("VIMID")
           .setCheck("String")
           .setAlign(Blockly.ALIGN_RIGHT)
@@ -932,7 +932,7 @@ Blockly.Blocks['string_to_float'] = {
       this.appendValueInput("NSDID")
           .setCheck("String")
           .setAlign(Blockly.ALIGN_RIGHT)
-          .appendField("NSDID(Text)");
+          .appendField("OSMNSDID(Text)");
       this.appendValueInput("VIMID")
           .setCheck("String")
           .setAlign(Blockly.ALIGN_RIGHT)

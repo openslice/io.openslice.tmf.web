@@ -690,7 +690,7 @@ export class ServiceRuleDesignComponent implements OnInit {
 
         var code =  JSON.stringify( osmconfig, null );
         
-        code = '"' +  code + '"' ;
+        code = '"' +  textEscape( code ) + '"' ;
         if (config){
           //it will replace all
           //config = config.replace('"', '');

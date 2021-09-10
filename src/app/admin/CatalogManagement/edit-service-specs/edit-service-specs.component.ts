@@ -2,6 +2,7 @@ import { LcmRuleSpecificationService } from 'src/app/openApis/LcmRuleSpecificati
 import { LCMRuleSpecification } from './../../../openApis/LcmRuleSpecificationAPI/models/lcmrule-specification';
 import { Component, OnInit, ViewChild } from '@angular/core';
 
+import { HttpErrorResponse } from '@angular/common/http';
 import { ActivatedRoute, Router, ActivationEnd } from '@angular/router';
 import { FormGroup, FormControl, FormArray, Validators } from '@angular/forms';
 import { ServiceSpecification, ServiceSpecCharacteristic, ServiceSpecificationUpdate, ServiceSpecificationCreate, ServiceSpecRelationship, AttachmentRef, Attachment } from 'src/app/openApis/ServiceCatalogManagement/models';
@@ -17,6 +18,7 @@ import { FileUploadControl, FileUploadValidators } from '@iplab/ngx-file-upload'
 import { trigger } from '@angular/animations';
 import { fadeIn } from 'src/app/shared/animations/animations';
 import { DeleteAttachmentComponent } from './delete-attachment/delete-attachment.component';
+import { DeleteLcmruleComponent } from './delete-lcmrule/delete-lcmrule.component';
 
 
 @Component({
@@ -530,30 +532,23 @@ export class EditServiceSpecsComponent implements OnInit {
 
 
 
-  openLCMRuleDeleteDialog(characteristic: LCMRuleSpecification) {
-    // const specToBeDeletedIndex = this.spec.serviceSpecCharacteristic.findIndex(char => char.id === characteristic.id)
+  openLCMRuleDeleteDialog( lcmrule: LCMRuleSpecification) {
 
-    // const newSpecCharacteristicArray: ServiceSpecCharacteristic[] = this.spec.serviceSpecCharacteristic.slice()
-    
-    // newSpecCharacteristicArray.splice(specToBeDeletedIndex, 1)
+    const dialogRef = this.dialog.open(DeleteLcmruleComponent, {data: lcmrule})
 
-    // const dialogRef = this.dialog.open(DeleteServiceSpecCharacteristicsComponent, {
-    //   data: {
-    //     serviceSpec: this.spec,
-    //     serviceSpecCharacteristicArray: newSpecCharacteristicArray, 
-    //     specToBeDeleted: this.spec.serviceSpecCharacteristic[specToBeDeletedIndex]
-    //   }
-    // })
-
-    // dialogRef.afterClosed().subscribe (
-    //   result => { 
-    //     console.log(result)
-    //     if (result){ 
-    //       this.toast.success("Service Specification Characteristics list was successfully updated")
-    //       this.retrieveServiceSpec()
-    //     }
-    //   }
-    // )
+    dialogRef.afterClosed().subscribe (
+      result => {
+        console.log(result)
+        if (result) {
+          if (result instanceof HttpErrorResponse) {
+            this.toast.error("An error occurred while attempting to delete Service Specification")
+          } else {
+            this.toast.success("LCM Rules list is successfully updated")
+            this.retrieveLCMRulesSpecs()
+          }
+        }
+      }
+    )
   }
 
 }

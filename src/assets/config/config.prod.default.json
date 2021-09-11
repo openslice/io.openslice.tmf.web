@@ -1,6 +1,6 @@
 {	      
     "TITLE": "Openslice demo",
-    "PORTALVERSION":"1.0.2-SNAPSHOT",
+    "PORTALVERSION":"1.1.0-SNAPSHOT",
     "WIKI": "http://wiki.localhost",
     "BUGZILLA": "{BASEURL}/bugzilla/",
     "STATUS": "http://status.localhost/",

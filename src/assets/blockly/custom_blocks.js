@@ -924,7 +924,25 @@ Blockly.Blocks['string_to_float'] = {
     }
   };
 
+  Blockly.Blocks['valueFromJsonPath'] = {
+    init: function() {      
+      this.appendValueInput("jsoninput")
+          .setAlign(Blockly.ALIGN_RIGHT)
+          .appendField("json (text)");  
+            
+      this.appendValueInput("jsonpath")
+      .setCheck("String")
+      .setAlign(Blockly.ALIGN_RIGHT)
+      .appendField("JsonPath (Text)");    
 
+      this.setOutput(true, 'String');  
+      this.setColour(230);
+   this.setTooltip("Extracts a value from a Json given a jsonpath query. \n More for json path library and the proper notation: https://github.com/json-path/JsonPath . You can also experiment with the Jayway JsonPath Evaluator here: http://jsonpath.herokuapp.com/");
+   this.setHelpUrl("");
+    }
+  };
+
+  
 
   
   Blockly.Blocks['osm_nsd_config'] = {

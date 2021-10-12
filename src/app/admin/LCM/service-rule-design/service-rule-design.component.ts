@@ -892,7 +892,25 @@ export class ServiceRuleDesignComponent implements OnInit {
       };
   
       
+      Blockly.Java['valueFromJsonPath'] = function(block: any) {
+        var jsoninput: string = Blockly.Java.valueToCode(block, 'jsoninput',
+          Blockly.Java.ORDER_NONE) || '""';
+          
+        var jsonpath: any = Blockly.Java.valueToCode(block, 'jsonpath',
+        Blockly.Java.ORDER_NONE) || '""';
+        
+        jsoninput = jsoninput.replace('"', '');
+        jsoninput = jsoninput.substring(0, jsoninput.length-1);
+        jsoninput = '"' +  textEscape(jsoninput) + '"';       
+        
+        jsonpath = jsonpath.replaceAll("\\\'", "'");
 
+        console.log('jsoninput = ' + jsoninput );
+        console.log('jsonpath = ' + jsonpath );
+
+        var code = 'getValueFromJsonPath(' + jsoninput + ', ' + jsonpath  +')';
+        return [code, Blockly.Java.ORDER_ATOMIC];
+      };
 
       
       Blockly.Java['rest_config_client'] = function (block: any) {

@@ -724,6 +724,9 @@ export class ServiceRuleDesignComponent implements OnInit {
         Blockly.Java.ORDER_NONE) || null;
 
         
+        var k8snamespace = Blockly.Java.valueToCode(block, 'k8s-namespace',
+            Blockly.Java.ORDER_NONE) || null;
+            
         var additionalParamsForNs = Blockly.Java.valueToCode(block, 'additionalParamsForNs',
         Blockly.Java.ORDER_NONE) || null;
         
@@ -732,8 +735,15 @@ export class ServiceRuleDesignComponent implements OnInit {
 
         var osmconfig: any = { nsdId:'zzz' };
 
+        if ( k8snamespace ){
+          osmconfig  = { "k8s-namespace" : k8snamespace.replaceAll('"', '') };
+        }
+
         osmconfig.nsdId = NSDID.replaceAll('"', '');
         osmconfig.vimAccountId = VIMID.replaceAll('"', '');
+
+        
+
         if (VNF){          
           osmconfig.vnf =JSON.parse(VNF) ;
         }
@@ -809,6 +819,10 @@ export class ServiceRuleDesignComponent implements OnInit {
           Blockly.Java.ORDER_NONE) || '"1"';
         var additionalParams = Blockly.Java.valueToCode(block, 'additionalParams',
             Blockly.Java.ORDER_NONE)  || null;    
+
+        var additionalParamsForKdu = Blockly.Java.valueToCode(block, 'additionalParamsForKdu',
+          Blockly.Java.ORDER_NONE)  || null;    
+            
             
         var config = Blockly.Java.valueToCode(block, 'config',
          Blockly.Java.ORDER_NONE) || null;
@@ -836,6 +850,38 @@ export class ServiceRuleDesignComponent implements OnInit {
 
           code.additionalParams = JSON.parse( additionalParamsAsObject ) ;
         }
+
+        var additionalParamsForKduAsObject= null;
+        
+        console.log('Variable additionalParamsForKdu = ' + additionalParamsForKdu );
+
+        code.additionalParamsForKdu = JSON.parse( additionalParamsForKdu ) ;
+
+        // if (additionalParamsForKdu){
+        //   var dd = JSON.parse( additionalParamsForKdu);
+        //   dd.forEach( e => {          
+            
+        //   var element = JSON.parse( e); //each element is a json String which describes the key value element
+        //   if ( element ){
+        //     var evalue = element.paramvalue;
+
+        //     console.log('Variable additionalParamsForKdu element = ' + element.paramname );
+        //     if (additionalParamsForKduAsObject){
+        //       additionalParamsForKduAsObject =additionalParamsForKduAsObject + ','  + '"' + element.paramname + '" : "' + evalue + '"';
+        //     }else{
+        //       additionalParamsForKduAsObject = '"' + element.paramname + '" : "' + evalue + '"';
+        //     }
+        //   }
+          
+        //  });
+         
+        //  if (additionalParamsForKduAsObject){
+        //   additionalParamsForKduAsObject = "{" + additionalParamsForKduAsObject + "}";
+        //   code.additionalParamsForKdu = JSON.parse( additionalParamsForKduAsObject ) ;
+        //  }
+        // }
+
+
         code =  JSON.stringify( code, null );
 
         if (config){
@@ -848,6 +894,34 @@ export class ServiceRuleDesignComponent implements OnInit {
         return [code, Blockly.Java.ORDER_ATOMIC];
       };
     
+
+      Blockly.Java['osm_nsd_config_kdu'] = function(block: any) {
+        var kdu_name = Blockly.Java.valueToCode(block, 'kdu_name',
+          Blockly.Java.ORDER_NONE) || '"1"';         
+        var k8snamespace = Blockly.Java.valueToCode(block, 'k8s-namespace',
+        Blockly.Java.ORDER_NONE) || null;
+        var additionalParams = Blockly.Java.valueToCode(block, 'additionalParams',
+            Blockly.Java.ORDER_NONE) || null;   
+            
+        var code: any = { "kdu_name":kdu_name.replaceAll('"', '')  };
+        if ( k8snamespace ){
+
+          code = { "kdu_name":kdu_name.replaceAll('"', ''), "k8s-namespace":k8snamespace.replaceAll('"', ''),   };
+        }
+
+
+        if (additionalParams){
+          additionalParams = additionalParams.replace('"', '');
+          additionalParams = additionalParams.substring(0, additionalParams.length-1);
+          code.additionalParams = JSON.parse( additionalParams  ) ;
+        }
+        
+        code = JSON.stringify( code, null);
+        // code = textEscape( JSON.stringify( code, null) );
+        // code = '"' +  code + '"';
+        
+        return [code, Blockly.Java.ORDER_ATOMIC];
+      };
 
       
       Blockly.Java['param_value_tuple'] = function(block: any) {

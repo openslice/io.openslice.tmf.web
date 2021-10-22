@@ -8,6 +8,7 @@ import { DeleteServiceCategoryComponent } from '../delete-service-category/delet
 import { ToastrService } from 'ngx-toastr';
 import { trigger } from '@angular/animations';
 import { fadeIn } from 'src/app/shared/animations/animations';
+import { AppService } from 'src/app/shared/services/app.service';
 
 @Component({
   selector: 'app-list-service-categories',
@@ -20,7 +21,8 @@ export class ListServiceCategoriesComponent implements OnInit {
   constructor(
     private categoryService: ServiceCategoryService,
     public dialog: MatDialog,
-    private toast: ToastrService
+    private toast: ToastrService,
+    public appService: AppService
     ) { }
 
   displayedColumns = ['name', 'description', 'version', 'lastUpdate',  'lifecycleStatus', 'isRoot', 'parent', 'actions']

@@ -7,6 +7,7 @@ import { DeleteIndividualComponent } from '../delete-individual/delete-individua
 import { HttpErrorResponse } from '@angular/common/http';
 import { trigger } from '@angular/animations';
 import { fadeIn } from 'src/app/shared/animations/animations';
+import { AppService } from 'src/app/shared/services/app.service';
 
 
 
@@ -21,7 +22,8 @@ export class ListIndividualsComponent implements OnInit {
   constructor(
     private individualService: IndividualService,
     private dialog: MatDialog,
-    private toast: ToastrService
+    private toast: ToastrService,
+    public appService: AppService
   ) { }
 
   displayedColumns = ['familyName', 'organization', 'location', 'actions']

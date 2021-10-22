@@ -19,6 +19,7 @@ import { trigger } from '@angular/animations';
 import { fadeIn } from 'src/app/shared/animations/animations';
 import { DeleteAttachmentComponent } from './delete-attachment/delete-attachment.component';
 import { DeleteLcmruleComponent } from './delete-lcmrule/delete-lcmrule.component';
+import { AppService } from 'src/app/shared/services/app.service';
 
 
 @Component({
@@ -36,7 +37,8 @@ export class EditServiceSpecsComponent implements OnInit {
     private lcmRulesService: LcmRuleSpecificationService,
     private dialog: MatDialog,
     private toast: ToastrService,
-    private router: Router
+    private router: Router,
+    public appService: AppService
   ) { }
 
   specID: string

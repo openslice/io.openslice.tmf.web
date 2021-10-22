@@ -27,59 +27,68 @@ import { EditActionSpecsComponent } from './admin/AssuranceServicesManagement/ed
 import { ListActionRulesComponent } from './admin/AssuranceServicesManagement/list-action-rules/list-action-rules.component';
 import { EditActionRulesComponent } from './admin/AssuranceServicesManagement/edit-action-rules/edit-action-rules.component';
 import { ServiceRuleDesignComponent } from './admin/LCM/service-rule-design/service-rule-design.component';
+import { BootstrapComponent } from './bootstrap/bootstrap.component';
 
 
 const routes: Routes = [
-  { path: '', component: LandingComponent },
-  { path: 'services_marketplace', component: ServicesMarketplaceComponent },
-  { path: 'experiments_marketplace', component: ExperimentsMarketplaceComponent },
-  { path: 'vxf_marketplace', component: VxfsMarketplaceComponent },
-
-  { path: 'service_catalogs', component: ListServiceCatalogsComponent, canActivate: [AuthGuardService], runGuardsAndResolvers: 'always' },
-  { path: 'service_categories', component: ListServiceCategoriesComponent, canActivate: [AuthGuardService], runGuardsAndResolvers: 'always'},
-  { path: 'service_categories_update/:id', component: EditServiceCategoriesComponent, canActivate: [AuthGuardService], runGuardsAndResolvers: 'always' },
-  { path: 'service_categories_update', component: EditServiceCategoriesComponent, canActivate: [AuthGuardService], runGuardsAndResolvers: 'always' },
-  { path: 'service_specs', component: ListServiceSpecsComponent, canActivate: [AuthGuardService], runGuardsAndResolvers: 'always' },
-  { path: 'service_spec_update/:id', component: EditServiceSpecsComponent, canActivate: [AuthGuardService], runGuardsAndResolvers: 'always' },
-  { path: 'service_spec_update', component: EditServiceSpecsComponent, canActivate: [AuthGuardService], runGuardsAndResolvers: 'always' },
-  { path: 'list_nsds', component: ListNsdComponent, canActivate: [AuthGuardService], runGuardsAndResolvers: 'always' },
-
-  { path: 'service_orders', component: ListServiceOrdersComponent, canActivate: [AuthGuardService], runGuardsAndResolvers: 'always' },
-  { path: 'service_order/:id', component: PreviewServiceOrderComponent, canActivate: [AuthGuardService], runGuardsAndResolvers: 'always' },
-
-  { path: 'service_order_checkout', component: ServiceOrderCheckoutComponent, canActivate: [AuthGuardService], runGuardsAndResolvers: 'always' },
-  { path: 'my_service_orders', component: ListServiceOrdersComponent, canActivate: [AuthGuardService], runGuardsAndResolvers: 'always' },
   
-  { path: 'organizations', component: ListOrganizationsComponent, canActivate: [AuthGuardService], runGuardsAndResolvers: 'always' },
-  { path: 'organization_update/:id', component: EditOrganizationsComponent, canActivate: [AuthGuardService], runGuardsAndResolvers: 'always' },
-  { path: 'organization_update', component: EditOrganizationsComponent, canActivate: [AuthGuardService], runGuardsAndResolvers: 'always' },
+  { path: '', redirectTo: 'services', pathMatch: 'full'},
+  
+  { path: 'services', component: BootstrapComponent, children: [
+    { path: '', component: LandingComponent},
+    { path: 'services_marketplace', component: ServicesMarketplaceComponent },
+    { path: 'experiments_marketplace', component: ExperimentsMarketplaceComponent },
+    { path: 'vxf_marketplace', component: VxfsMarketplaceComponent },
+  
+    { path: 'service_catalogs', component: ListServiceCatalogsComponent, canActivate: [AuthGuardService], runGuardsAndResolvers: 'always' },
+    { path: 'service_categories', component: ListServiceCategoriesComponent, canActivate: [AuthGuardService], runGuardsAndResolvers: 'always'},
+    { path: 'service_categories_update/:id', component: EditServiceCategoriesComponent, canActivate: [AuthGuardService], runGuardsAndResolvers: 'always' },
+    { path: 'service_categories_update', component: EditServiceCategoriesComponent, canActivate: [AuthGuardService], runGuardsAndResolvers: 'always' },
+    { path: 'service_specs', component: ListServiceSpecsComponent, canActivate: [AuthGuardService], runGuardsAndResolvers: 'always' },
+    { path: 'service_spec_update/:id', component: EditServiceSpecsComponent, canActivate: [AuthGuardService], runGuardsAndResolvers: 'always' },
+    { path: 'service_spec_update', component: EditServiceSpecsComponent, canActivate: [AuthGuardService], runGuardsAndResolvers: 'always' },
+    { path: 'list_nsds', component: ListNsdComponent, canActivate: [AuthGuardService], runGuardsAndResolvers: 'always' },
+  
+    { path: 'service_orders', component: ListServiceOrdersComponent, canActivate: [AuthGuardService], runGuardsAndResolvers: 'always' },
+    { path: 'service_order/:id', component: PreviewServiceOrderComponent, canActivate: [AuthGuardService], runGuardsAndResolvers: 'always' },
+  
+    { path: 'service_order_checkout', component: ServiceOrderCheckoutComponent, canActivate: [AuthGuardService], runGuardsAndResolvers: 'always' },
+    { path: 'my_service_orders', component: ListServiceOrdersComponent, canActivate: [AuthGuardService], runGuardsAndResolvers: 'always' },
+    
+    { path: 'organizations', component: ListOrganizationsComponent, canActivate: [AuthGuardService], runGuardsAndResolvers: 'always' },
+    { path: 'organization_update/:id', component: EditOrganizationsComponent, canActivate: [AuthGuardService], runGuardsAndResolvers: 'always' },
+    { path: 'organization_update', component: EditOrganizationsComponent, canActivate: [AuthGuardService], runGuardsAndResolvers: 'always' },
+  
+    { path: 'individuals', component: ListIndividualsComponent, canActivate: [AuthGuardService], runGuardsAndResolvers: 'always' },
+    { path: 'individual_update/:id', component: EditIndividualsComponent, canActivate: [AuthGuardService], runGuardsAndResolvers: 'always' },
+    { path: 'individual_update', component: EditIndividualsComponent, canActivate: [AuthGuardService], runGuardsAndResolvers: 'always' },
+  
+    { path: 'service/:id', component: PreviewServiceComponent, canActivate: [AuthGuardService], runGuardsAndResolvers: 'always' },
+  
+    { path: 'service_inventory', component: ListServiceInventoryComponent, canActivate: [AuthGuardService], runGuardsAndResolvers: 'always'},
+  
+    { path: 'alarms', component: ListAlarmsComponent, canActivate: [AuthGuardService], runGuardsAndResolvers: 'always'},
+    { path: 'alarm/:id', component: EditAlarmComponent, canActivate: [AuthGuardService], runGuardsAndResolvers: 'always'},
+  
+    { path: 'action_specs', component: ListActionsSpecsComponent, canActivate: [AuthGuardService], runGuardsAndResolvers: 'always'},
+    { path: 'action_specs/:id', component: EditActionSpecsComponent, canActivate: [AuthGuardService], runGuardsAndResolvers: 'always'},
+    { path: 'action_specs', component: EditActionSpecsComponent, canActivate: [AuthGuardService], runGuardsAndResolvers: 'always'},
+  
+    { path: 'action_rules', component: ListActionRulesComponent, canActivate: [AuthGuardService], runGuardsAndResolvers: 'always'},
+    { path: 'action_rule/:id', component: EditActionRulesComponent, canActivate: [AuthGuardService], runGuardsAndResolvers: 'always'},
+    { path: 'action_rule', component: EditActionRulesComponent, canActivate: [AuthGuardService], runGuardsAndResolvers: 'always'},
+   
+  
+    { path: 'service_rule_design/:id', component: ServiceRuleDesignComponent, canActivate: [AuthGuardService], runGuardsAndResolvers: 'always' },
+    { path: 'service_rule_design', component: ServiceRuleDesignComponent, canActivate: [AuthGuardService], runGuardsAndResolvers: 'always' }
+  ] },
 
-  { path: 'individuals', component: ListIndividualsComponent, canActivate: [AuthGuardService], runGuardsAndResolvers: 'always' },
-  { path: 'individual_update/:id', component: EditIndividualsComponent, canActivate: [AuthGuardService], runGuardsAndResolvers: 'always' },
-  { path: 'individual_update', component: EditIndividualsComponent, canActivate: [AuthGuardService], runGuardsAndResolvers: 'always' },
-
-  { path: 'service/:id', component: PreviewServiceComponent, canActivate: [AuthGuardService], runGuardsAndResolvers: 'always' },
-
-  { path: 'service_inventory', component: ListServiceInventoryComponent, canActivate: [AuthGuardService], runGuardsAndResolvers: 'always'},
-
-  { path: 'alarms', component: ListAlarmsComponent, canActivate: [AuthGuardService], runGuardsAndResolvers: 'always'},
-  { path: 'alarm/:id', component: EditAlarmComponent, canActivate: [AuthGuardService], runGuardsAndResolvers: 'always'},
-
-  { path: 'action_specs', component: ListActionsSpecsComponent, canActivate: [AuthGuardService], runGuardsAndResolvers: 'always'},
-  { path: 'action_specs/:id', component: EditActionSpecsComponent, canActivate: [AuthGuardService], runGuardsAndResolvers: 'always'},
-  { path: 'action_specs', component: EditActionSpecsComponent, canActivate: [AuthGuardService], runGuardsAndResolvers: 'always'},
-
-  { path: 'action_rules', component: ListActionRulesComponent, canActivate: [AuthGuardService], runGuardsAndResolvers: 'always'},
-  { path: 'action_rule/:id', component: EditActionRulesComponent, canActivate: [AuthGuardService], runGuardsAndResolvers: 'always'},
-  { path: 'action_rule', component: EditActionRulesComponent, canActivate: [AuthGuardService], runGuardsAndResolvers: 'always'},
- 
-
-  { path: 'service_rule_design/:id', component: ServiceRuleDesignComponent, canActivate: [AuthGuardService], runGuardsAndResolvers: 'always' },
-  { path: 'service_rule_design', component: ServiceRuleDesignComponent, canActivate: [AuthGuardService], runGuardsAndResolvers: 'always' },
-
-
-
-  { path: '**', component: LandingComponent }
+  { path: 'testing', component: BootstrapComponent, children: [
+    { path: '', component: LandingComponent}
+  ] },
+  
+  { path: '**', component: LandingComponent}
+  
   
 ];
 

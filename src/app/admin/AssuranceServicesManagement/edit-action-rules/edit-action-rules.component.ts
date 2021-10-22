@@ -267,7 +267,7 @@ export class EditActionRulesComponent implements OnInit {
         error => { console.error(error) },
         () => {
           this.toast.success("Action Rule is successfully created")
-          this.router.navigate(["action_rule", this.actionRuleId])
+          this.router.navigate([this.actionRuleId],  { relativeTo: this.activatedRoute})
 
           // this.retrieveActionRule()
         }

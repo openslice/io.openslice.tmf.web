@@ -127,6 +127,7 @@ import { EditActionRulesComponent } from './admin/AssuranceServicesManagement/ed
 import { DeleteActionRulesComponent } from './admin/AssuranceServicesManagement/delete-action-rules/delete-action-rules.component';
 import { ServiceRuleDesignComponent } from './admin/LCM/service-rule-design/service-rule-design.component';
 import { DeleteLcmruleComponent } from './admin/CatalogManagement/edit-service-specs/delete-lcmrule/delete-lcmrule.component';
+import { BootstrapComponent } from './bootstrap/bootstrap.component';
 
 registerLocaleData(enGB);
 export function initializeApp(bootstrap: BootstrapService) {
@@ -201,7 +202,8 @@ export function initializeAppTheme(bootstrap: BootstrapService) {
     EditActionRulesComponent,
     DeleteActionRulesComponent,
     ServiceRuleDesignComponent,
-    DeleteLcmruleComponent
+    DeleteLcmruleComponent,
+    BootstrapComponent
   ],
   imports: [
     BrowserModule,

@@ -5,6 +5,7 @@ import { MatTableDataSource, MatSort, MatPaginator } from '@angular/material';
 import { Service } from 'src/app/openApis/ServiceInventoryManagement/models';
 import { trigger } from '@angular/animations';
 import { fadeIn } from 'src/app/shared/animations/animations';
+import { AppService } from 'src/app/shared/services/app.service';
 
 @Component({
   selector: 'app-list-service-inventory',
@@ -17,7 +18,8 @@ export class ListServiceInventoryComponent implements OnInit {
 
   constructor(
     private serviceService: ServiceService,
-    private toast: ToastrService
+    private toast: ToastrService,
+    public appService: AppService
   ) { }
 
   displayedColumns = ['name', 'category', 'state', 'serviceDate', 'serviceOrder', 'actions']

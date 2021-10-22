@@ -5,6 +5,7 @@ import { ImportNsdDialogComponent } from './import-nsd-dialog/import-nsd-dialog.
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { ServiceSpecification } from 'src/app/openApis/ServiceCatalogManagement/models';
+import { AppService } from 'src/app/shared/services/app.service';
 
 @Component({
   selector: 'app-list-nsd',
@@ -17,7 +18,8 @@ export class ListNsdComponent implements OnInit {
     private artifactsApiService: ArtifactsApiControllerService,
     private dialog: MatDialog,
     private router: Router,
-    private toast: ToastrService
+    private toast: ToastrService,
+    private appService: AppService,
   ) { }
 
   displayedColumns = ['name', 'short_description', 'version', 'vendor',  'packaging_format', 'actions']
@@ -57,7 +59,7 @@ export class ListNsdComponent implements OnInit {
       (result: ServiceSpecification) => {
         if (result) {
           this.toast.success(`Service Specification is successfully created form ${experiment.name}`)
-          this.router.navigate(['service_spec_update', result.id])
+          this.router.navigate([this.appService.portalDomain, 'service_spec_update', result.id])
         }
       }
     )

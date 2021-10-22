@@ -4,6 +4,9 @@ import { OAuthService, JwksValidationHandler } from 'angular-oauth2-oidc';
 import { AuthService } from './shared/services/auth.service';
 import { BootstrapService } from './bootstrap/bootstrap.service';
 import { ThemingService } from './theming/theming.service';
+import { Title } from '@angular/platform-browser';
+import { AppService } from './shared/services/app.service';
+import { IAppConfig } from './models/app-config.model';
 
 @Component({
   selector: 'app-root',
@@ -18,6 +21,9 @@ export class AppComponent {
   themeID = 'default'
 
   favIcon: HTMLLinkElement = document.querySelector('#appIcon');
+
+  config: IAppConfig
+
   // private jwtHelper: JwtHelperService = new JwtHelperService();
   
   // private _decodedAccessToken: any;
@@ -27,12 +33,16 @@ export class AppComponent {
 
   constructor(
     private authService: AuthService,
-    private themingService: ThemingService
+    private themingService: ThemingService,
+    private titleService: Title,
+    private appService: AppService
     ) {
+      this.config = this.appService.config
       this.authService.runInitialLoginSequence()
       
       this.themeID = this.themingService.getConfig().THEME_ID
       this.favIcon.href = this.themingService.getConfig().FAVICON_PATH
+      this.titleService.setTitle(`${this.config.TITLE} Services portal`)
   }
 
 

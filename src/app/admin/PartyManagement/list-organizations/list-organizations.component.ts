@@ -7,6 +7,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { DeleteOrganizationComponent } from '../delete-organization/delete-organization.component';
 import { trigger } from '@angular/animations';
 import { fadeIn } from 'src/app/shared/animations/animations';
+import { AppService } from 'src/app/shared/services/app.service';
 
 @Component({
   selector: 'app-list-organizations',
@@ -20,7 +21,8 @@ export class ListOrganizationsComponent implements OnInit {
   constructor(
     private organizationService: OrganizationService,
     private dialog: MatDialog,
-    private toast: ToastrService
+    private toast: ToastrService,
+    public appService: AppService
   ) { }
 
   displayedColumns = ['name', 'tradingName', 'isLegalEntity', 'status', 'actions']

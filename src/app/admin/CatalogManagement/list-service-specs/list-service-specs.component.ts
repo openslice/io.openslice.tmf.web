@@ -9,6 +9,7 @@ import { ToastrService } from 'ngx-toastr';
 import { HttpErrorResponse } from '@angular/common/http';
 import { trigger } from '@angular/animations';
 import { fadeIn } from 'src/app/shared/animations/animations';
+import { AppService } from 'src/app/shared/services/app.service';
 
 
 @Component({
@@ -22,7 +23,8 @@ export class ListServiceSpecsComponent implements OnInit {
   constructor(
     private specService: ServiceSpecificationService,
     public dialog: MatDialog,
-    private toast: ToastrService
+    private toast: ToastrService,
+    public appService: AppService
   ) { }
 
   displayedColumns = ['name', 'description', 'version', '@type', 'lastUpdate',  'lifecycleStatus', 'actions']

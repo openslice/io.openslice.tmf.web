@@ -55,7 +55,7 @@
                             <th mat-header-cell *matHeaderCellDef> Linked Service Order(s) </th>
                             <td mat-cell *matCellDef="let element"> 
                                 <div *ngFor="let order of element.serviceOrder">
-                                    <a routerLink='/service_order/{{order.id}}'
+                                    <a routerLink='/{{appService.portalDomain}}/service_order/{{order.id}}'
                                     [queryParams]='{item: order.serviceOrderItemId}'>{{order.id}}</a>
                                 </div>
                             </td>
@@ -64,7 +64,7 @@
                         <ng-container matColumnDef="actions">
                             <th mat-header-cell *matHeaderCellDef>Actions</th>
                             <td mat-cell *matCellDef="let element">
-                                <button class="btn btn-warning mr-1 btn-sm" routerLink='/service/{{element.id}}'><i
+                                <button class="btn btn-warning mr-1 btn-sm" routerLink='/{{appService.portalDomain}}/service/{{element.id}}'><i
                                         class="far fa-edit"></i></button>
                                 <!-- <button class="btn btn-danger btn-sm" (click)="openSpecDeleteDialog(element)"><i
                                         class="far fa-trash-alt"></i></button> -->

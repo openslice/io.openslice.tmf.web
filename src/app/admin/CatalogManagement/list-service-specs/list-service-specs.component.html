@@ -8,7 +8,7 @@
                         <p class="shadowed">View and manage service specifications</p>
                     </div>
                     <div class="col-md-6 text-md-right">
-                        <button type="button" class="btn btn-success" routerLink='/service_spec_update'>
+                        <button type="button" class="btn btn-success" routerLink='/{{appService.portalDomain}}/service_spec_update'>
                             <i class="fas fa-clipboard-list mr-2"></i>Create New Specification
                         </button>
 
@@ -68,7 +68,7 @@
                         <ng-container matColumnDef="actions">
                             <th mat-header-cell *matHeaderCellDef>Actions</th>
                             <td mat-cell *matCellDef="let element">
-                                <button class="btn btn-warning mr-1 btn-sm" routerLink='/service_spec_update/{{element.id}}'><i
+                                <button class="btn btn-warning mr-1 btn-sm" routerLink='/{{appService.portalDomain}}/service_spec_update/{{element.id}}'><i
                                         class="far fa-edit"></i></button>
                                 <button class="btn btn-primary mr-1 btn-sm" (click)="cloneServiceSpec(element)"><i
                                         class="far fa-copy"></i></button>

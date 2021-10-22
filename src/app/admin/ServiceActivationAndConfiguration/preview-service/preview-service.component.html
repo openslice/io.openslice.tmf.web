@@ -101,14 +101,14 @@
                                                         <h6>Linked Service Orders</h6>
                                                         <p *ngFor="let order of service?.serviceOrder; let last=last"
                                                             [class.mb-0]="!last">
-                                                            <a routerLink='/service_order/{{order.id}}'
+                                                            <a routerLink='/{{appService.portalDomain}}/service_order/{{order.id}}'
                                                                 [queryParams]='{item: order.serviceOrderItemId}'>{{order.id}}</a>
                                                         </p>
                                                     </div>
                                                     <div class="col-lg-4">
                                                         <h6>Service Specification</h6>
                                                         <p><a
-                                                                routerLink='/service_spec_update/{{service?.serviceSpecification.id}}'>{{service?.serviceSpecification.name}}</a>
+                                                                routerLink='/{{appService.portalDomain}}/service_spec_update/{{service?.serviceSpecification.id}}'>{{service?.serviceSpecification.name}}</a>
                                                         </p>
                                                     </div>
                                                 </div>
@@ -330,7 +330,7 @@
                                                 There are not any Supporting Services allocated.
                                             </div>
                                             <p *ngFor="let suppServ of service?.supportingService" class="mb-2">
-                                                <a routerLink='/service/{{suppServ.id}}'>{{suppServ.name}}</a>
+                                                <a routerLink='/{{appService.portalDomain}}/service/{{suppServ.id}}'>{{suppServ.name}}</a>
                                             </p>
                                         </div>
                                         <div class="card-footer"></div>

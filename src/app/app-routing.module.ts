@@ -28,14 +28,15 @@ import { ListActionRulesComponent } from './admin/AssuranceServicesManagement/li
 import { EditActionRulesComponent } from './admin/AssuranceServicesManagement/edit-action-rules/edit-action-rules.component';
 import { ServiceRuleDesignComponent } from './admin/LCM/service-rule-design/service-rule-design.component';
 import { BootstrapComponent } from './bootstrap/bootstrap.component';
+import { PortalsComponent } from './landing/portals/portals.component';
 
 
 const routes: Routes = [
   
-  { path: '', redirectTo: 'services', pathMatch: 'full'},
+  { path: '', component: LandingComponent},
   
   { path: 'services', component: BootstrapComponent, children: [
-    { path: '', component: LandingComponent},
+    { path: '', component: PortalsComponent},
     { path: 'services_marketplace', component: ServicesMarketplaceComponent },
     { path: 'experiments_marketplace', component: ExperimentsMarketplaceComponent },
     { path: 'vxf_marketplace', component: VxfsMarketplaceComponent },
@@ -84,12 +85,10 @@ const routes: Routes = [
   ] },
 
   { path: 'testing', component: BootstrapComponent, children: [
-    { path: '', component: LandingComponent}
+    { path: '', component: PortalsComponent}
   ] },
   
-  { path: '**', component: LandingComponent}
-  
-  
+  { path: '**', component: LandingComponent}  
 ];
 
 @NgModule({

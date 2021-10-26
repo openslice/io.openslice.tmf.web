@@ -34,6 +34,7 @@ export class NavbarComponent implements OnInit {
   loggedIn: boolean
   isNavbarCollapsed: boolean = true
   themeConfig: IAppThemingConfig
+  navigationRoute:"services" | "testing" | "products" | ""
 
   ngOnInit() {
     this.loggedIn = this.authService.hasValidToken()

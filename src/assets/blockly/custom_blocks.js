@@ -1091,3 +1091,33 @@ Blockly.Blocks['example_variable_typed'] = {
   }
 };
 
+
+
+
+
+  
+  /*************************************************************************** 
+  *
+  *   LOOPs RELATED
+  * 
+  ****************************************************************************/
+
+ 	
+   Blockly.Blocks['controls_foreach_java'] = {
+    init: function() {
+      this.appendValueInput("ASET")
+          .setCheck("SET")
+          .appendField("for each string")
+          .appendField(new Blockly.FieldVariable("item"), "VAR")
+          .appendField("in set (ofStrings)");
+      this.appendStatementInput("DO")
+          .setCheck(null)
+          .appendField("do");
+      this.setPreviousStatement(true, null);
+      this.setNextStatement(true, null);
+      this.setColour(230);
+   this.setTooltip("");
+   this.setHelpUrl("");
+    }
+  };
+

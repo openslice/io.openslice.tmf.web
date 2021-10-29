@@ -1223,6 +1223,28 @@ export class ServiceRuleDesignComponent implements OnInit {
         block.getFieldValue('VAR'), Blockly.Variables.NAME_TYPE);
     return varName + ' = ' + argument0 + ';\n';
   };
+
+
+
+  Blockly.Java['controls_foreach_java'] = function (block: { getFieldValue: (arg0: string) => any; id: any; }) {
+    // For each loop.
+    var variable0 = Blockly.Java.nameDB_.getName(
+      block.getFieldValue('VAR'), Blockly.Variables.NAME_TYPE);
+    var argument0 = Blockly.Java.valueToCode(block, 'ASET',
+      Blockly.Java.ORDER_ASSIGNMENT) || 'null';
+    var branch = Blockly.Java.statementToCode(block, 'DO');
+    branch = Blockly.Java.addLoopTrap(branch, block.id);
+    var indexVar = Blockly.Java.nameDB_.getDistinctName(
+      variable0 + '_index', Blockly.Variables.NAME_TYPE);
+      //branch = Blockly.Java.INDENT + variable0 + ' = ' +
+      //  argument0 + '[' + indexVar + '];\n' + branch;
+        
+      branch = Blockly.Java.INDENT + branch;
+    var code = 'for ( String ' + indexVar + ': ' + argument0 + ') {\n' +
+      branch + '}\n';
+    return code;
+  };
+
   
     }
   

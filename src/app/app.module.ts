@@ -66,6 +66,7 @@ import { LandingComponent } from './landing/landing.component';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AdminComponent } from './admin/admin.component';
 import { ServicesMarketplaceComponent } from './marketplaces/services-marketplace/services-marketplace.component';
+import { ResourcesMarketplaceComponent } from './marketplaces/resources-marketplace/resources-marketplace.component';
 import { ExperimentsMarketplaceComponent } from './marketplaces/experiments-marketplace/experiments-marketplace.component';
 import { VxfsMarketplaceComponent } from './marketplaces/vxfs-marketplace/vxfs-marketplace.component';
 import { VerticalNavbarComponent } from './marketplaces/shared/vertical-navbar/vertical-navbar.component';
@@ -146,6 +147,7 @@ export function initializeAppTheme(bootstrap: BootstrapService) {
     LandingComponent,
     AdminComponent,
     ServicesMarketplaceComponent,
+    ResourcesMarketplaceComponent,
     ExperimentsMarketplaceComponent,
     VxfsMarketplaceComponent,
     VerticalNavbarComponent,

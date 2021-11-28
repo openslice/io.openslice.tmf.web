@@ -1,0 +1,190 @@
+<div class="container-fluid" >
+    
+    <ng-container>
+
+        <mat-dialog-content class="dialog-content-container" >
+            <div class="row">
+                <div class="col-md-4 d-flex flex-column justify-content-center align-items-center">
+                    <div class="image-container">
+                        <img class="img-fluid" *ngIf="specLogoUrl" [src]="specLogoUrl" alt="Service Image">
+                        <mat-progress-spinner *ngIf="!specLogoUrl" color="primary" mode="indeterminate" diameter="100"></mat-progress-spinner>
+
+                    </div>
+                </div>
+    
+                <div class="col-md-8" >
+                    <div class="header-section">{{spec?.name}}</div>
+                    <!-- <div class="separator-div"></div> -->
+                    <div class="mt-1">
+                        <div class="badge badge-info mr-1" 
+                        *ngFor="let category of candidate.category">
+                        {{category.name}}
+                        </div>
+                    </div>
+                    
+                    <div class="row mt-3 general-info-tab">
+                        <div class="col-6">
+                            <b>Version</b>
+                            <div>
+                                {{spec?.version}}
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <b>Bundle</b>
+                            <div>
+                                {{spec?.isBundle}}
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <button *ngIf="(authService.isAuthenticated$ | async)" type="button" class="btn btn-primary my-3" (click)="placeInOrderList()">
+                        <i class="fas fa-shopping-cart mr-1"></i>
+                        <span> Place in Order List </span>
+                    </button>
+
+                    <div *ngIf="!(authService.isAuthenticated$ | async)" class="my-3">
+                        <b class="shadowed">You must be logged in to place an order</b>
+                    </div>
+                    <!-- <div class="separator-div"></div> -->
+
+                </div>
+
+
+            </div>
+            <div class="general-info-tab">
+                <b>Description</b>
+                <div class="text-justify mt-2">
+                    <!-- {{spec?.description}} -->
+                    <div markdown [data]="spec?.description" ngPreserveWhitespaces></div>
+                </div>
+            </div>
+
+            <!-- <button type="button" class="btn btn-primary " (click)="placeInOrderList()">
+                <i class="fas fa-shopping-cart mr-1"></i>
+                <span> Place in Order List </span>
+            </button> -->
+            <div class="separator-div"></div>
+            
+                
+            <div class="header-section">Service Characteristics</div>
+                
+            
+            <div class="separator-div"></div>
+    
+            <!-- <div class="row justify-content-center">
+                <mat-checkbox color="primary" (change)="configurableFilterChanged($event)" >Show Configurable Characteristics</mat-checkbox>
+            </div> -->
+              
+            <h5 class="mt-2 mb-0">
+                <i class="fas fa-user-edit mr-2"></i>
+                User Defined Service Characteristics
+            </h5>
+
+            <div class="no-chars-found" *ngIf="!dataSourceConf.data.length">This service does not contain any configurable characteristics</div>
+    
+            <div class="table-responsive text-left" [hidden]="!dataSourceConf.data.length">
+
+                <table mat-table [dataSource]="dataSourceConf" matSort #sort1="matSort" matSortActive="name" matSortDirection="asc" class="table table-generic">
+                    <ng-container matColumnDef="name">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header> Characteristic's Name </th>
+                        <td mat-cell *matCellDef="let element" matTooltipClass="universal-tooltip" [matTooltip]="element.description"
+                            matTooltipPosition="above">
+                            <b>{{element.name}}</b> </td>
+                    </ng-container>
+                
+                    <!-- <ng-container matColumnDef="configurable">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>Configurable</th>
+                        <td mat-cell *matCellDef="let element">
+                            <i *ngIf="element.configurable" class="material-icons checked" color="primary">check</i>
+                            <i *ngIf="!element.configurable" class="material-icons crossed">close</i>                        
+                        </td>
+                    </ng-container> -->
+
+                    <ng-container matColumnDef="defaultValues">
+                        <th mat-header-cell *matHeaderCellDef> Default Values </th>
+                        <td mat-cell *matCellDef="let element">
+                            <span *ngFor="let val of element.serviceSpecCharacteristicValue; let last = last"
+                                [class.hidden]="!val || !val.isDefault">
+                                <div *ngIf="val && val.isDefault">{{val.value.value}} ({{val.value.alias}})
+                                    <!-- <span class="comma-separator">, </span> -->
+                                </div>
+                                <div *ngIf="last" class="value-measureUnits">{{val.unitOfMeasure}}</div>
+                    
+                            </span>
+                        </td>
+                    </ng-container>
+                
+                    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                    <tr mat-row *matRowDef="let row; columns: displayedColumns;">
+
+                    <!-- <tr mat-row *matRowDef="let row; columns: displayedColumns;" [class.isConfigurable-class]="row.configurable"> -->
+                    </tr>
+                </table>
+            </div>
+             
+            <h5 class="mb-0 mt-5">
+                    <span class="fa-stack" style="margin-left:-10px">
+                            <i class="fas fa-user-edit fa-stack-1x"></i>
+                            <i class="fas fa-ban fa-stack-2x" style="color:Tomato; opacity: 0.5;"></i>
+                          </span>
+                Predefined Service Characteristics
+            </h5>
+
+            <div class="no-chars-found mt-2" *ngIf="!dataSourceNonConf.data.length">This service does not contain any predefined characteristics</div>
+
+            <div class="table-responsive text-left" [hidden]="!dataSourceNonConf.data.length">
+                <table mat-table [dataSource]="dataSourceNonConf" matSort #sort2="matSort" matSortActive="name" matSortDirection="asc" class="table table-generic">
+                    <ng-container matColumnDef="name">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header> Characteristic's Name </th>
+                        <td mat-cell *matCellDef="let element" matTooltipClass="universal-tooltip"
+                            [matTooltip]="element.description" matTooltipPosition="above">
+                            <b>{{element.name}}</b> </td>
+                    </ng-container>
+            
+                    <!-- <ng-container matColumnDef="configurable">
+                                        <th mat-header-cell *matHeaderCellDef mat-sort-header>Configurable</th>
+                                        <td mat-cell *matCellDef="let element">
+                                            <i *ngIf="element.configurable" class="material-icons checked" color="primary">check</i>
+                                            <i *ngIf="!element.configurable" class="material-icons crossed">close</i>                        
+                                        </td>
+                                    </ng-container> -->
+            
+                    <ng-container matColumnDef="defaultValues">
+                        <th mat-header-cell *matHeaderCellDef> Default Values </th>
+                        <td mat-cell *matCellDef="let element">
+                            <span *ngFor="let val of element.serviceSpecCharacteristicValue; let last = last"
+                                [class.hidden]="!val || !val.isDefault">
+                                <span *ngIf="val && val.isDefault">{{val.value.value}} <span *ngIf="val.value.alias">({{val.value.alias}})</span> 
+                                </span>
+                                <br>
+                                <div *ngIf="last" class="value-measureUnits">{{val.unitOfMeasure}}</div>
+            
+                            </span>
+                        </td>
+                    </ng-container>
+            
+                    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                    <tr mat-row *matRowDef="let row; columns: displayedColumns;">
+            
+                        <!-- <tr mat-row *matRowDef="let row; columns: displayedColumns;" [class.isConfigurable-class]="row.configurable"> -->
+                    </tr>
+                </table>
+            </div>
+            
+        </mat-dialog-content>
+
+    </ng-container>
+
+    <div mat-dialog-actions class="d-flex justify-content-end">
+        <button type="button" class="btn btn-outline-danger my-2" (click)="closeDialog()">Cancel</button>
+
+    </div>
+   
+</div>
+
+
+
+
+
+

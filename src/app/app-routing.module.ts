@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { LandingComponent } from './landing/landing.component';
 import { ServicesMarketplaceComponent } from './marketplaces/services-marketplace/services-marketplace.component';
+import { ResourcesMarketplaceComponent } from './marketplaces/resources-marketplace/resources-marketplace.component';
 import { ExperimentsMarketplaceComponent } from './marketplaces/experiments-marketplace/experiments-marketplace.component';
 import { VxfsMarketplaceComponent } from './marketplaces/vxfs-marketplace/vxfs-marketplace.component';
 import { ListServiceCatalogsComponent } from './admin/CatalogManagement/list-service-catalogs/list-service-catalogs.component';
@@ -32,6 +33,7 @@ import { ServiceRuleDesignComponent } from './admin/LCM/service-rule-design/serv
 const routes: Routes = [
   { path: '', component: LandingComponent },
   { path: 'services_marketplace', component: ServicesMarketplaceComponent },
+  { path: 'resources_marketplace', component: ResourcesMarketplaceComponent },
   { path: 'experiments_marketplace', component: ExperimentsMarketplaceComponent },
   { path: 'vxf_marketplace', component: VxfsMarketplaceComponent },
 

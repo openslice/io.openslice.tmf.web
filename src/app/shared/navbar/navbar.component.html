@@ -26,6 +26,9 @@
                 <li class="nav-item" routerLinkActive="active">
                     <a class="nav-link" routerLink="/services_marketplace">Services Marketplace</a>
                 </li>
+                <li class="nav-item" routerLinkActive="active">
+                    <a class="nav-link" routerLink="/resources_marketplace">Resources Marketplace</a>
+                </li>
                 <!-- <li class="nav-item" routerLinkActive="active">
                     <a class="nav-link" routerLink="/experiments_marketplace">Experiments</a>
                 </li>
@@ -68,6 +71,37 @@
                             <div class="dropdown-divider"></div>
                             <!-- <div class="optgroup-label">Order Management</div> -->
                             <li><a class="dropdown-item" tabindex="0" routerLink="/service_inventory">Service Inventory</a></li> 
+
+                        </ul>
+                    </a>
+                </li>
+                
+                <li class="nav-item dropdown" ngbDropdown *ngIf="(authService.isAuthenticated$ | async) && authService.portalUserJWT?.realm_access.roles.includes('ADMIN')" [@fadeIn]>
+                    <a class="nav-link dropdown-toggle" id="navbarDropdown" aria-haspopup="true" ngbDropdownToggle tabindex="0">Manage Resources
+                        <ul class="dropdown-menu" aria-labelledby="navbarDropdown" ngbDropdownMenu>
+                            <!-- <div class="optgroup-label">Catalog Management</div> -->
+                            <li><a class="dropdown-item" tabindex="0" routerLink="/service_catalogs">Resource Catalogs</a></li>
+                            <li><a class="dropdown-item" tabindex="0" routerLink="/service_categories">Resource Categories</a></li>
+                            <!-- <li><a class="dropdown-item" tabindex="-1" routerLink="/service_specs">Service Specifications</a></li> -->
+                            <li class="dropdown dropdown-submenu" ngbDropdown>
+                                <a class="dropdown-toggle" id="navbarDropdown1" aria-haspopup="true" ngbDropdownToggle tabindex="0">Resource Specifications</a>
+                                <ul class="dropdown-menu" aria-labelledby="navbarDropdown1" ngbDropdownMenu>
+                                        <li><a class="dropdown-item" tabindex="0" routerLink="/service_specs">List Resource Specifications</a></li>
+                                        <li><a class="dropdown-item" tabindex="0" routerLink="/service_spec_update">New Resource Specification</a></li>
+                                        <!-- <div class="dropdown-divider"></div> -->
+                                        <!-- <div class="optgroup-label">Choose from Templates</div> -->
+                                        <!-- <li><a class="dropdown-item clone-item" tabindex="0" (click)="onGSTtemplateClick()">New GST External</a></li>
+                                        <li><a class="dropdown-item clone-item" tabindex="0" (click)="onVINNItemplateClick()">New VINNI-SB</a></li> -->
+                                </ul>
+                            </li>
+                            <!-- <li><a class="dropdown-item" tabindex="0" routerLink="/list_nsds">Import from NSD list</a></li> -->
+                            <div class="dropdown-divider"></div>
+                            <!-- <div class="optgroup-label">Order Management</div> -->
+                            <li><a class="dropdown-item" tabindex="0" routerLink="/service_orders">Resource Orders</a></li> 
+                            <!-- <a class="dropdown-item">More</a> -->
+                            <div class="dropdown-divider"></div>
+                            <!-- <div class="optgroup-label">Order Management</div> -->
+                            <li><a class="dropdown-item" tabindex="0" routerLink="/service_inventory">Resource Inventory</a></li> 
 
                         </ul>
                     </a>

@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ServiceCatalogService, ServiceCandidateService, ServiceSpecificationService } from 'src/app/openApis/ServiceCatalogManagement/services';
+import { ResourceCatalogService } from 'src/app/openApis/ResourceCatalogManagement/services';
+import { ResourceCatalog, ResourceCategoryRef, ResourceCategory, ResourceCandidateRef, ResourceCandidate } from 'src/app/openApis/ResourceCatalogManagement/models';
 import { ServiceCatalog, ServiceCategoryRef, ServiceCategory, ServiceCandidateRef, ServiceCandidate } from 'src/app/openApis/ServiceCatalogManagement/models';
 import { TreeServiceMarketPlaceService } from '../shared/services/tree-service-market-place.service';
 import { Observable } from 'rxjs';
@@ -26,7 +28,7 @@ export class ResourcesMarketplaceComponent implements OnInit {
 
   constructor(
     private appService: AppService,
-    private catalogService: ServiceCatalogService,
+    private catalogService: ResourceCatalogService,
     // private categoryService: ServiceCategoryService,
     private candidateService: ServiceCandidateService,
     private specificationService: ServiceSpecificationService,
@@ -36,12 +38,12 @@ export class ResourcesMarketplaceComponent implements OnInit {
     private themingService: ThemingService
   ) { }
 
-  serviceCatalogs: ServiceCatalog[]
+  resourceCatalogs: ResourceCatalog[]
   isCatalogsCollapsed: Boolean[] = []
 
-  selectedCategoryRef: ServiceCategoryRef
+  selectedCategoryRef: ResourceCategoryRef
 
-  selectedCategory: ServiceCategory
+  selectedCategory: ResourceCategory
 
   serviceCandidates: ServiceCandidateWithLogo[] = []
 
@@ -74,16 +76,16 @@ export class ResourcesMarketplaceComponent implements OnInit {
   }
 
   retrieveCatalogsList() {
-    this.catalogService.listServiceCatalog({}).subscribe(
-      data => { this.serviceCatalogs = data },
+    this.catalogService.listResourceCatalog({}).subscribe(
+      data => { this.resourceCatalogs = data },
       error => { console.error(error) },
       () => {
-        this.treeMarketPlaceService.catalogs$.next(this.serviceCatalogs)        
+        this.treeMarketPlaceService.catalogs$.next(this.resourceCatalogs)        
       }
     )
   }
 
-  retrieveCandidateFromRef(candidateRef: ServiceCandidateRef) {
+  retrieveCandidateFromRef(candidateRef: ResourceCandidateRef) {
     
     this.candidateService.retrieveServiceCandidate({ id: candidateRef.id }).subscribe(
       data => { 
@@ -128,7 +130,7 @@ export class ResourcesMarketplaceComponent implements OnInit {
     return this.serviceCandidates.filter( cand =>  cand.name.toLowerCase().includes(filterValue) )
   }
 
-  previewServiceSpec(candidate: ServiceCandidate) {
+  previewServiceSpec(candidate: ResourceCandidate) {
     const dialogRef = this.dialog.open(PreviewMarketplaceItemComponent, {
       data: {
         serviceCandidate: candidate

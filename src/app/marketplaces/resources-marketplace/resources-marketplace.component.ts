@@ -4,6 +4,7 @@ import { ResourceCatalogService } from 'src/app/openApis/ResourceCatalogManageme
 import { ResourceCatalog, ResourceCategoryRef, ResourceCategory, ResourceCandidateRef, ResourceCandidate } from 'src/app/openApis/ResourceCatalogManagement/models';
 import { ServiceCatalog, ServiceCategoryRef, ServiceCategory, ServiceCandidateRef, ServiceCandidate } from 'src/app/openApis/ServiceCatalogManagement/models';
 import { TreeServiceMarketPlaceService } from '../shared/services/tree-service-market-place.service';
+import { TreeResourceMarketPlaceService } from '../shared/services/tree-resource-market-place.service';
 import { Observable } from 'rxjs';
 import { FormControl } from '@angular/forms';
 import { startWith, map } from 'rxjs/operators';
@@ -32,7 +33,7 @@ export class ResourcesMarketplaceComponent implements OnInit {
     // private categoryService: ServiceCategoryService,
     private candidateService: ServiceCandidateService,
     private specificationService: ServiceSpecificationService,
-    private treeMarketPlaceService: TreeServiceMarketPlaceService,
+    private treeMarketPlaceService: TreeResourceMarketPlaceService,
     private dialog: MatDialog,
     private sortingService: SortingService,
     private themingService: ThemingService
@@ -67,8 +68,8 @@ export class ResourcesMarketplaceComponent implements OnInit {
         this.selectedCategory = category
         this.serviceCandidates = []
         this.serviceCandidatesFilterCtrl.reset()
-        this.resultsNotFound = category.serviceCandidate.length === 0
-        category.serviceCandidate.forEach((candidateRef) => {
+        this.resultsNotFound = category.resourceCandidate.length === 0
+        category.resourceCandidate.forEach((candidateRef) => {
           this.retrieveCandidateFromRef(candidateRef)
         })
       }

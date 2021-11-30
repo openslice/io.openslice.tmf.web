@@ -85,6 +85,7 @@ import { DeleteServiceCategoryComponent } from './admin/CatalogManagement/delete
 import { DeleteServiceSpecComponent } from './admin/CatalogManagement/delete-service-spec/delete-service-spec.component';
 import { CreateServiceCategoryChildrenComponent } from './admin/CatalogManagement/edit-service-categories/create-service-category-children/create-service-category-children.component';
 import { TreeSidenavComponent } from './marketplaces/shared/tree-sidenav/tree-sidenav.component';
+import { TreeSidenavResourcesComponent } from './marketplaces/shared/tree-sidenav-resources/tree-sidenav-resources.component';
 import { AssignServiceCandidatesComponent } from './admin/CatalogManagement/edit-service-categories/assign-service-candidates/assign-service-candidates.component';
 import { CloneGstTemplateComponent } from './admin/CatalogManagement/edit-service-specs/clone-gst-template/clone-gst-template.component';
 import { CloneVinniTemplateComponent } from './admin/CatalogManagement/edit-service-specs/clone-vinni-template/clone-vinni-template.component';
@@ -164,6 +165,7 @@ export function initializeAppTheme(bootstrap: BootstrapService) {
     DeleteServiceSpecComponent,
     CreateServiceCategoryChildrenComponent,
     TreeSidenavComponent,
+    TreeSidenavResourcesComponent,
     AssignServiceCandidatesComponent,
     CloneGstTemplateComponent,
     CloneVinniTemplateComponent,

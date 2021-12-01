@@ -73,11 +73,13 @@ import { VerticalNavbarComponent } from './marketplaces/shared/vertical-navbar/v
 import { ListServiceCatalogsComponent } from './admin/CatalogManagement/list-service-catalogs/list-service-catalogs.component';
 import { ListResourceCatalogsComponent } from './admin/CatalogManagement/list-resource-catalogs/list-resource-catalogs.component';
 import { ListServiceCategoriesComponent } from './admin/CatalogManagement/list-service-categories/list-service-categories.component';
+import { ListResourceCategoriesComponent } from './admin/CatalogManagement/list-resource-categories/list-resource-categories.component';
 import { ListServiceSpecsComponent } from './admin/CatalogManagement/list-service-specs/list-service-specs.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { EditServiceCatalogsComponent } from './admin/CatalogManagement/edit-service-catalogs/edit-service-catalogs.component';
 import { EditResourceCatalogsComponent } from './admin/CatalogManagement/edit-resource-catalogs/edit-resource-catalogs.component';
 import { EditServiceCategoriesComponent } from './admin/CatalogManagement/edit-service-categories/edit-service-categories.component';
+import { EditResourceCategoriesComponent } from './admin/CatalogManagement/edit-resource-categories/edit-resource-categories.component';
 import { EditServiceSpecsComponent, DiscardChangesComponent } from './admin/CatalogManagement/edit-service-specs/edit-service-specs.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { EditServiceSpecCharacteristicsComponent } from './admin/CatalogManagement/edit-service-specs/edit-service-spec-characteristics/edit-service-spec-characteristics.component';
@@ -85,11 +87,14 @@ import { DeleteServiceSpecCharacteristicsComponent } from './admin/CatalogManage
 import { DeleteServiceCatalogComponent } from './admin/CatalogManagement/delete-service-catalog/delete-service-catalog.component';
 import { DeleteResourceCatalogComponent } from './admin/CatalogManagement/delete-resource-catalog/delete-resource-catalog.component';
 import { DeleteServiceCategoryComponent } from './admin/CatalogManagement/delete-service-category/delete-service-category.component';
+import { DeleteResourceCategoryComponent } from './admin/CatalogManagement/delete-resource-category/delete-resource-category.component';
 import { DeleteServiceSpecComponent } from './admin/CatalogManagement/delete-service-spec/delete-service-spec.component';
 import { CreateServiceCategoryChildrenComponent } from './admin/CatalogManagement/edit-service-categories/create-service-category-children/create-service-category-children.component';
+import { CreateResourceCategoryChildrenComponent } from './admin/CatalogManagement/edit-resource-categories/create-resource-category-children/create-resource-category-children.component';
 import { TreeSidenavComponent } from './marketplaces/shared/tree-sidenav/tree-sidenav.component';
 import { TreeSidenavResourcesComponent } from './marketplaces/shared/tree-sidenav-resources/tree-sidenav-resources.component';
 import { AssignServiceCandidatesComponent } from './admin/CatalogManagement/edit-service-categories/assign-service-candidates/assign-service-candidates.component';
+import { AssignResourceCandidatesComponent } from './admin/CatalogManagement/edit-resource-categories/assign-resource-candidates/assign-resource-candidates.component';
 import { CloneGstTemplateComponent } from './admin/CatalogManagement/edit-service-specs/clone-gst-template/clone-gst-template.component';
 import { CloneVinniTemplateComponent } from './admin/CatalogManagement/edit-service-specs/clone-vinni-template/clone-vinni-template.component';
 import { PreviewMarketplaceItemComponent } from './marketplaces/services-marketplace/preview-marketplace-item/preview-marketplace-item.component';
@@ -158,18 +163,22 @@ export function initializeAppTheme(bootstrap: BootstrapService) {
     ListServiceCatalogsComponent,
     ListResourceCatalogsComponent,
     ListServiceCategoriesComponent,
+    ListResourceCategoriesComponent,
     ListServiceSpecsComponent,
     EditServiceCatalogsComponent,
     EditResourceCatalogsComponent,
     EditServiceCategoriesComponent,
+    EditResourceCategoriesComponent,
     EditServiceSpecsComponent,
     EditServiceSpecCharacteristicsComponent,
     DeleteServiceSpecCharacteristicsComponent,
     DeleteServiceCatalogComponent,
     DeleteResourceCatalogComponent,
     DeleteServiceCategoryComponent,
+    DeleteResourceCategoryComponent,
     DeleteServiceSpecComponent,
     CreateServiceCategoryChildrenComponent,
+    CreateResourceCategoryChildrenComponent,
     TreeSidenavComponent,
     TreeSidenavResourcesComponent,
     AssignServiceCandidatesComponent,
@@ -211,7 +220,8 @@ export function initializeAppTheme(bootstrap: BootstrapService) {
     EditActionRulesComponent,
     DeleteActionRulesComponent,
     ServiceRuleDesignComponent,
-    DeleteLcmruleComponent
+    DeleteLcmruleComponent,
+    AssignResourceCandidatesComponent
   ],
   imports: [
     BrowserModule,
@@ -259,12 +269,16 @@ export function initializeAppTheme(bootstrap: BootstrapService) {
     EditServiceCatalogsComponent,
     EditResourceCatalogsComponent,
     EditServiceCategoriesComponent,
+    EditResourceCategoriesComponent,
     CreateServiceCategoryChildrenComponent,
+    CreateResourceCategoryChildrenComponent,
     AssignServiceCandidatesComponent,
+    AssignResourceCandidatesComponent,
     EditServiceSpecCharacteristicsComponent,
     DeleteServiceCatalogComponent,
     DeleteResourceCatalogComponent,
     DeleteServiceCategoryComponent,
+    DeleteResourceCategoryComponent,
     DeleteServiceSpecComponent,
     DeleteServiceSpecCharacteristicsComponent,
     CloneGstTemplateComponent,

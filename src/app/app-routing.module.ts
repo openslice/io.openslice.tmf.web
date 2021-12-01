@@ -8,9 +8,11 @@ import { VxfsMarketplaceComponent } from './marketplaces/vxfs-marketplace/vxfs-m
 import { ListServiceCatalogsComponent } from './admin/CatalogManagement/list-service-catalogs/list-service-catalogs.component';
 import { ListResourceCatalogsComponent } from './admin/CatalogManagement/list-resource-catalogs/list-resource-catalogs.component';
 import { ListServiceCategoriesComponent } from './admin/CatalogManagement/list-service-categories/list-service-categories.component';
+import { ListResourceCategoriesComponent } from './admin/CatalogManagement/list-resource-categories/list-resource-categories.component';
 import { ListServiceSpecsComponent } from './admin/CatalogManagement/list-service-specs/list-service-specs.component';
 import { EditServiceSpecsComponent } from './admin/CatalogManagement/edit-service-specs/edit-service-specs.component';
 import { EditServiceCategoriesComponent } from './admin/CatalogManagement/edit-service-categories/edit-service-categories.component';
+import { EditResourceCategoriesComponent } from './admin/CatalogManagement/edit-resource-categories/edit-resource-categories.component';
 import { AuthGuardService } from './shared/services/auth-guard.service';
 import { ServiceOrderCheckoutComponent } from './requester/service-order-checkout/service-order-checkout.component';
 import { ListServiceOrdersComponent } from './admin/OrderManagement/list-service-orders/list-service-orders.component';
@@ -41,8 +43,11 @@ const routes: Routes = [
   { path: 'service_catalogs', component: ListServiceCatalogsComponent, canActivate: [AuthGuardService], runGuardsAndResolvers: 'always' },
   { path: 'resource_catalogs', component: ListResourceCatalogsComponent, canActivate: [AuthGuardService], runGuardsAndResolvers: 'always' },
   { path: 'service_categories', component: ListServiceCategoriesComponent, canActivate: [AuthGuardService], runGuardsAndResolvers: 'always'},
+  { path: 'resource_categories', component: ListResourceCategoriesComponent, canActivate: [AuthGuardService], runGuardsAndResolvers: 'always'},
   { path: 'service_categories_update/:id', component: EditServiceCategoriesComponent, canActivate: [AuthGuardService], runGuardsAndResolvers: 'always' },
   { path: 'service_categories_update', component: EditServiceCategoriesComponent, canActivate: [AuthGuardService], runGuardsAndResolvers: 'always' },
+  { path: 'resource_categories_update/:id', component: EditResourceCategoriesComponent, canActivate: [AuthGuardService], runGuardsAndResolvers: 'always' },
+  { path: 'resource_categories_update', component: EditResourceCategoriesComponent, canActivate: [AuthGuardService], runGuardsAndResolvers: 'always' },
   { path: 'service_specs', component: ListServiceSpecsComponent, canActivate: [AuthGuardService], runGuardsAndResolvers: 'always' },
   { path: 'service_spec_update/:id', component: EditServiceSpecsComponent, canActivate: [AuthGuardService], runGuardsAndResolvers: 'always' },
   { path: 'service_spec_update', component: EditServiceSpecsComponent, canActivate: [AuthGuardService], runGuardsAndResolvers: 'always' },

@@ -6,6 +6,7 @@ import { ResourcesMarketplaceComponent } from './marketplaces/resources-marketpl
 import { ExperimentsMarketplaceComponent } from './marketplaces/experiments-marketplace/experiments-marketplace.component';
 import { VxfsMarketplaceComponent } from './marketplaces/vxfs-marketplace/vxfs-marketplace.component';
 import { ListServiceCatalogsComponent } from './admin/CatalogManagement/list-service-catalogs/list-service-catalogs.component';
+import { ListResourceCatalogsComponent } from './admin/CatalogManagement/list-resource-catalogs/list-resource-catalogs.component';
 import { ListServiceCategoriesComponent } from './admin/CatalogManagement/list-service-categories/list-service-categories.component';
 import { ListServiceSpecsComponent } from './admin/CatalogManagement/list-service-specs/list-service-specs.component';
 import { EditServiceSpecsComponent } from './admin/CatalogManagement/edit-service-specs/edit-service-specs.component';
@@ -38,6 +39,7 @@ const routes: Routes = [
   { path: 'vxf_marketplace', component: VxfsMarketplaceComponent },
 
   { path: 'service_catalogs', component: ListServiceCatalogsComponent, canActivate: [AuthGuardService], runGuardsAndResolvers: 'always' },
+  { path: 'resource_catalogs', component: ListResourceCatalogsComponent, canActivate: [AuthGuardService], runGuardsAndResolvers: 'always' },
   { path: 'service_categories', component: ListServiceCategoriesComponent, canActivate: [AuthGuardService], runGuardsAndResolvers: 'always'},
   { path: 'service_categories_update/:id', component: EditServiceCategoriesComponent, canActivate: [AuthGuardService], runGuardsAndResolvers: 'always' },
   { path: 'service_categories_update', component: EditServiceCategoriesComponent, canActivate: [AuthGuardService], runGuardsAndResolvers: 'always' },

@@ -71,16 +71,19 @@ import { ExperimentsMarketplaceComponent } from './marketplaces/experiments-mark
 import { VxfsMarketplaceComponent } from './marketplaces/vxfs-marketplace/vxfs-marketplace.component';
 import { VerticalNavbarComponent } from './marketplaces/shared/vertical-navbar/vertical-navbar.component';
 import { ListServiceCatalogsComponent } from './admin/CatalogManagement/list-service-catalogs/list-service-catalogs.component';
+import { ListResourceCatalogsComponent } from './admin/CatalogManagement/list-resource-catalogs/list-resource-catalogs.component';
 import { ListServiceCategoriesComponent } from './admin/CatalogManagement/list-service-categories/list-service-categories.component';
 import { ListServiceSpecsComponent } from './admin/CatalogManagement/list-service-specs/list-service-specs.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { EditServiceCatalogsComponent } from './admin/CatalogManagement/edit-service-catalogs/edit-service-catalogs.component';
+import { EditResourceCatalogsComponent } from './admin/CatalogManagement/edit-resource-catalogs/edit-resource-catalogs.component';
 import { EditServiceCategoriesComponent } from './admin/CatalogManagement/edit-service-categories/edit-service-categories.component';
 import { EditServiceSpecsComponent, DiscardChangesComponent } from './admin/CatalogManagement/edit-service-specs/edit-service-specs.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { EditServiceSpecCharacteristicsComponent } from './admin/CatalogManagement/edit-service-specs/edit-service-spec-characteristics/edit-service-spec-characteristics.component';
 import { DeleteServiceSpecCharacteristicsComponent } from './admin/CatalogManagement/edit-service-specs/delete-service-spec-characteristics/delete-service-spec-characteristics.component';
 import { DeleteServiceCatalogComponent } from './admin/CatalogManagement/delete-service-catalog/delete-service-catalog.component';
+import { DeleteResourceCatalogComponent } from './admin/CatalogManagement/delete-resource-catalog/delete-resource-catalog.component';
 import { DeleteServiceCategoryComponent } from './admin/CatalogManagement/delete-service-category/delete-service-category.component';
 import { DeleteServiceSpecComponent } from './admin/CatalogManagement/delete-service-spec/delete-service-spec.component';
 import { CreateServiceCategoryChildrenComponent } from './admin/CatalogManagement/edit-service-categories/create-service-category-children/create-service-category-children.component';
@@ -153,14 +156,17 @@ export function initializeAppTheme(bootstrap: BootstrapService) {
     VxfsMarketplaceComponent,
     VerticalNavbarComponent,
     ListServiceCatalogsComponent,
+    ListResourceCatalogsComponent,
     ListServiceCategoriesComponent,
     ListServiceSpecsComponent,
     EditServiceCatalogsComponent,
+    EditResourceCatalogsComponent,
     EditServiceCategoriesComponent,
     EditServiceSpecsComponent,
     EditServiceSpecCharacteristicsComponent,
     DeleteServiceSpecCharacteristicsComponent,
     DeleteServiceCatalogComponent,
+    DeleteResourceCatalogComponent,
     DeleteServiceCategoryComponent,
     DeleteServiceSpecComponent,
     CreateServiceCategoryChildrenComponent,
@@ -251,11 +257,13 @@ export function initializeAppTheme(bootstrap: BootstrapService) {
   ],
   entryComponents : [
     EditServiceCatalogsComponent,
+    EditResourceCatalogsComponent,
     EditServiceCategoriesComponent,
     CreateServiceCategoryChildrenComponent,
     AssignServiceCandidatesComponent,
     EditServiceSpecCharacteristicsComponent,
     DeleteServiceCatalogComponent,
+    DeleteResourceCatalogComponent,
     DeleteServiceCategoryComponent,
     DeleteServiceSpecComponent,
     DeleteServiceSpecCharacteristicsComponent,

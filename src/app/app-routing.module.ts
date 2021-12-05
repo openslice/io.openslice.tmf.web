@@ -10,7 +10,9 @@ import { ListResourceCatalogsComponent } from './admin/CatalogManagement/list-re
 import { ListServiceCategoriesComponent } from './admin/CatalogManagement/list-service-categories/list-service-categories.component';
 import { ListResourceCategoriesComponent } from './admin/CatalogManagement/list-resource-categories/list-resource-categories.component';
 import { ListServiceSpecsComponent } from './admin/CatalogManagement/list-service-specs/list-service-specs.component';
+import { ListResourceSpecsComponent } from './admin/CatalogManagement/list-resource-specs/list-resource-specs.component';
 import { EditServiceSpecsComponent } from './admin/CatalogManagement/edit-service-specs/edit-service-specs.component';
+import { EditResourceSpecsComponent } from './admin/CatalogManagement/edit-resource-specs/edit-resource-specs.component';
 import { EditServiceCategoriesComponent } from './admin/CatalogManagement/edit-service-categories/edit-service-categories.component';
 import { EditResourceCategoriesComponent } from './admin/CatalogManagement/edit-resource-categories/edit-resource-categories.component';
 import { AuthGuardService } from './shared/services/auth-guard.service';
@@ -24,6 +26,7 @@ import { ListIndividualsComponent } from './admin/PartyManagement/list-individua
 import { EditIndividualsComponent } from './admin/PartyManagement/edit-individuals/edit-individuals.component';
 import { PreviewServiceComponent } from './admin/ServiceActivationAndConfiguration/preview-service/preview-service.component';
 import { ListServiceInventoryComponent } from './admin/InventoryManagement/list-service-inventory/list-service-inventory.component';
+import { ListResourceInventoryComponent } from './admin/InventoryManagement/list-resource-inventory/list-resource-inventory.component';
 import { ListAlarmsComponent } from './admin/AlarmManagement/list-alarms/list-alarms.component';
 import { EditAlarmComponent } from './admin/AlarmManagement/edit-alarm/edit-alarm.component';
 import { ListActionsSpecsComponent } from './admin/AssuranceServicesManagement/list-actions-specs/list-actions-specs.component';
@@ -31,6 +34,7 @@ import { EditActionSpecsComponent } from './admin/AssuranceServicesManagement/ed
 import { ListActionRulesComponent } from './admin/AssuranceServicesManagement/list-action-rules/list-action-rules.component';
 import { EditActionRulesComponent } from './admin/AssuranceServicesManagement/edit-action-rules/edit-action-rules.component';
 import { ServiceRuleDesignComponent } from './admin/LCM/service-rule-design/service-rule-design.component';
+
 
 
 const routes: Routes = [
@@ -49,8 +53,11 @@ const routes: Routes = [
   { path: 'resource_categories_update/:id', component: EditResourceCategoriesComponent, canActivate: [AuthGuardService], runGuardsAndResolvers: 'always' },
   { path: 'resource_categories_update', component: EditResourceCategoriesComponent, canActivate: [AuthGuardService], runGuardsAndResolvers: 'always' },
   { path: 'service_specs', component: ListServiceSpecsComponent, canActivate: [AuthGuardService], runGuardsAndResolvers: 'always' },
+  { path: 'resource_specs', component: ListResourceSpecsComponent, canActivate: [AuthGuardService], runGuardsAndResolvers: 'always' },
   { path: 'service_spec_update/:id', component: EditServiceSpecsComponent, canActivate: [AuthGuardService], runGuardsAndResolvers: 'always' },
   { path: 'service_spec_update', component: EditServiceSpecsComponent, canActivate: [AuthGuardService], runGuardsAndResolvers: 'always' },
+  { path: 'resource_spec_update/:id', component: EditResourceSpecsComponent, canActivate: [AuthGuardService], runGuardsAndResolvers: 'always' },
+  { path: 'resource_spec_update', component: EditResourceSpecsComponent, canActivate: [AuthGuardService], runGuardsAndResolvers: 'always' },
   { path: 'list_nsds', component: ListNsdComponent, canActivate: [AuthGuardService], runGuardsAndResolvers: 'always' },
 
   { path: 'service_orders', component: ListServiceOrdersComponent, canActivate: [AuthGuardService], runGuardsAndResolvers: 'always' },
@@ -70,6 +77,7 @@ const routes: Routes = [
   { path: 'service/:id', component: PreviewServiceComponent, canActivate: [AuthGuardService], runGuardsAndResolvers: 'always' },
 
   { path: 'service_inventory', component: ListServiceInventoryComponent, canActivate: [AuthGuardService], runGuardsAndResolvers: 'always'},
+  { path: 'resource_inventory', component: ListResourceInventoryComponent, canActivate: [AuthGuardService], runGuardsAndResolvers: 'always'},
 
   { path: 'alarms', component: ListAlarmsComponent, canActivate: [AuthGuardService], runGuardsAndResolvers: 'always'},
   { path: 'alarm/:id', component: EditAlarmComponent, canActivate: [AuthGuardService], runGuardsAndResolvers: 'always'},
@@ -85,7 +93,7 @@ const routes: Routes = [
 
   { path: 'service_rule_design/:id', component: ServiceRuleDesignComponent, canActivate: [AuthGuardService], runGuardsAndResolvers: 'always' },
   { path: 'service_rule_design', component: ServiceRuleDesignComponent, canActivate: [AuthGuardService], runGuardsAndResolvers: 'always' },
-
+  
 
 
   { path: '**', component: LandingComponent }

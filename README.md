@@ -10,6 +10,6 @@ Available values:
 
 Execute:
 
-ng serve --port 8888 --base-href /services/
+ng serve --port 8888
 
-open your browser on http://localhost:8888/services
+open your browser on http://localhost:8888

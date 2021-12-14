@@ -108,10 +108,10 @@
                 </h5>
             
             
-                <div formArrayName="serviceSpecCharacteristicValue">
+                <div formArrayName="resourceSpecCharacteristicValue">
             
                     <div  
-                    *ngFor="let val of editFormCharacteristic.get('serviceSpecCharacteristicValue')['controls']; let i = index;" 
+                    *ngFor="let val of editFormCharacteristic.get('resourceSpecCharacteristicValue')['controls']; let i = index;" 
                     [formGroupName]="i" 
                     class="row align-items-center justify-content-center" [@fadeIn] >
                         <div formGroupName="value" class="col-md-6">

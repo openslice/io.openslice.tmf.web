@@ -61,7 +61,7 @@ export class EditResourceSpecCharacteristicsComponent implements OnInit {
       if (!this.data.specToBeUpdated.validFor) this.data.specToBeUpdated.validFor = {endDateTime:null, startDateTime:null}
       this.editFormCharacteristic.patchValue(this.data.specToBeUpdated)
       
-      const formArray = this.editFormCharacteristic.get('serviceSpecCharacteristicValue') as FormArray
+      const formArray = this.editFormCharacteristic.get('resourceSpecCharacteristicValue') as FormArray
       this.data.specToBeUpdated.resourceSpecCharacteristicValue.forEach( val => {
         formArray.push(this.updateFormArrayItem(val))
       })
@@ -81,7 +81,7 @@ export class EditResourceSpecCharacteristicsComponent implements OnInit {
     )
     .subscribe(
       val => {
-        this.editFormCharacteristic.setControl('serviceSpecCharacteristicValue', new FormArray([]))
+        this.editFormCharacteristic.setControl('resourceSpecCharacteristicValue', new FormArray([]))
         this.createFormArrayItem()
 
 
@@ -92,7 +92,7 @@ export class EditResourceSpecCharacteristicsComponent implements OnInit {
           )
           .subscribe (
             subVal => {
-              this.editFormCharacteristic.setControl('serviceSpecCharacteristicValue', new FormArray([]))
+              this.editFormCharacteristic.setControl('resourceSpecCharacteristicValue', new FormArray([]))
               this.createFormArrayItem()
             }
           )
@@ -132,7 +132,7 @@ export class EditResourceSpecCharacteristicsComponent implements OnInit {
 
   
   createFormArrayItem() {
-    const formArray = this.editFormCharacteristic.get('serviceSpecCharacteristicValue') as FormArray
+    const formArray = this.editFormCharacteristic.get('resourceSpecCharacteristicValue') as FormArray
     
     // let isDisabled: boolean = true
     let subType: string = this.editFormCharacteristic.get('valueType').value
@@ -156,13 +156,13 @@ export class EditResourceSpecCharacteristicsComponent implements OnInit {
   }
 
   deleteFormArrayItem(index) {
-    const formArray = this.editFormCharacteristic.get('serviceSpecCharacteristicValue') as FormArray
+    const formArray = this.editFormCharacteristic.get('resourceSpecCharacteristicValue') as FormArray
     formArray.removeAt(index)
   }
 
   isDefaultCheckboxChanged(index, event: MatCheckboxChange) {
     if (this.editFormCharacteristic.get('valueType').value === "ENUM" && event.checked) {
-      const formArray = this.editFormCharacteristic.get('serviceSpecCharacteristicValue') as FormArray
+      const formArray = this.editFormCharacteristic.get('resourceSpecCharacteristicValue') as FormArray
       for (let i = 0; i < formArray.controls.length; i++) {
         if (i !== index) formArray.controls[i].get('isDefault').setValue(false)
       }     

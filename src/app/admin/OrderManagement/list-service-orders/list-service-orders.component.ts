@@ -9,6 +9,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { trigger } from '@angular/animations';
 import { fadeIn } from 'src/app/shared/animations/animations';
 import { CacheSearchParametersService } from '../../shared/cache-search-parameters.service';
+import { AppService } from 'src/app/shared/services/app.service';
 
 
 @Component({
@@ -23,7 +24,8 @@ export class ListServiceOrdersComponent implements OnInit {
     private serviceOrder: ServiceOrderService,
     private dialog: MatDialog,
     private toastr: ToastrService,
-    private cacheService: CacheSearchParametersService
+    private cacheService: CacheSearchParametersService,
+    public appService: AppService
   ) { }
 
   displayedColumns = ['id', 'placed_by', 'order_date', 'state', 'requested_startdate', 'requested_enddate', 'actions']

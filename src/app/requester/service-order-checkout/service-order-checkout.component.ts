@@ -9,6 +9,7 @@ import { ToastrService } from 'ngx-toastr';
 import { Router } from '@angular/router';
 import { SortingService } from 'src/app/shared/functions/sorting.service';
 import { Subscription } from 'rxjs';
+import { AppService } from 'src/app/shared/services/app.service';
 
 const today = new Date()
 
@@ -26,7 +27,8 @@ export class ServiceOrderCheckoutComponent implements OnInit {
     private orderService: ServiceOrderService,
     private toast: ToastrService,
     private router: Router,
-    private sortingService: SortingService
+    private sortingService: SortingService,
+    private appService: AppService
   ) { }
   
   subscription = new Subscription
@@ -250,7 +252,7 @@ export class ServiceOrderCheckoutComponent implements OnInit {
         this.requesterService.orderedSpecsList = []
         localStorage.removeItem('orderedSpecsList')
 
-        this.router.navigate(['services_marketplace'])
+        this.router.navigate([this.appService.portalDomain, 'services_marketplace'])
       }
     )
   }

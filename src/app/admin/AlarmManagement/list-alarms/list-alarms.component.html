@@ -72,7 +72,7 @@
                         <ng-container matColumnDef="actions">
                             <th mat-header-cell *matHeaderCellDef>Actions</th>
                             <td mat-cell *matCellDef="let element">
-                                <button class="btn btn-warning btn-sm mr-1" routerLink='/alarm/{{element.id}}'><i
+                                <button class="btn btn-warning btn-sm mr-1" routerLink='/{{appService.portalDomain}}/alarm/{{element.id}}'><i
                                         class="far fa-edit"></i></button>
                                 <!-- <button class="btn btn-danger btn-sm " (click)="openCatalogDeleteDialog(element)"><i
                                         class="far fa-trash-alt"></i></button> -->

@@ -795,6 +795,12 @@ Blockly.Blocks['string_to_float'] = {
           .setCheck("Array")
           .setAlign(Blockly.ALIGN_RIGHT)
           .appendField("VNF(Array)");
+
+      this.appendValueInput("k8s-namespace")
+          .setCheck("String")
+          .setAlign(Blockly.ALIGN_RIGHT)
+          .appendField("k8s-namespace(Text)");
+
       this.appendValueInput("VLD")
           .setCheck("Array")
           .setAlign(Blockly.ALIGN_RIGHT)
@@ -844,6 +850,29 @@ Blockly.Blocks['string_to_float'] = {
   };
 
 
+  
+
+  Blockly.Blocks['osm_nsd_config_kdu'] = {
+    init: function() {
+      this.appendValueInput("kdu_name")
+          .setCheck("String")
+          .setAlign(Blockly.ALIGN_RIGHT)
+          .appendField("kdu_name(Text)");  
+      this.appendValueInput("k8s-namespace")
+          .setCheck("String")
+          .setAlign(Blockly.ALIGN_RIGHT)
+          .appendField("k8s-namespace(Text)");
+      this.appendValueInput("additionalParams")
+          .setCheck("String")
+          .setAlign(Blockly.ALIGN_RIGHT)
+          .appendField("additionalParams(Text/json)");  
+          
+      this.setOutput(true, 'String');      
+      this.setColour(230);
+   this.setTooltip("Constructs a json string to be used for OSM configuration for member-vnf.");
+   this.setHelpUrl("");
+    }
+  };
 
   Blockly.Blocks['osm_nsd_config_vld'] = {
     init: function() {
@@ -878,6 +907,10 @@ Blockly.Blocks['string_to_float'] = {
           .setCheck("Array")
           .setAlign(Blockly.ALIGN_RIGHT)
           .appendField("additionalParams(array)");    
+      this.appendValueInput("additionalParamsForKdu")
+          .setCheck("Array")
+          .setAlign(Blockly.ALIGN_RIGHT)
+          .appendField("additionalParamsForKdu(array)");    
      
       this.appendValueInput("config")
           //.setCheck("String")
@@ -1057,4 +1090,34 @@ Blockly.Blocks['example_variable_typed'] = {
       ), 'FIELDNAME');
   }
 };
+
+
+
+
+
+  
+  /*************************************************************************** 
+  *
+  *   LOOPs RELATED
+  * 
+  ****************************************************************************/
+
+ 	
+   Blockly.Blocks['controls_foreach_java'] = {
+    init: function() {
+      this.appendValueInput("ASET")
+          .setCheck("SET")
+          .appendField("for each string")
+          .appendField(new Blockly.FieldVariable("item"), "VAR")
+          .appendField("in set (ofStrings)");
+      this.appendStatementInput("DO")
+          .setCheck(null)
+          .appendField("do");
+      this.setPreviousStatement(true, null);
+      this.setNextStatement(true, null);
+      this.setColour(230);
+   this.setTooltip("");
+   this.setHelpUrl("");
+    }
+  };
 

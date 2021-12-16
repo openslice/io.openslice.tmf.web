@@ -6,6 +6,7 @@ import { Service, ServiceUpdate } from 'src/app/openApis/ServiceInventoryManagem
 import { ToastrService } from 'ngx-toastr';
 import { FormGroup, FormControl } from '@angular/forms';
 import { AuthService } from 'src/app/shared/services/auth.service';
+import { AppService } from 'src/app/shared/services/app.service';
 
 @Component({
   selector: 'app-preview-supporting-services',
@@ -21,7 +22,8 @@ export class PreviewSupportingServicesComponent implements OnInit {
     private dialogRef: MatDialogRef<PreviewSupportingServicesComponent>,
     private inventoryService: ServiceService,
     private toastr: ToastrService,
-    private authService: AuthService
+    private authService: AuthService,
+    public appService: AppService
   ) { }
 
   supportingService: Service

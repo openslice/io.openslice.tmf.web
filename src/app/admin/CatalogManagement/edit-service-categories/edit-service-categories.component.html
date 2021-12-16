@@ -28,7 +28,7 @@
                                 <nav aria-label="breadcrumb">
                                     <ol class="breadcrumb mb-0">
                                         <li class="breadcrumb-item" *ngIf="category?.parentId && !editForm.controls.parentId.value?.isRoot">...</li>
-                                        <li class="breadcrumb-item"  *ngIf="category?.parentId"><span *ngIf="!editForm.controls.parentId.value?.isRoot"> </span> <a routerLink='/service_categories_update/{{editForm.controls.parentId.value.id}}'>{{editForm.controls.parentId.value.name}}</a></li>
+                                        <li class="breadcrumb-item"  *ngIf="category?.parentId"><span *ngIf="!editForm.controls.parentId.value?.isRoot"> </span> <a routerLink='/{{appService.portalDomain}}/service_categories_update/{{editForm.controls.parentId.value.id}}'>{{editForm.controls.parentId.value.name}}</a></li>
                                         <li class="breadcrumb-item active" aria-current="page"><span *ngIf="!category?.isRoot"> </span> {{category?.name}}</li>
                                     </ol>
                                 </nav>
@@ -42,7 +42,7 @@
                                 <span *ngIf="category?.parentId" class="d-flex align-items-center">
                                     <mat-icon *ngIf="!editForm.controls.parentId.value?.isRoot">keyboard_arrow_right</mat-icon>
                                     <a mat-button
-                                        routerLink='/service_categories_update/{{editForm.controls.parentId.value.id}}'>{{editForm.controls.parentId.value.name}}
+                                        routerLink='/{{appService.portalDomain}}/service_categories_update/{{editForm.controls.parentId.value.id}}'>{{editForm.controls.parentId.value.name}}
                                     </a>
                                 </span>
                             
@@ -162,7 +162,7 @@
                                 <div *ngFor="let category of filteredChildrenCategories$ | async" class="child-category-container pt-3 px-2">
                                     <div><b>{{category.name}}</b></div>
                                     <div>
-                                        <button class="btn btn-warning btn-sm mr-1" routerLink='/service_categories_update/{{category.id}}'><i
+                                        <button class="btn btn-warning btn-sm mr-1" routerLink='/{{appService.portalDomain}}/service_categories_update/{{category.id}}'><i
                                                 class="far fa-edit"></i></button>
                                         <button class="btn btn-danger btn-sm" (click)="openCategoryDeleteDialog(category)"><i
                                                 class="far fa-trash-alt"></i></button>

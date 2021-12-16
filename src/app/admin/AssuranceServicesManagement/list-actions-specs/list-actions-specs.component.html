@@ -40,7 +40,7 @@
                         <ng-container matColumnDef="actions" >
                             <th mat-header-cell *matHeaderCellDef>Actions</th>
                             <td mat-cell *matCellDef="let element">
-                                <!-- <button class="btn btn-warning btn-sm mr-1" routerLink='/action/{{element.id}}'><i
+                                <!-- <button class="btn btn-warning btn-sm mr-1" routerLink='/{{appService.portalDomain}}/action/{{element.id}}'><i
                                         class="far fa-edit"></i></button> -->
                                 <button class="btn btn-warning btn-sm mr-1" (click)="openUpdateActionDialog(element)"><i 
                                     class="far fa-edit"></i></button>

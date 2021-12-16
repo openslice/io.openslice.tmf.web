@@ -431,7 +431,7 @@
                                                             <div *ngFor="let supportingService of orderItem?.service.supportingService; let ServiceIndex=index"
                                                                 class="pt-2">
                                                                 <a class="card card-paper mb-1 bg-light supporting-service-card"
-                                                                    routerLink='/service/{{supportingService.id}}'>
+                                                                    routerLink='/{{appService.portalDomain}}/service/{{supportingService.id}}'>
                                                                     <div class="note-card-body">
                                                                         <div class="container-fluid">
                                                                             <div class="row justify-content-between">

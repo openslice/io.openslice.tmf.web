@@ -55,7 +55,7 @@ export class EditAlarmComponent implements OnInit {
     if (this.alarmId) {
       this.retrieveAlarm()
     } else {
-      this.router.navigate(['alarms'])
+      this.router.navigate(['../alarms'],  { relativeTo: this.activatedRoute})
     }
   }
 

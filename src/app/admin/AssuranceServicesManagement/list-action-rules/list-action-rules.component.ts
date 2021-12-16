@@ -5,6 +5,7 @@ import { ToastrService } from 'ngx-toastr';
 import { ActionSpecification, RuleSpecification } from 'src/app/openApis/AssuranceServicesManagementAPI/models';
 import { ActionSpecificationService, RuleSpecificationService } from 'src/app/openApis/AssuranceServicesManagementAPI/services';
 import { fadeIn } from 'src/app/shared/animations/animations';
+import { AppService } from 'src/app/shared/services/app.service';
 import { DeleteActionRulesComponent } from '../delete-action-rules/delete-action-rules.component';
 
 @Component({
@@ -19,7 +20,8 @@ export class ListActionRulesComponent implements OnInit {
     private actionSpecService: ActionSpecificationService,
     private ruleSpecService: RuleSpecificationService,
     public dialog: MatDialog,
-    private toast: ToastrService
+    private toast: ToastrService,
+    public appService: AppService
   ) { }
 
   displayedColumns = ['name', 'description', 'eventType', 'actions']

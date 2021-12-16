@@ -12,6 +12,7 @@ import { DiscardChangesComponent } from '../../CatalogManagement/edit-service-sp
 import { SortingService } from 'src/app/shared/functions/sorting.service';
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { EditServiceCharacteristicsComponent } from '../edit-service-characteristics/edit-service-characteristics.component';
+import { AppService } from 'src/app/shared/services/app.service';
 
 @Component({
   selector: 'app-preview-service',
@@ -29,7 +30,8 @@ export class PreviewServiceComponent implements OnInit {
     private dialog: MatDialog,
     private sortingService: SortingService,
     private authService: AuthService,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    public appService: AppService
   ) { }
 
   serviceID: string

@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { ServiceSpecification } from 'src/app/openApis/ServiceCatalogManagement/models/service-specification';
-import { Router } from '@angular/router';
+import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { CloneGstTemplateComponent } from 'src/app/admin/CatalogManagement/edit-service-specs/clone-gst-template/clone-gst-template.component';
 import { MatDialog } from '@angular/material';
 import { ToastrService } from 'ngx-toastr';
@@ -11,6 +11,7 @@ import { trigger } from '@angular/animations';
 import { fadeIn } from '../animations/animations';
 import { ThemingService } from 'src/app/theming/theming.service';
 import { IAppThemingConfig } from 'src/app/models/app-config-theming.model';
+import { AppService } from '../services/app.service';
 
 @Component({
   selector: 'app-navbar',
@@ -26,12 +27,14 @@ export class NavbarComponent implements OnInit {
     private toast: ToastrService,
     public authService: AuthService,
     public requesterService: RequesterService,
-    private themingService: ThemingService
+    private themingService: ThemingService,
+    public appService: AppService
   ) { }
 
   loggedIn: boolean
   isNavbarCollapsed: boolean = true
   themeConfig: IAppThemingConfig
+  navigationRoute:"services" | "testing" | "products" | ""
 
   ngOnInit() {
     this.loggedIn = this.authService.hasValidToken()
@@ -54,7 +57,7 @@ export class NavbarComponent implements OnInit {
     dialogRef.afterClosed().subscribe (
       (result: ServiceSpecification | undefined) => {
         if (result) {
-          this.router.navigate(['service_spec_update', result.id])
+          this.router.navigate([this.appService.portalDomain, 'service_spec_update', result.id])
           this.toast.success("GST External Template is successfully cloned")
         }
       }
@@ -67,7 +70,7 @@ export class NavbarComponent implements OnInit {
     dialogRef.afterClosed().subscribe (
       result => {
         if (result) {
-          this.router.navigate(['service_spec_update', result.id])
+          this.router.navigate([this.appService.portalDomain, 'service_spec_update', result.id])
           this.toast.success("VINNI-SB Template is successfully cloned")
           // this.router.navigate(['service_spec_update'])
         }

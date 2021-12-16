@@ -18,6 +18,8 @@ import { SelectionModel } from '@angular/cdk/collections';
 import { EditServiceOrderItemsComponent } from './edit-service-order-items/edit-service-order-items.component';
 import { PreviewSupportingServicesComponent } from '../../InventoryManagement/preview-supporting-services/preview-supporting-services.component';
 import { TerminateServiceOrderItemsComponent } from './terminate-service-order-items/terminate-service-order-items.component';
+import { AppService } from 'src/app/shared/services/app.service';
+import { relative } from 'path';
 
 @Component({
   selector: 'app-preview-service-order',
@@ -39,7 +41,8 @@ export class PreviewServiceOrderComponent implements OnInit {
     private toast: ToastrService,
     private authService: AuthService,
     private dialog: MatDialog,
-    private sortingService: SortingService
+    private sortingService: SortingService,
+    public appService: AppService
   ) { }
 
   staticListItems = ["Main Order Properties", "Related Parties"]
@@ -80,10 +83,11 @@ export class PreviewServiceOrderComponent implements OnInit {
 
     if (this.activatedRoute.snapshot.params.id)
     {
+      console.log(this.activatedRoute.snapshot.params.id)
       this.orderID = this.activatedRoute.snapshot.params.id
       this.retrieveServiceOrder()
     } else {
-      this.router.navigate(['service_orders'])
+      this.router.navigate(['../service_orders'], { relativeTo: this.activatedRoute})
     }
   }
 

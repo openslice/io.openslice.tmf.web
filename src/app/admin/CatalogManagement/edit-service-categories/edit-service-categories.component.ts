@@ -16,6 +16,7 @@ import { ToastrService } from 'ngx-toastr';
 import { error } from 'protractor';
 import { trigger } from '@angular/animations';
 import { fadeIn } from 'src/app/shared/animations/animations';
+import { AppService } from 'src/app/shared/services/app.service';
 
 @Component({
   selector: 'app-edit-service-categories',
@@ -31,7 +32,8 @@ export class EditServiceCategoriesComponent implements OnInit, OnDestroy {
     private activatedRoute: ActivatedRoute,
     private dialog: MatDialog,
     private router: Router,
-    private toast: ToastrService
+    private toast: ToastrService,
+    public appService: AppService
   ) { }
 
   category: ServiceCategory
@@ -229,7 +231,7 @@ export class EditServiceCategoriesComponent implements OnInit, OnDestroy {
       data => serviceCandidate = data,
       error => this.toast.error("An error occured while retrieving Service Specification Information"),
       () => {
-        this.router.navigate(['service_spec_update', serviceCandidate.serviceSpecification.id])
+        this.router.navigate(['../../service_spec_update', serviceCandidate.serviceSpecification.id],  { relativeTo: this.activatedRoute})
       }      
     )
   }

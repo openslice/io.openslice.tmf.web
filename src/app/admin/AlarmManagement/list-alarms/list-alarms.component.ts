@@ -6,6 +6,7 @@ import { stricterDefinedAlarmCreate } from 'src/app/models/augmentedOpenAPImodel
 import { Alarm, AlarmCreate } from 'src/app/openApis/AlarmManagement/models';
 import { AlarmService } from 'src/app/openApis/AlarmManagement/services';
 import { fadeIn } from 'src/app/shared/animations/animations';
+import { AppService } from 'src/app/shared/services/app.service';
 import { DeleteAlarmComponent } from '../delete-alarm/delete-alarm.component';
 import { SharedAlarmService } from '../shared/shared-alarm.service';
 
@@ -21,7 +22,8 @@ export class ListAlarmsComponent implements OnInit {
     private alarmService: AlarmService,
     public dialog: MatDialog,
     private toast: ToastrService,
-    public sharedAlarmService: SharedAlarmService
+    public sharedAlarmService: SharedAlarmService,
+    public appService: AppService
   ) { }
 
   displayedColumns = ['sourceSystemId', 'perceivedSeverity', 'ackState', 'state',  'alarmType', 'probableCause', 'alarmRaisedTime', 'actions']

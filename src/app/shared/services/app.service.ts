@@ -9,6 +9,8 @@ import { ApiConfiguration as ServiceActivationAndConfigurationAPIconfig } from '
 import { ApiConfiguration as AlarmManagementAPIconfig} from 'src/app/openApis/AlarmManagement/api-configuration'
 import { ApiConfiguration as AssuranceServicesManagementAPIconfig} from 'src/app/openApis/AssuranceServicesManagementAPI/api-configuration'
 import { ApiConfiguration as lcmRuleSpecificationAPIConfig } from 'src/app/openApis/LcmRuleSpecificationAPI/api-configuration'
+import { NavigationEnd, Router } from '@angular/router';
+import { filter, first } from 'rxjs/operators';
 
 
 @Injectable({
@@ -17,6 +19,7 @@ import { ApiConfiguration as lcmRuleSpecificationAPIConfig } from 'src/app/openA
 export class AppService {
 
   constructor(
+    private router: Router,
     private bootstrapService: BootstrapService,
     private portalAPIConfig: PortalAPIconfig,
     private tmfServiceCatalogConfig: ServiceCatalogAPIconfig,
@@ -29,9 +32,11 @@ export class AppService {
     private lcmRuleSpecificationAPIConfig: lcmRuleSpecificationAPIConfig
   ) { 
     this.setAPIurls()
+    this.recognizePortalDomain()
   }
 
   config = this.bootstrapService.getConfig()
+  portalDomain: "services" | "testing" | "products" | "" = ""
 
   setAPIurls() {
     this.portalAPIConfig.rootUrl = this.config.PORTAL_REPO_APIURL
@@ -43,5 +48,18 @@ export class AppService {
     this.tmfAlarmManagementConfig.rootUrl = this.config.APITMFURL
     this.assuranceServicesManagementAPIConfig.rootUrl = this.config.ASSURANCE_SERVICE_MGMT_APIURL
     this.lcmRuleSpecificationAPIConfig.rootUrl = this.config.APITMFURL
+  }
+
+  //recognition of which portal is used (services/testing/product) only on Angular startup
+  recognizePortalDomain() {
+    this.router.events.pipe(
+      filter(e => e instanceof NavigationEnd),
+      first()
+    ).subscribe( (e: NavigationEnd) => {
+      const activatedRoute = e.urlAfterRedirects.split('/')[1].toLowerCase()
+      if (["services", "testing", "products"].includes(activatedRoute)) {
+        this.portalDomain = <"services" | "testing" | "products"> activatedRoute
+      }
+    })
   }
 }

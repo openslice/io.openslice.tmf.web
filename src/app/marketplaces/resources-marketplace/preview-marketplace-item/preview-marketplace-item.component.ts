@@ -1,7 +1,9 @@
 import { Component, OnInit, Inject, ViewChild } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef, MatTableDataSource, MatSort, MatCheckboxChange } from '@angular/material';
-import { ServiceCandidate, ServiceSpecification, ServiceSpecCharacteristicValue, ServiceSpecCharacteristic, AttachmentRef } from 'src/app/openApis/ServiceCatalogManagement/models';
-import { ServiceSpecificationService } from 'src/app/openApis/ServiceCatalogManagement/services';
+//import { ServiceCandidate, ServiceSpecification, ServiceSpecCharacteristicValue, ServiceSpecCharacteristic, AttachmentRef } from 'src/app/openApis/ServiceCatalogManagement/models';
+import { ResourceCandidate, ResourceSpecification, ResourceSpecCharacteristicValue, ResourceSpecCharacteristic, AttachmentRef } from 'src/app/openApis/ResourceCatalogManagement/models';
+//import { ServiceSpecificationService } from 'src/app/openApis/ServiceCatalogManagement/services';
+import { ResourceSpecificationService } from 'src/app/openApis/ResourceCatalogManagement/services';
 import { RequesterService } from 'src/app/requester/services/requester.service';
 import { ToastrService } from 'ngx-toastr';
 import { SortingService } from 'src/app/shared/functions/sorting.service';
@@ -18,14 +20,14 @@ import { ThemingService } from 'src/app/theming/theming.service';
   animations: [ trigger('fadeIn', fadeIn()) ]
 
 })
-export class PreviewMarketplaceItemComponent implements OnInit {
+export class PreviewResourceMarketplaceItemComponent implements OnInit {
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: {
-      serviceCandidate: ServiceCandidate
+      resourceCandidate: ResourceCandidate
     },
-    private dialogRef: MatDialogRef<PreviewMarketplaceItemComponent>,
-    private specService: ServiceSpecificationService,
+    private dialogRef: MatDialogRef<PreviewResourceMarketplaceItemComponent>,
+    private specService: ResourceSpecificationService,
     private requesterService: RequesterService,
     private toastr: ToastrService,
     private sortingService: SortingService,
@@ -33,16 +35,16 @@ export class PreviewMarketplaceItemComponent implements OnInit {
     private themingService: ThemingService
   ) { }
 
-  candidate: ServiceCandidate
-  spec: ServiceSpecification
+  candidate: ResourceCandidate
+  spec: ResourceSpecification
   specLogoRef: AttachmentRef
   specLogoUrl: string
   specServiceRootUrl: string
 
   displayedColumns = ['name', 'defaultValues']
-  dataSourceConf  = new MatTableDataSource<ServiceSpecification>()
+  dataSourceConf  = new MatTableDataSource<ResourceSpecification>()
 
-  dataSourceNonConf  = new MatTableDataSource<ServiceSpecification>()
+  dataSourceNonConf  = new MatTableDataSource<ResourceSpecification>()
 
   @ViewChild('sort1', {static: true}) sort1: MatSort;
   @ViewChild('sort2', {static: true}) sort2: MatSort;
@@ -52,24 +54,23 @@ export class PreviewMarketplaceItemComponent implements OnInit {
 
   ngOnInit() {
     this.specServiceRootUrl = this.specService.rootUrl
-
-    this.candidate = this.data.serviceCandidate
-    this.retrieveServiceSpec(this.data.serviceCandidate)
+    this.candidate = this.data.resourceCandidate
+    this.retrieveResourceSpec(this.data.resourceCandidate)
   }
 
   configurableFilterChanged(event:MatCheckboxChange) {
-    if (event.checked) this.dataSourceConf.data = this.spec.serviceSpecCharacteristic.filter(spec => spec.configurable)
-    else this.dataSourceConf.data = this.spec.serviceSpecCharacteristic
+    if (event.checked) this.dataSourceConf.data = this.spec.resourceSpecCharacteristic.filter(spec => spec.configurable)
+    else this.dataSourceConf.data = this.spec.resourceSpecCharacteristic
   }
 
-  retrieveServiceSpec(candidate: ServiceCandidate) {
-    this.specService.retrieveServiceSpecification({id: candidate.serviceSpecification.id}).subscribe(
+  retrieveResourceSpec(candidate: ResourceCandidate) {
+    this.specService.retrieveResourceSpecification({id: candidate.resourceSpecification.id}).subscribe(
       data => this.spec = data,
       error => console.error(error),
       () => {
-        this.dataSourceConf.data = this.spec.serviceSpecCharacteristic.filter(spec => spec.configurable)
+        this.dataSourceConf.data = this.spec.resourceSpecCharacteristic.filter(spec => spec.configurable)
         this.dataSourceConf.sort = this.sort1
-        this.dataSourceNonConf.data = this.spec.serviceSpecCharacteristic.filter(spec => !spec.configurable)
+        this.dataSourceNonConf.data = this.spec.resourceSpecCharacteristic.filter(spec => !spec.configurable)
         this.dataSourceNonConf.sort = this.sort2
         
         //Check if spec has a defined logo
@@ -117,14 +118,14 @@ export class PreviewMarketplaceItemComponent implements OnInit {
     let initialCharValues: {
       name: string,
       valueType: string,
-      value: ServiceSpecCharacteristicValue[]
+      value: ResourceSpecCharacteristicValue[]
     }[] =[]
 
-    const configurableSpecChar = this.spec.serviceSpecCharacteristic.filter(specChar => specChar.configurable)
+    const configurableSpecChar = this.spec.resourceSpecCharacteristic.filter(specChar => specChar.configurable)
 
     configurableSpecChar.forEach( confSpecChar => {
       
-      const charDefaultValueArray = confSpecChar.serviceSpecCharacteristicValue.filter( val => val.isDefault )
+      const charDefaultValueArray = confSpecChar.resourceSpecCharacteristicValue.filter( val => val.isDefault )
       
       //In case there are no Default Values assigned, initiate Default Value Array with null values
       if (charDefaultValueArray.length === 0) {charDefaultValueArray[0] = {value: {value:'' , alias:''}}}

@@ -1235,7 +1235,7 @@ export class ServiceRuleDesignComponent implements OnInit {
     var branch = Blockly.Java.statementToCode(block, 'DO');
     branch = Blockly.Java.addLoopTrap(branch, block.id);
     var indexVar = Blockly.Java.nameDB_.getDistinctName(
-      variable0 + '_index', Blockly.Variables.NAME_TYPE);
+      variable0 , Blockly.Variables.NAME_TYPE);
       //branch = Blockly.Java.INDENT + variable0 + ' = ' +
       //  argument0 + '[' + indexVar + '];\n' + branch;
         

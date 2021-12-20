@@ -103,6 +103,7 @@ import { AssignResourceCandidatesComponent } from './admin/CatalogManagement/edi
 import { CloneGstTemplateComponent } from './admin/CatalogManagement/edit-service-specs/clone-gst-template/clone-gst-template.component';
 import { CloneVinniTemplateComponent } from './admin/CatalogManagement/edit-service-specs/clone-vinni-template/clone-vinni-template.component';
 import { PreviewMarketplaceItemComponent } from './marketplaces/services-marketplace/preview-marketplace-item/preview-marketplace-item.component';
+import { PreviewResourceMarketplaceItemComponent } from './marketplaces/resources-marketplace/preview-marketplace-item/preview-marketplace-item.component';
 import { AssignServiceRelationshipsComponent } from './admin/CatalogManagement/edit-service-specs/assign-service-relationships/assign-service-relationships.component';
 import { AssignResourceRelationshipsComponent } from './admin/CatalogManagement/edit-resource-specs/assign-resource-relationships/assign-resource-relationships.component';
 import { TokenInterceptor } from './shared/interceptors/token-interceptor';
@@ -198,6 +199,7 @@ export function initializeAppTheme(bootstrap: BootstrapService) {
     CloneGstTemplateComponent,
     CloneVinniTemplateComponent,
     PreviewMarketplaceItemComponent,
+    PreviewResourceMarketplaceItemComponent,
     AssignServiceRelationshipsComponent,
     AssignResourceRelationshipsComponent,
     ServiceOrderCheckoutComponent,
@@ -304,6 +306,7 @@ export function initializeAppTheme(bootstrap: BootstrapService) {
     AssignServiceRelationshipsComponent,
     AssignResourceRelationshipsComponent,
     PreviewMarketplaceItemComponent,
+    PreviewResourceMarketplaceItemComponent,
     EditOrdersServiceSpecCharacteristicsComponent,
     PreviewSupportingServicesComponent,
     ImportNsdDialogComponent,

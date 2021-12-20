@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { PreviewMarketplaceItemComponent } from './preview-marketplace-item.component';
+import { PreviewResourceMarketplaceItemComponent } from './preview-marketplace-item.component';
 
 describe('PreviewServiceComponent', () => {
-  let component: PreviewMarketplaceItemComponent;
-  let fixture: ComponentFixture<PreviewMarketplaceItemComponent>;
+  let component: PreviewResourceMarketplaceItemComponent;
+  let fixture: ComponentFixture<PreviewResourceMarketplaceItemComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ PreviewMarketplaceItemComponent ]
+      declarations: [ PreviewResourceMarketplaceItemComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(PreviewMarketplaceItemComponent);
+    fixture = TestBed.createComponent(PreviewResourceMarketplaceItemComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

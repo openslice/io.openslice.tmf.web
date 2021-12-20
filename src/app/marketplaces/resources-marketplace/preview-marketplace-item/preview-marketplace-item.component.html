@@ -38,10 +38,10 @@
 
                     </div>
 
-                    <button *ngIf="(authService.isAuthenticated$ | async)" type="button" class="btn btn-primary my-3" (click)="placeInOrderList()">
+                    <!-- <button *ngIf="(authService.isAuthenticated$ | async)" type="button" class="btn btn-primary my-3" (click)="placeInOrderList()">
                         <i class="fas fa-shopping-cart mr-1"></i>
                         <span> Place in Order List </span>
-                    </button>
+                    </button> -->
 
                     <div *ngIf="!(authService.isAuthenticated$ | async)" class="my-3">
                         <b class="shadowed">You must be logged in to place an order</b>
@@ -67,7 +67,7 @@
             <div class="separator-div"></div>
             
                 
-            <div class="header-section">Service Characteristics</div>
+            <div class="header-section">Resource Characteristics</div>
                 
             
             <div class="separator-div"></div>
@@ -78,10 +78,10 @@
               
             <h5 class="mt-2 mb-0">
                 <i class="fas fa-user-edit mr-2"></i>
-                User Defined Service Characteristics
+                User Defined Resource Characteristics
             </h5>
 
-            <div class="no-chars-found" *ngIf="!dataSourceConf.data.length">This service does not contain any configurable characteristics</div>
+            <div class="no-chars-found" *ngIf="!dataSourceConf.data.length">This resource does not contain any configurable characteristics</div>
     
             <div class="table-responsive text-left" [hidden]="!dataSourceConf.data.length">
 
@@ -128,10 +128,10 @@
                             <i class="fas fa-user-edit fa-stack-1x"></i>
                             <i class="fas fa-ban fa-stack-2x" style="color:Tomato; opacity: 0.5;"></i>
                           </span>
-                Predefined Service Characteristics
+                Predefined Resource Characteristics
             </h5>
 
-            <div class="no-chars-found mt-2" *ngIf="!dataSourceNonConf.data.length">This service does not contain any predefined characteristics</div>
+            <div class="no-chars-found mt-2" *ngIf="!dataSourceNonConf.data.length">This resource does not contain any predefined characteristics</div>
 
             <div class="table-responsive text-left" [hidden]="!dataSourceNonConf.data.length">
                 <table mat-table [dataSource]="dataSourceNonConf" matSort #sort2="matSort" matSortActive="name" matSortDirection="asc" class="table table-generic">

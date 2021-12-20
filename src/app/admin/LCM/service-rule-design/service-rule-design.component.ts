@@ -1240,7 +1240,7 @@ export class ServiceRuleDesignComponent implements OnInit {
       //  argument0 + '[' + indexVar + '];\n' + branch;
         
       branch = Blockly.Java.INDENT + branch;
-    var code = 'for ( String ' + indexVar + ': ' + argument0 + ') {\n' +
+    var code = 'for ( String ' + variable0 + ': ' + argument0 + ') {\n' +
       branch + '}\n';
     return code;
   };

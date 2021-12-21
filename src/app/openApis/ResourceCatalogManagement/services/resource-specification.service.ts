@@ -25,8 +25,8 @@ class ResourceSpecificationService extends __BaseService {
   static readonly deleteResourceSpecificationPath = '/resourceCatalogManagement/v4/resourceSpecification/{id}';
   static readonly patchResourceSpecificationPath = '/resourceCatalogManagement/v4/resourceSpecification/{id}';
   static readonly addAttachmentToResourceSpecificationPath = '/resourceCatalogManagement/v4/resourceSpecification/{id}/attachment';
-  //static readonly getAttachmentPath = '/serviceCatalogManagement/v4/serviceSpecification/{id}/attachment/{attid}';//??
-  //static readonly getAttachmentWithFilenamePath = '/serviceCatalogManagement/v4/serviceSpecification/{id}/attachment/{attid}/{afilename}';
+  static readonly getAttachmentPath = '/resourceCatalogManagement/v4/resourceSpecification/{id}/attachment/{attid}';
+  static readonly getAttachmentWithFilenamePath = '/resourceCatalogManagement/v4/resourceSpecification/{id}/attachment/{attid}/{afilename}';
   //static readonly cloneServiceSpecificationPath = '/serviceCatalogManagement/v4/serviceSpecification/{id}/clone';
   //static readonly retrieveServiceSpecificationDescriptorPath = '/serviceCatalogManagement/v4/serviceSpecification/{id}/sd';
 
@@ -337,14 +337,119 @@ class ResourceSpecificationService extends __BaseService {
       __map(_r => _r.body as Attachment)
     );
   }
-  /**
-   * Clones a ServiceSpecification
+   /**
+   * Get an attachment
    *
-   * This operation clones a ServiceSpecification entity. The response is the cloned spec
-   * @param id Identifier of the ServiceSpecification to clone
-   * @return Cloned
-   */ 
+   * This operation gets an attachment
+   * @param params The `ResourceSpecificationService.GetAttachmentParams` containing the following parameters:
+   *
+   * - `id`: Identifier of the ResourceSpecification
+   *
+   * - `attid`: Identifier of the Attachment
+   *
+   * @return Success
+   */
+    getAttachmentResponse(params: ResourceSpecificationService.GetAttachmentParams): __Observable<__StrictHttpResponse<Resource>> {
+      let __params = this.newParams();
+      let __headers = new HttpHeaders();
+      let __body: any = null;
+  
+  
+      let req = new HttpRequest<any>(
+        'GET',
+        this.rootUrl + `/resourceCatalogManagement/v4/resourceSpecification/${encodeURIComponent(params.id)}/attachment/${encodeURIComponent(params.attid)}`,
+        __body,
+        {
+          headers: __headers,
+          params: __params,
+          responseType: 'blob'
+        });
+  
+      return this.http.request<any>(req).pipe(
+        __filter(_r => _r instanceof HttpResponse),
+        __map((_r) => {
+          return _r as __StrictHttpResponse<Resource>;
+        })
+      );
+    }
+
+    /**
+     * Get an attachment
+     *
+     * This operation gets an attachment
+     * @param params The `ResourceSpecificationService.GetAttachmentParams` containing the following parameters:
+     *
+     * - `id`: Identifier of the ResourceSpecification
+     *
+     * - `attid`: Identifier of the Attachment
+     *
+     * @return Success
+     */
+    getAttachment(params: ResourceSpecificationService.GetAttachmentParams): __Observable<Blob> {
+      return this.getAttachmentResponse(params).pipe(
+        __map(_r => _r.body as Blob)
+      );
+    }
+  
+    /**
+     * Get an attachment with filename
+     *
+     * This operation gets an attachment
+     * @param params The `ResourceSpecificationService.GetAttachmentWithFilenameParams` containing the following parameters:
+     *
+     * - `id`: Identifier of the ResourceSpecification
+     *
+     * - `attid`: Identifier of the Attachment
+     *
+     * - `afilename`: Identifier of the Filename
+     *
+     * @return Success
+     */
+    getAttachmentWithFilenameResponse(params: ResourceSpecificationService.GetAttachmentWithFilenameParams): __Observable<__StrictHttpResponse<Resource>> {
+      let __params = this.newParams();
+      let __headers = new HttpHeaders();
+      let __body: any = null;
+  
+  
+  
+      let req = new HttpRequest<any>(
+        'GET',
+        this.rootUrl + `/resourceCatalogManagement/v4/resourceSpecification/${encodeURIComponent(params.id)}/attachment/${encodeURIComponent(params.attid)}/${encodeURIComponent(params.afilename)}`,
+        __body,
+        {
+          headers: __headers,
+          params: __params,
+          responseType: 'blob'
+        });
+  
+      return this.http.request<any>(req).pipe(
+        __filter(_r => _r instanceof HttpResponse),
+        __map((_r) => {
+          return _r as __StrictHttpResponse<Resource>;
+        })
+      );
+    }
+    /**
+     * Get an attachment with filename
+     *
+     * This operation gets an attachment
+     * @param params The `ResourceSpecificationService.GetAttachmentWithFilenameParams` containing the following parameters:
+     *
+     * - `id`: Identifier of the ResourceSpecification
+     *
+     * - `attid`: Identifier of the Attachment
+     *
+     * - `afilename`: Identifier of the Filename
+     *
+     * @return Success
+     */
+    getAttachmentWithFilename(params: ResourceSpecificationService.GetAttachmentWithFilenameParams): __Observable<Resource> {
+      return this.getAttachmentWithFilenameResponse(params).pipe(
+        __map(_r => _r.body as Resource)
+      );
+    }
 }
+
 
 module ResourceSpecificationService {
 

@@ -122,11 +122,11 @@ export class PreviewResourceMarketplaceItemComponent implements OnInit {
     }[] =[]
 
     const configurableSpecChar = this.spec.resourceSpecCharacteristic.filter(specChar => specChar.configurable)
-
+    
     configurableSpecChar.forEach( confSpecChar => {
       
       const charDefaultValueArray = confSpecChar.resourceSpecCharacteristicValue.filter( val => val.isDefault )
-      
+
       //In case there are no Default Values assigned, initiate Default Value Array with null values
       if (charDefaultValueArray.length === 0) {charDefaultValueArray[0] = {value: {value:'' , alias:''}}}
       

@@ -47,11 +47,11 @@ export class ResourcesMarketplaceComponent implements OnInit {
   selectedCategory: ResourceCategory
 
   //serviceCandidates: ServiceCandidateWithLogo[] = []
-  resourceCandidates: ResourceCandidate[] = []
+  resourceCandidates: ResourceCandidateWithLogo[] = []
 
   serviceCandidatesFilterCtrl = new FormControl();
   //filteredServiceCandidates$: Observable<ServiceCandidateWithLogo[]>
-  filteredServiceCandidates$: Observable<ResourceCandidate[]>
+  filteredServiceCandidates$: Observable<ResourceCandidateWithLogo[]>
 
   specServiceRootUrl : string
   config: IAppConfig
@@ -92,34 +92,34 @@ export class ResourcesMarketplaceComponent implements OnInit {
     
     this.candidateService.retrieveResourceCandidate({ id: candidateRef.id }).subscribe(
       data => { 
-        // console.log(data)
+        console.log(data)
         let candidate: ResourceCandidateWithLogo = data
         candidate.fetchingLogo = true
         candidate.logo = this.themingService.getConfig().DEFAULT_SERVICE_LOGO_PATH //set Default App Image, path defined in theming.service.ts
 
         // this.serviceCandidates.push(candidate)
-        //let candidate: ResourceCandidate = data
-        //candidate.fetchingLogo = true
-        //candidate.logo = this.themingService.getConfig().DEFAULT_SERVICE_LOGO_PATH //set Default App Image, path defined in theming.service.ts
+        // let candidate: ResourceCandidate = data
+        // candidate.fetchingLogo = true
+        // candidate.logo = this.themingService.getConfig().DEFAULT_SERVICE_LOGO_PATH //set Default App Image, path defined in theming.service.ts
 
         this.resourceCandidates.push(candidate)
-
-        // this.specificationService.getAttachment({id: data.serviceSpecification.id, attid:'logo'}).subscribe(
-        //   data => {
-        //     const reader = new FileReader();
-        //     reader.readAsDataURL(data);
-        //     reader.onload = (__event) => {
-        //       const base64data = reader.result;
-        //       this.serviceCandidates.find(cand => cand.id === candidateRef.id).logo = base64data
-        //       candidate.fetchingLogo = false
-        //     }
-        //   },
-        //   error => {
-        //     candidate.fetchingLogo = false
-        //     // console.error (error)
-        //   }
-        // )
-
+        this.specificationService.getAttachment({id: data.resourceSpecification.id, attid:'logo'}).subscribe(
+          data => {
+            const reader = new FileReader();
+            reader.readAsDataURL(data);
+            reader.onload = (__event) => {
+              const base64data = reader.result;
+              this.resourceCandidates.find(cand => cand.id === candidateRef.id).logo = base64data
+              //candidate.logo = base64data;
+              candidate.fetchingLogo = false
+            }
+          },
+          error => {
+            candidate.fetchingLogo = false
+            //console.error (error)
+          }
+        )
+        //this.resourceCandidates.push(candidate)
       },
       error => { console.error(error) },
       () => {

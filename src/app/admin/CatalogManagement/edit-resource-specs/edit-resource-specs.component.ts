@@ -422,6 +422,7 @@ export class EditResourceSpecsComponent implements OnInit {
       let tempFile = this.logoImageCtrl.value[0]
       const fileExtension = tempFile.name.split('.').pop()
       const preDefinedLogoFilename = `logo.${fileExtension}` 
+      //const preDefinedLogoFilename = `logo`
 
       let newAttachment: Attachment
       this.specResource.addAttachmentToResourceSpecification({id: this.specID, afile: new File(this.logoImageCtrl.value, preDefinedLogoFilename, {type:tempFile.type})}).subscribe(

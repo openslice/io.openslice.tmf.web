@@ -1121,3 +1121,164 @@ Blockly.Blocks['example_variable_typed'] = {
     }
   };
 
+  
+  
+  /*************************************************************************** 
+  *
+  *   Dependency RELATED
+  * 
+  ****************************************************************************/
+ 
+ 
+  
+  
+   Blockly.Blocks['createServiceRefIf'] = {
+    init: function() {
+      this.appendValueInput("SERVICE_NAME")
+          .setCheck("String")
+          .appendField("Create Ref Service");
+      this.appendValueInput("CONDITION")
+          .setCheck("Boolean")
+          .appendField("if");
+      this.setInputsInline(true);
+      this.setPreviousStatement(true, null);
+      this.setNextStatement(true, null);
+      this.setColour(230);
+   this.setTooltip("Create a service when a condition validates to true during the creation process.");
+   this.setHelpUrl("");
+    }
+  };
+
+
+
+  
+  /*************************************************************************** 
+  *
+  *   Services RELATED
+  * 
+  ****************************************************************************/
+ 
+ 
+   Blockly.Blocks['getServiceRefName'] = {
+    init: function() {
+      this.appendDummyInput()
+          //.appendField("Get Value")
+          .appendField(new Blockly.FieldLabelSerializable(""), "AVALUE")  
+          
+      this.setOutput(true, 'String');
+      this.setColour(colourtexts);
+   this.setTooltip("Get Service name");
+   this.setHelpUrl("");
+    }
+  };
+
+  
+  Blockly.Blocks['getResourceRefName'] = {
+    init: function() {
+      this.appendDummyInput()
+          //.appendField("Get Value")
+          .appendField(new Blockly.FieldLabelSerializable(""), "AVALUE")  
+          
+      this.setOutput(true, 'String');
+      this.setColour(colourtexts);
+   this.setTooltip("Get Resource name");
+   this.setHelpUrl("");
+    }
+  };
+
+
+  Blockly.Blocks['getServiceRefProps'] = {
+    init: function() {
+      this.appendDummyInput()
+          //.setCheck(null)
+          .appendField("Service")
+          .appendField(new Blockly.FieldLabelSerializable(""), "AVALUE")  
+          .appendField(new Blockly.FieldDropdown([["ID", "id"], 
+          ["State", "state"], 
+          ["Name","name"], 
+          ["hasStarted","hasStarted"], 
+          ["isServiceEnabled","isServiceEnabled"], 
+          ["serviceType","serviceType"], 
+          ["startMode","startMode"], 
+          ["serviceCharacteristicValue","serviceCharacteristicValue"], 
+          ["serviceOrderID","serviceOrderID"], 
+          ["serviceSpecificationID","serviceSpecificationID"], 
+          ["serviceObjectasJSON","serviceObjectasJSON"]
+
+          
+        ], this.handleTypeSelection.bind(this) ), "VERBOPTION"); 
+
+        // Initialize the value of this.columnType (used in updateShape)
+      this.columnType = this.getFieldValue('VERBOPTION');
+      // Avoid duplicating code by running updateShape to append your appropriate input
+      this.updateShape();
+      //this.setPreviousStatement(true, null);
+      //this.setNextStatement(true, null);    
+      this.setOutput(true, "String");
+      this.setColour(colourtexts);
+      this.setTooltip("Get Service details from current context running service, after instantiation.");
+      this.setHelpUrl("");
+
+    },
+    /**
+     * This function runs each time you select a new value in your type selection dropdown field.
+     * @param {string} newType This is the new value that the field will be set to.
+     * 
+     * Important note: this function will run BEFORE the field's value is updated. This means that if you call
+     * this.getFieldValue('typeSelector') within here, it will reflect the OLD value.
+     * 
+     */
+    handleTypeSelection: function (newType) {
+        // Avoid unnecessary updates if someone clicks the same field twice
+        if(this.columnType !== newType) {
+            // Update this.columnType to the new value
+            this.columnType = newType;
+            // Add or remove fields as appropriate
+            this.updateShape();
+        }
+    },
+    /**
+     * This will remove old inputs and add new inputs as you need, based on the columnType value selected
+     */
+    updateShape: function () {
+        // Remove the old input (so that you don't have inputs stack repeatedly)
+        if (this.getInput('characteristicName')) {
+            this.removeInput('characteristicName');
+        }
+        // Append the new input based on the value of this.columnType
+        if(this.columnType === 'serviceCharacteristicValue') {
+          this.appendValueInput("characteristicName")
+          .setCheck("String")
+          .setAlign(Blockly.ALIGN_RIGHT)
+          .appendField("Characteristic Name");  
+          this.setInputsInline(true);   
+        } 
+    },
+    /**
+     * This function runs when saving your block to XML. This is important if you need to save your block to XML at any point and then either
+     * generate code from that XML or repopulate your workspace from that XML
+     */
+    mutationToDom: function () {
+        var container = document.createElement('mutation');
+        // Do not use camelCase values for attribute names.
+        container.setAttribute('column_type', this.columnType);
+        // ALWAYS return container; this will be the input for domToMutation.
+        return container;
+    },
+    /**
+     * This function runs when loading your block from XML, after running init.
+     * It's very important for updating your block in response to values selected in a field.
+     */
+    domToMutation: function (xmlElement) {
+        // This attribute should match the one you used in mutationToDom
+        var columnType = xmlElement.getAttribute('column_type');
+        // If, for whatever reason, you try to save an undefined value in column_type, it will actually be saved as the string 'undefined'
+        // If this is not an acceptable value, filter it out
+        if(columnType && columnType !== 'undefined') {
+            this.columnType = columnType;
+        }
+        // Run updateShape to append block values as needed
+        this.updateShape();
+    }
+  };
+  

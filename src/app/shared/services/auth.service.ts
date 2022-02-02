@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, ReplaySubject, combineLatest, Observable } from 'rxjs';
-import { OAuthService, OAuthErrorEvent, AuthConfig } from 'angular-oauth2-oidc';
+import { OAuthService, OAuthErrorEvent, AuthConfig, JwksValidationHandler } from 'angular-oauth2-oidc';
 import { Router } from '@angular/router';
 // import { authConfig } from 'src/assets/config/config.oauth';
 import { map } from 'rxjs/operators';
@@ -9,7 +9,6 @@ import { userFromJWT } from 'src/app/models/user-from-jwt.model';
 import { Individual } from 'src/app/openApis/PartyManagement/models';
 import decode from 'jwt-decode';
 import { IndividualService } from 'src/app/openApis/PartyManagement/services';
-import { ToastrService } from 'ngx-toastr';
 
 
 
@@ -41,7 +40,6 @@ export class AuthService {
    constructor(    
     private oauthService: OAuthService,
     private router: Router,
-    private toast: ToastrService,
     private bootstrapService: BootstrapService,
     private individualService: IndividualService
     ) 
@@ -75,7 +73,6 @@ export class AuthService {
       }
     })
 
-    // this.oauthService.setupAutomaticSilentRefresh()
   }
 
   public runInitialLoginSequence() {
@@ -98,7 +95,6 @@ export class AuthService {
         // console.log('getAccessTokenExpiration : ', this.oauthService.getAccessTokenExpiration());
         // console.log('getAccessToken : ', this.oauthService.getAccessToken());
         // console.log('getIdToken : ', this.oauthService.getIdToken());
-        // console.log(this.oauthService)
        
         console.warn('AccessTokenExpiration : ', new Date(this.oauthService.getAccessTokenExpiration()).toUTCString());
 
@@ -123,7 +119,6 @@ export class AuthService {
       this.isDoneLoadingSubject$.next(true)
     })
 
-    // this.oauthService.setupAutomaticSilentRefresh()
   }
   
   public fetchUserInfo() {

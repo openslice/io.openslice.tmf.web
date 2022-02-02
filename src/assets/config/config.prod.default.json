@@ -9,7 +9,7 @@
     "ASSURANCE_SERVICE_MGMT_APIURL": "{BASEURL}/oas-api",
     "APITMFURL": "{BASEURL}/tmf-api",
     "OAUTH_CONFIG" : {
-        "issuer": "{BASEURL}/auth/realms/openslice/protocol/openid-connect/auth",
+        "issuer": "{BASEURL}/auth/realms/openslice",
         "loginUrl": "{BASEURL}/auth/realms/openslice/protocol/openid-connect/auth",
         "tokenEndpoint": "{BASEURL}/auth/realms/openslice/protocol/openid-connect/token",
         "redirectUri": "{BASEURL}/services/services_marketplace",
@@ -23,8 +23,6 @@
             
         "requireHttps": false,
         "useHttpBasicAuth": true,
-        "clearHashAfterLogin": false,
-      
-        "showDebugInformation": true
+        "clearHashAfterLogin": false      
     }
 }

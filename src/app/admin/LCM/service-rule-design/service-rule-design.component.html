@@ -78,22 +78,39 @@
             <variable id="F;)U+)(_^:3!Z~mxvyWO">zzzzasd</variable>
           </variables>
   
-          <category name="Service Spec" colour="210">          
+          <category name="Service" colour="210">          
            
 
         
             
-            <category name="Characteristics" colour="60" custom="SPECCHARALLVARS" >   
+              <category name="Characteristics" colour="60" custom="SPECCHARALLVARS" >   
+              </category>
+              <category name="Number" colour="60" custom="SPECCHARVARIABLES_NUM" >   
+              </category>
+              <category name="Text" colour="160" custom="SPECCHARVARIABLES_TEXT" ></category>
+            
+              <category name="Boolean" colour="90" custom="SPECCHARVARIABLES_BOOL" >   
+              </category>
+              <category name="Set" colour="260" custom="SPECCHARVARIABLES_SET" >   
+              </category>
+              
+              <category name="Relationships" colour="210">          
+                <category name="Service Refs" colour="210" custom="SPECSERVICE_RELS" >     
+                </category>
+                <category name="Resource Refs" colour="210" custom="SPECRESOURCE_RELS" >   
+                </category>
+              </category>
+
+              <category name="Context" colour="210"> 
+                <block type="currentServiceOrder"></block>  
+                <block type="currentService"></block>  
+                <block type="setCharacteristicOfCurrentService"></block>  
+                <block type="setCharacteristicOfCurrentService"></block>  
+              </category>
+
             </category>
-            <category name="Number" colour="60" custom="SPECCHARVARIABLES_NUM" >   
-            </category>
-            <category name="Text" colour="160" custom="SPECCHARVARIABLES_TEXT" ></category>
-           
-            <category name="Boolean" colour="90" custom="SPECCHARVARIABLES_BOOL" >   
-            </category>
-            <category name="Set" colour="260" custom="SPECCHARVARIABLES_SET" >   
-            </category>
-            </category>
+
+
             <category name="OSM" colour="210">       
               <block type="osm_nsd_config"></block>  
               <block type="osm_nsd_config_detailed"></block>
@@ -310,11 +327,7 @@
           <!-- <category name="Variables" colour="330" custom="VARIABLE"></category>  -->
           <!-- <category name="Functions" colour="290" custom="PROCEDURE"></category> -->
           
-          <category name="Context" colour="210"> 
-            <block type="currentServiceOrder"></block>  
-            <block type="currentService"></block>  
-            <block type="setCharacteristicOfCurrentService"></block>  
-          </category>
+          
 
 
           <category name="Operations" colour="290">

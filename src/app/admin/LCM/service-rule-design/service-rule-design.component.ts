@@ -1,8 +1,9 @@
+import { ResourceSpecificationRef } from './../../../openApis/ServiceCatalogManagement/models/resource-specification-ref';
 import { LCMRuleSpecificationUpdate } from './../../../openApis/LcmRuleSpecificationAPI/models/lcmrule-specification-update';
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, FormArray, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ServiceSpecCharacteristic, ServiceSpecification } from 'src/app/openApis/ServiceCatalogManagement/models';
+import { ServiceSpecCharacteristic, ServiceSpecification, ServiceSpecRelationship } from 'src/app/openApis/ServiceCatalogManagement/models';
 import { ServiceSpecificationService } from 'src/app/openApis/ServiceCatalogManagement/services';
 import { BlocklyJavaService } from '../services/blockly-java.service';
 import { LCMRuleSpecification, LCMRuleSpecificationCreate, ServiceSpecificationRef } from 'src/app/openApis/LcmRuleSpecificationAPI/models';
@@ -51,7 +52,7 @@ export class ServiceRuleDesignComponent implements OnInit {
   })
 
 
-  lcmphases = ["PRE_PROVISION", "AFTER_ACTIVATION", "SUPERVISION", "AFTER_DEACTIVATION"];
+  lcmphases = ["PRE_PROVISION", "AFTER_ACTIVATION", "SUPERVISION", "AFTER_DEACTIVATION", "CREATION"];
 
 
   newLCMRuleSpecification = false;
@@ -69,6 +70,9 @@ export class ServiceRuleDesignComponent implements OnInit {
   charsListText: ServiceSpecCharacteristic[];
   charsListLongText: ServiceSpecCharacteristic[];
   charsListTimestamp: ServiceSpecCharacteristic[];
+  serviceSpecRel: ServiceSpecRelationship[];
+  resourceserviceSpecRef: ResourceSpecificationRef[];
+          
   generatedCode: string;
   blocklyCode: string;
 
@@ -221,7 +225,14 @@ export class ServiceRuleDesignComponent implements OnInit {
           this.charsListLongText= this.spec.serviceSpecCharacteristic.filter(specCharacteristic => specCharacteristic.valueType == 'LONGTEXT');
           this.charsListTimestamp= this.spec.serviceSpecCharacteristic.filter(specCharacteristic => specCharacteristic.valueType == 'TIMESTAMP');
 
-  
+          this.serviceSpecRel= this.spec.serviceSpecRelationship;
+          this.workspace.serviceSpecRel = this.serviceSpecRel;
+
+          
+
+          this.resourceserviceSpecRef= this.spec.resourceSpecification;
+          this.workspace.resourceserviceSpecRef = this.resourceserviceSpecRef;
+
           this.workspace.charsListText = this.charsListText;
           this.workspace.charsListText = this.workspace.charsListText.concat( this.charsListLongText );
           
@@ -245,6 +256,10 @@ export class ServiceRuleDesignComponent implements OnInit {
           this.workspace.registerToolboxCategoryCallback( 'SPECCHARVARIABLES_NUM', this.charvarsNumberFunction );
           this.workspace.registerToolboxCategoryCallback( 'SPECCHARVARIABLES_BOOL', this.charvarsBoolFunction);
           this.workspace.registerToolboxCategoryCallback( 'SPECCHARVARIABLES_SET', this.charvarsSetFunction);
+          this.workspace.registerToolboxCategoryCallback( 'SPECSERVICE_RELS', this.serviceSpecRelsFunction);
+          this.workspace.registerToolboxCategoryCallback( 'SPECRESOURCE_RELS', this.resourceSpecRelsFunction);
+          
+          
           this.title = 'Create LCM Rule for ' + this.spec.name;
 
           //the spec is loaded, so proceed to load the LCM Rule spec
@@ -499,6 +514,78 @@ export class ServiceRuleDesignComponent implements OnInit {
       return xmlList;
     };
   
+    
+ /**
+     * Construct the blocks required by the flyout for the colours category.
+     * @param {!Blockly.Workspace} workspace The workspace this flyout is for.
+     * @return {!Array.<!Element>} Array of XML block elements.
+     */
+  serviceSpecRelsFunction = function(workspace: any) {
+    var xmlList = [];            
+    var chars: ServiceSpecRelationship[] = workspace.serviceSpecRel;
+
+    if (Blockly.Blocks['getServiceRefName']) {
+      for (var i = 0; i < chars.length; i++) {
+        var blockText = '<block type="getServiceRefName">' +
+        '<field name="AVALUE">' + chars[i].name + '</field>' +
+            '</block>';
+        var block = Blockly.Xml.textToDom(blockText);
+        xmlList.push(block);
+
+
+      }
+    }
+
+    if (Blockly.Blocks['getServiceRefProps']) {
+      for (var i = 0; i < chars.length; i++) {
+       
+        var blockText = '<block type="getServiceRefProps">' +
+        '<field name="AVALUE">' + chars[i].name + '</field>' +
+            '</block>';
+        var block = Blockly.Xml.textToDom(blockText);
+        xmlList.push(block);
+
+      }
+    }
+
+    blockText = '<block type="createServiceRefIf"></block>';
+    block = Blockly.Xml.textToDom(blockText);
+    xmlList.push(block);   
+
+     
+    
+
+    return xmlList;
+  };
+
+  
+     /**
+     * Construct the blocks required by the flyout for the colours category.
+     * @param {!Blockly.Workspace} workspace The workspace this flyout is for.
+     * @return {!Array.<!Element>} Array of XML block elements.
+     */
+      resourceSpecRelsFunction = function(workspace: any) {
+    var xmlList = [];            
+    var chars: ResourceSpecificationRef[] = workspace.resourceserviceSpecRef;
+
+    if (Blockly.Blocks['getResourceRefName']) {
+      for (var i = 0; i < chars.length; i++) {
+        var blockText = '<block type="getResourceRefName">' +
+        '<field name="AVALUE">' + chars[i].name + '</field>' +
+            '</block>';
+        var block = Blockly.Xml.textToDom(blockText);
+        xmlList.push(block);
+      }
+    }
+
+    blockText = '<block type="createresourcewhen"></block>';
+    block = Blockly.Xml.textToDom(blockText);
+    xmlList.push(block);   
+
+    return xmlList;
+  };
+
+
     createOpensliceJava(workspace: any, Blockly: any) {
   
   
@@ -1235,15 +1322,75 @@ export class ServiceRuleDesignComponent implements OnInit {
     var branch = Blockly.Java.statementToCode(block, 'DO');
     branch = Blockly.Java.addLoopTrap(branch, block.id);
     var indexVar = Blockly.Java.nameDB_.getDistinctName(
-      variable0 + '_index', Blockly.Variables.NAME_TYPE);
+      variable0 , Blockly.Variables.NAME_TYPE);
       //branch = Blockly.Java.INDENT + variable0 + ' = ' +
       //  argument0 + '[' + indexVar + '];\n' + branch;
         
       branch = Blockly.Java.INDENT + branch;
-    var code = 'for ( String ' + indexVar + ': ' + argument0 + ') {\n' +
+    var code = 'for ( String ' + variable0 + ': ' + argument0 + ') {\n' +
       branch + '}\n';
     return code;
   };
+
+
+  
+  Blockly.Java['createServiceRefIf'] = function(block: any) {
+    var serviceName = Blockly.Java.valueToCode(block, 'SERVICE_NAME',
+      Blockly.Java.ORDER_NONE) || '""';
+    
+  
+      var avalue =  Blockly.Java.valueToCode(block, 'CONDITION',
+                Blockly.Java.ORDER_ASSIGNMENT) || 'true';
+      
+      var code = 'createServiceRefIf('  + serviceName    +', '+ avalue   +');\n';
+  
+      return code;
+  };
+
+
+  
+  Blockly.Java['getServiceRefName'] = function(block: any) {
+    var dropdown_name = block.getFieldValue('AVALUE');
+    var argument0 = Blockly.Java.quote_( dropdown_name );
+    var code =   argument0   ;
+    return [code, Blockly.Java.ORDER_ATOMIC];
+  };
+
+
+
+
+  Blockly.Java['getResourceRefName'] = function(block: any) {
+    var dropdown_name = block.getFieldValue('AVALUE');
+    var argument0 = Blockly.Java.quote_( dropdown_name );
+    var code =   argument0   ;
+    return [code, Blockly.Java.ORDER_ATOMIC];
+  };
+
+
+
+  Blockly.Java['getServiceRefProps'] = function(block: any) {
+    // Variable getter.
+        console.log('getServiceRefProps')
+
+    
+    //var acharname='""';
+    var dropdown_name = block.getFieldValue('VERBOPTION');
+    var servicename = block.getFieldValue('AVALUE');
+    servicename = Blockly.Java.quote_( servicename );
+    var argumentVERBOPTION = Blockly.Java.quote_( dropdown_name );
+    
+
+           
+    var acharname =  Blockly.Java.valueToCode(block, 'characteristicName',
+              Blockly.Java.ORDER_ASSIGNMENT) || '""';
+    
+    var code = 'getServiceRefPropValue(' + servicename +', '+ argumentVERBOPTION +', '+acharname   +')';
+
+
+    return  [code, Blockly.Java.ORDER_ATOMIC];
+  };
+
+
 
   
     }

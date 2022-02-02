@@ -14,7 +14,7 @@ import { BootstrapService } from 'src/app/bootstrap/bootstrap.service';
 
     constructor(
       private authService: AuthService,
-      private bootstrapServive: BootstrapService
+      private bootstrapService: BootstrapService
     ) {}
 
     addToken(req: HttpRequest<any>, token: string): HttpRequest<any> {
@@ -25,8 +25,8 @@ import { BootstrapService } from 'src/app/bootstrap/bootstrap.service';
 
     intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
       // this rule is added, to append "client_id" to token requests after Keycloak update
-      if (req.url === "http://portal.openslice.io/auth/realms/openslice/protocol/openid-connect/token") {
-        req = req.clone({body: req.body.append('client_id', this.bootstrapServive.getConfig().OAUTH_CONFIG.clientId)})        
+      if (this.bootstrapService.getConfig() && req.url === this.bootstrapService.getConfig().OAUTH_CONFIG.tokenEndpoint) {
+        req = req.clone({ body: req.body.append('client_id', this.bootstrapService.getConfig().OAUTH_CONFIG.clientId) })
       }
       
       if (this.authService.hasValidToken()) {

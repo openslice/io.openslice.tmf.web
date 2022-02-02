@@ -47,7 +47,7 @@ export class BootstrapService {
 
         },
         error => {
-          reject(`Could not load file '${jsonFile}': ${JSON.stringify(error)}`)
+          reject(`Could not load file '${jsonFile}': ${(error)}`)
         }
       )
     })

@@ -74,7 +74,7 @@ import { PortalsComponent } from './landing/portals/portals.component';
 import { AppService } from './shared/services/app.service';
 import { CloneGstTemplateComponent } from './p_services/admin/catalogManagement/edit-service-specs/clone-gst-template/clone-gst-template.component';
 import { CloneVinniTemplateComponent } from './p_services/admin/catalogManagement/edit-service-specs/clone-vinni-template/clone-vinni-template.component';
-// import { PageNotFoundComponent } from './shared/components/page-not-found/page-not-found.component';
+import { PageNotFoundComponent } from './shared/components/page-not-found/page-not-found.component';
 
 registerLocaleData(enGB);
 export function initializeApp(bootstrap: BootstrapService) {
@@ -95,7 +95,7 @@ export function initializeAppTheme(bootstrap: BootstrapService) {
     PortalsComponent,
     CloneGstTemplateComponent,
     CloneVinniTemplateComponent,
-    // PageNotFoundComponent
+    PageNotFoundComponent
   ],
   imports: [
     BrowserModule,

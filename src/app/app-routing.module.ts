@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { LandingComponent } from './landing/landing.component';
 import { PortalsComponent } from './landing/portals/portals.component';
-// import { PageNotFoundComponent } from './shared/components/page-not-found/page-not-found.component';
+import { PageNotFoundComponent } from './shared/components/page-not-found/page-not-found.component';
 
 
 const routes: Routes = [
@@ -16,9 +16,8 @@ const routes: Routes = [
   //   { path: '', component: PortalsComponent}
   // ] },
   
-  { path: '**', redirectTo: '/'},
-  // { path: '**', redirectTo: '404'},
-  // { path: '404', component: PageNotFoundComponent}
+  { path: '**', redirectTo: '404'},
+  { path: '404', component: PageNotFoundComponent}
   
 ];
 

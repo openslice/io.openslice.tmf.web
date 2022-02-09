@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { AppService } from '../shared/services/app.service';
-import { IAppConfig } from '../models/app-config.model';
+import { AppService } from 'src/app/shared/services/app.service';
+import { IAppConfig } from 'src/app/shared/models/app-config.model';
 import { OAuthService } from 'angular-oauth2-oidc';
-import { AuthService } from '../shared/services/auth.service';
+import { AuthService } from 'src/app/shared/services/auth.service';
 
 @Component({
   selector: 'app-landing',

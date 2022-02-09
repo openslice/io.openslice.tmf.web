@@ -8,8 +8,16 @@
 }
 
 nav {
-    z-index: 500;
+    max-height: 100vh;
+    // z-index: 1030;
 }
+
+@media screen and (max-width: 992px) {
+    nav {
+      overflow-y: auto;
+    }
+  }
+
 
 .navbar-brand {
     display: inline-flex;

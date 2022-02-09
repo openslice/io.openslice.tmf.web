@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { IAppConfig } from 'src/app/models/app-config.model';
+import { IAppConfig } from 'src/app/shared/models/app-config.model';
 import { AppService } from 'src/app/shared/services/app.service';
 import { AuthService } from 'src/app/shared/services/auth.service';
 

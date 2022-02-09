@@ -5,10 +5,10 @@ import { Router } from '@angular/router';
 // import { authConfig } from 'src/assets/config/config.oauth';
 import { map } from 'rxjs/operators';
 import { BootstrapService } from 'src/app/bootstrap/bootstrap.service';
-import { userFromJWT } from 'src/app/models/user-from-jwt.model';
-import { Individual } from 'src/app/openApis/PartyManagement/models';
+import { userFromJWT } from 'src/app/shared/models/user-from-jwt.model';
+import { Individual } from 'src/app/openApis/partyManagement/models';
 import decode from 'jwt-decode';
-import { IndividualService } from 'src/app/openApis/PartyManagement/services';
+import { IndividualService } from 'src/app/openApis/partyManagement/services';
 
 
 

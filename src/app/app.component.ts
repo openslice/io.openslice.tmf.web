@@ -6,7 +6,7 @@ import { BootstrapService } from './bootstrap/bootstrap.service';
 import { ThemingService } from './theming/theming.service';
 import { Title } from '@angular/platform-browser';
 import { AppService } from './shared/services/app.service';
-import { IAppConfig } from './models/app-config.model';
+import { IAppConfig } from './shared/models/app-config.model';
 
 @Component({
   selector: 'app-root',

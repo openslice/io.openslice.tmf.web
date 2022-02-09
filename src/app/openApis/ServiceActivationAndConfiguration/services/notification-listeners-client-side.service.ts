@@ -20,14 +20,14 @@ import { ServiceStateChangeNotification } from '../models/service-state-change-n
   providedIn: 'root',
 })
 class NotificationListenersClientSideService extends __BaseService {
-  static readonly listenToMonitorAttributeValueChangeNotificationPath = '/ServiceActivationAndConfiguration/v3/listener/monitorAttributeValueChangeNotification';
-  static readonly listenToMonitorCreateNotificationPath = '/ServiceActivationAndConfiguration/v3/listener/monitorCreateNotification';
-  static readonly listenToMonitorDeleteNotificationPath = '/ServiceActivationAndConfiguration/v3/listener/monitorDeleteNotification';
-  static readonly listenToMonitorStateChangeNotificationPath = '/ServiceActivationAndConfiguration/v3/listener/monitorStateChangeNotification';
-  static readonly listenToServiceAttributeValueChangeNotification1Path = '/ServiceActivationAndConfiguration/v3/listener/serviceAttributeValueChangeNotification';
-  static readonly listenToServiceCreateNotification1Path = '/ServiceActivationAndConfiguration/v3/listener/serviceCreateNotification';
-  static readonly listenToServiceDeleteNotification1Path = '/ServiceActivationAndConfiguration/v3/listener/serviceDeleteNotification';
-  static readonly listenToServiceStateChangeNotification1Path = '/ServiceActivationAndConfiguration/v3/listener/serviceStateChangeNotification';
+  static readonly listenToMonitorAttributeValueChangeNotificationPath = '/serviceActivationAndConfiguration/v3/listener/monitorAttributeValueChangeNotification';
+  static readonly listenToMonitorCreateNotificationPath = '/serviceActivationAndConfiguration/v3/listener/monitorCreateNotification';
+  static readonly listenToMonitorDeleteNotificationPath = '/serviceActivationAndConfiguration/v3/listener/monitorDeleteNotification';
+  static readonly listenToMonitorStateChangeNotificationPath = '/serviceActivationAndConfiguration/v3/listener/monitorStateChangeNotification';
+  static readonly listenToServiceAttributeValueChangeNotification1Path = '/serviceActivationAndConfiguration/v3/listener/serviceAttributeValueChangeNotification';
+  static readonly listenToServiceCreateNotification1Path = '/serviceActivationAndConfiguration/v3/listener/serviceCreateNotification';
+  static readonly listenToServiceDeleteNotification1Path = '/serviceActivationAndConfiguration/v3/listener/serviceDeleteNotification';
+  static readonly listenToServiceStateChangeNotification1Path = '/serviceActivationAndConfiguration/v3/listener/serviceStateChangeNotification';
 
   constructor(
     config: __Configuration,
@@ -50,7 +50,7 @@ class NotificationListenersClientSideService extends __BaseService {
     __body = body;
     let req = new HttpRequest<any>(
       'POST',
-      this.rootUrl + `/ServiceActivationAndConfiguration/v3/listener/monitorAttributeValueChangeNotification`,
+      this.rootUrl + `/serviceActivationAndConfiguration/v3/listener/monitorAttributeValueChangeNotification`,
       __body,
       {
         headers: __headers,
@@ -92,7 +92,7 @@ class NotificationListenersClientSideService extends __BaseService {
     __body = body;
     let req = new HttpRequest<any>(
       'POST',
-      this.rootUrl + `/ServiceActivationAndConfiguration/v3/listener/monitorCreateNotification`,
+      this.rootUrl + `/serviceActivationAndConfiguration/v3/listener/monitorCreateNotification`,
       __body,
       {
         headers: __headers,
@@ -134,7 +134,7 @@ class NotificationListenersClientSideService extends __BaseService {
     __body = body;
     let req = new HttpRequest<any>(
       'POST',
-      this.rootUrl + `/ServiceActivationAndConfiguration/v3/listener/monitorDeleteNotification`,
+      this.rootUrl + `/serviceActivationAndConfiguration/v3/listener/monitorDeleteNotification`,
       __body,
       {
         headers: __headers,
@@ -176,7 +176,7 @@ class NotificationListenersClientSideService extends __BaseService {
     __body = body;
     let req = new HttpRequest<any>(
       'POST',
-      this.rootUrl + `/ServiceActivationAndConfiguration/v3/listener/monitorStateChangeNotification`,
+      this.rootUrl + `/serviceActivationAndConfiguration/v3/listener/monitorStateChangeNotification`,
       __body,
       {
         headers: __headers,
@@ -218,7 +218,7 @@ class NotificationListenersClientSideService extends __BaseService {
     __body = body;
     let req = new HttpRequest<any>(
       'POST',
-      this.rootUrl + `/ServiceActivationAndConfiguration/v3/listener/serviceAttributeValueChangeNotification`,
+      this.rootUrl + `/serviceActivationAndConfiguration/v3/listener/serviceAttributeValueChangeNotification`,
       __body,
       {
         headers: __headers,
@@ -260,7 +260,7 @@ class NotificationListenersClientSideService extends __BaseService {
     __body = body;
     let req = new HttpRequest<any>(
       'POST',
-      this.rootUrl + `/ServiceActivationAndConfiguration/v3/listener/serviceCreateNotification`,
+      this.rootUrl + `/serviceActivationAndConfiguration/v3/listener/serviceCreateNotification`,
       __body,
       {
         headers: __headers,
@@ -302,7 +302,7 @@ class NotificationListenersClientSideService extends __BaseService {
     __body = body;
     let req = new HttpRequest<any>(
       'POST',
-      this.rootUrl + `/ServiceActivationAndConfiguration/v3/listener/serviceDeleteNotification`,
+      this.rootUrl + `/serviceActivationAndConfiguration/v3/listener/serviceDeleteNotification`,
       __body,
       {
         headers: __headers,
@@ -344,7 +344,7 @@ class NotificationListenersClientSideService extends __BaseService {
     __body = body;
     let req = new HttpRequest<any>(
       'POST',
-      this.rootUrl + `/ServiceActivationAndConfiguration/v3/listener/serviceStateChangeNotification`,
+      this.rootUrl + `/serviceActivationAndConfiguration/v3/listener/serviceStateChangeNotification`,
       __body,
       {
         headers: __headers,

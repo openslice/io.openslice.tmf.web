@@ -13,8 +13,8 @@ import { EventSubscriptionInput } from '../models/event-subscription-input';
   providedIn: 'root',
 })
 class EventsSubscriptionService extends __BaseService {
-  static readonly registerListener6Path = '/serviceActivationAndConfiguration/v3/hub';
-  static readonly unregisterListener6Path = '/serviceActivationAndConfiguration/v3/hub/{id}';
+  static readonly registerListener6Path = '/ServiceActivationAndConfiguration/v3/hub';
+  static readonly unregisterListener6Path = '/ServiceActivationAndConfiguration/v3/hub/{id}';
 
   constructor(
     config: __Configuration,
@@ -37,7 +37,7 @@ class EventsSubscriptionService extends __BaseService {
     __body = body;
     let req = new HttpRequest<any>(
       'POST',
-      this.rootUrl + `/serviceActivationAndConfiguration/v3/hub`,
+      this.rootUrl + `/ServiceActivationAndConfiguration/v3/hub`,
       __body,
       {
         headers: __headers,
@@ -78,7 +78,7 @@ class EventsSubscriptionService extends __BaseService {
 
     let req = new HttpRequest<any>(
       'DELETE',
-      this.rootUrl + `/serviceActivationAndConfiguration/v3/hub/${encodeURIComponent(id)}`,
+      this.rootUrl + `/ServiceActivationAndConfiguration/v3/hub/${encodeURIComponent(id)}`,
       __body,
       {
         headers: __headers,

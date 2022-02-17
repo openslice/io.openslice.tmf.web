@@ -14,11 +14,11 @@ import { ServiceUpdate } from '../models/service-update';
   providedIn: 'root',
 })
 class ServiceService extends __BaseService {
-  static readonly listService1Path = '/serviceActivationAndConfiguration/v3/service';
-  static readonly createService1Path = '/serviceActivationAndConfiguration/v3/service';
-  static readonly retrieveService1Path = '/serviceActivationAndConfiguration/v3/service/{id}';
-  static readonly deleteService1Path = '/serviceActivationAndConfiguration/v3/service/{id}';
-  static readonly patchService1Path = '/serviceActivationAndConfiguration/v3/service/{id}';
+  static readonly listService1Path = '/ServiceActivationAndConfiguration/v3/service';
+  static readonly createService1Path = '/ServiceActivationAndConfiguration/v3/service';
+  static readonly retrieveService1Path = '/ServiceActivationAndConfiguration/v3/service/{id}';
+  static readonly deleteService1Path = '/ServiceActivationAndConfiguration/v3/service/{id}';
+  static readonly patchService1Path = '/ServiceActivationAndConfiguration/v3/service/{id}';
 
   constructor(
     config: __Configuration,
@@ -53,7 +53,7 @@ class ServiceService extends __BaseService {
     if (params.fields != null) __params = __params.set('fields', params.fields.toString());
     let req = new HttpRequest<any>(
       'GET',
-      this.rootUrl + `/serviceActivationAndConfiguration/v3/service`,
+      this.rootUrl + `/ServiceActivationAndConfiguration/v3/service`,
       __body,
       {
         headers: __headers,
@@ -110,7 +110,7 @@ class ServiceService extends __BaseService {
     if (params.name != null) __params = __params.set('name', params.name.toString());
     let req = new HttpRequest<any>(
       'POST',
-      this.rootUrl + `/serviceActivationAndConfiguration/v3/service`,
+      this.rootUrl + `/ServiceActivationAndConfiguration/v3/service`,
       __body,
       {
         headers: __headers,
@@ -166,7 +166,7 @@ class ServiceService extends __BaseService {
     if (params.fields != null) __params = __params.set('fields', params.fields.toString());
     let req = new HttpRequest<any>(
       'GET',
-      this.rootUrl + `/serviceActivationAndConfiguration/v3/service/${encodeURIComponent(params.id)}`,
+      this.rootUrl + `/ServiceActivationAndConfiguration/v3/service/${encodeURIComponent(params.id)}`,
       __body,
       {
         headers: __headers,
@@ -214,7 +214,7 @@ class ServiceService extends __BaseService {
 
     let req = new HttpRequest<any>(
       'DELETE',
-      this.rootUrl + `/serviceActivationAndConfiguration/v3/service/${encodeURIComponent(id)}`,
+      this.rootUrl + `/ServiceActivationAndConfiguration/v3/service/${encodeURIComponent(id)}`,
       __body,
       {
         headers: __headers,
@@ -264,7 +264,7 @@ class ServiceService extends __BaseService {
     if (params.name != null) __params = __params.set('name', params.name.toString());
     let req = new HttpRequest<any>(
       'PATCH',
-      this.rootUrl + `/serviceActivationAndConfiguration/v3/service/${encodeURIComponent(params.id)}`,
+      this.rootUrl + `/ServiceActivationAndConfiguration/v3/service/${encodeURIComponent(params.id)}`,
       __body,
       {
         headers: __headers,

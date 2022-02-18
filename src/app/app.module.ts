@@ -140,6 +140,10 @@ export function initializeAppTheme(bootstrap: BootstrapService) {
     { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true },
     { provide: OWL_DATE_TIME_LOCALE, useValue: 'en-GB'}
   ],
+  entryComponents: [
+    CloneGstTemplateComponent,
+    CloneVinniTemplateComponent
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

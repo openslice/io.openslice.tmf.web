@@ -1,10 +1,15 @@
-<div class="container-fluid py-5">
+<div class="container-fluid py-5" *ngIf="specNotFound" [@fadeIn]>
+    <div class="row align-items-center justify-content-center minh-30vh">
+        <div class="col-12 text-center">
+            <h4>Service Specification with id #{{specID}} is not found</h4>
+        </div>
+    </div>
+</div>
+
+<div class="container-fluid py-5" *ngIf="!specNotFound && finishedLoading">
     <div class="row">
         <div class="col-12">
-
-
             <div class="card card-paper mb-0">
-
                 <div class="card-header">
                     <div class="container-fluid">
                         <div class="row justify-content-between align-items-center">

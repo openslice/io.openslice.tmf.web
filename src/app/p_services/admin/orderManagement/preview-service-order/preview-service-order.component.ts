@@ -57,6 +57,7 @@ export class PreviewServiceOrderComponent implements OnInit {
   serviceOrder: ServiceOrder
   orderID: string
   serviceOrderNotFound: boolean = false
+  finishedLoading: boolean = false
 
   supportingServices: Service[][] = [[]]
 
@@ -105,6 +106,8 @@ export class PreviewServiceOrderComponent implements OnInit {
       error => { console.error(error) },
       () => { 
         if (this.serviceOrder) {
+          this.finishedLoading = true
+          
           this.editForm.patchValue({
             state: this.serviceOrder.state,
             startDate: this.serviceOrder.startDate ? this.serviceOrder.startDate : this.serviceOrder.requestedStartDate,

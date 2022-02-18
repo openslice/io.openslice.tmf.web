@@ -1,0 +1,41 @@
+<h4 mat-dialog-title class="shadowed mb-3" *ngIf="newCharacteristic">
+    <i class=" far fa-clipboard mr-2"></i>
+    <span>Design New Test Service Specification Characteristic</span>
+</h4>
+
+<h4 mat-dialog-title class=" shadowed mb-3" *ngIf="!newCharacteristic">
+    <i class=" far fa-edit mr-2"></i>
+    <span>Edit Service Test Specification Characteristic</span>
+</h4>
+
+<form [formGroup]="editCharacteristicForm" mat-dialog-content>
+
+    <div class="row justify-content-center align-items-center">
+        <mat-form-field class="col-md-12">
+            <mat-label>Name</mat-label>
+            <input matInput formControlName="name">
+        </mat-form-field>
+
+        <mat-form-field class="col-md-12">
+            <mat-label>Description</mat-label>
+            <textarea matTextareaAutosize="true" matAutosizeMinRows="2" matInput
+                formControlName="description"></textarea>
+        </mat-form-field>
+
+        <mat-form-field class="col-md-12">
+            <mat-label>Value Type</mat-label>
+            <mat-select formControlName="valueType">
+                <mat-option *ngFor="let type of valueTypes" [value]="type">
+                    {{type}}</mat-option>
+            </mat-select>
+        </mat-form-field>
+
+    </div>
+
+    <div class="container-fluid">
+        <div class="row justify-content-end">
+            <button type="button" class="btn btn-danger m-2" (click)="closeDialog()">Cancel</button>
+            <button type="submit" class="btn btn-success m-2" (click)="submitDialog()">Submit</button>
+        </div>
+    </div>
+</form>

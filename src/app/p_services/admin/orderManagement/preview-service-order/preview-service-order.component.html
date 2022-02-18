@@ -6,7 +6,7 @@
     </div>
 </div>
 
-<div class="container-fluid py-5" *ngIf="!serviceOrderNotFound">
+<div class="container-fluid py-5" *ngIf="!serviceOrderNotFound && finishedLoading">
     <div class="row">
         <div class="col-12">
 
@@ -226,8 +226,10 @@
                                                                 <div class="card card-paper mb-2">
                                                                     <div class="note-card-body">
                                                                         {{note.text}}
-                                                                        <div class="small">written by {{note.author}} @
-                                                                            {{note.date | date:'d MMM y, h:mm a'}} (Local Time)</div>
+                                                                        <div class="small">
+                                                                            {{note.date | date:'d MMM y, h:mm:ss a'}} (Local Time)
+                                                                            <i>by {{note.author}}</i>
+                                                                            </div>
                                                                     </div>
                                                                 </div>
                                                             </div>

@@ -76,6 +76,19 @@ import { CloneGstTemplateComponent } from './p_services/admin/catalogManagement/
 import { CloneVinniTemplateComponent } from './p_services/admin/catalogManagement/edit-service-specs/clone-vinni-template/clone-vinni-template.component';
 import { PageNotFoundComponent } from './shared/components/page-not-found/page-not-found.component';
 
+import { ListOrganizationsComponent } from './shared/components/partyManagement/list-organizations/list-organizations.component';
+import { EditOrganizationsComponent } from './shared/components/partyManagement/edit-organizations/edit-organizations.component';
+import { EditPartyCharacteristicsComponent } from './shared/components/partyManagement/edit-organizations/edit-party-characteristics/edit-party-characteristics.component';
+import { DeletePartyCharacteristicComponent } from './shared/components/partyManagement/edit-organizations/delete-party-characteristic/delete-party-characteristic.component';
+import { DeleteOrganizationComponent } from './shared/components/partyManagement/delete-organization/delete-organization.component';
+import { ListIndividualsComponent } from './shared/components/partyManagement/list-individuals/list-individuals.component';
+import { EditIndividualsComponent } from './shared/components/partyManagement/edit-individuals/edit-individuals.component';
+import { DeleteIndividualComponent } from './shared/components/partyManagement/delete-individual/delete-individual.component';
+import { jsonParsePipe } from './shared/pipes/jsonParsePipe';
+import { SharedModule } from './shared.module';
+import { RedirectComponent } from './shared/components/redirect/redirect.component';
+
+
 registerLocaleData(enGB);
 export function initializeApp(bootstrap: BootstrapService) {
   return () => bootstrap.loadConfig()
@@ -95,7 +108,8 @@ export function initializeAppTheme(bootstrap: BootstrapService) {
     PortalsComponent,
     CloneGstTemplateComponent,
     CloneVinniTemplateComponent,
-    PageNotFoundComponent
+    PageNotFoundComponent,
+    RedirectComponent
   ],
   imports: [
     BrowserModule,
@@ -106,42 +120,13 @@ export function initializeAppTheme(bootstrap: BootstrapService) {
     NgbDropdownModule,
     FormsModule,
     ReactiveFormsModule,
-    // MatTableModule,
-    // MatSortModule,
-    // MatPaginatorModule,
-    MatInputModule,
-    // MatSelectModule,
-    // MatIconModule,
-    MatDialogModule,
-    // MatTabsModule,
-    MatCheckboxModule,
-    // MatTooltipModule,
-    // MatButtonModule,
-    // MatAutocompleteModule,
-    // MatChipsModule,
-    // MatExpansionModule,
-    // MatToolbarModule,
-    // MatTreeModule,
-    // MatProgressBarModule,
-    // MatButtonToggleModule,
-    // MatRadioModule,
-    // MatProgressSpinnerModule,
-    // MatListModule,
-    // DragDropModule,
-    // MatNativeDateModule,
-    // MatDatepickerModule,  
     NgProgressModule,
     NgProgressHttpModule,
-    // OwlDateTimeModule, 
-    // OwlNativeDateTimeModule,
-    ToastrModule.forRoot({progressBar: true, preventDuplicates: true}),
+    MatInputModule,
+    MatDialogModule,
+    MatCheckboxModule,
     OAuthModule.forRoot(),
-    // FileUploadModule,
-    MarkdownModule.forRoot()    
-  ],
-  entryComponents : [
-    CloneGstTemplateComponent,
-    CloneVinniTemplateComponent,
+    ToastrModule.forRoot({progressBar: true, preventDuplicates: true})
   ],
   providers: [
     AppService,

@@ -11,7 +11,7 @@ import { ServiceSpecification } from '../models/service-specification';
 import { ServiceSpecificationCreate } from '../models/service-specification-create';
 import { ServiceSpecificationUpdate } from '../models/service-specification-update';
 import { Attachment } from '../models/attachment';
-import { Resource } from '../models/resource';
+import { ByteArrayResource } from '../models/byte-array-resource';
 @Injectable({
   providedIn: 'root',
 })
@@ -21,6 +21,7 @@ class ServiceSpecificationService extends __BaseService {
   static readonly cloneGSTServiceSpecificationPath = '/serviceCatalogManagement/v4/serviceSpecification/cloneGST';
   static readonly cloneVINNIServiceSpecificationPath = '/serviceCatalogManagement/v4/serviceSpecification/cloneVINNI';
   static readonly createServiceSpecificationFromNSDIDPath = '/serviceCatalogManagement/v4/serviceSpecification/specFromNSDID/{id}';
+  static readonly createServiceSpecificationFromServiceTestSpecificationPath = '/serviceCatalogManagement/v4/serviceSpecification/specFromTestSpec/{id}';
   static readonly retrieveServiceSpecificationPath = '/serviceCatalogManagement/v4/serviceSpecification/{id}';
   static readonly deleteServiceSpecificationPath = '/serviceCatalogManagement/v4/serviceSpecification/{id}';
   static readonly patchServiceSpecificationPath = '/serviceCatalogManagement/v4/serviceSpecification/{id}';
@@ -144,7 +145,7 @@ class ServiceSpecificationService extends __BaseService {
    * @param serviceName A name of the cloned GST
    * @return Cloned
    */
-  cloneGSTServiceSpecificationResponse(serviceName?: string): __Observable<__StrictHttpResponse<ServiceSpecification>> {
+  cloneGSTServiceSpecificationResponse(serviceName: string): __Observable<__StrictHttpResponse<ServiceSpecification>> {
     let __params = this.newParams();
     let __headers = new HttpHeaders();
     let __body: any = null;
@@ -173,7 +174,7 @@ class ServiceSpecificationService extends __BaseService {
    * @param serviceName A name of the cloned GST
    * @return Cloned
    */
-  cloneGSTServiceSpecification(serviceName?: string): __Observable<ServiceSpecification> {
+  cloneGSTServiceSpecification(serviceName: string): __Observable<ServiceSpecification> {
     return this.cloneGSTServiceSpecificationResponse(serviceName).pipe(
       __map(_r => _r.body as ServiceSpecification)
     );
@@ -320,6 +321,48 @@ class ServiceSpecificationService extends __BaseService {
   }
 
   /**
+   * Creates a ServiceSpecification from an ServiceTestSpecification id. It retreives the ServicTestSpecification from  the ServiceTestSpecification catalog
+   *
+   * This operation creates a ServiceSpecification from a ServiceTestSpecification id. It retreives the ServiceTestSpecification from  the ServiceTestSpecification catalog. The response is the Service Spec
+   * @param id Identifier of the ServiceTestSpecification id from the ServiceTestSpecification catalog
+   * @return Created
+   */
+  createServiceSpecificationFromServiceTestSpecificationResponse(id: string): __Observable<__StrictHttpResponse<ServiceSpecification>> {
+    let __params = this.newParams();
+    let __headers = new HttpHeaders();
+    let __body: any = null;
+
+    let req = new HttpRequest<any>(
+      'GET',
+      this.rootUrl + `/serviceCatalogManagement/v4/serviceSpecification/specFromTestSpec/${encodeURIComponent(id)}`,
+      __body,
+      {
+        headers: __headers,
+        params: __params,
+        responseType: 'json'
+      });
+
+    return this.http.request<any>(req).pipe(
+      __filter(_r => _r instanceof HttpResponse),
+      __map((_r) => {
+        return _r as __StrictHttpResponse<ServiceSpecification>;
+      })
+    );
+  }
+  /**
+   * Creates a ServiceSpecification from an ServiceTestSpecification id. It retreives the ServicTestSpecification from  the ServiceTestSpecification catalog
+   *
+   * This operation creates a ServiceSpecification from a ServiceTestSpecification id. It retreives the ServiceTestSpecification from  the ServiceTestSpecification catalog. The response is the Service Spec
+   * @param id Identifier of the ServiceTestSpecification id from the ServiceTestSpecification catalog
+   * @return Created
+   */
+  createServiceSpecificationFromServiceTestSpecification(id: string): __Observable<ServiceSpecification> {
+    return this.createServiceSpecificationFromServiceTestSpecificationResponse(id).pipe(
+      __map(_r => _r.body as ServiceSpecification)
+    );
+  }
+
+  /**
    * Retrieves a ServiceSpecification by ID
    *
    * This operation retrieves a ServiceSpecification entity. Attribute selection is enabled for all first level attributes.
@@ -377,8 +420,9 @@ class ServiceSpecificationService extends __BaseService {
    *
    * This operation deletes a ServiceSpecification entity.
    * @param id Identifier of the ServiceSpecification
+   * @return Deleted
    */
-  deleteServiceSpecificationResponse(id: string): __Observable<__StrictHttpResponse<null>> {
+  deleteServiceSpecificationResponse(id: string): __Observable<__StrictHttpResponse<{}>> {
     let __params = this.newParams();
     let __headers = new HttpHeaders();
     let __body: any = null;
@@ -396,7 +440,7 @@ class ServiceSpecificationService extends __BaseService {
     return this.http.request<any>(req).pipe(
       __filter(_r => _r instanceof HttpResponse),
       __map((_r) => {
-        return _r as __StrictHttpResponse<null>;
+        return _r as __StrictHttpResponse<{}>;
       })
     );
   }
@@ -405,10 +449,11 @@ class ServiceSpecificationService extends __BaseService {
    *
    * This operation deletes a ServiceSpecification entity.
    * @param id Identifier of the ServiceSpecification
+   * @return Deleted
    */
-  deleteServiceSpecification(id: string): __Observable<null> {
+  deleteServiceSpecification(id: string): __Observable<{}> {
     return this.deleteServiceSpecificationResponse(id).pipe(
-      __map(_r => _r.body as null)
+      __map(_r => _r.body as {})
     );
   }
 
@@ -532,7 +577,7 @@ class ServiceSpecificationService extends __BaseService {
    *
    * @return Success
    */
-  getAttachmentResponse(params: ServiceSpecificationService.GetAttachmentParams): __Observable<__StrictHttpResponse<Resource>> {
+  getAttachmentResponse(params: ServiceSpecificationService.GetAttachmentParams): __Observable<__StrictHttpResponse<ByteArrayResource>> {
     let __params = this.newParams();
     let __headers = new HttpHeaders();
     let __body: any = null;
@@ -551,7 +596,7 @@ class ServiceSpecificationService extends __BaseService {
     return this.http.request<any>(req).pipe(
       __filter(_r => _r instanceof HttpResponse),
       __map((_r) => {
-        return _r as __StrictHttpResponse<Resource>;
+        return _r as __StrictHttpResponse<ByteArrayResource>;
       })
     );
   }
@@ -587,7 +632,7 @@ class ServiceSpecificationService extends __BaseService {
    *
    * @return Success
    */
-  getAttachmentWithFilenameResponse(params: ServiceSpecificationService.GetAttachmentWithFilenameParams): __Observable<__StrictHttpResponse<Resource>> {
+  getAttachmentWithFilenameResponse(params: ServiceSpecificationService.GetAttachmentWithFilenameParams): __Observable<__StrictHttpResponse<ByteArrayResource>> {
     let __params = this.newParams();
     let __headers = new HttpHeaders();
     let __body: any = null;
@@ -607,7 +652,7 @@ class ServiceSpecificationService extends __BaseService {
     return this.http.request<any>(req).pipe(
       __filter(_r => _r instanceof HttpResponse),
       __map((_r) => {
-        return _r as __StrictHttpResponse<Resource>;
+        return _r as __StrictHttpResponse<ByteArrayResource>;
       })
     );
   }
@@ -625,9 +670,9 @@ class ServiceSpecificationService extends __BaseService {
    *
    * @return Success
    */
-  getAttachmentWithFilename(params: ServiceSpecificationService.GetAttachmentWithFilenameParams): __Observable<Resource> {
+  getAttachmentWithFilename(params: ServiceSpecificationService.GetAttachmentWithFilenameParams): __Observable<ByteArrayResource> {
     return this.getAttachmentWithFilenameResponse(params).pipe(
-      __map(_r => _r.body as Resource)
+      __map(_r => _r.body as ByteArrayResource)
     );
   }
 
@@ -845,7 +890,7 @@ module ServiceSpecificationService {
     /**
      * The Attachment file to be added
      */
-    afile?: Blob;
+    afile: Blob;
   }
 
   /**

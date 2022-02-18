@@ -29,6 +29,11 @@ table.table-borderless tbody tr td {
     padding: 0;
 }
 
+.notes-container {
+    max-height: 200px;
+    overflow-y: auto;
+}
+
 mat-form-field {
     width: 100%;
 }

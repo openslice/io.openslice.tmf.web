@@ -1,4 +1,4 @@
-import {ServiceCandidate } from 'src/app/openApis/serviceCatalogManagement/models';
+import { ServiceCandidate } from "src/app/openApis/serviceCatalogManagement/models";
 
 
 export interface ServiceCandidateWithLogo extends ServiceCandidate {

@@ -8,7 +8,9 @@ import { ApiConfiguration as PartyManagementAPIconfig} from 'src/app/openApis/pa
 import { ApiConfiguration as ServiceActivationAndConfigurationAPIconfig } from 'src/app/openApis/serviceActivationAndConfiguration/api-configuration'
 import { ApiConfiguration as AlarmManagementAPIconfig} from 'src/app/openApis/alarmManagement/api-configuration'
 import { ApiConfiguration as assuranceServicesManagementAPIconfig} from 'src/app/openApis/assuranceServicesManagementAPI/api-configuration'
-import { ApiConfiguration as lcmRuleSpecificationAPIConfig } from 'src/app/openApis/lcmRuleSpecificationAPI/api-configuration'
+import { ApiConfiguration as lcmRuleSpecificationAPIconfig } from 'src/app/openApis/lcmRuleSpecificationAPI/api-configuration'
+import { ApiConfiguration as serviceTestManagementAPIconfig } from 'src/app/openApis/serviceTestManagement/api-configuration'
+
 import { NavigationEnd, NavigationStart, Router } from '@angular/router';
 import { filter, first } from 'rxjs/operators';
 
@@ -29,7 +31,8 @@ export class AppService {
     private tmfServiceActivationAndConfigurationConfig: ServiceActivationAndConfigurationAPIconfig,
     private tmfAlarmManagementConfig: AlarmManagementAPIconfig,
     private assuranceServicesManagementAPIConfig: assuranceServicesManagementAPIconfig,
-    private lcmRuleSpecificationAPIConfig: lcmRuleSpecificationAPIConfig
+    private lcmRuleSpecificationAPIConfig: lcmRuleSpecificationAPIconfig,
+    private serviceTestManagementAPIconfig: serviceTestManagementAPIconfig
   ) { 
     this.setAPIurls()
     this.recognizePortalDomain()
@@ -48,17 +51,18 @@ export class AppService {
     this.tmfAlarmManagementConfig.rootUrl = this.config.APITMFURL
     this.assuranceServicesManagementAPIConfig.rootUrl = this.config.ASSURANCE_SERVICE_MGMT_APIURL
     this.lcmRuleSpecificationAPIConfig.rootUrl = this.config.APITMFURL
+    this.serviceTestManagementAPIconfig.rootUrl = this.config.APITMFURL
   }
 
-  //recognition of which portal is used (services/testing/product) only on Angular startup
+  //recognition of which portal is used (services/testing/product)
   recognizePortalDomain() {
     this.router.events.pipe(
       filter(e => e instanceof NavigationStart),
-      first()
     ).subscribe( (e: NavigationEnd) => {
       const activatedRoute = e.url.split('/')[1].toLowerCase()
-      if (["services", "testing", "products"].includes(activatedRoute)) {
-        this.portalDomain = <"services" | "testing" | "products"> activatedRoute
+      if (["","services", "testing", "products"].includes(activatedRoute)) {
+        this.portalDomain = <"" | "services" | "testing" | "products"> activatedRoute
+        localStorage.setItem("active_portal", this.portalDomain)
       }
     })
   }

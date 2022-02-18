@@ -2,7 +2,6 @@ import { NgModule, NO_ERRORS_SCHEMA } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import { AppServicesRoutingModule } from './app-services-routing.module';
-import { AppFeaturesModule } from './app-features.module';
 
 import { BootstrapComponent } from './bootstrap/bootstrap.component';
 import { PortalsComponent } from './landing/portals/portals.component';
@@ -59,11 +58,15 @@ import { DeleteOrganizationComponent } from './shared/components/partyManagement
 import { ListIndividualsComponent } from './shared/components/partyManagement/list-individuals/list-individuals.component';
 import { EditIndividualsComponent } from './shared/components/partyManagement/edit-individuals/edit-individuals.component';
 import { DeleteIndividualComponent } from './shared/components/partyManagement/delete-individual/delete-individual.component';
+import { AppModule } from './app.module';
+import { SharedModule } from './shared.module';
+import { ListTestsComponent } from './p_services/admin/testSpecificationImport/list-tests.component';
+import { ImportTestDialogComponent } from './p_services/admin/testSpecificationImport/import-test-dialog/import-test-dialog.component';
 
 
 @NgModule({
   declarations: [
-    BootstrapComponent,
+    // BootstrapComponent,
     // PortalsComponent,
     ServicesMarketplaceComponent,
     ListServiceCatalogsComponent,
@@ -108,19 +111,21 @@ import { DeleteIndividualComponent } from './shared/components/partyManagement/d
     DeleteActionRulesComponent,
     ServiceRuleDesignComponent,
     DeleteLcmruleComponent,
-    ListOrganizationsComponent,
-    EditOrganizationsComponent,
-    EditPartyCharacteristicsComponent,
-    DeletePartyCharacteristicComponent,
-    DeleteOrganizationComponent,
-    ListIndividualsComponent,
-    EditIndividualsComponent,
-    DeleteIndividualComponent
+    ListTestsComponent,
+    ImportTestDialogComponent,
+    // ListOrganizationsComponent,
+    // EditOrganizationsComponent,
+    // EditPartyCharacteristicsComponent,
+    // DeletePartyCharacteristicComponent,
+    // DeleteOrganizationComponent,
+    // ListIndividualsComponent,
+    // EditIndividualsComponent,
+    // DeleteIndividualComponent
   ],
   imports: [
     CommonModule,
-    AppFeaturesModule,
-    AppServicesRoutingModule
+    SharedModule,
+    AppServicesRoutingModule,
   ],
   entryComponents: [
     EditServiceCatalogsComponent,
@@ -148,10 +153,11 @@ import { DeleteIndividualComponent } from './shared/components/partyManagement/d
     DeleteActionRulesComponent,
     EditActionSpecsComponent,
     DeleteLcmruleComponent,
-    EditPartyCharacteristicsComponent,
-    DeletePartyCharacteristicComponent,
-    DeleteOrganizationComponent,
-    DeleteIndividualComponent
+    ImportTestDialogComponent,
+    // EditPartyCharacteristicsComponent,
+    // DeletePartyCharacteristicComponent,
+    // DeleteOrganizationComponent,
+    // DeleteIndividualComponent
   ],
   exports: [
     

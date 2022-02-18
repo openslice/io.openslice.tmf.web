@@ -43,6 +43,8 @@ export class EditServiceSpecsComponent implements OnInit {
 
   specID: string
   spec: ServiceSpecification
+  specNotFound: boolean = false
+  finishedLoading: boolean = false
 
   editForm =  new FormGroup({
     description: new FormControl(),
@@ -111,6 +113,7 @@ export class EditServiceSpecsComponent implements OnInit {
       this.retrieveServiceSpec()
     } else {
       this.newSpecification = true
+      this.finishedLoading = true
     }
   }
 
@@ -169,37 +172,43 @@ export class EditServiceSpecsComponent implements OnInit {
       error => console.error(error),
       () => {
         //populate General Panel Info
-        if (!this.spec.validFor) this.spec.validFor = {endDateTime:null, startDateTime:null}
-
-        this.editForm.patchValue(this.spec)
-        this.editForm.markAsPristine()
-
-        //populate Specification Relationships Panel Info
-        this.filteredRelatedSpecs$ = this.serviceRelatedSpecsFilterCtrl.valueChanges.pipe(
-          startWith(null),
-          map( (value:null | string) => value ? this._filterOnRelatedSpecs(value) : this.spec.serviceSpecRelationship.slice() )
-        )
-
-        //populate Specification Characteristic Panel Info
-        // filter Spec Characteristic that does not have defined Value Type (parent spec char)
-        this.dataSource.data = this.spec.serviceSpecCharacteristic.filter(specCharacteristic => specCharacteristic.valueType)
-        // this.dataSource.paginator = this.paginator;
-
-
-        this.specCharacteristicsTags = ["All"]
-        this.tagFiltervalue = "All"
-        this.specCharacteristicsTags = this.retrieveSpecCharaceristicsTags(this.dataSource.data)
-
-        // Check if spec has a defined logo already
-        this.specLogoRef = this.spec.attachment.find( att => att.name.includes('logo') )
-        if (this.specLogoRef) {
-          this.currentSpecLogoAsDataUrl = this.specServiceRootUrl+this.specLogoRef.url
+        if (this.spec) {
+          this.finishedLoading = true
+          
+          if (!this.spec.validFor) this.spec.validFor = {endDateTime:null, startDateTime:null}
+  
+          this.editForm.patchValue(this.spec)
+          this.editForm.markAsPristine()
+          //populate Specification Relationships Panel Info
+          this.filteredRelatedSpecs$ = this.serviceRelatedSpecsFilterCtrl.valueChanges.pipe(
+            startWith(null),
+            map( (value:null | string) => value ? this._filterOnRelatedSpecs(value) : this.spec.serviceSpecRelationship.slice() )
+          )
+  
+          //populate Specification Characteristic Panel Info
+          // filter Spec Characteristic that does not have defined Value Type (parent spec char)
+          this.dataSource.data = this.spec.serviceSpecCharacteristic.filter(specCharacteristic => specCharacteristic.valueType)
+          // this.dataSource.paginator = this.paginator;
+  
+  
+          this.specCharacteristicsTags = ["All"]
+          this.tagFiltervalue = "All"
+          this.specCharacteristicsTags = this.retrieveSpecCharaceristicsTags(this.dataSource.data)
+  
+          // Check if spec has a defined logo already
+          this.specLogoRef = this.spec.attachment.find( att => att.name.includes('logo') )
+          if (this.specLogoRef) {
+            this.currentSpecLogoAsDataUrl = this.specServiceRootUrl+this.specLogoRef.url
+          }
+  
+          this.retrieveLCMRulesSpecs();
+  
+          //populate Service Descriptor Panel Info
+          // this.retrieveServiceDesriptor(this.spec.id)
         }
-
-        this.retrieveLCMRulesSpecs();
-
-        //populate Service Descriptor Panel Info
-        // this.retrieveServiceDesriptor(this.spec.id)
+        else {
+          this.specNotFound = true
+        }
       }
     )
   }

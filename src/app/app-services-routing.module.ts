@@ -28,6 +28,7 @@ import { EditActionSpecsComponent } from './p_services/admin/assuranceServicesMa
 import { ListActionRulesComponent } from './p_services/admin/assuranceServicesManagement/list-action-rules/list-action-rules.component';
 import { EditActionRulesComponent } from './p_services/admin/assuranceServicesManagement/edit-action-rules/edit-action-rules.component';
 import { ServiceRuleDesignComponent } from './p_services/admin/lifeCycleManagement/service-rule-design/service-rule-design.component';
+import { ListTestsComponent } from './p_services/admin/testSpecificationImport/list-tests.component';
 
 
 const routes: Routes = [
@@ -43,6 +44,7 @@ const routes: Routes = [
       { path: 'service_spec_update/:id', component: EditServiceSpecsComponent },
       { path: 'service_spec_update', component: EditServiceSpecsComponent },
       { path: 'list_nsds', component: ListNsdComponent },
+      { path: 'list_tests', component: ListTestsComponent },
 
       { path: 'service_orders', component: ListServiceOrdersComponent },
       { path: 'service_order/:id', component: PreviewServiceOrderComponent },

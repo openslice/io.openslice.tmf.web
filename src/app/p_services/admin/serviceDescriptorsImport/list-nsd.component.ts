@@ -6,11 +6,14 @@ import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { ServiceSpecification } from 'src/app/openApis/serviceCatalogManagement/models';
 import { AppService } from 'src/app/shared/services/app.service';
+import { trigger } from '@angular/animations';
+import { fadeIn } from 'src/app/shared/animations/animations';
 
 @Component({
   selector: 'app-list-nsd',
   templateUrl: './list-nsd.component.html',
-  styleUrls: ['./list-nsd.component.scss']
+  styleUrls: ['./list-nsd.component.scss'],
+  animations: [ trigger('fadeIn', fadeIn()) ]
 })
 export class ListNsdComponent implements OnInit {
 

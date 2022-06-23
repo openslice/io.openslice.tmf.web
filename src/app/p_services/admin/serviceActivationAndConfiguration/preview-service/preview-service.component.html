@@ -177,8 +177,10 @@
                                                                 <div class="card card-paper mb-2 bg-white">
                                                                     <div class="note-card-body">
                                                                         {{note.text}}
-                                                                        <div class="small">written by {{note.author}} @
-                                                                            {{note.date | date:'d MMM y, h:mm a'}}</div>
+                                                                        <div class="small">
+                                                                                {{note.date | date:'d MMM y, h:mm:ss a'}} (Local Time)
+                                                                                <i>by {{note.author}}</i>
+                                                                        </div>
                                                                     </div>
                                                                 </div>
                                                             </div>

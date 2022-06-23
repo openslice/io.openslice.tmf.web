@@ -1,61 +1,62 @@
-<div  class="container-blockly-main">
+<div  class="container-blockly-main py-4 container-fluid">
     <!-- toolbar -->
-    <mat-toolbar  class="mat-elevation-z0" >
-      <span class="mr-auto p-2">{{ title }}</span>
-      <div class = "d-flex">
-        <button type="button" class="btn btn-danger m-2  btn-block" style="width: 80px" (click)="cancelProgram()">Cancel</button>
-        <button type="button" class="btn btn-success m-2 btn-block" style="width: 80px" (click)="saveProgram()">Save</button>
+
+    <div class="d-flex align-items-center pb-3" >
+      <h5 class="mr-auto pb-0">{{ title }}</h5>
+      <div class = "d-flex align-items-center">
+        <button type="button" class="btn btn-danger mr-3 btn-block" style="width: 80px" (click)="cancelProgram()">Cancel</button>
+        <button type="button" class="btn btn-success m-0 btn-block" style="width: 80px" (click)="saveProgram()">Save</button>
       </div>
-    </mat-toolbar>
+    </div>
   
     <!-- main content -->
-    <mat-drawer-container class="container-blockly">
+    <mat-drawer-container class="container-blockly mat-elevation-z6">
       <mat-drawer-content >
         <div class="wrapper-blockly">
           <div id="blocklyDiv" ></div>
         
           <div id="generatedCode" >
             <mat-tab-group mat-align-tabs="start">
-              <mat-tab label="Properties">
-                
-                <form [formGroup]="editForm">              
-                  <mat-form-field class="col-md-6">
-                    <mat-label>Name</mat-label>
-                    <input matInput formControlName="name">
-                  </mat-form-field>
-              
-                  <mat-form-field class="col-md-12">
-                    <mat-label>Description </mat-label>
-                    <textarea matTextareaAutosize="true" matAutosizeMinRows="2"
-                        matInput formControlName="description"></textarea>
-                  </mat-form-field>
+              <mat-tab label="Properties" >
+                <div class="pt-3 pb-2 bg-white">
 
+                  <form [formGroup]="editForm">
+                    <mat-form-field class="col-md-12">
+                      <mat-label>Name</mat-label>
+                      <input matInput formControlName="name">
+                    </mat-form-field>
                   
-                  <mat-form-field class="col-md-12">
-                    <mat-label>Lifecycle phase</mat-label>
-                    <mat-select formControlName="lcmrulephase">
-                        <mat-option *ngFor="let phase of lcmphases"
-                            [value]="phase">
-                            {{phase}}
+                    <mat-form-field class="col-md-12">
+                      <mat-label>Description </mat-label>
+                      <textarea matTextareaAutosize="true" matAutosizeMinRows="2" matInput formControlName="description"></textarea>
+                    </mat-form-field>
+                  
+                  
+                    <mat-form-field class="col-md-12">
+                      <mat-label>Lifecycle phase</mat-label>
+                      <mat-select formControlName="lcmrulephase">
+                        <mat-option *ngFor="let phase of lcmphases" [value]="phase">
+                          {{phase}}
                         </mat-option>
-                    </mat-select>
-                </mat-form-field>
-                
-
-                <mat-form-field class="col-md-4 col-sm-6">
-                  <mat-label>Priority</mat-label>
-                  <input matInput formControlName="priority">
-              </mat-form-field>
-
-                <mat-form-field class="col-md-4 col-sm-6">
-                  <mat-label>Version</mat-label>
-                  <input matInput formControlName="version">
-              </mat-form-field>
-                </form>
-
+                      </mat-select>
+                    </mat-form-field>
+                  
+                  
+                    <mat-form-field class="col-md-6 col-sm-6">
+                      <mat-label>Priority</mat-label>
+                      <input matInput formControlName="priority">
+                    </mat-form-field>
+                  
+                    <mat-form-field class="col-md-6 col-sm-6">
+                      <mat-label>Version</mat-label>
+                      <input matInput formControlName="version">
+                    </mat-form-field>
+                  </form>
+                </div>
 
 
               </mat-tab>
+
               <mat-tab label="Java Code" >
                 <textarea readonly class="generated-code">{{ generatedCode }}</textarea>
               </mat-tab>
@@ -63,6 +64,7 @@
               <mat-tab label="Blockly Code" >
                 <textarea readonly class="generated-code">{{ blocklyCode }}</textarea>
               </mat-tab>
+
             </mat-tab-group>
 
             

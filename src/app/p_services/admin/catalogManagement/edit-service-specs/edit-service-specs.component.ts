@@ -202,6 +202,10 @@ export class EditServiceSpecsComponent implements OnInit {
   
           this.retrieveLCMRulesSpecs();
   
+          if (localStorage.getItem('previous_navigation_state') === 'lcm_tab') {
+            this.activeListItem = 'Life Cycle Rules'
+            localStorage.removeItem('previous_navigation_state')
+          }
           //populate Service Descriptor Panel Info
           // this.retrieveServiceDesriptor(this.spec.id)
         }

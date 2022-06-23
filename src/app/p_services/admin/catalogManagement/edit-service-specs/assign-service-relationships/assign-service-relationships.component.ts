@@ -44,7 +44,6 @@ export class AssignServiceRelationshipsComponent implements OnInit {
   filteredSpecs$: Observable<ServiceSpecification[]>
 
   ngOnInit() {
-    console.log(this.data)
     this.listServiceSpecs()
   }
   
@@ -83,7 +82,6 @@ export class AssignServiceRelationshipsComponent implements OnInit {
   }
 
   private _filter(value: string): ServiceSpecification[] {
-      console.log(value)
       const filterValue = value.toLowerCase();
       return this.nonSelectedSpecs.filter(cat => cat.name.toLowerCase().indexOf(filterValue) !== -1);
   }
@@ -93,7 +91,6 @@ export class AssignServiceRelationshipsComponent implements OnInit {
   }
 
   removeServiceSpec(spec:ServiceSpecification) {
-    console.log(spec)
     const index = this.selectedSpecs.indexOf(spec);
     if (index >= 0) {
       this.selectedSpecs.splice(index, 1);
@@ -113,9 +110,8 @@ export class AssignServiceRelationshipsComponent implements OnInit {
       serviceSpecRelationship: this.selectedSpecs.map(spec =>{ return {id: spec.id, name: spec.name}})
     }
 
-    console.log(updateRelationshipsObj)
     this.specService.patchServiceSpecification({id: this.data.serviceSpec.id, serviceSpecification: updateRelationshipsObj}).subscribe(
-      data => console.log(data),
+      data => {},
       error => console.error(error),
       () => {this.dialogRef.close('updated')}
     )

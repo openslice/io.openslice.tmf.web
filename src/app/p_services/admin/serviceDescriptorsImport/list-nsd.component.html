@@ -29,7 +29,8 @@
                             <ng-container matColumnDef="short_description">
                                 <th mat-header-cell *matHeaderCellDef mat-sort-header> Description </th>
                                 <td mat-cell *matCellDef="let element"> 
-                                    <span *ngIf="element.shortDescription">{{element.shortDescription | slice:0:49}}<span *ngIf="element.shortDescription.length > 49">...</span> </span> 
+                                    <span *ngIf="element.description && element.description.length <= 49">{{element.description}}</span> 
+                                    <span *ngIf="element.description && element.description.length > 49" [matTooltip]="element.description">{{element.description | slice:0:49}}...</span>      
                                 </td>
                             </ng-container>
                             

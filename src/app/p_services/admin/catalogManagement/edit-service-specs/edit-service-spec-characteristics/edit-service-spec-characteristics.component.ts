@@ -65,8 +65,6 @@ export class EditServiceSpecCharacteristicsComponent implements OnInit {
       this.data.specToBeUpdated.serviceSpecCharacteristicValue.forEach( val => {
         formArray.push(this.updateFormArrayItem(val))
       })
-      console.log(this.data)
-      console.log(this.editFormCharacteristic)
 
       this.subValueTypeCtrl.patchValue(this.data.specToBeUpdated.serviceSpecCharacteristicValue[0].valueType)
       if (['SET', 'ARRAY', 'ENUM'].includes(this.data.specToBeUpdated.valueType)) {
@@ -175,7 +173,6 @@ export class EditServiceSpecCharacteristicsComponent implements OnInit {
   }
 
   submitDialog() {
-    console.log('submit')
     
     if (this.newSpec) {
       this.data.serviceSpec.serviceSpecCharacteristic.push(this.editFormCharacteristic.getRawValue())
@@ -188,9 +185,8 @@ export class EditServiceSpecCharacteristicsComponent implements OnInit {
       serviceSpecCharacteristic: this.data.serviceSpec.serviceSpecCharacteristic
     }
 
-    console.log(updateCharacteristicObj)
     this.specService.patchServiceSpecification({id: this.data.serviceSpec.id, serviceSpecification: updateCharacteristicObj}).subscribe(
-      data => console.log(data),
+      data => {},
       error => { console.error(error); this.toast.error("An error occurred upon updating Spec Characteristics") },
       () => {this.dialogRef.close('updated')}
     )

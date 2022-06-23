@@ -16,7 +16,6 @@ export class ImportCharacteristicsFromYamlComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    console.log(this.data.variablesArray)
   }
 
   closeDialog(dialogResult: 'no' | 'override' | 'append') {

@@ -44,7 +44,6 @@ export class ListServiceTestSpecsComponent implements OnInit {
       data => { this.serviceSpecifications = data },
       error => { console.error(error) },
       () => {
-        console.log(this.serviceSpecifications)
         this.dataSource.data = this.serviceSpecifications
         this.dataSource.sort = this.sort
         this.dataSource.paginator = this.paginator
@@ -64,7 +63,6 @@ export class ListServiceTestSpecsComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe (
       result => {
-        console.log(result)
         if (result) {
           if (result instanceof HttpErrorResponse) {
             this.toast.error("An error occurred while attempting to delete Service Test Specification")

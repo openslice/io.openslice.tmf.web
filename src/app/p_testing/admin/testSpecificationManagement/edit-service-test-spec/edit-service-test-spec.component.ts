@@ -73,7 +73,6 @@ export class EditServiceTestSpecComponent implements OnInit {
     this.testSpecServiceRootUrl = this.testSpecService.rootUrl
 
     const urlParam = this.activatedRoute.snapshot.params.id
-    console.log(urlParam)
     if (urlParam) {
       this.testSpecID = urlParam
       this.retrieveTestSpec()
@@ -126,7 +125,7 @@ export class EditServiceTestSpecComponent implements OnInit {
   
       if (this.newTestSpec) {
         this.testSpecService.createServiceTestSpecification(updateObj).subscribe(
-          data => { updatedSpec = data; console.log(data) },
+          data => { updatedSpec = data },
           error => console.error(error),
           () => { 
             this.newTestSpec = false
@@ -205,7 +204,7 @@ export class EditServiceTestSpecComponent implements OnInit {
     }
 
     this.testSpecService.patchServiceTestSpecification({id: this.testSpec.id, serviceSpecification: updateCharacteristicObj}).subscribe(
-      data => console.log(data),
+      data => {},
       error => console.error(error),
       () => {
         this.toast.success("Service Test Specification characteristics list was successfully updated")
@@ -280,7 +279,6 @@ export class EditServiceTestSpecComponent implements OnInit {
       )
       .finally(
         () => {
-          console.log(variablesArray)
           if (variablesArray.length) {
             const dialogRef = this.dialog.open(ImportCharacteristicsFromYamlComponent, {
               data: {
@@ -291,7 +289,6 @@ export class EditServiceTestSpecComponent implements OnInit {
         
             dialogRef.afterClosed().subscribe(
               result => { 
-                console.log(result)
                 if (result) { 
                   if (result !== 'no') {
 
@@ -303,7 +300,6 @@ export class EditServiceTestSpecComponent implements OnInit {
                       })
                     })
 
-                    console.log(exportedCharacteristicsArray)
                     
                     if (result === 'override') {
                       this.testSpec.specCharacteristic = exportedCharacteristicsArray
@@ -317,17 +313,16 @@ export class EditServiceTestSpecComponent implements OnInit {
                       specCharacteristic: this.testSpec.specCharacteristic
                     }
 
-                    console.log(updateCharacteristicObj)
 
                     this.testSpecService.patchServiceTestSpecification({id: this.testSpec.id, serviceSpecification: updateCharacteristicObj}).subscribe(
-                      data => console.log(data),
+                      data => {},
                       error => { console.error(error); this.toast.error("An error occurred upon auto-exporting Test Specification Characteristics") },
                       () => {}
                     )
                   }
 
                   this.testSpecService.addAttachmentToServiceTestSpecification({ id: this.testSpecID, afile: this.attachmentFilesCtrl.value[0] }).subscribe(
-                    data => console.log(data),
+                    data => {},
                     error => {
                       console.error(error)
                       this.toast.error("An error occurred while uploading attachment")
@@ -343,7 +338,7 @@ export class EditServiceTestSpecComponent implements OnInit {
             )
           } else {
             this.testSpecService.addAttachmentToServiceTestSpecification({ id: this.testSpecID, afile: this.attachmentFilesCtrl.value[0] }).subscribe(
-              data => console.log(data),
+              data => {},
               error => {
                 console.error(error)
                 this.toast.error("An error occurred while uploading attachment")
@@ -381,7 +376,6 @@ export class EditServiceTestSpecComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe (
       result => { 
-        console.log(result)
         if (result){ 
           this.toast.success("Service Test Specification attachments list was successfully updated")
           this.retrieveTestSpec()

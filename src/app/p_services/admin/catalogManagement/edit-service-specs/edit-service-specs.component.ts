@@ -121,7 +121,6 @@ export class EditServiceSpecsComponent implements OnInit {
     this.subscriptions.add(this.router.events.subscribe(
       event => {
         if (event instanceof ActivationEnd) {
-          console.log(event.snapshot.params.id)
           this.specID = this.activatedRoute.snapshot.params.id
           this.retrieveServiceSpec()
         }
@@ -225,7 +224,7 @@ export class EditServiceSpecsComponent implements OnInit {
 
   retrieveServiceDesriptor(specId) {
     this.specService.retrieveServiceSpecificationDescriptor(specId).subscribe(
-      data => console.log(data),
+      data => {},
       error => console.error(error)
     )
   }
@@ -268,7 +267,6 @@ export class EditServiceSpecsComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe (
       result => { 
-        console.log(result)
         if (result) { 
           this.toast.success("Service Specification Relationship list was successfully updated")
           this.retrieveServiceSpec() 
@@ -288,7 +286,6 @@ export class EditServiceSpecsComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe (
       result => { 
-        console.log(result)
         if (result) { 
           this.toast.success("Service Specification Characteristics list was successfully updated")
           this.retrieveServiceSpec() 
@@ -314,7 +311,6 @@ export class EditServiceSpecsComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe (
       result => { 
-        console.log(result)
         if (result){ 
           this.toast.success("Service Specification Characteristics list was successfully updated")
           this.retrieveServiceSpec()
@@ -338,7 +334,6 @@ export class EditServiceSpecsComponent implements OnInit {
       valueType: characteristic.valueType
     }
 
-    console.log(cloneCharacteristic)
     this.spec.serviceSpecCharacteristic.push(cloneCharacteristic)
 
     const updateCharacteristicObj: ServiceSpecificationUpdate = {
@@ -346,7 +341,7 @@ export class EditServiceSpecsComponent implements OnInit {
     }
 
     this.specService.patchServiceSpecification({id: this.spec.id, serviceSpecification: updateCharacteristicObj}).subscribe(
-      data => console.log(data),
+      data => {},
       error => console.error(error),
       () => { 
         this.toast.success("Service Specification Characteristics list was successfully updated")
@@ -398,7 +393,7 @@ export class EditServiceSpecsComponent implements OnInit {
   submitAttachments() {
     if (this.attachmentFilesCtrl.valid) {
       this.specService.addAttachmentToServiceSpecification({id: this.specID, afile: this.attachmentFilesCtrl.value[0]}).subscribe(
-        data => { console.log(data) },
+        data => { },
         error => {
           console.error(error)
           this.toast.error("An error occurred while uploading attachment")
@@ -453,7 +448,7 @@ export class EditServiceSpecsComponent implements OnInit {
             }
 
             this.specService.patchServiceSpecification({ id: this.specID, serviceSpecification: updateSpecObj}).subscribe(
-              data => console.log(data),
+              data => {},
               error => console.error(error),
               () => {
                 this.logoUpdatedSuccessfully()
@@ -494,7 +489,6 @@ export class EditServiceSpecsComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe (
       result => { 
-        console.log(result)
         if (result){ 
           this.toast.success("Service Specification Characteristics list was successfully updated")
           this.retrieveServiceSpec()
@@ -549,7 +543,6 @@ export class EditServiceSpecsComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe (
       result => {
-        console.log(result)
         if (result) {
           if (result instanceof HttpErrorResponse) {
             this.toast.error("An error occurred while attempting to delete Service Specification")

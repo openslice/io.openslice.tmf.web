@@ -108,7 +108,6 @@ export class EditServiceCharacteristicsComponent implements OnInit {
     //editable service spec characteristics
     let editedCharValue;
     this.specCharFormArray.value.forEach( editedChar => {
-      console.log(editedChar)
       editedCharValue = { 'value': editedChar.value.value, 'alias': editedChar.value.alias }
       if (editedChar.valueType  === "SET" || editedChar.valueType === "ARRAY") {
         editedCharValue = {
@@ -135,10 +134,8 @@ export class EditServiceCharacteristicsComponent implements OnInit {
       serviceCharacteristic: serviceChars.concat(this.specCharFormArray.value)
     }
 
-    console.log(serviceUpdate)
-
     this.serviceService.patchService1({service: serviceUpdate, id: this.injectedData.service.id}).subscribe(
-      data => { console.log(data) },
+      data => { },
       error => { console.error(error); this.toastService.error("An error occurred upon updating Service")},
       () => { this.dialogRef.close('updated') }
     )

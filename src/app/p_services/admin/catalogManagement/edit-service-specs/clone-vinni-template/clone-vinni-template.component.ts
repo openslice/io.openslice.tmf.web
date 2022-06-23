@@ -49,12 +49,10 @@ export class CloneVinniTemplateComponent implements OnInit {
       specsFormArray.push(new FormControl(false))
     })
 
-    console.log(this.paramsForm)
 
   }
 
   submitDialog() {
-    console.log(this.paramsForm.get('serviceSpecsToInclude'))
 
     if (this.paramsForm.valid) {
       let cloneObj: ServiceSpecificationService.CloneVINNIServiceSpecificationParams = {}
@@ -69,7 +67,7 @@ export class CloneVinniTemplateComponent implements OnInit {
       cloneObj.serviceName = this.paramsForm.value.serviceName
       
       this.specService.cloneVINNIServiceSpecification(cloneObj).subscribe(
-        data => { console.log(data); this.dialogRef.close(data) },
+        data => { this.dialogRef.close(data) },
         error => console.error(error)
       )
     }

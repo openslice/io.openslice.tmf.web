@@ -30,11 +30,8 @@ export class DeletePartyCharacteristicComponent implements OnInit {
     }
 
 
-    console.log(updateOrganizationObj)
-
-    console.log(this.data.organization)
     this.orgService.patchOrganization({ id: this.data.organization.id, organization: updateOrganizationObj }).subscribe(
-      data => console.log(data),
+      data => {},
       error => console.error(error),
       () => this.dialogRef.close('deleted')
     )

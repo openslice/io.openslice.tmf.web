@@ -38,7 +38,6 @@ export class EditTestSpecCharacteristicComponent implements OnInit {
   ngOnInit() {
     if (this.data.characteristicToBeUpdated) {
       this.editCharacteristicForm.patchValue(this.data.characteristicToBeUpdated)
-      console.log(this.data)
     }
     else { this.newCharacteristic = true }
   }
@@ -48,7 +47,6 @@ export class EditTestSpecCharacteristicComponent implements OnInit {
   }
 
   submitDialog() {
-    console.log(this.data)
     if (this.newCharacteristic) {
       this.data.serviceTestSpec.specCharacteristic.push(this.editCharacteristicForm.value)
     } else {
@@ -60,10 +58,9 @@ export class EditTestSpecCharacteristicComponent implements OnInit {
       specCharacteristic: this.data.serviceTestSpec.specCharacteristic
     }
 
-    console.log(updateCharacteristicObj)
     
     this.testSpecService.patchServiceTestSpecification({id: this.data.serviceTestSpec.id, serviceSpecification: updateCharacteristicObj}).subscribe(
-      data => console.log(data),
+      data => {},
       error => { console.error(error); this.toast.error("An error occurred upon updating Test Specification Characteristics") },
       () => {this.dialogRef.close('updated')}
     )

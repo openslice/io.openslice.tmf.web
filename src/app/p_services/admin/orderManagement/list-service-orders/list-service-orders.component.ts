@@ -40,8 +40,8 @@ export class ListServiceOrdersComponent implements OnInit {
 
   filterForm = new FormGroup({
     text: new FormControl(),
-    fromDate: new FormControl(this.cacheService.serviceOrderListDateFrom),
-    toDate: new FormControl(this.cacheService.serviceOrderListDateTo),
+    fromDate: new FormControl(new Date(new Date().setMonth(new Date().getMonth()-4))),
+    toDate: new FormControl(new Date()),
   });
 
   get fromDate() { return this.filterForm.get('fromDate').value; }
@@ -125,8 +125,8 @@ export class ListServiceOrdersComponent implements OnInit {
     if (this.fromDate && this.toDate)  {
       this.dataSource.filter = "applyPeriodFilter"
     }
-    this.cacheService.serviceOrderListDateFrom = this.fromDate
-    this.cacheService.serviceOrderListDateTo = this.toDate
+    // this.cacheService.serviceOrderListDateFrom = this.fromDate
+    // this.cacheService.serviceOrderListDateTo = this.toDate
     // this.dataSource.filterPredicate = this.filterPeriod
   } 
 

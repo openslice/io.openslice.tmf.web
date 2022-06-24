@@ -1,13 +1,13 @@
 <div class="container">
     <h4 mat-dialog-title class="row shadowed mb-3">
-        <i class="row far fa-clipboard mr-2"></i>
+        <i class="far fa-clipboard mr-2"></i>
         <span>Assign Service Specifications to Service Category</span>
 
     </h4>
     <mat-dialog-content>
         <div class="row dialog-content-container">
             <mat-form-field class="col-md-12">
-                <input placeholder="Filter Available Service Specifications" #candidateInput [formControl]="candidateInputCtrl"
+                <input placeholder="Start typing to filter available Service Specifications for assignment..." #candidateInput [formControl]="candidateInputCtrl"
                     [matAutocomplete]="auto" matInput  (click)="openList()">
 
                 <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)" autoActiveFirstOption>
@@ -22,7 +22,7 @@
         <div class="table-responsive">
             <table mat-table [dataSource]="dataSource" matSort matSortActive="name" matSortDirection="desc" class="table table-generic">
                 <ng-container matColumnDef="name">
-                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Assigned Service Specifications </th>
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Service Specifications to be assigned </th>
                     <td mat-cell *matCellDef="let element" matTooltipClass="universal-tooltip"
                         [matTooltip]="element.description" matTooltipPosition="above">
                         <b>{{element.name}}</b> </td>

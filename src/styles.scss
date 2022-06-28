@@ -7,31 +7,8 @@
 /* override bootstrap's 4 blue color */
 $primary: #428bca;
 $secondary: #6c6c6c;
-/* @import "~bootstrap/scss/bootstrap";*/
 
-.app-default-theme {
-    $primary: #428bca;
-    $secondary: #6c6c6c;
-    @import "~bootstrap/scss/bootstrap";
-}
-
-.app-theme1-theme {
-    $primary: rgba(0,45,126);
-    $secondary: #6c6c6c;
-    @import "~bootstrap/scss/bootstrap";
-}
-
-.app-theme2-theme {
-    $primary: rgba(255, 124, 0);
-    $secondary: #6c6c6c;
-    @import "~bootstrap/scss/bootstrap";
-}
-
-.app-theme3-theme {
-    $primary: rgba(247,1, 2);
-    $secondary: #6c6c6c;
-    @import "~bootstrap/scss/bootstrap";
-}
+@import "src/assets/config/theming.scss";
 
 @import "~bootstrap/scss/bootstrap";
 

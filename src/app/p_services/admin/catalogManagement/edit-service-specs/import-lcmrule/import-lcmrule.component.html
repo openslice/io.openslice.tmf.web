@@ -1,0 +1,67 @@
+<h4 mat-dialog-title class="shadowed mb-3">
+    <i class="fas fa-file-import mr-2"></i>
+    <span>Import LCM rule</span>
+</h4>
+<div mat-dialog-content>
+
+    <div class="my-3">
+        <mat-checkbox color="primary" [(ngModel)]="checked" (change)="checkboxChanged($event)">Service Specification specific LCM rules</mat-checkbox>
+    </div>
+
+    <mat-hint *ngIf="checked">
+        The following list displays LCM rules already specified for {{serviceSpec.name}}
+    </mat-hint>
+
+    <mat-hint *ngIf="!checked">
+        The following list displays the overall LCM rules specified for all service specifications
+        <div>
+            <b>Note: After import, you may need to edit the rule to meet this specific specification's properties</b>
+        </div>
+    </mat-hint>
+    
+    <mat-form-field appearance="" class="mt-3">
+        <mat-label>LCM rule to import</mat-label>
+        <mat-select [formControl]="ruleToImport">
+          <mat-option *ngFor="let rule of displayedRules" [value]="rule">
+              <i class="fas fa-info-circle mr-2" [matTooltip]="rule|json" matTooltipPosition="above"></i>
+            {{rule.name}} 
+
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+    <!-- <mat-tab-group>
+        <mat-tab label="Service Specification specific LCM rules"> 
+            <div class="mt-3">
+                Select service specification specific LCM rule to import from the list
+            </div> 
+            <mat-form-field appearance="" class="mt-2">
+                <mat-label>LCM rule to import</mat-label>
+                <mat-select>
+                  <mat-option *ngFor="let rule of rulesForServiceSpec" [value]="rule">
+                    {{rule.name}}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+        </mat-tab>
+        <mat-tab label="All LCM rules"> 
+            <div class="mt-3">
+                Select LCM rule to import from the list
+            </div> 
+
+            <mat-form-field appearance="" class="mt-2">
+                <mat-label>LCM rule to import</mat-label>
+                <mat-select>
+                  <mat-option *ngFor="let rule of rules" [value]="rule">
+                    {{rule.name}}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+        </mat-tab>
+      </mat-tab-group> -->
+</div>
+
+<div mat-dialog-actions class="d-flex justify-content-end">
+    <button type="button" class="btn btn-danger m-2" (click)="onCancel()">Cancel</button>
+    <button type="button" class="btn btn-success m-2" (click)="onSubmit()">Import</button>
+</div>

@@ -20,6 +20,7 @@ import { fadeIn } from 'src/app/shared/animations/animations';
 import { DeleteAttachmentComponent } from './delete-attachment/delete-attachment.component';
 import { DeleteLcmruleComponent } from './delete-lcmrule/delete-lcmrule.component';
 import { AppService } from 'src/app/shared/services/app.service';
+import { ImportLcmruleComponent } from './import-lcmrule/import-lcmrule.component';
 
 
 @Component({
@@ -74,7 +75,7 @@ export class EditServiceSpecsComponent implements OnInit {
   tagFiltervalue:string = "All"
 
 
-  lcmRulesTags: string[] = ["All", "Pre-provision phase", "Activation phase", "Supervision phase", "De-activation phase"]
+  lcmRulesTags: string[] = ["Creation", "Pre-Provision", "After-Activation", "Supervision", "After-Deactivation"]
   lcmRulesTagValue:string = "All"
 
 @ViewChild('specSort', {static: false}) set matSort(ms: MatSort) {
@@ -514,13 +515,13 @@ export class EditServiceSpecsComponent implements OnInit {
     //this.dataSource.filter = filterValue;
   }
   
-  filterCMRuleByTag(tagName) {
-    this.tagFiltervalue = tagName
-    if (tagName === "All") {
-      // this.dataSource.data = this.spec.serviceSpecCharacteristic.filter(specCharacteristic => specCharacteristic.valueType)
+  filterCMRuleByTag(tagName:string) {
+    this.lcmRulesTagValue = tagName
+    const sanitizedTag = tagName.replace('-','_').toUpperCase()
+    if (sanitizedTag === "ALL") {
+      this.dataSourceLCMRules.data = this.ruleSpecsOfServiceSpec
     } else {
-      // this.dataSource.data = this.spec.serviceSpecCharacteristic.filter(specCharacteristic => specCharacteristic.valueType)
-      // .filter(specChar => specChar.serviceSpecCharRelationship.some( rel => rel.name === tagName ))
+      this.dataSourceLCMRules.data = this.ruleSpecsOfServiceSpec.filter(ruleSpec => ruleSpec.lcmrulephase === sanitizedTag)
     }
   }
 
@@ -549,7 +550,7 @@ export class EditServiceSpecsComponent implements OnInit {
       result => {
         if (result) {
           if (result instanceof HttpErrorResponse) {
-            this.toast.error("An error occurred while attempting to delete Service Specification")
+            this.toast.error("An error occurred while attempting to delete LCM rule")
           } else {
             this.toast.success("LCM Rules list is successfully updated")
             this.retrieveLCMRulesSpecs()
@@ -557,6 +558,24 @@ export class EditServiceSpecsComponent implements OnInit {
         }
       }
     )
+  }
+
+  openImportLCMruleDialog() {
+    const dialogRef = this.dialog.open(ImportLcmruleComponent, {data: this.spec})
+
+    dialogRef.afterClosed().subscribe (
+      result => {
+        if (result) {
+          if (result instanceof HttpErrorResponse) {
+            this.toast.error("An error occurred while attempting to import LCM rule")
+          } else {
+            this.toast.success("LCM Rules list is successfully updated")
+            this.retrieveLCMRulesSpecs()
+          }
+        }
+      }
+    )
+
   }
 
 }

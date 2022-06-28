@@ -237,8 +237,8 @@
                                                         (keyup)="applySpecCharFilter($event.target.value)">
                                                 </mat-form-field>
 
-                                                <div class="text-right col-xl-3 col-lg-4">
-                                                    <button type="button" class="btn btn-success btn-sm "
+                                                <div class="text-lg-right col-xl-3 col-lg-4 mb-3 mb-lg-0">
+                                                    <button type="button" class="btn btn-success btn-sm"
                                                         (click)="openCharacteristicDesignDialog(null)">
                                                         <i class="fas fa-plus-circle mr-2"></i>Create New
                                                         Characteristic
@@ -454,26 +454,31 @@
                                         <div class="card-body">
                                             <div class="filter-container row align-items-center justify-content-center">
                                                 <mat-form-field appearance=""
-                                                    class="white-background col-xl-9 col-lg-8">
+                                                    class="white-background col-xl-8 col-lg-6">
                                                     <mat-label>Apply Filter...</mat-label>
                                                     <input matInput
                                                         (keyup)="applyLCMRuleFilter($event.target.value)">
                                                 </mat-form-field>
 
-                                                <div class="text-right col-xl-3 col-lg-4">
+                                                <div class="text-lg-right col-xl-4 col-lg-6 mb-3 mb-lg-0">
+                                                    <button type="button" class="btn btn-primary btn-sm mr-3" (click)="openImportLCMruleDialog()">
+                                                        <i class="fas fa-file-import mr-2" ></i>Import a rule
+                                                    </button>
+
                                                     <button type="button" class="btn btn-success btn-sm "
                                                     routerLink='/{{appService.portalDomain}}/service_rule_design/'
                                                     [queryParams]="{specid: spec?.id }" >
-                                                        <i class="fas fa-plus-circle mr-2"></i>Create New Rule
+                                                        <i class="fas fa-plus-circle mr-2"></i>Create new rule
                                                     </button>
                                                 </div>
                                             
                                             </div>
                                             <div class="mb-3">
                                                 <mat-chip-list>
+                                                    <mat-chip [selected]="'All' === lcmRulesTagValue" (click)="filterCMRuleByTag('All')">All</mat-chip>
                                                     <mat-chip *ngFor="let tag of lcmRulesTags"
                                                         [selected]="tag === lcmRulesTagValue"
-                                                        (click)="filterCMRuleByTag(tag)">{{tag}}</mat-chip>
+                                                        (click)="filterCMRuleByTag(tag)">{{tag}} phase</mat-chip>
                                                 </mat-chip-list>
                                             </div>
 

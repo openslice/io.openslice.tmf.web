@@ -62,6 +62,7 @@ import { AppModule } from './app.module';
 import { SharedModule } from './shared.module';
 import { ListTestsComponent } from './p_services/admin/testSpecificationImport/list-tests.component';
 import { ImportTestDialogComponent } from './p_services/admin/testSpecificationImport/import-test-dialog/import-test-dialog.component';
+import { ImportLcmruleComponent } from './p_services/admin/catalogManagement/edit-service-specs/import-lcmrule/import-lcmrule.component';
 
 
 @NgModule({
@@ -113,6 +114,7 @@ import { ImportTestDialogComponent } from './p_services/admin/testSpecificationI
     DeleteLcmruleComponent,
     ListTestsComponent,
     ImportTestDialogComponent,
+    ImportLcmruleComponent,
     // ListOrganizationsComponent,
     // EditOrganizationsComponent,
     // EditPartyCharacteristicsComponent,
@@ -154,6 +156,7 @@ import { ImportTestDialogComponent } from './p_services/admin/testSpecificationI
     EditActionSpecsComponent,
     DeleteLcmruleComponent,
     ImportTestDialogComponent,
+    ImportLcmruleComponent,
     // EditPartyCharacteristicsComponent,
     // DeletePartyCharacteristicComponent,
     // DeleteOrganizationComponent,

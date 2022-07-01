@@ -165,8 +165,8 @@ export class PreviewServiceComponent implements OnInit {
       result => {
         if (result) {
           this.toast.success("Service is successfully updated")
-          this.retrieveService()
         }
+        this.retrieveService()
       }
     )
   }

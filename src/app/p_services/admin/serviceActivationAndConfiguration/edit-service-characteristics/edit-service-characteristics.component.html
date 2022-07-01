@@ -15,14 +15,14 @@
         </div>
 
         <div formArray="specCharFormArray" *ngIf="specificationCharacteristics.length > 0" [@fadeIn]>
-            <h5 class="mt-4 mb-3"><i class="fa fa-file mr-2" aria-hidden="true"></i><b>Service Specification characteristics</b> </h5>
+            <h5 class="mt-4 mb-3"><i class="fa fa-file mr-2" aria-hidden="true"></i><b>Service Specification characteristics (editable)</b> </h5>
 
             <div *ngFor="let charForm of specCharFormArray.controls; let i = index; let last = last" [formGroup]="charForm"
                 class="row justify-content-center"
-                [ngClass]="{'border-bottom':!last, 'align-items-center':charForm.get('valueType').value !=='ARRAY', 'align-items-baseline':charForm.get('valueType').value ==='ARRAY'}">
-                <div class="col-lg-6"><b>{{charForm.get('name').value}}</b></div>
-
-                <div class="col-lg-6" [ngSwitch]="charForm.get('valueType').value">
+                [ngClass]="{'border-bottom1':!last, 'align-items-center':charForm.get('valueType').value !=='ARRAY', 'align-items-baseline':charForm.get('valueType').value ==='ARRAY'}">
+                <!-- <div class="col-lg-6"><b>{{charForm.get('name').value}}</b></div> -->
+                <div class="col-12 font-weight-bold mb-2">- {{charForm.get('name').value}}</div>
+                <div class="col-lg-12" [ngSwitch]="charForm.get('valueType').value">
 
                     <ng-container *ngSwitchCase="'SET'">
                         <ng-container *ngTemplateOutlet="iterables"></ng-container>
@@ -41,7 +41,7 @@
                     </ng-container>
 
                     <ng-container *ngSwitchCase="'TIMESTAMP'">
-                        <mat-form-field [owlDateTimeTrigger]="pickerFrom">
+                        <mat-form-field [owlDateTimeTrigger]="pickerFrom" appearance="outline">
                             <mat-label>Custom Value</mat-label>
                             <input matInput [owlDateTime]="pickerFrom" placeholder="Date Time"
                                 [(ngModel)]="charForm.get('value').value.value" [ngModelOptions]="{standalone: true}">
@@ -52,15 +52,17 @@
                     </ng-container>
 
                     <ng-container *ngSwitchDefault>
-                        <mat-form-field>
+                        <mat-form-field appearance="outline">
                             <mat-label>Custom Value</mat-label>
-                            <input matInput [(ngModel)]="charForm.get('value').value.value"
-                                [ngModelOptions]="{standalone: true}">
+                            <!-- <input matInput [(ngModel)]="charForm.get('value').value.value"
+                                [ngModelOptions]="{standalone: true}"> -->
+                            <textarea matTextareaAutosize="true" matAutosizeMaxRows="4" matInput [(ngModel)]="charForm.get('value').value.value"
+                                [ngModelOptions]="{standalone: true}"></textarea>
                         </mat-form-field>
                     </ng-container>
 
                     <ng-template #iterables>
-                        <mat-form-field>
+                        <mat-form-field appearance="outline">
                             <mat-label>Custom Value</mat-label>
                             <mat-select formControlName="value" multiple [compareWith]="compareFn">
                                 <mat-option
@@ -73,7 +75,7 @@
                     </ng-template>
 
                     <ng-template #enumerable>
-                        <mat-form-field>
+                        <mat-form-field appearance="outline">
                             <mat-label>Custom Value</mat-label>
                             <mat-select formControlName="value" [compareWith]="compareFn">
                                 <mat-option
@@ -91,20 +93,26 @@
                             <div class="row" *ngFor="let charValue of charForm.get('value').value; let chVi = index">
                                 <div class="col-10">
                                     <div class="row">
-                                        <mat-form-field class="col-sm-6 col-md-12 col-xl-6">
+                                        <mat-form-field class="col-md-12 col-xl-6" appearance="outline">
                                             <mat-label>Custom Alias</mat-label>
-                                            <input matInput [(ngModel)]="charValue.alias"
-                                                [ngModelOptions]="{standalone: true}">
+                                            <!-- <input matInput [(ngModel)]="charValue.alias"
+                                                [ngModelOptions]="{standalone: true}"> -->
+                                            <textarea matTextareaAutosize="true" matAutosizeMaxRows="4" matInput [(ngModel)]="charValue.alias"
+                                            [ngModelOptions]="{standalone: true}"></textarea>
+                
                                         </mat-form-field >
-                                        <mat-form-field class="col-sm-6 col-md-12 col-xl-6">
+                                        <mat-form-field class="col-md-12 col-xl-6" appearance="outline">
                                             <mat-label>Custom Value</mat-label>
-                                            <input matInput [(ngModel)]="charValue.value"
-                                                [ngModelOptions]="{standalone: true}">
+                                            <!-- <input matInput [(ngModel)]="charValue.value"
+                                                [ngModelOptions]="{standalone: true}"> -->
+                                            <textarea matTextareaAutosize="true" matAutosizeMaxRows="4" matInput [(ngModel)]="charValue.value"
+                                            [ngModelOptions]="{standalone: true}"></textarea>
+    
                                         </mat-form-field>
                                     </div>
                                 </div>
-                                <div class="col-2 d-flex justify-content-center align-items-center">
-                                    <button mat-icon-button><i class="material-icons" (click)="deleteFromArrayCharacteristicValue(charForm.value, chVi)" aria-label="Clear Characteristic Value">clear</i></button>
+                                <div class="col-2 d-flex justify-content-center align-items-center mb-3">
+                                    <button class="btn btn-lg" aria-label="Clear Characteristic Value" (click)="deleteFromArrayCharacteristicValue(charForm.value, chVi)"><i class="far fa-trash-alt"  aria-hidden="true" ></i></button>
                                 </div>
                             </div>
                             

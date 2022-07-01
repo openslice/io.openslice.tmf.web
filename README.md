@@ -6,6 +6,7 @@ When developing under src/assets/config copy config.prod.default.json to config.
 Regarding theming, under src/assets/config
 * copy config.theming.default.json to config.theming.json to customise your deployment, in terms of branding, and specific HTML sections.
 * copy theming.default.scss to theming.scss to customise your color palettes.
+
 *Logo/Icon paths support both project's relative paths and absolute URLs*
 
 Execute:

@@ -59,7 +59,7 @@ export class ServicesMarketplaceComponent implements OnInit {
     this.specServiceRootUrl = this.specificationService.rootUrl
 
     this.retrieveCatalogsList()
-    
+
     this.treeMarketPlaceService.categorySelected$.subscribe(
       category => {
         this.selectedCategory = category
@@ -78,15 +78,15 @@ export class ServicesMarketplaceComponent implements OnInit {
       data => { this.serviceCatalogs = data },
       error => { console.error(error) },
       () => {
-        this.treeMarketPlaceService.catalogs$.next(this.serviceCatalogs)        
+        this.treeMarketPlaceService.catalogs$.next(this.serviceCatalogs)
       }
     )
   }
 
   retrieveCandidateFromRef(candidateRef: ServiceCandidateRef) {
-    
+
     this.candidateService.retrieveServiceCandidate({ id: candidateRef.id }).subscribe(
-      data => { 
+      data => {
         // console.log(data)
         let candidate: ServiceCandidateWithLogo = data
         candidate.fetchingLogo = true
@@ -114,7 +114,7 @@ export class ServicesMarketplaceComponent implements OnInit {
       error => { console.error(error) },
       () => {
         this.serviceCandidates.sort(this.sortingService.ascStringSortingFunctionByNameProperty())
-        this.filteredServiceCandidates$ = this.serviceCandidatesFilterCtrl.valueChanges.pipe( 
+        this.filteredServiceCandidates$ = this.serviceCandidatesFilterCtrl.valueChanges.pipe(
           startWith(null),
           map( (value:null | string) => value ? this._filterOnServiceCandidates(value) : this.serviceCandidates.slice() )
         )
@@ -138,7 +138,7 @@ export class ServicesMarketplaceComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(
       result => {
-        // console.log(result);    
+        // console.log(result);
       }
     )
   }

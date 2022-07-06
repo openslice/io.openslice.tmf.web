@@ -79,7 +79,7 @@ export class EditServiceSpecsComponent implements OnInit {
 
 @ViewChild('specSort', {static: false}) set matSort(ms: MatSort) {
     this.dataSource.sort = ms;
-  } 
+  }
   // @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
 
   @ViewChild('specRelationshipsPanel', {static: false}) specRelationshipsPanel: MatExpansionPanel
@@ -91,7 +91,7 @@ export class EditServiceSpecsComponent implements OnInit {
 
   attachmentFilesCtrl = new FileUploadControl(FileUploadValidators.accept(['.jpeg', '.jpg', '.png', '.zip', '.pdf', '.yaml', '.json', '.xml', '.txt', '.tar.gz']))
   logoImageCtrl = new FileUploadControl(FileUploadValidators.accept(['image/*']))
-  
+
   specLogoRef: AttachmentRef
   currentSpecLogoAsDataUrl: string | ArrayBuffer
 
@@ -106,8 +106,8 @@ export class EditServiceSpecsComponent implements OnInit {
 
     this.initSubscriptions()
     this.subscribeToLogoUploadEvent()
-    
-    if (this.activatedRoute.snapshot.params.id) 
+
+    if (this.activatedRoute.snapshot.params.id)
     {
       this.specID = this.activatedRoute.snapshot.params.id
       this.retrieveServiceSpec()
@@ -154,16 +154,16 @@ export class EditServiceSpecsComponent implements OnInit {
       this.activeListItem = item
     } else {
       const dialogRef = this.dialog.open(DiscardChangesComponent, {autoFocus: true})
-    
+
       dialogRef.afterClosed().subscribe (discardChanges => {
         if (discardChanges) {
           this.editForm.patchValue(this.spec)
-          this.editForm.markAsPristine()  
+          this.editForm.markAsPristine()
           this.activeListItem = item
         }
       })
     }
-  } 
+  }
 
 
   retrieveServiceSpec() {
@@ -174,9 +174,9 @@ export class EditServiceSpecsComponent implements OnInit {
         //populate General Panel Info
         if (this.spec) {
           this.finishedLoading = true
-          
+
           if (!this.spec.validFor) this.spec.validFor = {endDateTime:null, startDateTime:null}
-  
+
           this.editForm.patchValue(this.spec)
           this.editForm.markAsPristine()
           //populate Specification Relationships Panel Info
@@ -184,25 +184,25 @@ export class EditServiceSpecsComponent implements OnInit {
             startWith(null),
             map( (value:null | string) => value ? this._filterOnRelatedSpecs(value) : this.spec.serviceSpecRelationship.slice() )
           )
-  
+
           //populate Specification Characteristic Panel Info
           // filter Spec Characteristic that does not have defined Value Type (parent spec char)
           this.dataSource.data = this.spec.serviceSpecCharacteristic.filter(specCharacteristic => specCharacteristic.valueType)
           // this.dataSource.paginator = this.paginator;
-  
-  
+
+
           this.specCharacteristicsTags = ["All"]
           this.tagFiltervalue = "All"
           this.specCharacteristicsTags = this.retrieveSpecCharaceristicsTags(this.dataSource.data)
-  
+
           // Check if spec has a defined logo already
           this.specLogoRef = this.spec.attachment.find( att => att.name.includes('logo') )
           if (this.specLogoRef) {
             this.currentSpecLogoAsDataUrl = this.specServiceRootUrl+this.specLogoRef.url
           }
-  
+
           this.retrieveLCMRulesSpecs();
-  
+
           //populate Service Descriptor Panel Info
           // this.retrieveServiceDesriptor(this.spec.id)
         }
@@ -246,7 +246,7 @@ export class EditServiceSpecsComponent implements OnInit {
     filterValue = filterValue.toLowerCase();
     this.dataSource.filter = filterValue;
   }
-  
+
   filterCharacteristicsByTag(tagName) {
     this.tagFiltervalue = tagName
     if (tagName === "All") {
@@ -267,11 +267,11 @@ export class EditServiceSpecsComponent implements OnInit {
     })
 
     dialogRef.afterClosed().subscribe (
-      result => { 
+      result => {
         console.log(result)
-        if (result) { 
+        if (result) {
           this.toast.success("Service Specification Relationship list was successfully updated")
-          this.retrieveServiceSpec() 
+          this.retrieveServiceSpec()
         }
       }
     )
@@ -282,16 +282,16 @@ export class EditServiceSpecsComponent implements OnInit {
       data: {
         serviceSpec: this.spec,
         specToBeUpdated: characteristic
-      }, 
+      },
       disableClose: true
     })
 
     dialogRef.afterClosed().subscribe (
-      result => { 
+      result => {
         console.log(result)
-        if (result) { 
+        if (result) {
           this.toast.success("Service Specification Characteristics list was successfully updated")
-          this.retrieveServiceSpec() 
+          this.retrieveServiceSpec()
         }
       }
     )
@@ -301,21 +301,21 @@ export class EditServiceSpecsComponent implements OnInit {
     const specToBeDeletedIndex = this.spec.serviceSpecCharacteristic.findIndex(char => char.id === characteristic.id)
 
     const newSpecCharacteristicArray: ServiceSpecCharacteristic[] = this.spec.serviceSpecCharacteristic.slice()
-    
+
     newSpecCharacteristicArray.splice(specToBeDeletedIndex, 1)
 
     const dialogRef = this.dialog.open(DeleteServiceSpecCharacteristicsComponent, {
       data: {
         serviceSpec: this.spec,
-        serviceSpecCharacteristicArray: newSpecCharacteristicArray, 
+        serviceSpecCharacteristicArray: newSpecCharacteristicArray,
         specToBeDeleted: this.spec.serviceSpecCharacteristic[specToBeDeletedIndex]
       }
     })
 
     dialogRef.afterClosed().subscribe (
-      result => { 
+      result => {
         console.log(result)
-        if (result){ 
+        if (result){
           this.toast.success("Service Specification Characteristics list was successfully updated")
           this.retrieveServiceSpec()
         }
@@ -324,7 +324,7 @@ export class EditServiceSpecsComponent implements OnInit {
   }
 
   cloneServiceSpecCharacteristic(characteristic: ServiceSpecCharacteristic) {
-    
+
     const cloneCharacteristic: ServiceSpecCharacteristic = {
       name: `Copy of ${characteristic.name}`,
       description: characteristic.description,
@@ -348,9 +348,9 @@ export class EditServiceSpecsComponent implements OnInit {
     this.specService.patchServiceSpecification({id: this.spec.id, serviceSpecification: updateCharacteristicObj}).subscribe(
       data => console.log(data),
       error => console.error(error),
-      () => { 
+      () => {
         this.toast.success("Service Specification Characteristics list was successfully updated")
-        this.retrieveServiceSpec() 
+        this.retrieveServiceSpec()
       }
     )
   }
@@ -371,9 +371,9 @@ export class EditServiceSpecsComponent implements OnInit {
       this.specService.createServiceSpecification(updateObj).subscribe(
         data => { updatedSpec = data },
         error => console.error(error),
-        () => { 
+        () => {
           this.newSpecification = false
-          this.toast.success("Service Specification was successfully created") 
+          this.toast.success("Service Specification was successfully created")
           this.refreshServiceSpecification(updatedSpec)
         }
       )
@@ -382,9 +382,9 @@ export class EditServiceSpecsComponent implements OnInit {
       this.specService.patchServiceSpecification({ id: this.specID, serviceSpecification: updateObj }).subscribe(
         data => { updatedSpec = data },
         error => console.error(error),
-        () => { 
-          this.toast.success("Service Specification was successfully updated") 
-          this.refreshServiceSpecification(updatedSpec) 
+        () => {
+          this.toast.success("Service Specification was successfully updated")
+          this.refreshServiceSpecification(updatedSpec)
         }
       )
     }
@@ -427,12 +427,12 @@ export class EditServiceSpecsComponent implements OnInit {
       this.dataUrlConverting = false
     }
   }
-  
+
   submitLogo() {
     if (this.logoImageCtrl.valid) {
       let tempFile = this.logoImageCtrl.value[0]
       const fileExtension = tempFile.name.split('.').pop()
-      const preDefinedLogoFilename = `logo.${fileExtension}` 
+      const preDefinedLogoFilename = `logo.${fileExtension}`
 
       let newAttachment: Attachment
       this.specService.addAttachmentToServiceSpecification({id: this.specID, afile: new File(this.logoImageCtrl.value, preDefinedLogoFilename, {type:tempFile.type})}).subscribe(
@@ -442,7 +442,7 @@ export class EditServiceSpecsComponent implements OnInit {
           this.toast.error("An error occurred while uploading attachment")
         },
         () => {
-          if (this.specLogoRef) { // If there is a logo defined already, delete it 
+          if (this.specLogoRef) { // If there is a logo defined already, delete it
             const attToBeDeletedIndex = this.spec.attachment.findIndex(char => char.id === this.specLogoRef.id)
             const newSpecAttArray: AttachmentRef[] = this.spec.attachment.slice()
             newSpecAttArray.splice(attToBeDeletedIndex, 1) // remove previously defined logo from attachment Array
@@ -466,36 +466,36 @@ export class EditServiceSpecsComponent implements OnInit {
       )
     }
   }
-  
+
   clearLogoList() {
     this.logoImageCtrl.clear()
   }
-  
+
   logoUpdatedSuccessfully() {
     this.toast.success("Service Specification logo was successfully uploaded")
     this.clearLogoList()
     this.retrieveServiceSpec()
   }
-  
+
   openAttachmentDeleteDialog(attachmentRef: AttachmentRef) {
     const attToBeDeletedIndex = this.spec.attachment.findIndex(char => char.id === attachmentRef.id)
 
     const newSpecAttArray: AttachmentRef[] = this.spec.attachment.slice()
-    
+
     newSpecAttArray.splice(attToBeDeletedIndex, 1)
 
     const dialogRef = this.dialog.open(DeleteAttachmentComponent, {
       data: {
         serviceSpec: this.spec,
-        serviceSpecAttachmentArray: newSpecAttArray, 
+        serviceSpecAttachmentArray: newSpecAttArray,
         attachmentToBeDeleted: this.spec.attachment[attToBeDeletedIndex]
       }
     })
 
     dialogRef.afterClosed().subscribe (
-      result => { 
+      result => {
         console.log(result)
-        if (result){ 
+        if (result){
           this.toast.success("Service Specification Characteristics list was successfully updated")
           this.retrieveServiceSpec()
         }
@@ -508,14 +508,14 @@ export class EditServiceSpecsComponent implements OnInit {
   }
 
 
-  
-  
+
+
   applyLCMRuleFilter(filterValue: string) {
     filterValue = filterValue.trim();
     filterValue = filterValue.toLowerCase();
     //this.dataSource.filter = filterValue;
   }
-  
+
   filterCMRuleByTag(tagName) {
     this.tagFiltervalue = tagName
     if (tagName === "All") {
@@ -532,9 +532,9 @@ export class EditServiceSpecsComponent implements OnInit {
       data => this.ruleSpecsOfServiceSpec  = data,
       error => console.error(error),
       () => {
-        
+
         //populate LCMRules
-        
+
         this.dataSourceLCMRules.data = this.ruleSpecsOfServiceSpec;
 
       }

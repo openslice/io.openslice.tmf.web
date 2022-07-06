@@ -11,7 +11,7 @@ import { IAppConfig } from './shared/models/app-config.model';
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss'], 
+  styleUrls: ['./app.component.scss'],
   providers: []
 })
 
@@ -25,7 +25,7 @@ export class AppComponent {
   config: IAppConfig
 
   // private jwtHelper: JwtHelperService = new JwtHelperService();
-  
+
   // private _decodedAccessToken: any;
   // private _decodedIDToken: any;
   // get decodedAccessToken() { return this._decodedAccessToken; }
@@ -39,7 +39,7 @@ export class AppComponent {
     ) {
       this.config = this.appService.config
       this.authService.runInitialLoginSequence()
-      
+
       this.themeID = this.themingService.getConfig().THEME_ID
       this.favIcon.href = this.themingService.getConfig().FAVICON_PATH
       this.titleService.setTitle(`${this.config.TITLE} Services portal`)

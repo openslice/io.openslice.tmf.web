@@ -19,8 +19,10 @@ export class RedirectComponent implements OnInit {
 
     if (activePortal === 'services') {
       this.router.navigate(['services', 'services_marketplace'])
-    } 
-
+    }
+    else if (activePortal === 'resources') {
+      this.router.navigate(['resources', 'resource_catalogs'])
+    }
     else if (activePortal === 'testing') {
       this.router.navigate(['testing', 'service_test_specs'])
     }
@@ -28,7 +30,7 @@ export class RedirectComponent implements OnInit {
     else if (activePortal === 'products') {
       this.router.navigate(['/'])
     }
-    
+
     else {
       this.router.navigate(['/'])
     }

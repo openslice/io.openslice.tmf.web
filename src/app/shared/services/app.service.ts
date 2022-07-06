@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { BootstrapService } from 'src/app/bootstrap/bootstrap.service';
 import { ApiConfiguration as PortalAPIconfig} from 'src/app/openApis/portalRepositoryAPI/api-configuration'
 import { ApiConfiguration as ServiceCatalogAPIconfig} from 'src/app/openApis/serviceCatalogManagement/api-configuration'
+import { ApiConfiguration as ResourceCatalogAPIconfig} from 'src/app/openApis/resourceCatalogManagement/api-configuration'
 import { ApiConfiguration as ServiceInventoryAPIconfig} from 'src/app/openApis/serviceInventoryManagement/api-configuration'
 import { ApiConfiguration as ServiceOrderingAPIconfig} from 'src/app/openApis/serviceOrderingManagement/api-configuration'
 import { ApiConfiguration as PartyManagementAPIconfig} from 'src/app/openApis/partyManagement/api-configuration'
@@ -25,6 +26,7 @@ export class AppService {
     private bootstrapService: BootstrapService,
     private portalAPIConfig: PortalAPIconfig,
     private tmfServiceCatalogConfig: ServiceCatalogAPIconfig,
+    private tmfResourceCatalogConfig: ResourceCatalogAPIconfig,
     private tmfServiceInventoryConfig: ServiceInventoryAPIconfig,
     private tmfServiceOrderingConfig: ServiceOrderingAPIconfig,
     private tmfPartyManagementConfig: PartyManagementAPIconfig,
@@ -33,18 +35,19 @@ export class AppService {
     private assuranceServicesManagementAPIConfig: assuranceServicesManagementAPIconfig,
     private lcmRuleSpecificationAPIConfig: lcmRuleSpecificationAPIconfig,
     private serviceTestManagementAPIconfig: serviceTestManagementAPIconfig
-  ) { 
+  ) {
     this.setAPIurls()
     this.recognizePortalDomain()
   }
 
   config = this.bootstrapService.getConfig()
-  portalDomain: "services" | "testing" | "products" | "" = ""
+  portalDomain: "services" | "resources" |"testing" | "products" | "" = ""
 
   setAPIurls() {
     this.portalAPIConfig.rootUrl = this.config.PORTAL_REPO_APIURL
     this.tmfServiceCatalogConfig.rootUrl = this.config.APITMFURL
-    this.tmfServiceInventoryConfig.rootUrl = this.config.APITMFURL    
+    this.tmfResourceCatalogConfig.rootUrl = this.config.APITMFURL
+    this.tmfServiceInventoryConfig.rootUrl = this.config.APITMFURL
     this.tmfServiceOrderingConfig.rootUrl = this.config.APITMFURL
     this.tmfPartyManagementConfig.rootUrl = this.config.APITMFURL
     this.tmfServiceActivationAndConfigurationConfig.rootUrl = this.config.APITMFURL
@@ -60,8 +63,8 @@ export class AppService {
       filter(e => e instanceof NavigationStart),
     ).subscribe( (e: NavigationEnd) => {
       const activatedRoute = e.url.split('/')[1].toLowerCase()
-      if (["","services", "testing", "products"].includes(activatedRoute)) {
-        this.portalDomain = <"" | "services" | "testing" | "products"> activatedRoute
+      if (["","services","resources", "testing", "products"].includes(activatedRoute)) {
+        this.portalDomain = <"" | "services" | "resources" | "testing" | "products"> activatedRoute
         localStorage.setItem("active_portal", this.portalDomain)
       }
     })

@@ -23,6 +23,7 @@ import { DeleteTestSpecAttachmentComponent } from './p_testing/admin/testSpecifi
 import { ImportCharacteristicsFromYamlComponent } from './p_testing/admin/testSpecificationManagement/edit-service-test-spec/import-characteristics-from-yaml/import-characteristics-from-yaml.component';
 import { EditServiceTestComponent } from './p_testing/admin/testManagement/edit-service-test/edit-service-test.component';
 import { DeleteServiceRelationshipComponent } from './p_testing/admin/testSpecificationManagement/edit-service-test-spec/delete-service-relationship/delete-service-relationship.component';
+import { DeleteServiceTestComponent } from './p_testing/admin/testManagement/delete-service-test/delete-service-test.component';
 
 
 
@@ -47,7 +48,8 @@ import { DeleteServiceRelationshipComponent } from './p_testing/admin/testSpecif
     ImportCharacteristicsFromYamlComponent,
     DiscardChangesComponent,
     EditServiceTestComponent,
-    DeleteServiceRelationshipComponent
+    DeleteServiceRelationshipComponent,
+    DeleteServiceTestComponent
   ],
   imports: [
     CommonModule,
@@ -61,11 +63,13 @@ import { DeleteServiceRelationshipComponent } from './p_testing/admin/testSpecif
     // DeleteIndividualComponent,
     // DeleteServiceTestSpecComponent
     EditTestSpecCharacteristicComponent,
+    DeleteServiceTestSpecComponent,
     DeleteTestSpecCharacteristicComponent,
     DeleteTestSpecAttachmentComponent,
     ImportCharacteristicsFromYamlComponent,
     DiscardChangesComponent,
-    DeleteServiceRelationshipComponent
+    DeleteServiceRelationshipComponent,
+    DeleteServiceTestComponent
   ],
 })
 

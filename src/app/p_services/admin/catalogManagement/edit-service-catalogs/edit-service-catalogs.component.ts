@@ -180,7 +180,7 @@ export class EditServiceCatalogsComponent implements OnInit {
 
     if (this.newCatalog) {
       this.catalogService.createServiceCatalog(updateObj).subscribe(
-        data => console.log(data),
+        data => {},
         error => console.error(error),
         () => this.dialogRef.close('created')
       )
@@ -188,7 +188,7 @@ export class EditServiceCatalogsComponent implements OnInit {
     
     else {
       this.catalogService.patchServiceCatalog({id: this.catalogID, serviceCatalog: updateObj}).subscribe(
-        data => console.log(data),
+        data => { },
         error => console.error(error),
         () => this.dialogRef.close('updated')
       )

@@ -23,7 +23,6 @@ export class ImportNsdDialogComponent implements OnInit {
   submitDialog() {
     this.specService.createServiceSpecificationFromNSDID(this.experiment.id).subscribe(
       data => { 
-        console.log(data)
         this.dialogRef.close(data)
       },
       error => { console.error(error); this.toast.error("An error occurred while importing NSD") }

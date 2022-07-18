@@ -55,7 +55,6 @@ export class ListOrganizationsComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe (
       result => {
-        console.log(result)
         if (result) {
           if (result instanceof HttpErrorResponse) {
             this.toast.error("An error occurred while attempting to delete Organization")

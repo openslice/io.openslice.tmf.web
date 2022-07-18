@@ -16,7 +16,6 @@ export class TerminateServiceOrderItemsComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    console.log(this.data)
   }
 
   confirmTermination() {

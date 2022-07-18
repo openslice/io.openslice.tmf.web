@@ -23,7 +23,7 @@ export class CloneGstTemplateComponent implements OnInit {
 
   submitDialog() {
     this.specService.cloneGSTServiceSpecification(this.serviceNameCtrl.value).subscribe(
-      data => { console.log(data); this.dialogRef.close(data)},
+      data => { this.dialogRef.close(data)},
       error => console.error(error)
     )
   }

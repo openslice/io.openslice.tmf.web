@@ -24,7 +24,6 @@ export class ImportTestDialogComponent implements OnInit {
   submitDialog() {
     this.specService.createServiceSpecificationFromServiceTestSpecification(this.testSpecification.id).subscribe(
       data => { 
-        console.log(data)
         this.dialogRef.close(data)
       },
       error => { console.error(error); this.toast.error("An error occurred while importing Test Specification") }

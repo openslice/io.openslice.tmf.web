@@ -41,7 +41,6 @@ export class CreateServiceCategoryChildrenComponent implements OnInit {
   
   ngOnInit() {
     if (this.data) {
-      console.log(this.data)
       if (!this.data.validFor) this.data.validFor = {endDateTime:null, startDateTime:null}
       this.parentCategory = this.data
       this.editForm.patchValue({parentId: this.parentCategory.id})
@@ -53,28 +52,23 @@ export class CreateServiceCategoryChildrenComponent implements OnInit {
   }
 
   submitDialog() {
-    console.log('submit')
-    console.log(this.editForm)
     const creationObj: ServiceCategoryCreate = this.editForm.value
     creationObj.parentId = this.parentCategory.id
     creationObj.isRoot = false
 
-    console.log(creationObj)
     let createdChildCategory: ServiceCategory
     this.categoryService.createServiceCategory(creationObj).subscribe(
-      data => {console.log(data); createdChildCategory = data},
-      error => console.log(error),
+      data => {createdChildCategory = data},
+      error => console.error(error),
       () => {
         this.parentCategory.category.push({id: createdChildCategory.id})
         const updateObj: ServiceCategoryUpdate = {
           category: this.parentCategory.category
         }
 
-        console.log(this.parentCategory)
-        console.log(updateObj) 
         this.categoryService.patchServiceCategory({serviceCategory: updateObj, id: this.parentCategory.id}).subscribe(
-          data => console.log(data),
-          error =>  console.log(error),
+          data => {},
+          error =>  console.error(error),
           () => this.dialogRef.close('created')
         )
       }

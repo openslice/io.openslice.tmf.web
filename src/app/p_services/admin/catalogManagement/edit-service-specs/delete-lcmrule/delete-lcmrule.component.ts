@@ -26,7 +26,7 @@ export class DeleteLcmruleComponent implements OnInit {
   confirmDelete() { 
     // this.dialogRef.close('deleted')
     this.lcmRulesService.deleteLCMRuleSpecification(this.data.id).subscribe(
-      data => console.log(data),
+      data => {},
       error => { this.dialogRef.close(error); console.error(error) },
       () => this.dialogRef.close('deleted')
     )

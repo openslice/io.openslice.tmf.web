@@ -30,7 +30,7 @@ export class DeleteTestSpecAttachmentComponent implements OnInit {
     }
 
     this.testSpecService.patchServiceTestSpecification({ id: this.data.serviceTestSpec.id, serviceSpecification: updateSpecObj }).subscribe(
-      data => console.log(data),
+      data => {},
       error => console.error(error),
       () => this.dialogRef.close('deleted')
     )

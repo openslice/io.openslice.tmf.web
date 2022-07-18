@@ -20,6 +20,7 @@ import { fadeIn } from 'src/app/shared/animations/animations';
 import { DeleteAttachmentComponent } from './delete-attachment/delete-attachment.component';
 import { DeleteLcmruleComponent } from './delete-lcmrule/delete-lcmrule.component';
 import { AppService } from 'src/app/shared/services/app.service';
+import { ImportLcmruleComponent } from './import-lcmrule/import-lcmrule.component';
 
 
 @Component({
@@ -74,7 +75,7 @@ export class EditServiceSpecsComponent implements OnInit {
   tagFiltervalue:string = "All"
 
 
-  lcmRulesTags: string[] = ["All", "Pre-provision phase", "Activation phase", "Supervision phase", "De-activation phase"]
+  lcmRulesTags: string[] = ["Creation", "Pre-Provision", "After-Activation", "Supervision", "After-Deactivation"]
   lcmRulesTagValue:string = "All"
 
 @ViewChild('specSort', {static: false}) set matSort(ms: MatSort) {
@@ -121,7 +122,6 @@ export class EditServiceSpecsComponent implements OnInit {
     this.subscriptions.add(this.router.events.subscribe(
       event => {
         if (event instanceof ActivationEnd) {
-          console.log(event.snapshot.params.id)
           this.specID = this.activatedRoute.snapshot.params.id
           this.retrieveServiceSpec()
         }
@@ -203,6 +203,10 @@ export class EditServiceSpecsComponent implements OnInit {
   
           this.retrieveLCMRulesSpecs();
   
+          if (localStorage.getItem('previous_navigation_state') === 'lcm_tab') {
+            this.activeListItem = 'Life Cycle Rules'
+            localStorage.removeItem('previous_navigation_state')
+          }
           //populate Service Descriptor Panel Info
           // this.retrieveServiceDesriptor(this.spec.id)
         }
@@ -225,7 +229,7 @@ export class EditServiceSpecsComponent implements OnInit {
 
   retrieveServiceDesriptor(specId) {
     this.specService.retrieveServiceSpecificationDescriptor(specId).subscribe(
-      data => console.log(data),
+      data => {},
       error => console.error(error)
     )
   }
@@ -268,7 +272,6 @@ export class EditServiceSpecsComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe (
       result => { 
-        console.log(result)
         if (result) { 
           this.toast.success("Service Specification Relationship list was successfully updated")
           this.retrieveServiceSpec() 
@@ -288,7 +291,6 @@ export class EditServiceSpecsComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe (
       result => { 
-        console.log(result)
         if (result) { 
           this.toast.success("Service Specification Characteristics list was successfully updated")
           this.retrieveServiceSpec() 
@@ -314,7 +316,6 @@ export class EditServiceSpecsComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe (
       result => { 
-        console.log(result)
         if (result){ 
           this.toast.success("Service Specification Characteristics list was successfully updated")
           this.retrieveServiceSpec()
@@ -338,7 +339,6 @@ export class EditServiceSpecsComponent implements OnInit {
       valueType: characteristic.valueType
     }
 
-    console.log(cloneCharacteristic)
     this.spec.serviceSpecCharacteristic.push(cloneCharacteristic)
 
     const updateCharacteristicObj: ServiceSpecificationUpdate = {
@@ -346,7 +346,7 @@ export class EditServiceSpecsComponent implements OnInit {
     }
 
     this.specService.patchServiceSpecification({id: this.spec.id, serviceSpecification: updateCharacteristicObj}).subscribe(
-      data => console.log(data),
+      data => {},
       error => console.error(error),
       () => { 
         this.toast.success("Service Specification Characteristics list was successfully updated")
@@ -398,7 +398,7 @@ export class EditServiceSpecsComponent implements OnInit {
   submitAttachments() {
     if (this.attachmentFilesCtrl.valid) {
       this.specService.addAttachmentToServiceSpecification({id: this.specID, afile: this.attachmentFilesCtrl.value[0]}).subscribe(
-        data => { console.log(data) },
+        data => { },
         error => {
           console.error(error)
           this.toast.error("An error occurred while uploading attachment")
@@ -453,7 +453,7 @@ export class EditServiceSpecsComponent implements OnInit {
             }
 
             this.specService.patchServiceSpecification({ id: this.specID, serviceSpecification: updateSpecObj}).subscribe(
-              data => console.log(data),
+              data => {},
               error => console.error(error),
               () => {
                 this.logoUpdatedSuccessfully()
@@ -494,7 +494,6 @@ export class EditServiceSpecsComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe (
       result => { 
-        console.log(result)
         if (result){ 
           this.toast.success("Service Specification Characteristics list was successfully updated")
           this.retrieveServiceSpec()
@@ -516,13 +515,13 @@ export class EditServiceSpecsComponent implements OnInit {
     //this.dataSource.filter = filterValue;
   }
   
-  filterCMRuleByTag(tagName) {
-    this.tagFiltervalue = tagName
-    if (tagName === "All") {
-      // this.dataSource.data = this.spec.serviceSpecCharacteristic.filter(specCharacteristic => specCharacteristic.valueType)
+  filterCMRuleByTag(tagName:string) {
+    this.lcmRulesTagValue = tagName
+    const sanitizedTag = tagName.replace('-','_').toUpperCase()
+    if (sanitizedTag === "ALL") {
+      this.dataSourceLCMRules.data = this.ruleSpecsOfServiceSpec
     } else {
-      // this.dataSource.data = this.spec.serviceSpecCharacteristic.filter(specCharacteristic => specCharacteristic.valueType)
-      // .filter(specChar => specChar.serviceSpecCharRelationship.some( rel => rel.name === tagName ))
+      this.dataSourceLCMRules.data = this.ruleSpecsOfServiceSpec.filter(ruleSpec => ruleSpec.lcmrulephase === sanitizedTag)
     }
   }
 
@@ -549,10 +548,9 @@ export class EditServiceSpecsComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe (
       result => {
-        console.log(result)
         if (result) {
           if (result instanceof HttpErrorResponse) {
-            this.toast.error("An error occurred while attempting to delete Service Specification")
+            this.toast.error("An error occurred while attempting to delete LCM rule")
           } else {
             this.toast.success("LCM Rules list is successfully updated")
             this.retrieveLCMRulesSpecs()
@@ -560,6 +558,24 @@ export class EditServiceSpecsComponent implements OnInit {
         }
       }
     )
+  }
+
+  openImportLCMruleDialog() {
+    const dialogRef = this.dialog.open(ImportLcmruleComponent, {data: this.spec})
+
+    dialogRef.afterClosed().subscribe (
+      result => {
+        if (result) {
+          if (result instanceof HttpErrorResponse) {
+            this.toast.error("An error occurred while attempting to import LCM rule")
+          } else {
+            this.toast.success("LCM Rules list is successfully updated")
+            this.retrieveLCMRulesSpecs()
+          }
+        }
+      }
+    )
+
   }
 
 }

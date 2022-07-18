@@ -29,12 +29,8 @@ export class DeleteServiceSpecCharacteristicsComponent implements OnInit {
       serviceSpecCharacteristic: this.data.serviceSpecCharacteristicArray
     }
 
-
-    console.log(updateSpecObj)
-
-    console.log(this.data.serviceSpec)
     this.specService.patchServiceSpecification({ id: this.data.serviceSpec.id, serviceSpecification: updateSpecObj }).subscribe(
-      data => console.log(data),
+      data => {},
       error => console.error(error),
       () => this.dialogRef.close('deleted')
     )

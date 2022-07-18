@@ -88,18 +88,11 @@ export class AuthService {
     this.oauthService.tryLoginCodeFlow()
     .catch(error => console.error(error))
     .then(
-      () => {
-        // console.log('tryLoginCodeFlow')
-        // console.log('hasValidAccessToken : ', this.oauthService.hasValidAccessToken());
-        // console.log('hasValidIdToken : ', this.oauthService.hasValidIdToken());
-        // console.log('getAccessTokenExpiration : ', this.oauthService.getAccessTokenExpiration());
-        // console.log('getAccessToken : ', this.oauthService.getAccessToken());
-        // console.log('getIdToken : ', this.oauthService.getIdToken());
-       
-        console.warn('AccessTokenExpiration : ', new Date(this.oauthService.getAccessTokenExpiration()).toUTCString());
+      () => {       
+        // console.warn('AccessTokenExpiration : ', new Date(this.oauthService.getAccessTokenExpiration()).toUTCString());
 
         if (this.oauthService.hasValidAccessToken()) {
-          console.warn('this.oauthService.hasValidAccessToken() === true')
+          // console.warn('this.oauthService.hasValidAccessToken() === true')
           this.isAuthenticatedSubject$.next(this.oauthService.hasValidAccessToken());
           return Promise.resolve();
         } 

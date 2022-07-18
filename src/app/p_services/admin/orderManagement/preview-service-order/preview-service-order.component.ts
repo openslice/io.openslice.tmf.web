@@ -84,7 +84,6 @@ export class PreviewServiceOrderComponent implements OnInit {
 
     if (this.activatedRoute.snapshot.params.id)
     {
-      console.log(this.activatedRoute.snapshot.params.id)
       this.orderID = this.activatedRoute.snapshot.params.id
       this.retrieveServiceOrder()
     } else {

@@ -7,14 +7,14 @@ import { ToastrService } from 'ngx-toastr';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { trigger } from '@angular/animations';
-import { fadeIn } from 'src/app/shared/animations/animations';
+import { fadeIn, simpleFade } from 'src/app/shared/animations/animations';
 
 
 @Component({
   selector: 'app-edit-service-spec-characteristics',
   templateUrl: './edit-service-spec-characteristics.component.html',
   styleUrls: ['./edit-service-spec-characteristics.component.scss'],
-  animations: [ trigger('fadeIn', fadeIn()) ]
+  animations: [ trigger('fadeIn', fadeIn()), trigger('simpleFade', simpleFade()) ]
 })
 export class EditServiceSpecCharacteristicsComponent implements OnInit {
 
@@ -55,6 +55,7 @@ export class EditServiceSpecCharacteristicsComponent implements OnInit {
 
   compDestroy$ = new Subject()
 
+  isCharValueBlockExpanded: boolean[] = []
 
   ngOnInit() {
     if (this.data.specToBeUpdated) {
@@ -64,9 +65,8 @@ export class EditServiceSpecCharacteristicsComponent implements OnInit {
       const formArray = this.editFormCharacteristic.get('serviceSpecCharacteristicValue') as FormArray
       this.data.specToBeUpdated.serviceSpecCharacteristicValue.forEach( val => {
         formArray.push(this.updateFormArrayItem(val))
+        this.isCharValueBlockExpanded.push(false)
       })
-      console.log(this.data)
-      console.log(this.editFormCharacteristic)
 
       this.subValueTypeCtrl.patchValue(this.data.specToBeUpdated.serviceSpecCharacteristicValue[0].valueType)
       if (['SET', 'ARRAY', 'ENUM'].includes(this.data.specToBeUpdated.valueType)) {
@@ -153,11 +153,17 @@ export class EditServiceSpecCharacteristicsComponent implements OnInit {
         valueType: new FormControl(subType)
       })
     )
+    this.isCharValueBlockExpanded.push(false)
   }
 
   deleteFormArrayItem(index) {
     const formArray = this.editFormCharacteristic.get('serviceSpecCharacteristicValue') as FormArray
     formArray.removeAt(index)
+    this.isCharValueBlockExpanded.splice(index, 1)
+  }
+
+  expandCharValueBlock(index) {
+    this.isCharValueBlockExpanded[index] = !this.isCharValueBlockExpanded[index] 
   }
 
   isDefaultCheckboxChanged(index, event: MatCheckboxChange) {
@@ -175,7 +181,6 @@ export class EditServiceSpecCharacteristicsComponent implements OnInit {
   }
 
   submitDialog() {
-    console.log('submit')
     
     if (this.newSpec) {
       this.data.serviceSpec.serviceSpecCharacteristic.push(this.editFormCharacteristic.getRawValue())
@@ -188,9 +193,8 @@ export class EditServiceSpecCharacteristicsComponent implements OnInit {
       serviceSpecCharacteristic: this.data.serviceSpec.serviceSpecCharacteristic
     }
 
-    console.log(updateCharacteristicObj)
     this.specService.patchServiceSpecification({id: this.data.serviceSpec.id, serviceSpecification: updateCharacteristicObj}).subscribe(
-      data => console.log(data),
+      data => {},
       error => { console.error(error); this.toast.error("An error occurred upon updating Spec Characteristics") },
       () => {this.dialogRef.close('updated')}
     )

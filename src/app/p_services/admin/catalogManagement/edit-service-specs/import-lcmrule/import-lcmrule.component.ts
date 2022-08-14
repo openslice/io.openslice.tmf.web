@@ -65,6 +65,9 @@ export class ImportLcmruleComponent implements OnInit {
         () => {
           const importedRulePayload:LCMRuleSpecificationCreate = {
             code: ruleSpec.code,
+            lcmrulephase: ruleSpec.lcmrulephase,
+            priority: ruleSpec.priority,
+            version: ruleSpec.version,
             content: ruleSpec.content,
             description: ruleSpec.description,
             name: `Import of ${ruleSpec.name}`,

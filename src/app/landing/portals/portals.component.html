@@ -2,16 +2,31 @@
 	<div  class="container">
 		<div class="row shadowed-dark" >
 		<div class="" [ngClass]="{'col-12':loggedIn, 'col-sm-12 col-md-8 col-lg-8':!loggedIn}">
-				
+			
+			<ng-container *ngIf="appService.portalDomain === 'services'">
 				<h3>
-					Welcome to the {{config.TITLE}} Services portal!
+					Welcome to the {{config.TITLE}} Services portal
 				</h3>
 				<h5>Use the fields on the right to login
 					to {{config.TITLE}} Services and easily deploy services over 
-					the {{config.TITLE}} infrastructure!</h5>
+					the {{config.TITLE}} infrastructure</h5>
 				<h5>Check our <strong><a style="color:#FFFFFF;" href="{{config.WIKI}}">wiki</a></strong> for further documenation</h5>
 				<h5>Report platform issues at our <strong><a style="color:#FFFFFF;" href="{{config.BUGZILLA}}">Bugzilla</a></strong></h5>
 				<h5>Check the <strong><a style="color:#FFFFFF;" href="{{config.STATUS}}">Health Status</a></strong> of our infrastructure</h5>
+			</ng-container>
+
+			<ng-container *ngIf="appService.portalDomain === 'testing'">
+				<h3>
+					Welcome to the {{config.TITLE}} Testing portal
+				</h3>
+				<h5>Use the fields on the right to login
+					to {{config.TITLE}} Testing and easily design tests over 
+					the {{config.TITLE}} infrastructure</h5>
+				<h5>Check our <strong><a style="color:#FFFFFF;" href="{{config.WIKI}}">wiki</a></strong> for further documenation</h5>
+				<h5>Report platform issues at our <strong><a style="color:#FFFFFF;" href="{{config.BUGZILLA}}">Bugzilla</a></strong></h5>
+				<h5>Check the <strong><a style="color:#FFFFFF;" href="{{config.STATUS}}">Health Status</a></strong> of our infrastructure</h5>
+			</ng-container>
+
 				
 			</div>
 			<div class="col-sm-12 col-md-4 col-lg-4" *ngIf="!loggedIn">
@@ -27,9 +42,18 @@
 	<div  class="container">
         <div class="row align-items-center">
             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                <h2 class="shadowed">Deploy {{config.TITLE}} services!</h2>
-                <h6 class="mb-0">Access, create
-                    and share services over the {{config.TITLE}} infrastructure!</h6>
+				<ng-container *ngIf="appService.portalDomain === 'services'">
+					<h2 class="shadowed">Deploy {{config.TITLE}} services</h2>
+					<h6 class="mb-0">Access, create
+						and share services over the {{config.TITLE}} infrastructure
+					</h6>
+				</ng-container>
+	
+				<ng-container *ngIf="appService.portalDomain === 'testing'">
+					<h2 class="shadowed">Design {{config.TITLE}} tests</h2>
+					<h6 class="mb-0">Access, create
+						and share tests over the {{config.TITLE}} infrastructure</h6>
+				</ng-container>
             </div>          
         </div>
 	</div>

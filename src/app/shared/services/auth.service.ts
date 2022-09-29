@@ -1,15 +1,14 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, ReplaySubject, combineLatest, Observable } from 'rxjs';
-import { OAuthService, OAuthErrorEvent, AuthConfig } from 'angular-oauth2-oidc';
+import { OAuthService, OAuthErrorEvent, AuthConfig, JwksValidationHandler } from 'angular-oauth2-oidc';
 import { Router } from '@angular/router';
 // import { authConfig } from 'src/assets/config/config.oauth';
 import { map } from 'rxjs/operators';
 import { BootstrapService } from 'src/app/bootstrap/bootstrap.service';
-import { userFromJWT } from 'src/app/models/user-from-jwt.model';
-import { Individual } from 'src/app/openApis/PartyManagement/models';
+import { userFromJWT } from 'src/app/shared/models/user-from-jwt.model';
+import { Individual } from 'src/app/openApis/partyManagement/models';
 import decode from 'jwt-decode';
-import { IndividualService } from 'src/app/openApis/PartyManagement/services';
-import { ToastrService } from 'ngx-toastr';
+import { IndividualService } from 'src/app/openApis/partyManagement/services';
 
 
 
@@ -41,7 +40,6 @@ export class AuthService {
    constructor(    
     private oauthService: OAuthService,
     private router: Router,
-    private toast: ToastrService,
     private bootstrapService: BootstrapService,
     private individualService: IndividualService
     ) 
@@ -75,7 +73,6 @@ export class AuthService {
       }
     })
 
-    // this.oauthService.setupAutomaticSilentRefresh()
   }
 
   public runInitialLoginSequence() {
@@ -91,19 +88,11 @@ export class AuthService {
     this.oauthService.tryLoginCodeFlow()
     .catch(error => console.error(error))
     .then(
-      () => {
-        // console.log('tryLoginCodeFlow')
-        // console.log('hasValidAccessToken : ', this.oauthService.hasValidAccessToken());
-        // console.log('hasValidIdToken : ', this.oauthService.hasValidIdToken());
-        // console.log('getAccessTokenExpiration : ', this.oauthService.getAccessTokenExpiration());
-        // console.log('getAccessToken : ', this.oauthService.getAccessToken());
-        // console.log('getIdToken : ', this.oauthService.getIdToken());
-        // console.log(this.oauthService)
-       
-        console.warn('AccessTokenExpiration : ', new Date(this.oauthService.getAccessTokenExpiration()).toUTCString());
+      () => {       
+        // console.warn('AccessTokenExpiration : ', new Date(this.oauthService.getAccessTokenExpiration()).toUTCString());
 
         if (this.oauthService.hasValidAccessToken()) {
-          console.warn('this.oauthService.hasValidAccessToken() === true')
+          // console.warn('this.oauthService.hasValidAccessToken() === true')
           this.isAuthenticatedSubject$.next(this.oauthService.hasValidAccessToken());
           return Promise.resolve();
         } 
@@ -123,7 +112,6 @@ export class AuthService {
       this.isDoneLoadingSubject$.next(true)
     })
 
-    // this.oauthService.setupAutomaticSilentRefresh()
   }
   
   public fetchUserInfo() {

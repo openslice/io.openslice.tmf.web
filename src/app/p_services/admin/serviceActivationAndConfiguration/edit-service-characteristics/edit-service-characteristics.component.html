@@ -1,0 +1,189 @@
+<div class="container">
+    <h4 mat-dialog-title class="shadowed mb-3">
+        <i class="fa fa-tasks mr-2"></i>
+        <span>Edit Service Characteristics</span>
+    </h4>
+
+    <mat-dialog-content *ngIf="!serviceSpec" class="d-flex align-items-center justify-content-center">
+            <mat-progress-spinner color="primary" mode="indeterminate" diameter="100"></mat-progress-spinner>
+    </mat-dialog-content>
+    
+    <mat-dialog-content *ngIf="serviceSpec">
+        
+        <div *ngIf="specificationCharacteristics.length === 0 && serviceCharacteristics.length === 0" class="mt-3" [@fadeIn]>
+            <i>This service does not contain any characteristics</i>
+        </div>
+
+        <div formArray="specCharFormArray" *ngIf="specificationCharacteristics.length > 0" [@fadeIn]>
+            <h5 class="mt-4 mb-3"><i class="fa fa-file mr-2" aria-hidden="true"></i><b>Service Specification characteristics (editable)</b> </h5>
+
+            <div *ngFor="let charForm of specCharFormArray.controls; let i = index; let last = last" [formGroup]="charForm"
+                class="row justify-content-center"
+                [ngClass]="{'border-bottom1':!last, 'align-items-center':charForm.get('valueType').value !=='ARRAY', 'align-items-baseline':charForm.get('valueType').value ==='ARRAY'}">
+                <!-- <div class="col-lg-6"><b>{{charForm.get('name').value}}</b></div> -->
+                <div class="col-12 font-weight-bold mb-2">- {{charForm.get('name').value}}</div>
+                <div class="col-lg-12" [ngSwitch]="charForm.get('valueType').value">
+
+                    <ng-container *ngSwitchCase="'SET'">
+                        <ng-container *ngTemplateOutlet="iterables"></ng-container>
+                    </ng-container>
+
+                    <ng-container *ngSwitchCase="'ARRAY'">
+                        <ng-container *ngTemplateOutlet="arrays"></ng-container>
+                    </ng-container>
+
+                    <ng-container *ngSwitchCase="'ENUM'">
+                        <ng-container *ngTemplateOutlet="enumerable"></ng-container>
+                    </ng-container>
+
+                    <ng-container *ngSwitchCase="'BINARY'">
+                        <ng-container *ngTemplateOutlet="enumerable"></ng-container>
+                    </ng-container>
+
+                    <ng-container *ngSwitchCase="'TIMESTAMP'">
+                        <mat-form-field [owlDateTimeTrigger]="pickerFrom" appearance="outline">
+                            <mat-label>Custom Value</mat-label>
+                            <input matInput [owlDateTime]="pickerFrom" placeholder="Date Time"
+                                [(ngModel)]="charForm.get('value').value.value" [ngModelOptions]="{standalone: true}">
+                            <mat-icon matSuffix>date_range</mat-icon>
+                            <!-- <span [owlDateTimeTrigger]="dt1"><i class="fa fa-calendar"></i></span> -->
+                            <owl-date-time #pickerFrom></owl-date-time>
+                        </mat-form-field>
+                    </ng-container>
+
+                    <ng-container *ngSwitchDefault>
+                        <mat-form-field appearance="outline">
+                            <mat-label>Custom Value</mat-label>
+                            <!-- <input matInput [(ngModel)]="charForm.get('value').value.value"
+                                [ngModelOptions]="{standalone: true}"> -->
+                            <textarea matTextareaAutosize="true" matAutosizeMaxRows="4" matInput [(ngModel)]="charForm.get('value').value.value"
+                                [ngModelOptions]="{standalone: true}"></textarea>
+                        </mat-form-field>
+                    </ng-container>
+
+                    <ng-template #iterables>
+                        <mat-form-field appearance="outline">
+                            <mat-label>Custom Value</mat-label>
+                            <mat-select formControlName="value" multiple [compareWith]="compareFn">
+                                <mat-option
+                                    *ngFor="let charValue of specificationCharacteristics[i].serviceSpecCharacteristicValue"
+                                    [value]="charValue.value">
+                                    {{charValue.value.alias}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </ng-template>
+
+                    <ng-template #enumerable>
+                        <mat-form-field appearance="outline">
+                            <mat-label>Custom Value</mat-label>
+                            <mat-select formControlName="value" [compareWith]="compareFn">
+                                <mat-option
+                                    *ngFor="let charValue of specificationCharacteristics[i].serviceSpecCharacteristicValue"
+                                    [value]="charValue.value">
+                                    {{charValue.value.alias}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+
+                    </ng-template>
+
+                    <ng-template #arrays>
+                        <div>
+                            <div class="row" *ngFor="let charValue of charForm.get('value').value; let chVi = index">
+                                <div class="col-10">
+                                    <div class="row">
+                                        <mat-form-field class="col-md-12 col-xl-6" appearance="outline">
+                                            <mat-label>Custom Alias</mat-label>
+                                            <!-- <input matInput [(ngModel)]="charValue.alias"
+                                                [ngModelOptions]="{standalone: true}"> -->
+                                            <textarea matTextareaAutosize="true" matAutosizeMaxRows="4" matInput [(ngModel)]="charValue.alias"
+                                            [ngModelOptions]="{standalone: true}"></textarea>
+                
+                                        </mat-form-field >
+                                        <mat-form-field class="col-md-12 col-xl-6" appearance="outline">
+                                            <mat-label>Custom Value</mat-label>
+                                            <!-- <input matInput [(ngModel)]="charValue.value"
+                                                [ngModelOptions]="{standalone: true}"> -->
+                                            <textarea matTextareaAutosize="true" matAutosizeMaxRows="4" matInput [(ngModel)]="charValue.value"
+                                            [ngModelOptions]="{standalone: true}"></textarea>
+    
+                                        </mat-form-field>
+                                    </div>
+                                </div>
+                                <div class="col-2 d-flex justify-content-center align-items-center mb-3">
+                                    <button class="btn btn-lg" aria-label="Clear Characteristic Value" (click)="deleteFromArrayCharacteristicValue(charForm.value, chVi)"><i class="far fa-trash-alt"  aria-hidden="true" ></i></button>
+                                </div>
+                            </div>
+                            
+                            <div class="row mb-3">
+                                <div class="col-12">
+                                    <button class="btn btn-block btn-success"
+                                        (click)="addToArrayCharacteristicValue(charForm.value)"><i
+                                            class="fas fa-plus-circle mr-1"></i>Add new value</button>
+                                </div>
+                            </div>
+                            
+                        </div>
+
+                    </ng-template>
+
+                </div>
+            </div>
+        </div>
+
+
+        <div formArray="serviceCharFormArray" *ngIf="serviceCharacteristics.length > 0" [@fadeIn]>
+            <h5 class="mt-4 mb-3"><i class="fa fa-server mr-2" aria-hidden="true"></i><b>Service specific characteristics (Read only)</b> </h5>
+            <div *ngFor="let char of serviceCharacteristics" class="row align-items-center justify-content-center py-2">
+                <div class="col-lg-6"><h6>{{char.name}}</h6></div>
+                <div class="col-lg-6">
+                    <ng-container [ngSwitch]="char.valueType">
+
+                        <ng-container *ngSwitchCase="'SET'">
+                            <ng-container *ngTemplateOutlet="iterables">
+                            </ng-container>
+                        </ng-container>
+
+                        <ng-container *ngSwitchCase="'ARRAY'">
+                            <ng-container *ngTemplateOutlet="iterables">
+                            </ng-container>
+                        </ng-container>
+
+                        <ng-container *ngSwitchDefault>
+                            <td class="align-middle">
+                                {{char.value.value}} <span
+                                    *ngIf="char.value.alias">({{char.value.alias}})</span>
+                            </td>
+
+                        </ng-container>
+
+                        <ng-template #iterables>
+                            <td class="align-middle">
+                                <table class="table-borderless">
+                                    <tbody>
+                                        <tr
+                                            *ngFor="let value of (char.value.value | jsonParse)">
+                                            <td>
+                                                {{value.value}} <span
+                                                    *ngIf="value.alias">({{value.alias}})</span>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+
+                            </td>
+                        </ng-template>
+                    </ng-container>
+                </div>
+            </div>
+        </div>
+    </mat-dialog-content>
+
+    <div class="container-fluid" >
+        <div class="row justify-content-end">
+            <button type="button" class="btn btn-danger m-2" (click)="closeDialog()">Cancel</button>
+            <button type="submit" class="btn btn-success m-2" (click)="submitDialog()">Submit</button>
+        </div>
+    </div>
+</div>

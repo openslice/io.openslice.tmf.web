@@ -1,17 +1,17 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
-import { ServiceSpecification } from 'src/app/openApis/ServiceCatalogManagement/models/service-specification';
+import { ServiceSpecification } from 'src/app/openApis/serviceCatalogManagement/models/service-specification';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
-import { CloneGstTemplateComponent } from 'src/app/admin/CatalogManagement/edit-service-specs/clone-gst-template/clone-gst-template.component';
+import { CloneGstTemplateComponent } from 'src/app/p_services/admin/catalogManagement/edit-service-specs/clone-gst-template/clone-gst-template.component';
 import { MatDialog } from '@angular/material';
 import { ToastrService } from 'ngx-toastr';
-import { CloneVinniTemplateComponent } from 'src/app/admin/CatalogManagement/edit-service-specs/clone-vinni-template/clone-vinni-template.component';
-import { AuthService } from '../services/auth.service';
-import { RequesterService } from 'src/app/requester/services/requester.service';
+import { CloneVinniTemplateComponent } from 'src/app/p_services/admin/catalogManagement/edit-service-specs/clone-vinni-template/clone-vinni-template.component';
+import { AuthService } from 'src/app/shared/services/auth.service';
+import { RequesterService } from 'src/app/p_services/orderCheckout/services/requester.service';
 import { trigger } from '@angular/animations';
-import { fadeIn } from '../animations/animations';
+import { fadeIn } from 'src/app/shared/animations/animations';
 import { ThemingService } from 'src/app/theming/theming.service';
-import { IAppThemingConfig } from 'src/app/models/app-config-theming.model';
-import { AppService } from '../services/app.service';
+import { IAppThemingConfig } from 'src/app/shared/models/app-config-theming.model';
+import { AppService } from 'src/app/shared/services/app.service';
 
 @Component({
   selector: 'app-navbar',

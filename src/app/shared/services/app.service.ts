@@ -10,7 +10,7 @@ import { ApiConfiguration as AlarmManagementAPIconfig} from 'src/app/openApis/al
 import { ApiConfiguration as assuranceServicesManagementAPIconfig} from 'src/app/openApis/assuranceServicesManagementAPI/api-configuration'
 import { ApiConfiguration as lcmRuleSpecificationAPIconfig } from 'src/app/openApis/lcmRuleSpecificationAPI/api-configuration'
 import { ApiConfiguration as serviceTestManagementAPIconfig } from 'src/app/openApis/serviceTestManagement/api-configuration'
-
+import { ApiConfiguration as resourcePoolManagementAPIconfig} from 'src/app/openApis/resourcePoolManagement/api-configuration'
 import { NavigationEnd, NavigationStart, Router } from '@angular/router';
 import { filter, first } from 'rxjs/operators';
 
@@ -32,7 +32,8 @@ export class AppService {
     private tmfAlarmManagementConfig: AlarmManagementAPIconfig,
     private assuranceServicesManagementAPIConfig: assuranceServicesManagementAPIconfig,
     private lcmRuleSpecificationAPIConfig: lcmRuleSpecificationAPIconfig,
-    private serviceTestManagementAPIconfig: serviceTestManagementAPIconfig
+    private serviceTestManagementAPIconfig: serviceTestManagementAPIconfig,
+    private resourcePoolManagementAPIconfig: resourcePoolManagementAPIconfig
   ) { 
     this.setAPIurls()
     this.recognizePortalDomain()
@@ -52,6 +53,7 @@ export class AppService {
     this.assuranceServicesManagementAPIConfig.rootUrl = this.config.ASSURANCE_SERVICE_MGMT_APIURL
     this.lcmRuleSpecificationAPIConfig.rootUrl = this.config.APITMFURL
     this.serviceTestManagementAPIconfig.rootUrl = this.config.APITMFURL
+    this.resourcePoolManagementAPIconfig.rootUrl = this.config.APITMFURL
   }
 
   //recognition of which portal is used (services/testing/product)

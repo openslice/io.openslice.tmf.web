@@ -64,6 +64,8 @@ export class EditServiceTestSpecComponent implements OnInit {
     this.dataSource.sort = ms;
   } 
 
+  testType = new FormControl('preDefined')
+
   attachmentFilesCtrl = new FileUploadControl(FileUploadValidators.accept(['.yaml']))
   testSpecServiceRootUrl: string
 
@@ -81,6 +83,8 @@ export class EditServiceTestSpecComponent implements OnInit {
       this.newTestSpec = true
       this.finishedLoading = true
     }
+
+    this.subscribeOnTestTypeChanged()
   }
 
 
@@ -93,8 +97,8 @@ export class EditServiceTestSpecComponent implements OnInit {
       data => this.testSpec = data,
       error => console.error(error),
       () => {
-        // populate Main Properties Panel Info
         if (this.testSpec) {
+          // populate Main Properties Panel Info
           this.finishedLoading = true 
 
           if (!this.testSpec.validFor) this.testSpec.validFor = {endDateTime:null, startDateTime:null}
@@ -103,6 +107,11 @@ export class EditServiceTestSpecComponent implements OnInit {
   
           this.editForm.patchValue(this.testSpec)
           this.editForm.markAsPristine()
+
+          // populate Attachments Panel Info
+          if (this.testSpec.attachment.length > 1) {
+            this.testType.setValue('developerDefined')
+          }
         }
         else {
           this.testSpecNotFound = true
@@ -140,12 +149,22 @@ export class EditServiceTestSpecComponent implements OnInit {
           data => { updatedSpec = data },
           error => console.error(error),
           () => { 
-            this.toast.success("Service Specification was successfully updated") 
-            this.retrieveTestSpec
+            this.toast.success("Service Test Specification was successfully updated") 
+            this.retrieveTestSpec()
           }
         )
       }
     }
+  }
+
+  subscribeOnTestTypeChanged() {
+    this.subscriptions = this.testType.valueChanges.subscribe( _ => {
+      if (this.testType.value === "developerDefined") {
+        this.attachmentFilesCtrl = new FileUploadControl(FileUploadValidators.accept(['.yaml', '.py']))
+      } else {
+        this.attachmentFilesCtrl = new FileUploadControl(FileUploadValidators.accept(['.yaml']))
+      }
+    })
   }
 
   selectListItem(item: string) {
@@ -265,93 +284,94 @@ export class EditServiceTestSpecComponent implements OnInit {
 
   submitAttachment() {
     if (this.attachmentFilesCtrl.valid) {
-      let variablesArray = []
-      this.attachmentFilesCtrl.value[0]['text']() //Interface Blob doesn't support text in TS 3.5.3 so indirect reference is made
-      .then(
-        data => {
-          //regular expression to identify strings inside {{ }}, and parse them omitting brackets in capture group 1
-          const regex = /\{{2}([^{}]*)\}{2}/gm;
-          variablesArray = Array.from(data.matchAll(regex), m => m[1]);
-        }
-      )
-      .catch(
-        onrejected => console.error(onrejected)
-      )
-      .finally(
-        () => {
-          if (variablesArray.length) {
-            const dialogRef = this.dialog.open(ImportCharacteristicsFromYamlComponent, {
-              data: {
-                variablesArray: variablesArray
-              }, 
-              autoFocus: false
-            })
-        
-            dialogRef.afterClosed().subscribe(
-              result => { 
-                if (result) { 
-                  if (result !== 'no') {
-
-                    let exportedCharacteristicsArray: CharacteristicSpecificationRes[] = []
-                    variablesArray.forEach( variable => {
-                      exportedCharacteristicsArray.push({
-                        name: variable,
-                        description: 'auto exported user variable'
-                      })
-                    })
-
-                    
-                    if (result === 'override') {
-                      this.testSpec.specCharacteristic = exportedCharacteristicsArray
-                    }
-  
-                    if (result === 'append') {
-                      this.testSpec.specCharacteristic = this.testSpec.specCharacteristic.concat(exportedCharacteristicsArray)
-                    }
-  
-                    const updateCharacteristicObj: ServiceTestSpecificationUpdate = {
-                      specCharacteristic: this.testSpec.specCharacteristic
-                    }
-
-
-                    this.testSpecService.patchServiceTestSpecification({id: this.testSpec.id, serviceSpecification: updateCharacteristicObj}).subscribe(
-                      data => {},
-                      error => { console.error(error); this.toast.error("An error occurred upon auto-exporting Test Specification Characteristics") },
-                      () => {}
-                    )
-                  }
-
-                  this.testSpecService.addAttachmentToServiceTestSpecification({ id: this.testSpecID, afile: this.attachmentFilesCtrl.value[0] }).subscribe(
-                    data => {},
-                    error => {
-                      console.error(error)
-                      this.toast.error("An error occurred while uploading attachment")
-                    },
-                    () => {
-                      this.toast.success("Attachment was successfully uploaded")
-                      this.clearAttachmentsList()
-                      this.retrieveTestSpec()
-                    }
-                  )
-                }
-              }
-            )
-          } else {
-            this.testSpecService.addAttachmentToServiceTestSpecification({ id: this.testSpecID, afile: this.attachmentFilesCtrl.value[0] }).subscribe(
-              data => {},
-              error => {
-                console.error(error)
-                this.toast.error("An error occurred while uploading attachment")
-              },
-              () => {
-                this.toast.success("Attachment was successfully uploaded")
-                this.clearAttachmentsList()
-                this.retrieveTestSpec()
-              }
-            )
+      
+      this.attachmentFilesCtrl.value.forEach (attachmentFile => {
+        this.testSpecService.addAttachmentToServiceTestSpecification({ id: this.testSpecID, afile: attachmentFile }).subscribe(
+          data => { },
+          error => {
+            console.error(error)
+            this.toast.error("An error occurred while uploading attachment")
+          },
+          () => {
+            this.toast.success("Attachment was successfully uploaded")
+            this.clearAttachmentsList()
+            this.retrieveTestSpec()
           }
-        }
-      ) 
+        )
+      })
+    
+      // Asynchronously check if there is a text-typed file uploaded (Test Descriptor), and try to automatically extract the variables within {{ }}, e.g. {{ variable1 }}
+      let variablesArray = []
+
+      // Comment1: Recognized type of yaml files is '' and for py files is 'text/x-python'
+      // Comment2: Interface Blob doesn't support text in TS 3.5.3 so indirect reference is made
+      const yamlFile = this.attachmentFilesCtrl.value.find( yamlFile => yamlFile.type === '')
+      if (yamlFile) {
+        // this.attachmentFilesCtrl.value[0]['text']() //Interface Blob doesn't support text in TS 3.5.3 so indirect reference is made
+
+        yamlFile['text']()
+          .then(
+            data => {
+              //regular expression to identify strings inside {{ }}, and parse them omitting brackets in capture group 1
+              const regex = /\{{2}([^{}]*)\}{2}/gm;
+              variablesArray = Array.from(data.matchAll(regex), m => m[1]);
+            }
+          )
+          .catch(
+            onrejected => console.error(onrejected)
+          )
+          .finally(
+            () => {
+              if (variablesArray.length) {
+                const dialogRef = this.dialog.open(ImportCharacteristicsFromYamlComponent, {
+                  data: {
+                    variablesArray: variablesArray
+                  },
+                  autoFocus: false
+                })
+
+                dialogRef.afterClosed().subscribe(
+                  result => {
+                    if (result) {
+                      if (result !== 'no') {
+
+                        let exportedCharacteristicsArray: CharacteristicSpecificationRes[] = []
+                        variablesArray.forEach(variable => {
+                          exportedCharacteristicsArray.push({
+                            name: variable,
+                            description: 'auto exported user variable'
+                          })
+                        })
+
+
+                        if (result === 'override') {
+                          this.testSpec.specCharacteristic = exportedCharacteristicsArray
+                        }
+
+                        if (result === 'append') {
+                          this.testSpec.specCharacteristic = this.testSpec.specCharacteristic.concat(exportedCharacteristicsArray)
+                        }
+
+                        const updateCharacteristicObj: ServiceTestSpecificationUpdate = {
+                          specCharacteristic: this.testSpec.specCharacteristic
+                        }
+
+
+                        this.testSpecService.patchServiceTestSpecification({ id: this.testSpec.id, serviceSpecification: updateCharacteristicObj }).subscribe(
+                          data => { },
+                          error => { console.error(error); this.toast.error("An error occurred upon auto-exporting Test Specification Characteristics") },
+                          () => {
+                            this.retrieveTestSpec()
+                          }
+                        )
+                      }
+                    }
+                  }
+                )
+              }
+            }
+          )
+      }
     }
   }
 

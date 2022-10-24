@@ -89,14 +89,14 @@ class ResourceCategoryService extends __BaseService {
    * Creates a ResourceCategory
    *
    * This operation creates a ResourceCategory entity.
-   * @param resourceCategory The ResourceCategory to be created
+   * @param resCategory The ServiceCategory to be created
    * @return OK or Created
    */
-  createResourceCategoryResponse(resourceCategory: ResourceCategoryCreate): __Observable<__StrictHttpResponse<ResourceCategory | ResourceCategory>> {
+  createResourceCategoryResponse(resCategory: ResourceCategoryCreate): __Observable<__StrictHttpResponse<ResourceCategory | ResourceCategory>> {
     let __params = this.newParams();
     let __headers = new HttpHeaders();
     let __body: any = null;
-    __body = resourceCategory;
+    __body = resCategory;
     let req = new HttpRequest<any>(
       'POST',
       this.rootUrl + `/resourceCatalogManagement/v4/resourceCategory`,
@@ -118,11 +118,11 @@ class ResourceCategoryService extends __BaseService {
    * Creates a ResourceCategory
    *
    * This operation creates a ResourceCategory entity.
-   * @param resourceCategory The ResourceCategory to be created
+   * @param resCategory The ServiceCategory to be created
    * @return OK or Created
    */
-  createResourceCategory(resourceCategory: ResourceCategoryCreate): __Observable<ResourceCategory | ResourceCategory> {
-    return this.createResourceCategoryResponse(resourceCategory).pipe(
+  createResourceCategory(resCategory: ResourceCategoryCreate): __Observable<ResourceCategory | ResourceCategory> {
+    return this.createResourceCategoryResponse(resCategory).pipe(
       __map(_r => _r.body as ResourceCategory | ResourceCategory)
     );
   }
@@ -184,9 +184,10 @@ class ResourceCategoryService extends __BaseService {
    * Deletes a ResourceCategory
    *
    * This operation deletes a ResourceCategory entity.
-   * @param id Identifier of the ResourceCategory
+   * @param id Identifier of the Resource Category
+   * @return Deleted
    */
-  deleteResourceCategoryResponse(id: string): __Observable<__StrictHttpResponse<null>> {
+  deleteResourceCategoryResponse(id: string): __Observable<__StrictHttpResponse<{}>> {
     let __params = this.newParams();
     let __headers = new HttpHeaders();
     let __body: any = null;
@@ -204,7 +205,7 @@ class ResourceCategoryService extends __BaseService {
     return this.http.request<any>(req).pipe(
       __filter(_r => _r instanceof HttpResponse),
       __map((_r) => {
-        return _r as __StrictHttpResponse<null>;
+        return _r as __StrictHttpResponse<{}>;
       })
     );
   }
@@ -212,11 +213,12 @@ class ResourceCategoryService extends __BaseService {
    * Deletes a ResourceCategory
    *
    * This operation deletes a ResourceCategory entity.
-   * @param id Identifier of the ResourceCategory
+   * @param id Identifier of the Resource Category
+   * @return Deleted
    */
-  deleteResourceCategory(id: string): __Observable<null> {
+  deleteResourceCategory(id: string): __Observable<{}> {
     return this.deleteResourceCategoryResponse(id).pipe(
-      __map(_r => _r.body as null)
+      __map(_r => _r.body as {})
     );
   }
 

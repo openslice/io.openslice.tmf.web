@@ -35,8 +35,8 @@ export class AssignResourceCandidatesComponent implements OnInit {
   resourceCategory: ResourceCategory = this.data
 
   assignedCandidates: ResourceCandidateRef[] = []
-  availableCandidates: ServiceCandidate[] = []
-  filteredCandidates$: Observable<ServiceCandidate[]>
+  availableCandidates: ResourceCandidate[] = []
+  filteredCandidates$: Observable<ResourceCandidate[] | ResourceSpecification[]>
 
   candidateInputCtrl = new FormControl()
 
@@ -86,7 +86,7 @@ export class AssignResourceCandidatesComponent implements OnInit {
     this.candidateInputCtrl.setValue(null);
   }
 
-  private _filter(value: string): ResourceSpecification[] {
+  private _filter(value: string): ResourceCandidate[] {
       console.log(value)
       const filterValue = value.toLowerCase();
       return this.availableCandidates.filter(cat => cat.name && cat.name.toLowerCase().indexOf(filterValue) !== -1);
@@ -96,7 +96,7 @@ export class AssignResourceCandidatesComponent implements OnInit {
     if (!this.matAutocomplete.isOpen) this.matAutocompleteTrigger.openPanel()
   }
 
-  removeResourceCandidate(spec:ResourceSpecification) {
+  removeResourceCandidate(spec:ResourceCandidate) {
     console.log(spec)
     const index = this.assignedCandidates.indexOf(spec);
     if (index >= 0) {

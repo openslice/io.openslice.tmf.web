@@ -3,7 +3,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { HttpErrorResponse } from '@angular/common/http';
 import { ActivatedRoute, Router, ActivationEnd } from '@angular/router';
 import { FormGroup, FormControl, FormArray, Validators } from '@angular/forms';
-import { ResourceSpecification, ResourceSpecCharacteristic, ResourceSpecificationUpdate, ResourceSpecificationCreate, ResourceSpecRelationship, AttachmentRef, Attachment } from 'src/app/openApis/resourceCatalogManagement/models';
+import { ResourceSpecification, ResourceSpecificationCharacteristicValue, ResourceSpecificationUpdate, AttachmentRefOrValue, ResourceSpecificationCharacteristicRes, ResourceSpecificationRelationshipRes, ResourceSpecificationCharacteristicReq } from 'src/app/openApis/resourceCatalogManagement/models';
 import { ResourceSpecificationService } from 'src/app/openApis/resourceCatalogManagement/services';
 import { MatTableDataSource, MatSort, MatPaginator, MatDialog, MatCheckboxChange, MatExpansionPanel, MatDialogRef } from '@angular/material';
 import { EditResourceSpecCharacteristicsComponent } from './edit-resource-spec-characteristics/edit-resource-spec-characteristics.component';
@@ -11,11 +11,11 @@ import { DeleteResourceSpecCharacteristicsComponent } from './delete-resource-sp
 import { ToastrService } from 'ngx-toastr';
 import { Observable, Subscription, timer } from 'rxjs';
 import { startWith, map } from 'rxjs/operators';
-import { AssignResourceRelationshipsComponent } from './assign-resource-relationships/assign-resource-relationships.component';
+import { AssignResourceSpecRelationshipsComponent } from './assign-resource-spec-relationships/assign-resource-spec-relationships.component';
 import { FileUploadControl, FileUploadValidators } from '@iplab/ngx-file-upload';
 import { trigger } from '@angular/animations';
 import { fadeIn } from 'src/app/shared/animations/animations';
-import { DeleteAttachmentComponent } from './delete-attachment/delete-attachment.component';
+import { DeleteResourceSpecAttachmentComponent } from './delete-resource-spec-attachment/delete-resource-spec-attachment.component';
 import { AppService } from 'src/app/shared/services/app.service';
 
 
@@ -30,7 +30,7 @@ export class EditResourceSpecsComponent implements OnInit {
 
   constructor(
     private activatedRoute: ActivatedRoute,
-    private specService: ResourceSpecificationService,
+    private specResource: ResourceSpecificationService,
     private dialog: MatDialog,
     private toast: ToastrService,
     private router: Router,
@@ -46,7 +46,7 @@ export class EditResourceSpecsComponent implements OnInit {
     description: new FormControl(),
     lifecycleStatus: new FormControl("In design"),
     name: new FormControl(),
-    isBundle: new FormControl(),
+    isBundle: new FormControl(false),
     validFor: new FormGroup({
       endDateTime: new FormControl(new Date(new Date().setFullYear(new Date().getFullYear()+20))),
       startDateTime: new FormControl(new Date())
@@ -54,21 +54,21 @@ export class EditResourceSpecsComponent implements OnInit {
     version: new FormControl("0.1.0")
   })
 
-  listItems = ["Main Properties", "Resource Specification Relationships", "Related Parties", "Resource Specification Characteristics", "Logo", "Attachments"]
+  listItems = ["Main Properties", "Resource Specification Relationships", "Related Parties", "Resource Specification Characteristics", "Attachments"]
   activeListItem = "Main Properties"
 
   lifecycleStatuses = ["In study", "In design", "In test", "Active", "Launched", "Retired", "Obsolete", "Rejected"]
 
 
   displayedColumnsCharacteristics = ['name', 'type', 'defaultValues', 'configurable', 'actions']
-  dataSource  = new MatTableDataSource<ResourceSpecCharacteristic>()
+  dataSource  = new MatTableDataSource<ResourceSpecificationCharacteristicValue>()
 
   specCharacteristicsTags: string[] = ["All"]
   tagFiltervalue:string = "All"
 
 
 
-@ViewChild('specSort', {static: false}) set matSort(ms: MatSort) {
+  @ViewChild('specSort', {static: false}) set matSort(ms: MatSort) {
     this.dataSource.sort = ms;
   }
   // @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
@@ -78,26 +78,20 @@ export class EditResourceSpecsComponent implements OnInit {
   newSpecification = false
 
   resourceRelatedSpecsFilterCtrl = new FormControl();
-  filteredRelatedSpecs$: Observable<ResourceSpecRelationship[]>
+  filteredRelatedSpecs$: Observable<ResourceSpecificationRelationshipRes[]>
 
   attachmentFilesCtrl = new FileUploadControl(FileUploadValidators.accept(['.jpeg', '.jpg', '.png', '.zip', '.pdf', '.yaml', '.json', '.xml', '.txt', '.tar.gz']))
-  logoImageCtrl = new FileUploadControl(FileUploadValidators.accept(['image/*']))
 
-  specLogoRef: AttachmentRef
-  currentSpecLogoAsDataUrl: string | ArrayBuffer
 
   dataUrlConverting = false
-  specLogoAsDataUrl: string | ArrayBuffer
-  specServiceRootUrl : string
+  specResourceRootUrl : string
 
   subscriptions = new Subscription()
 
   ngOnInit() {
-    this.specServiceRootUrl = this.specService.rootUrl
+    this.specResourceRootUrl = this.specResource.rootUrl
 
     this.initSubscriptions()
-    this.subscribeToLogoUploadEvent()
-
     if (this.activatedRoute.snapshot.params.id)
     {
       this.specID = this.activatedRoute.snapshot.params.id
@@ -115,26 +109,6 @@ export class EditResourceSpecsComponent implements OnInit {
           console.log(event.snapshot.params.id)
           this.specID = this.activatedRoute.snapshot.params.id
           this.retrieveResourceSpec()
-        }
-      }
-    ))
-  }
-
-  subscribeToLogoUploadEvent() {
-    this.subscriptions.add(this.logoImageCtrl.valueChanges.subscribe(
-      files => {
-        this.logoImageCtrl.setValidators(FileUploadValidators.accept(['image/*']))
-        if (files.length) {
-          let img = new Image()
-          img.src = window.URL.createObjectURL(files[0])
-          img.onload = () => {
-            if (img.height === 150 && img.width === 150) {
-              this.convertImageToDataUrl(files[0])
-            } else {
-              // this.toast.error('Please upload a logo of supported type and resolution')
-              this.logoImageCtrl.setValidators(FileUploadValidators.filesLimit(0))
-            }
-          }
         }
       }
     ))
@@ -158,7 +132,7 @@ export class EditResourceSpecsComponent implements OnInit {
 
 
   retrieveResourceSpec() {
-    this.specService.retrieveResourceSpecification({id: this.specID}).subscribe(
+    this.specResource.retrieveResourceSpecification({id: this.specID}).subscribe(
       data => this.spec = data,
       error => console.error(error),
       () => {
@@ -186,15 +160,8 @@ export class EditResourceSpecsComponent implements OnInit {
           this.tagFiltervalue = "All"
           this.specCharacteristicsTags = this.retrieveSpecCharaceristicsTags(this.dataSource.data)
 
-          // Check if spec has a defined logo already
-          this.specLogoRef = this.spec.attachment.find( att => att.name.includes('logo') )
-          if (this.specLogoRef) {
-            this.currentSpecLogoAsDataUrl = this.specServiceRootUrl+this.specLogoRef.url
-          }
-
-
           //populate Resource Descriptor Panel Info
-          // this.retrieveResourceDesriptor(this.spec.id)
+          this.retrieveResourceDesriptor(this.spec.id)
         }
         else {
           this.specNotFound = true
@@ -203,7 +170,7 @@ export class EditResourceSpecsComponent implements OnInit {
     )
   }
 
-  retrieveSpecCharaceristicsTags(dataSource: ResourceSpecCharacteristic[]) {
+  retrieveSpecCharaceristicsTags(dataSource: ResourceSpecificationCharacteristicRes[]) {
     let tagsArray = this.specCharacteristicsTags
     dataSource.forEach(char => {
       char.resourceSpecCharRelationship.filter( e => e.relationshipType === "tag").forEach(rel => {
@@ -213,15 +180,17 @@ export class EditResourceSpecsComponent implements OnInit {
     return tagsArray
   }
 
-  // retrieveResourceDesriptor(specId) {
-  //   this.specService.retrieveResourceSpecificationDescriptor(specId).subscribe(
-  //     data => console.log(data),
-  //     error => console.error(error)
-  //   )
-  // }
+  retrieveResourceDesriptor(specId) {
+    this.specResource.retrieveResourceSpecification(specId).subscribe(
+      data => console.log(data),
+      error => console.error(error)
+    )
+  }
 
   bundleCheckboxChanged(event:MatCheckboxChange) {
     // if (!event.checked) this.specRelationshipsPanel.close()
+    if(!event.checked)
+      this.spec.resourceSpecRelationship=null
   }
 
   private _filterOnRelatedSpecs(filterValue: string) {
@@ -248,7 +217,7 @@ export class EditResourceSpecsComponent implements OnInit {
   }
 
   openAssignSpecRelationshipDialog() {
-    const dialogRef = this.dialog.open(AssignResourceRelationshipsComponent, {
+    const dialogRef = this.dialog.open(AssignResourceSpecRelationshipsComponent, {
       data: {
         resourceSpec: this.spec
       },
@@ -267,7 +236,7 @@ export class EditResourceSpecsComponent implements OnInit {
     )
   }
 
-  openCharacteristicDesignDialog(characteristic: ResourceSpecCharacteristic) {
+  openCharacteristicDesignDialog(characteristic: ResourceSpecificationCharacteristicRes) {
     const dialogRef = this.dialog.open(EditResourceSpecCharacteristicsComponent, {
       data: {
         resourceSpec: this.spec,
@@ -287,10 +256,10 @@ export class EditResourceSpecsComponent implements OnInit {
     )
   }
 
-  openCharacteristicDeleteDialog(characteristic: ResourceSpecCharacteristic) {
-    const specToBeDeletedIndex = this.spec.resourceSpecCharacteristic.findIndex(char => char.id === characteristic.id)
+  openCharacteristicDeleteDialog(characteristic: ResourceSpecificationCharacteristicRes) {
+    const specToBeDeletedIndex = this.spec.resourceSpecCharacteristic.findIndex(char => char.uuid === characteristic.uuid)
 
-    const newSpecCharacteristicArray: ResourceSpecCharacteristic[] = this.spec.resourceSpecCharacteristic.slice()
+    const newSpecCharacteristicArray: ResourceSpecificationCharacteristicRes[] = this.spec.resourceSpecCharacteristic.slice()
 
     newSpecCharacteristicArray.splice(specToBeDeletedIndex, 1)
 
@@ -313,9 +282,9 @@ export class EditResourceSpecsComponent implements OnInit {
     )
   }
 
-  cloneResourceSpecCharacteristic(characteristic: ResourceSpecCharacteristic) {
+  cloneResourceSpecCharacteristic(characteristic: ResourceSpecificationCharacteristicRes) {
 
-    const cloneCharacteristic: ResourceSpecCharacteristic = {
+    const cloneCharacteristic: ResourceSpecificationCharacteristicReq = {
       name: `Copy of ${characteristic.name}`,
       description: characteristic.description,
       configurable: characteristic.configurable,
@@ -323,19 +292,19 @@ export class EditResourceSpecsComponent implements OnInit {
       minCardinality: characteristic.minCardinality,
       maxCardinality: characteristic.maxCardinality,
       resourceSpecCharRelationship: characteristic.resourceSpecCharRelationship,
-      resourceSpecCharacteristicValue: characteristic.resourceSpecCharacteristicValue,
+      resourceSpecificationCharacteristicValue: characteristic.resourceSpecCharacteristicValue,
       validFor: characteristic.validFor,
       valueType: characteristic.valueType
     }
 
-    console.log(cloneCharacteristic)
+    console.log("cloneCharacteristic"+JSON.stringify(cloneCharacteristic))
     this.spec.resourceSpecCharacteristic.push(cloneCharacteristic)
 
     const updateCharacteristicObj: ResourceSpecificationUpdate = {
       resourceSpecCharacteristic: this.spec.resourceSpecCharacteristic
     }
 
-    this.specService.patchResourceSpecification({id: this.spec.id, resourceSpecification: updateCharacteristicObj}).subscribe(
+    this.specResource.patchResourceSpecification({id: this.specID, serviceSpecification: updateCharacteristicObj}).subscribe(
       data => console.log(data),
       error => console.error(error),
       () => {
@@ -346,7 +315,7 @@ export class EditResourceSpecsComponent implements OnInit {
   }
 
   updateResourceSpecGeneral() {
-    const updateObj: ResourceSpecificationUpdate | ResourceSpecificationCreate = {
+    const updateObj: ResourceSpecification = {
       isBundle: this.editForm.value.isBundle,
       description: this.editForm.value.description,
       lifecycleStatus: this.editForm.value.lifecycleStatus,
@@ -358,7 +327,7 @@ export class EditResourceSpecsComponent implements OnInit {
     let updatedSpec: ResourceSpecification
 
     if (this.newSpecification) {
-      this.specService.createResourceSpecification(updateObj).subscribe(
+      this.specResource.createResourceSpecification(updateObj).subscribe(
         data => { updatedSpec = data },
         error => console.error(error),
         () => {
@@ -369,7 +338,7 @@ export class EditResourceSpecsComponent implements OnInit {
       )
     }
     else {
-      this.specService.patchResourceSpecification({ id: this.specID, resourceSpecification: updateObj }).subscribe(
+      this.specResource.patchResourceSpecification({ id: this.specID, serviceSpecification: updateObj }).subscribe(
         data => { updatedSpec = data },
         error => console.error(error),
         () => {
@@ -387,7 +356,12 @@ export class EditResourceSpecsComponent implements OnInit {
 
   submitAttachments() {
     if (this.attachmentFilesCtrl.valid) {
-      this.specService.addAttachmentToResourceSpecification({id: this.specID, afile: this.attachmentFilesCtrl.value[0]}).subscribe(
+      console.log("submitAttachments:"+this.specID)
+      const reader = new FileReader();
+      tmp: File
+      reader.readAsBinaryString(this.attachmentFilesCtrl.value[0])
+      console.log("Reader result as string:"+reader.result as string)
+      this.specResource.addAttachmentToResourceSpec({id: this.specID, afile: reader.result as string}).subscribe(
         data => { console.log(data) },
         error => {
           console.error(error)
@@ -407,74 +381,23 @@ export class EditResourceSpecsComponent implements OnInit {
   }
 
   convertImageToDataUrl (file) {
-    this.specLogoAsDataUrl = ''
     this.dataUrlConverting = true
 
     let reader = new FileReader()
     reader.readAsDataURL(file)
     reader.onload = (_event) => {
-      this.specLogoAsDataUrl = reader.result
       this.dataUrlConverting = false
     }
   }
 
-  submitLogo() {
-    if (this.logoImageCtrl.valid) {
-      let tempFile = this.logoImageCtrl.value[0]
-      const fileExtension = tempFile.name.split('.').pop()
-      const preDefinedLogoFilename = `logo.${fileExtension}`
-
-      let newAttachment: Attachment
-      this.specService.addAttachmentToResourceSpecification({id: this.specID, afile: new File(this.logoImageCtrl.value, preDefinedLogoFilename, {type:tempFile.type})}).subscribe(
-        data => { newAttachment = data },
-        error => {
-          console.error(error)
-          this.toast.error("An error occurred while uploading attachment")
-        },
-        () => {
-          if (this.specLogoRef) { // If there is a logo defined already, delete it
-            const attToBeDeletedIndex = this.spec.attachment.findIndex(char => char.id === this.specLogoRef.id)
-            const newSpecAttArray: AttachmentRef[] = this.spec.attachment.slice()
-            newSpecAttArray.splice(attToBeDeletedIndex, 1) // remove previously defined logo from attachment Array
-            newSpecAttArray.push({id: newAttachment.id}) // add newly added logo to attachment Array
-
-            const updateSpecObj: ResourceSpecificationUpdate = {
-              attachment: newSpecAttArray
-            }
-
-            this.specService.patchResourceSpecification({ id: this.specID, resourceSpecification: updateSpecObj}).subscribe(
-              data => console.log(data),
-              error => console.error(error),
-              () => {
-                this.logoUpdatedSuccessfully()
-              }
-            )
-          } else {
-            this.logoUpdatedSuccessfully()
-          }
-        }
-      )
-    }
-  }
-
-  clearLogoList() {
-    this.logoImageCtrl.clear()
-  }
-
-  logoUpdatedSuccessfully() {
-    this.toast.success("Resource Specification logo was successfully uploaded")
-    this.clearLogoList()
-    this.retrieveResourceSpec()
-  }
-
-  openAttachmentDeleteDialog(attachmentRef: AttachmentRef) {
+  openAttachmentDeleteDialog(attachmentRef: AttachmentRefOrValue) {
     const attToBeDeletedIndex = this.spec.attachment.findIndex(char => char.id === attachmentRef.id)
 
-    const newSpecAttArray: AttachmentRef[] = this.spec.attachment.slice()
+    const newSpecAttArray: AttachmentRefOrValue[] = this.spec.attachment.slice()
 
     newSpecAttArray.splice(attToBeDeletedIndex, 1)
 
-    const dialogRef = this.dialog.open(DeleteAttachmentComponent, {
+    const dialogRef = this.dialog.open(DeleteResourceSpecAttachmentComponent, {
       data: {
         resourceSpec: this.spec,
         resourceSpecAttachmentArray: newSpecAttArray,
@@ -516,9 +439,4 @@ export class DiscardChangesComponent {
   onYesClick(): void {
     this.dialogRef.close(true)
   }
-
-
-
-
-
 }

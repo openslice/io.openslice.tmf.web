@@ -7,18 +7,18 @@ import { StrictHttpResponse as __StrictHttpResponse } from '../strict-http-respo
 import { Observable as __Observable } from 'rxjs';
 import { map as __map, filter as __filter } from 'rxjs/operators';
 
-import { Service } from '../models/service';
-import { ServiceCreate } from '../models/service-create';
-import { ServiceUpdate } from '../models/service-update';
+import { Resource } from '../models/resource';
+import { ResourceCreate } from '../models/resource-create';
+import { ResourceUpdate } from '../models/resource-update';
 @Injectable({
   providedIn: 'root',
 })
 class ResourceService extends __BaseService {
-  static readonly listServicePath = '/resourceInventoryManagement/v4/resource';
-  static readonly createServicePath = '/resourceInventoryManagement/v4/resource';
-  static readonly retrieveServicePath = '/resourceInventoryManagement/v4/resource/{id}';
-  static readonly deleteServicePath = '/resourceInventoryManagement/v4/resource/{id}';
-  static readonly patchServicePath = '/resourceInventoryManagement/v4/resource/{id}';
+  static readonly listResourcePath = '/resourceInventoryManagement/v4/resource';
+  static readonly createResourcePath = '/resourceInventoryManagement/v4/resource';
+  static readonly retrieveResourcePath = '/resourceInventoryManagement/v4/resource/{id}';
+  static readonly deleteResourcePath = '/resourceInventoryManagement/v4/resource/{id}';
+  static readonly patchResourcePath = '/resourceInventoryManagement/v4/resource/{id}';
 
   constructor(
     config: __Configuration,
@@ -28,10 +28,14 @@ class ResourceService extends __BaseService {
   }
 
   /**
-   * This operation list or find Service entities
-   * @param params The `ServiceService.ListServiceParams` containing the following parameters:
+   * List or find Resource objects
+   *
+   * This operation list or find Resource entities
+   * @param params The `ResourceService.ListResourceParams` containing the following parameters:
    *
    * - `offset`: Requested index for start of resources to be provided in response
+   *
+   * - `name`:
    *
    * - `limit`: Requested number of resources to be provided in response
    *
@@ -39,11 +43,12 @@ class ResourceService extends __BaseService {
    *
    * @return Success
    */
-  listServiceResponse(params: ServiceService.ListServiceParams): __Observable<__StrictHttpResponse<Array<Service>>> {
+  listResourceResponse(params: ResourceService.ListResourceParams): __Observable<__StrictHttpResponse<Array<Resource>>> {
     let __params = this.newParams();
     let __headers = new HttpHeaders();
     let __body: any = null;
     if (params.offset != null) __params = __params.set('offset', params.offset.toString());
+    if (params.name != null) __params = __params.set('name', params.name.toString());
     if (params.limit != null) __params = __params.set('limit', params.limit.toString());
     if (params.fields != null) __params = __params.set('fields', params.fields.toString());
     let req = new HttpRequest<any>(
@@ -59,15 +64,19 @@ class ResourceService extends __BaseService {
     return this.http.request<any>(req).pipe(
       __filter(_r => _r instanceof HttpResponse),
       __map((_r) => {
-        return _r as __StrictHttpResponse<Array<Service>>;
+        return _r as __StrictHttpResponse<Array<Resource>>;
       })
     );
   }
   /**
-   * This operation list or find Service entities
-   * @param params The `ServiceService.ListServiceParams` containing the following parameters:
+   * List or find Resource objects
+   *
+   * This operation list or find Resource entities
+   * @param params The `ResourceService.ListResourceParams` containing the following parameters:
    *
    * - `offset`: Requested index for start of resources to be provided in response
+   *
+   * - `name`:
    *
    * - `limit`: Requested number of resources to be provided in response
    *
@@ -75,22 +84,30 @@ class ResourceService extends __BaseService {
    *
    * @return Success
    */
-  listService(params: ServiceService.ListServiceParams): __Observable<Array<Service>> {
-    return this.listServiceResponse(params).pipe(
-      __map(_r => _r.body as Array<Service>)
+  listResource(params: ResourceService.ListResourceParams): __Observable<Array<Resource>> {
+    return this.listResourceResponse(params).pipe(
+      __map(_r => _r.body as Array<Resource>)
     );
   }
 
   /**
-   * This operation creates a Service entity.
-   * @param service The Service to be created
+   * Creates a Resource
+   *
+   * This operation creates a Resource entity.
+   * @param params The `ResourceService.CreateResourceParams` containing the following parameters:
+   *
+   * - `resource`: The Resource to be created
+   *
+   * - `name`:
+   *
    * @return OK or Created
    */
-  createServiceResponse(service: ServiceCreate): __Observable<__StrictHttpResponse<Service | Service>> {
+  createResourceResponse(params: ResourceService.CreateResourceParams): __Observable<__StrictHttpResponse<Resource | Resource>> {
     let __params = this.newParams();
     let __headers = new HttpHeaders();
     let __body: any = null;
-    __body = service;
+    __body = params.resource;
+    if (params.name != null) __params = __params.set('name', params.name.toString());
     let req = new HttpRequest<any>(
       'POST',
       this.rootUrl + `/resourceInventoryManagement/v4/resource`,
@@ -104,40 +121,52 @@ class ResourceService extends __BaseService {
     return this.http.request<any>(req).pipe(
       __filter(_r => _r instanceof HttpResponse),
       __map((_r) => {
-        return _r as __StrictHttpResponse<Service | Service>;
+        return _r as __StrictHttpResponse<Resource | Resource>;
       })
     );
   }
   /**
-   * This operation creates a Service entity.
-   * @param service The Service to be created
+   * Creates a Resource
+   *
+   * This operation creates a Resource entity.
+   * @param params The `ResourceService.CreateResourceParams` containing the following parameters:
+   *
+   * - `resource`: The Resource to be created
+   *
+   * - `name`:
+   *
    * @return OK or Created
    */
-  createService(service: ServiceCreate): __Observable<Service | Service> {
-    return this.createServiceResponse(service).pipe(
-      __map(_r => _r.body as Service | Service)
+  createResource(params: ResourceService.CreateResourceParams): __Observable<Resource | Resource> {
+    return this.createResourceResponse(params).pipe(
+      __map(_r => _r.body as Resource | Resource)
     );
   }
 
   /**
-   * This operation retrieves a Service entity. Attribute selection is enabled for all first level attributes.
-   * @param params The `ServiceService.RetrieveServiceParams` containing the following parameters:
+   * Retrieves a Resource by ID
    *
-   * - `id`: Identifier of the Service
+   * This operation retrieves a Resource entity. Attribute selection is enabled for all first level attributes.
+   * @param params The `ResourceService.RetrieveResourceParams` containing the following parameters:
+   *
+   * - `id`: Identifier of the Resource
+   *
+   * - `name`:
    *
    * - `fields`: Comma-separated properties to provide in response
    *
    * @return Success
    */
-  retrieveServiceResponse(params: ServiceService.RetrieveServiceParams): __Observable<__StrictHttpResponse<Service>> {
+  retrieveResourceResponse(params: ResourceService.RetrieveResourceParams): __Observable<__StrictHttpResponse<Resource>> {
     let __params = this.newParams();
     let __headers = new HttpHeaders();
     let __body: any = null;
 
+    if (params.name != null) __params = __params.set('name', params.name.toString());
     if (params.fields != null) __params = __params.set('fields', params.fields.toString());
     let req = new HttpRequest<any>(
       'GET',
-      this.rootUrl + `/resourceInventoryManagement/v4/resource/${params.id}`,
+      this.rootUrl + `/resourceInventoryManagement/v4/resource/${encodeURIComponent(params.id)}`,
       __body,
       {
         headers: __headers,
@@ -148,38 +177,45 @@ class ResourceService extends __BaseService {
     return this.http.request<any>(req).pipe(
       __filter(_r => _r instanceof HttpResponse),
       __map((_r) => {
-        return _r as __StrictHttpResponse<Service>;
+        return _r as __StrictHttpResponse<Resource>;
       })
     );
   }
   /**
-   * This operation retrieves a Service entity. Attribute selection is enabled for all first level attributes.
-   * @param params The `ServiceService.RetrieveServiceParams` containing the following parameters:
+   * Retrieves a Resource by ID
    *
-   * - `id`: Identifier of the Service
+   * This operation retrieves a Resource entity. Attribute selection is enabled for all first level attributes.
+   * @param params The `ResourceService.RetrieveResourceParams` containing the following parameters:
+   *
+   * - `id`: Identifier of the Resource
+   *
+   * - `name`:
    *
    * - `fields`: Comma-separated properties to provide in response
    *
    * @return Success
    */
-  retrieveService(params: ServiceService.RetrieveServiceParams): __Observable<Service> {
-    return this.retrieveServiceResponse(params).pipe(
-      __map(_r => _r.body as Service)
+  retrieveResource(params: ResourceService.RetrieveResourceParams): __Observable<Resource> {
+    return this.retrieveResourceResponse(params).pipe(
+      __map(_r => _r.body as Resource)
     );
   }
 
   /**
-   * This operation deletes a Service entity.
-   * @param id Identifier of the Service
+   * Deletes a Resource
+   *
+   * This operation deletes a Resource entity.
+   * @param id Identifier of the Resource
+   * @return Deleted
    */
-  deleteServiceResponse(id: string): __Observable<__StrictHttpResponse<null>> {
+  deleteResourceResponse(id: string): __Observable<__StrictHttpResponse<{}>> {
     let __params = this.newParams();
     let __headers = new HttpHeaders();
     let __body: any = null;
 
     let req = new HttpRequest<any>(
       'DELETE',
-      this.rootUrl + `/resourceInventoryManagement/v4/resource/${id}`,
+      this.rootUrl + `/resourceInventoryManagement/v4/resource/${encodeURIComponent(id)}`,
       __body,
       {
         headers: __headers,
@@ -190,39 +226,47 @@ class ResourceService extends __BaseService {
     return this.http.request<any>(req).pipe(
       __filter(_r => _r instanceof HttpResponse),
       __map((_r) => {
-        return _r as __StrictHttpResponse<null>;
+        return _r as __StrictHttpResponse<{}>;
       })
     );
   }
   /**
-   * This operation deletes a Service entity.
-   * @param id Identifier of the Service
+   * Deletes a Resource
+   *
+   * This operation deletes a Resource entity.
+   * @param id Identifier of the Resource
+   * @return Deleted
    */
-  deleteService(id: string): __Observable<null> {
-    return this.deleteServiceResponse(id).pipe(
-      __map(_r => _r.body as null)
+  deleteResource(id: string): __Observable<{}> {
+    return this.deleteResourceResponse(id).pipe(
+      __map(_r => _r.body as {})
     );
   }
 
   /**
-   * This operation updates partially a Service entity.
-   * @param params The `ServiceService.PatchServiceParams` containing the following parameters:
+   * Updates partially a Resource
    *
-   * - `service`: The Service to be updated
+   * This operation updates partially a Resource entity.
+   * @param params The `ResourceService.PatchResourceParams` containing the following parameters:
    *
-   * - `id`: Identifier of the Service
+   * - `resource`: The Resource to be updated
+   *
+   * - `id`: Identifier of the Resource
+   *
+   * - `name`:
    *
    * @return Updated
    */
-  patchServiceResponse(params: ServiceService.PatchServiceParams): __Observable<__StrictHttpResponse<Service>> {
+  patchResourceResponse(params: ResourceService.PatchResourceParams): __Observable<__StrictHttpResponse<Resource>> {
     let __params = this.newParams();
     let __headers = new HttpHeaders();
     let __body: any = null;
-    __body = params.service;
+    __body = params.resource;
 
+    if (params.name != null) __params = __params.set('name', params.name.toString());
     let req = new HttpRequest<any>(
       'PATCH',
-      this.rootUrl + `/resourceInventoryManagement/v4/resource/${params.id}`,
+      this.rootUrl + `/resourceInventoryManagement/v4/resource/${encodeURIComponent(params.id)}`,
       __body,
       {
         headers: __headers,
@@ -233,38 +277,43 @@ class ResourceService extends __BaseService {
     return this.http.request<any>(req).pipe(
       __filter(_r => _r instanceof HttpResponse),
       __map((_r) => {
-        return _r as __StrictHttpResponse<Service>;
+        return _r as __StrictHttpResponse<Resource>;
       })
     );
   }
   /**
-   * This operation updates partially a Service entity.
-   * @param params The `ServiceService.PatchServiceParams` containing the following parameters:
+   * Updates partially a Resource
    *
-   * - `service`: The Service to be updated
+   * This operation updates partially a Resource entity.
+   * @param params The `ResourceService.PatchResourceParams` containing the following parameters:
    *
-   * - `id`: Identifier of the Service
+   * - `resource`: The Resource to be updated
+   *
+   * - `id`: Identifier of the Resource
+   *
+   * - `name`:
    *
    * @return Updated
    */
-  patchService(params: ServiceService.PatchServiceParams): __Observable<Service> {
-    return this.patchServiceResponse(params).pipe(
-      __map(_r => _r.body as Service)
+  patchResource(params: ResourceService.PatchResourceParams): __Observable<Resource> {
+    return this.patchResourceResponse(params).pipe(
+      __map(_r => _r.body as Resource)
     );
   }
 }
 
-module ServiceService {
+module ResourceService {
 
   /**
-   * Parameters for listService
+   * Parameters for listResource
    */
-  export interface ListServiceParams {
+  export interface ListResourceParams {
 
     /**
      * Requested index for start of resources to be provided in response
      */
     offset?: number;
+    name?: string;
 
     /**
      * Requested number of resources to be provided in response
@@ -278,14 +327,27 @@ module ServiceService {
   }
 
   /**
-   * Parameters for retrieveService
+   * Parameters for createResource
    */
-  export interface RetrieveServiceParams {
+  export interface CreateResourceParams {
 
     /**
-     * Identifier of the Service
+     * The Resource to be created
+     */
+    resource: ResourceCreate;
+    name?: string;
+  }
+
+  /**
+   * Parameters for retrieveResource
+   */
+  export interface RetrieveResourceParams {
+
+    /**
+     * Identifier of the Resource
      */
     id: string;
+    name?: string;
 
     /**
      * Comma-separated properties to provide in response
@@ -294,19 +356,20 @@ module ServiceService {
   }
 
   /**
-   * Parameters for patchService
+   * Parameters for patchResource
    */
-  export interface PatchServiceParams {
+  export interface PatchResourceParams {
 
     /**
-     * The Service to be updated
+     * The Resource to be updated
      */
-    service: ServiceUpdate;
+    resource: ResourceUpdate;
 
     /**
-     * Identifier of the Service
+     * Identifier of the Resource
      */
     id: string;
+    name?: string;
   }
 }
 

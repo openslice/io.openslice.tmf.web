@@ -89,14 +89,14 @@ class ResourceCandidateService extends __BaseService {
    * Creates a ResourceCandidate
    *
    * This operation creates a ResourceCandidate entity.
-   * @param resourceCandidate The ResourceCandidate to be created
+   * @param body The ResourceCandidate to be created
    * @return OK or Created
    */
-  createResourceCandidateResponse(resourceCandidate: ResourceCandidateCreate): __Observable<__StrictHttpResponse<ResourceCandidate | ResourceCandidate>> {
+  createResourceCandidateResponse(body: ResourceCandidateCreate): __Observable<__StrictHttpResponse<ResourceCandidate | ResourceCandidate>> {
     let __params = this.newParams();
     let __headers = new HttpHeaders();
     let __body: any = null;
-    __body = resourceCandidate;
+    __body = body;
     let req = new HttpRequest<any>(
       'POST',
       this.rootUrl + `/resourceCatalogManagement/v4/resourceCandidate`,
@@ -118,11 +118,11 @@ class ResourceCandidateService extends __BaseService {
    * Creates a ResourceCandidate
    *
    * This operation creates a ResourceCandidate entity.
-   * @param resourceCandidate The ResourceCandidate to be created
+   * @param body The ResourceCandidate to be created
    * @return OK or Created
    */
-  createResourceCandidate(resourceCandidate: ResourceCandidateCreate): __Observable<ResourceCandidate | ResourceCandidate> {
-    return this.createResourceCandidateResponse(resourceCandidate).pipe(
+  createResourceCandidate(body: ResourceCandidateCreate): __Observable<ResourceCandidate | ResourceCandidate> {
+    return this.createResourceCandidateResponse(body).pipe(
       __map(_r => _r.body as ResourceCandidate | ResourceCandidate)
     );
   }
@@ -185,8 +185,9 @@ class ResourceCandidateService extends __BaseService {
    *
    * This operation deletes a ResourceCandidate entity.
    * @param id Identifier of the ResourceCandidate
+   * @return Deleted
    */
-  deleteResourceCandidateResponse(id: string): __Observable<__StrictHttpResponse<null>> {
+  deleteResourceCandidateResponse(id: string): __Observable<__StrictHttpResponse<{}>> {
     let __params = this.newParams();
     let __headers = new HttpHeaders();
     let __body: any = null;
@@ -204,7 +205,7 @@ class ResourceCandidateService extends __BaseService {
     return this.http.request<any>(req).pipe(
       __filter(_r => _r instanceof HttpResponse),
       __map((_r) => {
-        return _r as __StrictHttpResponse<null>;
+        return _r as __StrictHttpResponse<{}>;
       })
     );
   }
@@ -213,10 +214,11 @@ class ResourceCandidateService extends __BaseService {
    *
    * This operation deletes a ResourceCandidate entity.
    * @param id Identifier of the ResourceCandidate
+   * @return Deleted
    */
-  deleteResourceCandidate(id: string): __Observable<null> {
+  deleteResourceCandidate(id: string): __Observable<{}> {
     return this.deleteResourceCandidateResponse(id).pipe(
-      __map(_r => _r.body as null)
+      __map(_r => _r.body as {})
     );
   }
 
@@ -226,9 +228,9 @@ class ResourceCandidateService extends __BaseService {
    * This operation updates partially a ResourceCandidate entity.
    * @param params The `ResourceCandidateService.PatchResourceCandidateParams` containing the following parameters:
    *
-   * - `resourceCandidate`: The ResourceCandidate to be updated
-   *
    * - `id`: Identifier of the ResourceCandidate
+   *
+   * - `body`: The ResourceCandidate to be updated
    *
    * @return Updated
    */
@@ -236,8 +238,8 @@ class ResourceCandidateService extends __BaseService {
     let __params = this.newParams();
     let __headers = new HttpHeaders();
     let __body: any = null;
-    __body = params.resourceCandidate;
 
+    __body = params.body;
     let req = new HttpRequest<any>(
       'PATCH',
       this.rootUrl + `/resourceCatalogManagement/v4/resourceCandidate/${encodeURIComponent(params.id)}`,
@@ -261,9 +263,9 @@ class ResourceCandidateService extends __BaseService {
    * This operation updates partially a ResourceCandidate entity.
    * @param params The `ResourceCandidateService.PatchResourceCandidateParams` containing the following parameters:
    *
-   * - `resourceCandidate`: The ResourceCandidate to be updated
-   *
    * - `id`: Identifier of the ResourceCandidate
+   *
+   * - `body`: The ResourceCandidate to be updated
    *
    * @return Updated
    */
@@ -319,14 +321,14 @@ module ResourceCandidateService {
   export interface PatchResourceCandidateParams {
 
     /**
-     * The ResourceCandidate to be updated
-     */
-    resourceCandidate: ResourceCandidateUpdate;
-
-    /**
      * Identifier of the ResourceCandidate
      */
     id: string;
+
+    /**
+     * The ResourceCandidate to be updated
+     */
+    body: ResourceCandidateUpdate;
   }
 }
 

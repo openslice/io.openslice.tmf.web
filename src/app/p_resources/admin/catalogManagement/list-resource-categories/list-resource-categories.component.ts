@@ -28,7 +28,7 @@ export class ListResourceCategoriesComponent implements OnInit {
   displayedColumns = ['name', 'description', 'version', 'lastUpdate',  'lifecycleStatus', 'isRoot', 'parent', 'actions']
   dataSource  = new MatTableDataSource<ResourceCategory>()
 
-  serviceCategories: ResourceCategory[]
+  resourceCategories: ResourceCategory[]
 
   @ViewChild(MatSort, {static: true}) sort: MatSort;
   @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
@@ -39,14 +39,14 @@ export class ListResourceCategoriesComponent implements OnInit {
 
   retrieveCategoriesList() {
     this.categoryService.listResourceCategory({}).subscribe(
-      data => { this.serviceCategories = data },
+      data => { this.resourceCategories = data },
       error => { console.error(error) },
       () => {
-        this.serviceCategories.forEach( cat => {
-          if (cat.parentId) cat['parentName'] = this.serviceCategories.find( el =>  el.id === cat.parentId).name
+        this.resourceCategories.forEach( cat => {
+          if (cat.parentId) cat['parentName'] = this.resourceCategories.find( el =>  el.id === cat.parentId)
         })
 
-        this.dataSource.data = this.serviceCategories
+        this.dataSource.data = this.resourceCategories
         this.dataSource.sort = this.sort
         this.dataSource.paginator = this.paginator;
         this.dataSource.sortingDataAccessor = (item, property): string | number => {

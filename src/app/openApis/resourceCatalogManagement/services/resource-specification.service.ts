@@ -8,27 +8,21 @@ import { Observable as __Observable } from 'rxjs';
 import { map as __map, filter as __filter } from 'rxjs/operators';
 
 import { ResourceSpecification } from '../models/resource-specification';
-import { ResourceSpecificationCreate } from '../models/resource-specification-create';
+import { JsonNode } from '../models/json-node';
 import { ResourceSpecificationUpdate } from '../models/resource-specification-update';
-import { Attachment } from '../models/attachment';
-import { Resource } from '../models/resource';
+import { ByteArrayResource } from '../models/byte-array-resource';
 @Injectable({
   providedIn: 'root',
 })
 class ResourceSpecificationService extends __BaseService {
   static readonly listResourceSpecificationPath = '/resourceCatalogManagement/v4/resourceSpecification';
   static readonly createResourceSpecificationPath = '/resourceCatalogManagement/v4/resourceSpecification';
-  //static readonly cloneGSTServiceSpecificationPath = '/serviceCatalogManagement/v4/serviceSpecification/cloneGST';
-  //static readonly cloneVINNIServiceSpecificationPath = '/serviceCatalogManagement/v4/serviceSpecification/cloneVINNI';
-  //static readonly createServiceSpecificationFromNSDIDPath = '/serviceCatalogManagement/v4/serviceSpecification/specFromNSDID/{id}';
   static readonly retrieveResourceSpecificationPath = '/resourceCatalogManagement/v4/resourceSpecification/{id}';
   static readonly deleteResourceSpecificationPath = '/resourceCatalogManagement/v4/resourceSpecification/{id}';
   static readonly patchResourceSpecificationPath = '/resourceCatalogManagement/v4/resourceSpecification/{id}';
-  static readonly addAttachmentToResourceSpecificationPath = '/resourceCatalogManagement/v4/resourceSpecification/{id}/attachment';
-  static readonly getAttachmentPath = '/resourceCatalogManagement/v4/resourceSpecification/{id}/attachment/{attid}';
-  static readonly getAttachmentWithFilenamePath = '/resourceCatalogManagement/v4/resourceSpecification/{id}/attachment/{attid}/{afilename}';
-  static readonly cloneResourceSpecificationPath = '/resourceCatalogManagement/v4/resourceSpecification/{id}/clone';
-  static readonly retrieveResourceSpecificationDescriptorPath = '/resourceCatalogManagement/v4/serviceSpecification/{id}/sd';
+  static readonly addAttachmentToResourceSpecPath = '/resourceCatalogManagement/v4/resourceSpecification/{id}/attachment';
+  static readonly getAttachment1Path = '/resourceCatalogManagement/v4/resourceSpecification/{id}/attachment/{attid}';
+  static readonly getAttachmentWithFilename1Path = '/resourceCatalogManagement/v4/resourceSpecification/{id}/attachment/{attid}/{afilename}';
 
   constructor(
     config: __Configuration,
@@ -38,10 +32,10 @@ class ResourceSpecificationService extends __BaseService {
   }
 
   /**
-   * List or find ServiceSpecification objects
+   * List or find ResourceSpecification objects
    *
-   * This operation list or find ServiceSpecification entities
-   * @param params The `ServiceSpecificationService.ListServiceSpecificationParams` containing the following parameters:
+   * This operation list or find ResourceSpecification entities
+   * @param params The `ResourceSpecificationService.ListResourceSpecificationParams` containing the following parameters:
    *
    * - `offset`: Requested index for start of resources to be provided in response
    *
@@ -99,14 +93,14 @@ class ResourceSpecificationService extends __BaseService {
    * Creates a ResourceSpecification
    *
    * This operation creates a ResourceSpecification entity.
-   * @param resourceSpecification The ResourceSpecification to be created
+   * @param jsonNode The ResourceSpecification to be created
    * @return OK or Created
    */
-  createResourceSpecificationResponse(resourceSpecification: ResourceSpecificationCreate): __Observable<__StrictHttpResponse<ResourceSpecification | ResourceSpecification>> {
+  createResourceSpecificationResponse(jsonNode: JsonNode): __Observable<__StrictHttpResponse<ResourceSpecification | ResourceSpecification>> {
     let __params = this.newParams();
     let __headers = new HttpHeaders();
     let __body: any = null;
-    __body = resourceSpecification;
+    __body = jsonNode;
     let req = new HttpRequest<any>(
       'POST',
       this.rootUrl + `/resourceCatalogManagement/v4/resourceSpecification`,
@@ -128,11 +122,11 @@ class ResourceSpecificationService extends __BaseService {
    * Creates a ResourceSpecification
    *
    * This operation creates a ResourceSpecification entity.
-   * @param resourceSpecification The ResourceSpecification to be created
+   * @param jsonNode The ResourceSpecification to be created
    * @return OK or Created
    */
-  createResourceSpecification(resourceSpecification: ResourceSpecificationCreate): __Observable<ResourceSpecification | ResourceSpecification> {
-    return this.createResourceSpecificationResponse(resourceSpecification).pipe(
+  createResourceSpecification(jsonNode: JsonNode): __Observable<ResourceSpecification | ResourceSpecification> {
+    return this.createResourceSpecificationResponse(jsonNode).pipe(
       __map(_r => _r.body as ResourceSpecification | ResourceSpecification)
     );
   }
@@ -195,8 +189,9 @@ class ResourceSpecificationService extends __BaseService {
    *
    * This operation deletes a ResourceSpecification entity.
    * @param id Identifier of the ResourceSpecification
+   * @return Deleted
    */
-  deleteResourceSpecificationResponse(id: string): __Observable<__StrictHttpResponse<null>> {
+  deleteResourceSpecificationResponse(id: string): __Observable<__StrictHttpResponse<{}>> {
     let __params = this.newParams();
     let __headers = new HttpHeaders();
     let __body: any = null;
@@ -214,7 +209,7 @@ class ResourceSpecificationService extends __BaseService {
     return this.http.request<any>(req).pipe(
       __filter(_r => _r instanceof HttpResponse),
       __map((_r) => {
-        return _r as __StrictHttpResponse<null>;
+        return _r as __StrictHttpResponse<{}>;
       })
     );
   }
@@ -223,10 +218,11 @@ class ResourceSpecificationService extends __BaseService {
    *
    * This operation deletes a ResourceSpecification entity.
    * @param id Identifier of the ResourceSpecification
+   * @return Deleted
    */
-  deleteResourceSpecification(id: string): __Observable<null> {
+  deleteResourceSpecification(id: string): __Observable<{}> {
     return this.deleteResourceSpecificationResponse(id).pipe(
-      __map(_r => _r.body as null)
+      __map(_r => _r.body as {})
     );
   }
 
@@ -236,7 +232,7 @@ class ResourceSpecificationService extends __BaseService {
    * This operation updates partially a ResourceSpecification entity.
    * @param params The `ResourceSpecificationService.PatchResourceSpecificationParams` containing the following parameters:
    *
-   * - `resourceSpecification`: The ResourceSpecification to be updated
+   * - `serviceSpecification`: The ResourceSpecification to be updated
    *
    * - `id`: Identifier of the ResourceSpecification
    *
@@ -246,7 +242,7 @@ class ResourceSpecificationService extends __BaseService {
     let __params = this.newParams();
     let __headers = new HttpHeaders();
     let __body: any = null;
-    __body = params.resourceSpecification;
+    __body = params.serviceSpecification;
 
     let req = new HttpRequest<any>(
       'PATCH',
@@ -271,7 +267,7 @@ class ResourceSpecificationService extends __BaseService {
    * This operation updates partially a ResourceSpecification entity.
    * @param params The `ResourceSpecificationService.PatchResourceSpecificationParams` containing the following parameters:
    *
-   * - `resourceSpecification`: The ResourceSpecification to be updated
+   * - `serviceSpecification`: The ResourceSpecification to be updated
    *
    * - `id`: Identifier of the ResourceSpecification
    *
@@ -284,25 +280,23 @@ class ResourceSpecificationService extends __BaseService {
   }
 
   /**
-   * Adds an attachment to a ResourceSpecification
+   * Adds an attachment to a 'ResourceSpecification'
    *
-   * This operation adds an attachment to a ResourceSpecification and updates partially a ResourceSpecification entity
-   * @param params The `ResourceSpecificationService.AddAttachmentToResourceSpecificationParams` containing the following parameters:
+   * This operation adds an attachment to a ResourceSpecification
+   * @param params The `ResourceSpecificationService.AddAttachmentToResourceSpecParams` containing the following parameters:
    *
    * - `id`: Identifier of the ResourceSpecification
    *
    * - `afile`: The Attachment file to be added
    *
-   * @return Success
+   * @return OK or Created
    */
-  addAttachmentToResourceSpecificationResponse(params: ResourceSpecificationService.AddAttachmentToResourceSpecificationParams): __Observable<__StrictHttpResponse<Attachment>> {
+  addAttachmentToResourceSpecResponse(params: ResourceSpecificationService.AddAttachmentToResourceSpecParams): __Observable<__StrictHttpResponse<ResourceSpecification | ResourceSpecification>> {
     let __params = this.newParams();
     let __headers = new HttpHeaders();
     let __body: any = null;
-    let __formData = new FormData();
-    __body = __formData;
 
-    if (params.afile != null) { __formData.append('afile', params.afile as string | Blob);}
+    __body = params.afile;
     let req = new HttpRequest<any>(
       'POST',
       this.rootUrl + `/resourceCatalogManagement/v4/resourceSpecification/${encodeURIComponent(params.id)}/attachment`,
@@ -316,32 +310,33 @@ class ResourceSpecificationService extends __BaseService {
     return this.http.request<any>(req).pipe(
       __filter(_r => _r instanceof HttpResponse),
       __map((_r) => {
-        return _r as __StrictHttpResponse<Attachment>;
+        return _r as __StrictHttpResponse<ResourceSpecification | ResourceSpecification>;
       })
     );
   }
   /**
-   * Adds an attachment to a ResourceSpecification
+   * Adds an attachment to a 'ResourceSpecification'
    *
-   * This operation adds an attachment to a ResourceSpecification and updates partially a ResourceSpecification entity
-   * @param params The `ResourceSpecificationService.AddAttachmentToResourceSpecificationParams` containing the following parameters:
+   * This operation adds an attachment to a ResourceSpecification
+   * @param params The `ResourceSpecificationService.AddAttachmentToResourceSpecParams` containing the following parameters:
    *
    * - `id`: Identifier of the ResourceSpecification
    *
    * - `afile`: The Attachment file to be added
    *
-   * @return Success
+   * @return OK or Created
    */
-  addAttachmentToResourceSpecification(params: ResourceSpecificationService.AddAttachmentToResourceSpecificationParams): __Observable<Attachment> {
-    return this.addAttachmentToResourceSpecificationResponse(params).pipe(
-      __map(_r => _r.body as Attachment)
+  addAttachmentToResourceSpec(params: ResourceSpecificationService.AddAttachmentToResourceSpecParams): __Observable<ResourceSpecification | ResourceSpecification> {
+    return this.addAttachmentToResourceSpecResponse(params).pipe(
+      __map(_r => _r.body as ResourceSpecification | ResourceSpecification)
     );
   }
-   /**
-   * Get an attachment
+
+  /**
+   * Get an attachment from a 'ResourceSpecification'
    *
    * This operation gets an attachment
-   * @param params The `ResourceSpecificationService.GetAttachmentParams` containing the following parameters:
+   * @param params The `ResourceSpecificationService.GetAttachment1Params` containing the following parameters:
    *
    * - `id`: Identifier of the ResourceSpecification
    *
@@ -349,107 +344,105 @@ class ResourceSpecificationService extends __BaseService {
    *
    * @return Success
    */
-    getAttachmentResponse(params: ResourceSpecificationService.GetAttachmentParams): __Observable<__StrictHttpResponse<Resource>> {
-      let __params = this.newParams();
-      let __headers = new HttpHeaders();
-      let __body: any = null;
+  getAttachment1Response(params: ResourceSpecificationService.GetAttachment1Params): __Observable<__StrictHttpResponse<ByteArrayResource>> {
+    let __params = this.newParams();
+    let __headers = new HttpHeaders();
+    let __body: any = null;
 
 
-      let req = new HttpRequest<any>(
-        'GET',
-        this.rootUrl + `/resourceCatalogManagement/v4/resourceSpecification/${encodeURIComponent(params.id)}/attachment/${encodeURIComponent(params.attid)}`,
-        __body,
-        {
-          headers: __headers,
-          params: __params,
-          responseType: 'blob'
-        });
+    let req = new HttpRequest<any>(
+      'GET',
+      this.rootUrl + `/resourceCatalogManagement/v4/resourceSpecification/${encodeURIComponent(params.id)}/attachment/${encodeURIComponent(params.attid)}`,
+      __body,
+      {
+        headers: __headers,
+        params: __params,
+        responseType: 'json'
+      });
 
-      return this.http.request<any>(req).pipe(
-        __filter(_r => _r instanceof HttpResponse),
-        __map((_r) => {
-          return _r as __StrictHttpResponse<Resource>;
-        })
-      );
-    }
+    return this.http.request<any>(req).pipe(
+      __filter(_r => _r instanceof HttpResponse),
+      __map((_r) => {
+        return _r as __StrictHttpResponse<ByteArrayResource>;
+      })
+    );
+  }
+  /**
+   * Get an attachment from a 'ResourceSpecification'
+   *
+   * This operation gets an attachment
+   * @param params The `ResourceSpecificationService.GetAttachment1Params` containing the following parameters:
+   *
+   * - `id`: Identifier of the ResourceSpecification
+   *
+   * - `attid`: Identifier of the Attachment
+   *
+   * @return Success
+   */
+  getAttachment1(params: ResourceSpecificationService.GetAttachment1Params): __Observable<ByteArrayResource> {
+    return this.getAttachment1Response(params).pipe(
+      __map(_r => _r.body as ByteArrayResource)
+    );
+  }
 
-    /**
-     * Get an attachment
-     *
-     * This operation gets an attachment
-     * @param params The `ResourceSpecificationService.GetAttachmentParams` containing the following parameters:
-     *
-     * - `id`: Identifier of the ResourceSpecification
-     *
-     * - `attid`: Identifier of the Attachment
-     *
-     * @return Success
-     */
-    getAttachment(params: ResourceSpecificationService.GetAttachmentParams): __Observable<Blob> {
-      return this.getAttachmentResponse(params).pipe(
-        __map(_r => _r.body as Blob)
-      );
-    }
-
-    /**
-     * Get an attachment with filename
-     *
-     * This operation gets an attachment
-     * @param params The `ResourceSpecificationService.GetAttachmentWithFilenameParams` containing the following parameters:
-     *
-     * - `id`: Identifier of the ResourceSpecification
-     *
-     * - `attid`: Identifier of the Attachment
-     *
-     * - `afilename`: Identifier of the Filename
-     *
-     * @return Success
-     */
-    getAttachmentWithFilenameResponse(params: ResourceSpecificationService.GetAttachmentWithFilenameParams): __Observable<__StrictHttpResponse<Resource>> {
-      let __params = this.newParams();
-      let __headers = new HttpHeaders();
-      let __body: any = null;
-
+  /**
+   * Get an attachment from a 'ResourceSpecification' with filename
+   *
+   * This operation gets an attachment
+   * @param params The `ResourceSpecificationService.GetAttachmentWithFilename1Params` containing the following parameters:
+   *
+   * - `id`: Identifier of the ResourceSpecification
+   *
+   * - `attid`: Identifier of the Attachment
+   *
+   * - `afilename`: Identifier of the Filename
+   *
+   * @return Success
+   */
+  getAttachmentWithFilename1Response(params: ResourceSpecificationService.GetAttachmentWithFilename1Params): __Observable<__StrictHttpResponse<ByteArrayResource>> {
+    let __params = this.newParams();
+    let __headers = new HttpHeaders();
+    let __body: any = null;
 
 
-      let req = new HttpRequest<any>(
-        'GET',
-        this.rootUrl + `/resourceCatalogManagement/v4/resourceSpecification/${encodeURIComponent(params.id)}/attachment/${encodeURIComponent(params.attid)}/${encodeURIComponent(params.afilename)}`,
-        __body,
-        {
-          headers: __headers,
-          params: __params,
-          responseType: 'blob'
-        });
 
-      return this.http.request<any>(req).pipe(
-        __filter(_r => _r instanceof HttpResponse),
-        __map((_r) => {
-          return _r as __StrictHttpResponse<Resource>;
-        })
-      );
-    }
-    /**
-     * Get an attachment with filename
-     *
-     * This operation gets an attachment
-     * @param params The `ResourceSpecificationService.GetAttachmentWithFilenameParams` containing the following parameters:
-     *
-     * - `id`: Identifier of the ResourceSpecification
-     *
-     * - `attid`: Identifier of the Attachment
-     *
-     * - `afilename`: Identifier of the Filename
-     *
-     * @return Success
-     */
-    getAttachmentWithFilename(params: ResourceSpecificationService.GetAttachmentWithFilenameParams): __Observable<Resource> {
-      return this.getAttachmentWithFilenameResponse(params).pipe(
-        __map(_r => _r.body as Resource)
-      );
-    }
+    let req = new HttpRequest<any>(
+      'GET',
+      this.rootUrl + `/resourceCatalogManagement/v4/resourceSpecification/${encodeURIComponent(params.id)}/attachment/${encodeURIComponent(params.attid)}/${encodeURIComponent(params.afilename)}`,
+      __body,
+      {
+        headers: __headers,
+        params: __params,
+        responseType: 'json'
+      });
+
+    return this.http.request<any>(req).pipe(
+      __filter(_r => _r instanceof HttpResponse),
+      __map((_r) => {
+        return _r as __StrictHttpResponse<ByteArrayResource>;
+      })
+    );
+  }
+  /**
+   * Get an attachment from a 'ResourceSpecification' with filename
+   *
+   * This operation gets an attachment
+   * @param params The `ResourceSpecificationService.GetAttachmentWithFilename1Params` containing the following parameters:
+   *
+   * - `id`: Identifier of the ResourceSpecification
+   *
+   * - `attid`: Identifier of the Attachment
+   *
+   * - `afilename`: Identifier of the Filename
+   *
+   * @return Success
+   */
+  getAttachmentWithFilename1(params: ResourceSpecificationService.GetAttachmentWithFilename1Params): __Observable<ByteArrayResource> {
+    return this.getAttachmentWithFilename1Response(params).pipe(
+      __map(_r => _r.body as ByteArrayResource)
+    );
+  }
 }
-
 
 module ResourceSpecificationService {
 
@@ -498,7 +491,7 @@ module ResourceSpecificationService {
     /**
      * The ResourceSpecification to be updated
      */
-    resourceSpecification: ResourceSpecificationUpdate;
+    serviceSpecification: ResourceSpecificationUpdate;
 
     /**
      * Identifier of the ResourceSpecification
@@ -507,9 +500,9 @@ module ResourceSpecificationService {
   }
 
   /**
-   * Parameters for addAttachmentToResourceSpecification
+   * Parameters for addAttachmentToResourceSpec
    */
-  export interface AddAttachmentToResourceSpecificationParams {
+  export interface AddAttachmentToResourceSpecParams {
 
     /**
      * Identifier of the ResourceSpecification
@@ -519,13 +512,13 @@ module ResourceSpecificationService {
     /**
      * The Attachment file to be added
      */
-    afile?: Blob;
+    afile?: string;
   }
 
   /**
-   * Parameters for getAttachment
+   * Parameters for getAttachment1
    */
-  export interface GetAttachmentParams {
+  export interface GetAttachment1Params {
 
     /**
      * Identifier of the ResourceSpecification
@@ -539,9 +532,9 @@ module ResourceSpecificationService {
   }
 
   /**
-   * Parameters for getAttachmentWithFilename
+   * Parameters for getAttachmentWithFilename1
    */
-  export interface GetAttachmentWithFilenameParams {
+  export interface GetAttachmentWithFilename1Params {
 
     /**
      * Identifier of the ResourceSpecification

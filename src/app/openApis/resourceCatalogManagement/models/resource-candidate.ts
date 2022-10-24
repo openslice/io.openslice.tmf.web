@@ -4,7 +4,7 @@ import { ResourceSpecificationRef } from './resource-specification-ref';
 import { TimePeriod } from './time-period';
 
 /**
- * ResourceCandidate is an entity that makes a resource specification available to a catalog. A ResourceCandidate and its associated resource specification may be published - made visible - in any number of resource catalogs, or in none. One resource specification can be composed of other resource specifications.
+ * ResourceCandidate is an entity that makes a resource specification available to a catalog. A ResourceCandidate and its associated resource specification may be published - made visible - in any number of resource catalogs, or in none.
  */
 export interface ResourceCandidate {
 
@@ -33,6 +33,10 @@ export interface ResourceCandidate {
    * Unique reference of the entity
    */
   href?: string;
+
+  /**
+   * Unique identifier of this REST resource
+   */
   id?: string;
 
   /**

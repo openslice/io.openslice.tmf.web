@@ -33,6 +33,10 @@ export interface ResourceCategory {
    * Unique reference of the entity
    */
   href?: string;
+
+  /**
+   * Unique identifier of the category
+   */
   id?: string;
 
   /**

@@ -568,6 +568,7 @@ export class EditServiceSpecsComponent implements OnInit {
   selector: 'app-discard-changes',
   templateUrl: 'discard-changes.component.html',
 })
+
 export class DiscardChangesComponent {
 
   constructor(
@@ -581,9 +582,4 @@ export class DiscardChangesComponent {
   onYesClick(): void {
     this.dialogRef.close(true)
   }
-
-
-
-
-
 }

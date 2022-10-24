@@ -4,26 +4,29 @@
  * Used when an API throws an Error, typically with a HTTP error response-code (3xx, 4xx, 5xx)
  */
 export interface Error {
+  '@baseType'?: string;
+  '@schemaLocation'?: string;
+  '@type'?: string;
 
   /**
    * When sub-classing, this defines the super-class.
    */
-  '@baseType'?: string;
+  atBaseType?: string;
 
   /**
    * A URI to a JSON-Schema file that defines additional attributes and relationships
    */
-  '@schemaLocation'?: string;
+  atSchemaLocation?: string;
 
   /**
    * When sub-classing, this defines the sub-class entity name.
    */
-  '@type'?: string;
+  atType?: string;
 
   /**
    * Application relevant detail, defined in the API or a common list.
    */
-  code: number;
+  code: string;
 
   /**
    * More details and corrective actions related to the error which can be shown to a client user.
@@ -43,5 +46,5 @@ export interface Error {
   /**
    * HTTP Error code extension
    */
-  status?: number;
+  status?: string;
 }

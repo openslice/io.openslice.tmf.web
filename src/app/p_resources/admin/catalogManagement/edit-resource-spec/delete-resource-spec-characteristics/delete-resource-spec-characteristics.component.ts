@@ -1,6 +1,6 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
-import { ResourceSpecCharacteristic, ResourceSpecificationUpdate, ResourceSpecification } from 'src/app/openApis/resourceCatalogManagement/models';
+import { ResourceSpecificationCharacteristicReq, ResourceSpecificationUpdate, ResourceSpecification } from 'src/app/openApis/resourceCatalogManagement/models';
 import { ResourceSpecificationService } from 'src/app/openApis/resourceCatalogManagement/services';
 
 @Component({
@@ -13,8 +13,8 @@ export class DeleteResourceSpecCharacteristicsComponent implements OnInit {
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: {
       resourceSpec: ResourceSpecification
-      resourceSpecCharacteristicArray:ResourceSpecCharacteristic[],
-      specToBeDeleted: ResourceSpecCharacteristic
+      resourceSpecCharacteristicArray:ResourceSpecificationCharacteristicReq[],
+      specToBeDeleted: ResourceSpecificationCharacteristicReq
     },
     private dialogRef: MatDialogRef<DeleteResourceSpecCharacteristicsComponent>,
     private specService: ResourceSpecificationService
@@ -33,7 +33,7 @@ export class DeleteResourceSpecCharacteristicsComponent implements OnInit {
     console.log(updateSpecObj)
 
     console.log(this.data.resourceSpec)
-    this.specService.patchResourceSpecification({ id: this.data.resourceSpec.id, resourceSpecification: updateSpecObj }).subscribe(
+    this.specService.patchResourceSpecification({ id: this.data.resourceSpec.id, serviceSpecification: updateSpecObj }).subscribe(
       data => console.log(data),
       error => console.error(error),
       () => this.dialogRef.close('deleted')

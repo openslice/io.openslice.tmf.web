@@ -130,7 +130,7 @@ export class EditResourceCategoriesComponent implements OnInit, OnDestroy {
 
         if (this.category.parentId) {
           this.editForm.get('isRoot').disable()
-          this.editForm.patchValue({parentId: this.allCategories.find(el => el.id === this.category.parentId)})
+          this.editForm.patchValue({parentId: this.allCategories.find(el => el.parentId === this.category.parentId)})
           this.editForm.get('parentId').disable()
         } else {
           this.editForm.get('isRoot').enable()
@@ -241,22 +241,27 @@ export class EditResourceCategoriesComponent implements OnInit, OnDestroy {
 
     const updateObj: ResourceCategoryCreate | ResourceCategoryUpdate = {
       // category: this.editForm.value.category.map(el => {return {'id': el.id}}),
-      isRoot: this.editForm.value.isRoot,
-      description: this.editForm.value.description,
-      lifecycleStatus: this.editForm.value.lifecycleStatus,
       name: this.editForm.value.name,
-      validFor: this.editForm.value.validFor,
+      description: this.editForm.value.description,
+      isRoot: true,
+      lifecycleStatus: this.editForm.value.lifecycleStatus,
       version: this.editForm.value.version
     }
 
-    if (!this.editForm.get('isRoot').value) updateObj.parentId = this.editForm.get('parentId').value.id
+    //Εδώ πρέπει να πάρουμε το parentid από το name του parent resource category
+    if (!this.editForm.get('isRoot').value)
+    {
+      console.log("Received parent id:"+this.editForm.get('parentId').value)
+      updateObj.parentId = this.editForm.get('parentId').value
+      updateObj.isRoot=false
+    }
 
     let updatedCategory: ResourceCategory
-    console.log(updateObj)
+    console.log("Updated object to be sent "+JSON.stringify(updateObj))
     if (this.newCategory) {
       this.categoryService.createResourceCategory(updateObj).subscribe(
         data => { updatedCategory = data },
-        error => console.error(error),
+        error => console.error("Resource Category creation failed with error" + error),
         () => {
           this.newCategory = false
           this.toast.success("Resource Category is successfully created")

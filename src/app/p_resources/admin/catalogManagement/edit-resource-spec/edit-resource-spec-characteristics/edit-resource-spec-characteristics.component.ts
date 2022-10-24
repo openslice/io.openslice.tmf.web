@@ -1,6 +1,6 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef, MatCheckboxChange } from '@angular/material';
-import { ResourceSpecCharacteristic, ResourceSpecCharacteristicValue, ResourceSpecification, ResourceSpecificationUpdate } from 'src/app/openApis/resourceCatalogManagement/models';
+import { ResourceSpecificationCharacteristicRes, ResourceSpecification, ResourceSpecificationUpdate, ResourceSpecificationCharacteristicValue } from 'src/app/openApis/resourceCatalogManagement/models';
 import { FormGroup, FormControl, FormArray } from '@angular/forms';
 import { ResourceSpecificationService } from 'src/app/openApis/resourceCatalogManagement/services';
 import { ToastrService } from 'ngx-toastr';
@@ -21,7 +21,7 @@ export class EditResourceSpecCharacteristicsComponent implements OnInit {
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: {
       resourceSpec: ResourceSpecification,
-      specToBeUpdated: ResourceSpecCharacteristic,
+      specToBeUpdated: ResourceSpecificationCharacteristicRes,
     },
     private dialogRef: MatDialogRef<EditResourceSpecCharacteristicsComponent>,
     private specService: ResourceSpecificationService,
@@ -118,7 +118,7 @@ export class EditResourceSpecCharacteristicsComponent implements OnInit {
   }
 
 
-  updateFormArrayItem(CharValue: ResourceSpecCharacteristicValue): FormGroup {
+  updateFormArrayItem(CharValue: ResourceSpecificationCharacteristicValue): FormGroup {
     return new FormGroup({
       value: new FormGroup({
         alias: new FormControl(CharValue.value.alias),
@@ -180,7 +180,7 @@ export class EditResourceSpecCharacteristicsComponent implements OnInit {
     if (this.newSpec) {
       this.data.resourceSpec.resourceSpecCharacteristic.push(this.editFormCharacteristic.getRawValue())
     } else {
-      const updateCharacteristIndex = this.data.resourceSpec.resourceSpecCharacteristic.findIndex(char => char.id === this.data.specToBeUpdated.id)
+      const updateCharacteristIndex = this.data.resourceSpec.resourceSpecCharacteristic.findIndex(char => char.uuid === this.data.specToBeUpdated.uuid)
       this.data.resourceSpec.resourceSpecCharacteristic[updateCharacteristIndex] = this.editFormCharacteristic.getRawValue()
     }
 
@@ -189,7 +189,7 @@ export class EditResourceSpecCharacteristicsComponent implements OnInit {
     }
 
     console.log(updateCharacteristicObj)
-    this.specService.patchResourceSpecification({id: this.data.resourceSpec.id, resourceSpecification: updateCharacteristicObj}).subscribe(
+    this.specService.patchResourceSpecification({id: this.data.resourceSpec.id, serviceSpecification: updateCharacteristicObj}).subscribe(
       data => console.log(data),
       error => { console.error(error); this.toast.error("An error occurred upon updating Spec Characteristics") },
       () => {this.dialogRef.close('updated')}

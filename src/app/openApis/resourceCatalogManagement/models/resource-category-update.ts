@@ -1,31 +1,28 @@
 /* tslint:disable */
 import { ResourceCategoryRef } from './resource-category-ref';
+import { RelatedParty } from './related-party';
 import { ResourceCandidateRef } from './resource-candidate-ref';
 import { TimePeriod } from './time-period';
 
 /**
- * The (resource) category resource is used to group resource candidates in logical containers. Categories can contain other categories. Skipped properties: id,href,lastUpdate
+ * The (resource) category resource is used to group resource candidates in logical containers. Categories can contain other categories. Skipped properties: id,href,id,href
  */
 export interface ResourceCategoryUpdate {
 
   /**
-   * When sub-classing, this defines the super-class
+   * Immediate base class type of this category
    */
   '@baseType'?: string;
 
   /**
-   * A URI to a JSON-Schema file that defines additional attributes and relationships
+   * This field provides a link to the schema describing this REST resource
    */
-  '@schemaLocation'?: string;
+  '@schemalLocation'?: string;
 
   /**
-   * When sub-classing, this defines the sub-class entity name
+   * The (class) type of this category
    */
   '@type'?: string;
-
-  /**
-   * List of child categories in the tree for in this category
-   */
   category?: Array<ResourceCategoryRef>;
 
   /**
@@ -52,10 +49,7 @@ export interface ResourceCategoryUpdate {
    * Unique identifier of the parent category
    */
   parentId?: string;
-
-  /**
-   * List of resource candidates associated with this category
-   */
+  relatedParty?: Array<RelatedParty>;
   resourceCandidate?: Array<ResourceCandidateRef>;
 
   /**
@@ -64,7 +58,7 @@ export interface ResourceCategoryUpdate {
   validFor?: TimePeriod;
 
   /**
-   * ResourceCategory version
+   * Category version
    */
   version?: string;
 }

@@ -1,15 +1,14 @@
 /* tslint:disable */
-import { AttachmentRef } from './attachment-ref';
+import { AttachmentRefOrValue } from './attachment-ref-or-value';
+import { FeatureSpecificationReq } from './feature-specification-req';
 import { RelatedParty } from './related-party';
-import { ResourceSpecificationRef } from './resource-specification-ref';
-import { ResourceLevelSpecificationRef } from './resource-level-specification-ref';
-import { ResourceSpecCharacteristic } from './resource-spec-characteristic';
-import { ResourceSpecRelationship } from './resource-spec-relationship';
+import { ResourceSpecificationCharacteristicReq } from './resource-specification-characteristic-req';
+import { ResourceSpecificationRelationshipReq } from './resource-specification-relationship-req';
 import { TargetResourceSchema } from './target-resource-schema';
 import { TimePeriod } from './time-period';
 
 /**
- * ResourceSpecification is a class that offers characteristics to describe a type of resource. Functionally, it acts as a template by which Resources may be instantiated. By sharing the same  specification, these resources would therefore share the same set of characteristics. Skipped properties: id,href,lastUpdate
+ * Resources are physical or non-physical components (or some combination of these) within an enterprise's infrastructure or inventory. They are typically consumed or used by services (for example a physical port assigned to a service) or contribute to the realization of a Product (for example, a SIM card). They can be drawn from the Application, Computing and Network domains, and include, for example, Network Elements, software, IT systems, content and information, and technology components. A ResourceSpecification is an abstract base class for representing a generic means for implementing a particular type of Resource. In essence, a ResourceSpecification defines the common attributes and relationships of a set of related Resources, while Resource defines a specific instance that is based on a particular ResourceSpecification. Skipped properties: id,href
  */
 export interface ResourceSpecificationUpdate {
 
@@ -29,17 +28,27 @@ export interface ResourceSpecificationUpdate {
   '@type'?: string;
 
   /**
-   * A list of attachments (Attachment [*]). Complements the description of the specification through video, pictures...
+   * Complements the description of an element (for instance a resource) through video, pictures ...
    */
-  attachment?: Array<AttachmentRef>;
+  attachment?: Array<AttachmentRefOrValue>;
 
   /**
-   * A narrative that explains in detail what the resource specification is
+   * Category of the target resource like NetworkConnectivity, PhysicalLinks, Generic, L2Network and so on.
+   */
+  category?: string;
+
+  /**
+   * Description of this REST resource
    */
   description?: string;
 
   /**
-   * isBundle determines whether a ResourceSpecification represents a single ResourceSpecification (false), or a bundle of ResourceSpecification (true).
+   * A list of Features for this specification.
+   */
+  featureSpecification?: Array<FeatureSpecificationReq>;
+
+  /**
+   * A flag indicates that if this resource specification is a bundled specification (true) or single (false).
    */
   isBundle?: boolean;
 
@@ -49,47 +58,29 @@ export interface ResourceSpecificationUpdate {
   lifecycleStatus?: string;
 
   /**
-   * Name of the resource specification
+   * Name given to this REST resource
    */
   name?: string;
 
   /**
-   * A list of related party references (RelatedParty [*]). A related party defines party or party role linked to a specific entity.
+   * A related party defines party or party role linked to a specific entity.
    */
   relatedParty?: Array<RelatedParty>;
 
   /**
-   * A list of resource specification references (ResourceSpecificationRef [*]). The ResourceSpecification is required for a resource specification with type ResourceFacingResourceSpecification (RFSS).
+   * A characteristic quality or distinctive feature of a ResourceSpecification.  The characteristic can be take on a discrete value, such as color, can take on a range of values, (for example, sensitivity of 100-240 mV), or can be derived from a formula (for example, usage time (hrs) = 30 - talk time *3). Certain characteristics, such as color, may be configured during the ordering or some other process.
    */
-  resourceSpecification?: Array<ResourceSpecificationRef>;
+  resourceSpecCharacteristic?: Array<ResourceSpecificationCharacteristicReq>;
 
   /**
-   * A list of resource level specifications related to this resource specification, and which will need to be satisifiable for corresponding resource instances; e.g. Gold, Platinum
+   * A migration, substitution, dependency or exclusivity relationship between/among resource specifications.
    */
-  resourceLevelSpecification?: Array<ResourceLevelSpecificationRef>;
-
-  /**
-   * A list of Resource spec characteristics (ResourceSpecCharacteristic [*]). This class represents the key features of this resource specification.
-   */
-  resourceSpecCharacteristic?: Array<ResourceSpecCharacteristic>;
-
-  /**
-   * A list of resource specifications related to this specification, e.g. migration, substitution, dependency or exclusivity relationship
-   */
-  resourceSpecRelationship?: Array<ResourceSpecRelationship>;
-
-  /**
-   * A target resource schema reference (TargetResourceSchemaRef). The reference object to the schema and type of target resource which is described by resource specification.
-   */
+  resourceSpecRelationship?: Array<ResourceSpecificationRelationshipReq>;
   targetResourceSchema?: TargetResourceSchema;
-
-  /**
-   * The period for which the resource specification is valid
-   */
   validFor?: TimePeriod;
 
   /**
-   * Resource specification version
+   * Resource Specification version
    */
   version?: string;
 }

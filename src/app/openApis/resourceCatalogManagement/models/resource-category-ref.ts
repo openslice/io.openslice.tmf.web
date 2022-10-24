@@ -1,7 +1,7 @@
 /* tslint:disable */
 
 /**
- * The (resource) category resource is used to group resource candidates in logical containers. Categories can contain other categories.
+ * Category reference. The category resource is used to group product offerings, service and resource candidates in logical containers. Categories can contain other categories and/or product offerings, resource or service candidates.
  */
 export interface ResourceCategoryRef {
 
@@ -9,11 +9,6 @@ export interface ResourceCategoryRef {
    * When sub-classing, this defines the super-class
    */
   '@baseType'?: string;
-
-  /**
-   * The actual type of the target instance when needed for disambiguation.
-   */
-  '@referredType'?: string;
 
   /**
    * A URI to a JSON-Schema file that defines additional attributes and relationships
@@ -25,6 +20,10 @@ export interface ResourceCategoryRef {
    * Unique reference of the entity
    */
   href?: string;
+
+  /**
+   * Unique reference of the category
+   */
   id?: string;
 
   /**
@@ -32,4 +31,9 @@ export interface ResourceCategoryRef {
    */
   name?: string;
   uuid?: string;
+
+  /**
+   * Category version
+   */
+  version?: string;
 }

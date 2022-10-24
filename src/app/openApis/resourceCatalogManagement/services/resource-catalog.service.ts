@@ -89,7 +89,7 @@ class ResourceCatalogService extends __BaseService {
    * Creates a ResourceCatalog
    *
    * This operation creates a ResourceCatalog entity.
-   * @param serviceCatalog The ResourceCatalog to be created
+   * @param resourceCatalog The Resource Catalog to be created
    * @return OK or Created
    */
   createResourceCatalogResponse(resourceCatalog: ResourceCatalogCreate): __Observable<__StrictHttpResponse<ResourceCatalog | ResourceCatalog>> {
@@ -118,7 +118,7 @@ class ResourceCatalogService extends __BaseService {
    * Creates a ResourceCatalog
    *
    * This operation creates a ResourceCatalog entity.
-   * @param resourceCatalog The ResourceCatalog to be created
+   * @param resourceCatalog The Resource Catalog to be created
    * @return OK or Created
    */
   createResourceCatalog(resourceCatalog: ResourceCatalogCreate): __Observable<ResourceCatalog | ResourceCatalog> {
@@ -185,8 +185,9 @@ class ResourceCatalogService extends __BaseService {
    *
    * This operation deletes a ResourceCatalog entity.
    * @param id Identifier of the ResourceCatalog
+   * @return Deleted
    */
-  deleteResourceCatalogResponse(id: string): __Observable<__StrictHttpResponse<null>> {
+  deleteResourceCatalogResponse(id: string): __Observable<__StrictHttpResponse<{}>> {
     let __params = this.newParams();
     let __headers = new HttpHeaders();
     let __body: any = null;
@@ -204,7 +205,7 @@ class ResourceCatalogService extends __BaseService {
     return this.http.request<any>(req).pipe(
       __filter(_r => _r instanceof HttpResponse),
       __map((_r) => {
-        return _r as __StrictHttpResponse<null>;
+        return _r as __StrictHttpResponse<{}>;
       })
     );
   }
@@ -213,10 +214,11 @@ class ResourceCatalogService extends __BaseService {
    *
    * This operation deletes a ResourceCatalog entity.
    * @param id Identifier of the ResourceCatalog
+   * @return Deleted
    */
-  deleteResourceCatalog(id: string): __Observable<null> {
+  deleteResourceCatalog(id: string): __Observable<{}> {
     return this.deleteResourceCatalogResponse(id).pipe(
-      __map(_r => _r.body as null)
+      __map(_r => _r.body as {})
     );
   }
 
@@ -226,9 +228,9 @@ class ResourceCatalogService extends __BaseService {
    * This operation updates partially a ResourceCatalog entity.
    * @param params The `ResourceCatalogService.PatchResourceCatalogParams` containing the following parameters:
    *
-   * - `resourceCatalog`: The ResourceCatalog to be updated
-   *
    * - `id`: Identifier of the ResourceCatalog
+   *
+   * - `body`: The ResourceCatalog to be updated
    *
    * @return Updated
    */
@@ -236,8 +238,8 @@ class ResourceCatalogService extends __BaseService {
     let __params = this.newParams();
     let __headers = new HttpHeaders();
     let __body: any = null;
-    __body = params.resourceCatalog;
 
+    __body = params.body;
     let req = new HttpRequest<any>(
       'PATCH',
       this.rootUrl + `/resourceCatalogManagement/v4/resourceCatalog/${encodeURIComponent(params.id)}`,
@@ -261,9 +263,9 @@ class ResourceCatalogService extends __BaseService {
    * This operation updates partially a ResourceCatalog entity.
    * @param params The `ResourceCatalogService.PatchResourceCatalogParams` containing the following parameters:
    *
-   * - `resourceCatalog`: The ResourceCatalog to be updated
-   *
    * - `id`: Identifier of the ResourceCatalog
+   *
+   * - `body`: The ResourceCatalog to be updated
    *
    * @return Updated
    */
@@ -319,14 +321,14 @@ module ResourceCatalogService {
   export interface PatchResourceCatalogParams {
 
     /**
-     * The ResourceCatalog to be updated
-     */
-    resourceCatalog: ResourceCatalogUpdate;
-
-    /**
      * Identifier of the ResourceCatalog
      */
     id: string;
+
+    /**
+     * The ResourceCatalog to be updated
+     */
+    body: ResourceCatalogUpdate;
   }
 }
 

@@ -42,7 +42,7 @@
                               <span *ngIf="category?.parentId" class="d-flex align-items-center">
                                   <mat-icon *ngIf="!editForm.controls.parentId.value?.isRoot">keyboard_arrow_right</mat-icon>
                                   <a mat-button
-                                      routerLink='/{{appService.portalDomain}}/resource_categories_update/{{editForm.controls.parentId.value.id}}'>{{editForm.controls.parentId.value.name}}
+                                      routerLink='/{{appService.portalDomain}}/resource_categories_update/{{editForm.controls.parentId.value}}'>{{editForm.controls.parentId.value}}
                                   </a>
                               </span>
 
@@ -88,13 +88,20 @@
                                   </div>
 
                                   <mat-form-field class="col-md-6">
-                                      <input type="text" placeholder="Parent Category" aria-label="Parent category" matInput
+                                      <!-- <input type="text" placeholder="Parent Category" aria-label="Parent category" matInput
                                           formControlName="parentId" [matAutocomplete]="auto">
                                       <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete" [displayWith]="displayFn">
                                           <mat-option *ngFor="let category of filteredCategories$ | async" [value]="category">
                                               {{category.name}}
                                           </mat-option>
-                                      </mat-autocomplete>
+                                      </mat-autocomplete> -->
+
+                                      <mat-select placeholder="Parent Category" formControlName="parentId">
+                                        <mat-option *ngFor="let category of filteredCategories$ | async" [value]="category.id">
+                                          {{category.name}}
+                                        </mat-option>
+                                      </mat-select>
+
                                   </mat-form-field>
 
                                   <mat-form-field appearance="" class="col-md-12">

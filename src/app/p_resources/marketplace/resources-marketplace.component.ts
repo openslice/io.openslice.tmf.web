@@ -24,123 +24,124 @@ import { ThemingService } from 'src/app/theming/theming.service';
 
 export class ResourcesMarketplaceComponent implements OnInit {
 
-  constructor(
-    private appService: AppService,
-    private catalogService: ResourceCatalogService,
-    // private categoryService: ResourceCategoryService,
-    private candidateService: ResourceCandidateService,
-    private specificationService: ResourceSpecificationService,
-    private treeMarketPlaceService: TreeResourceMarketPlaceService,
-    private dialog: MatDialog,
-    private sortingService: SortingService,
-    private themingService: ThemingService
-  ) { }
+  // constructor(
+  //   private appService: AppService,
+  //   private catalogService: ResourceCatalogService,
+  //   // private categoryService: ResourceCategoryService,
+  //   private candidateService: ResourceCandidateService,
+  //   private specificationService: ResourceSpecificationService,
+  //   private treeMarketPlaceService: TreeResourceMarketPlaceService,
+  //   private dialog: MatDialog,
+  //   private sortingService: SortingService,
+  //   private themingService: ThemingService
+  // ) { }
 
-  resourceCatalogs: ResourceCatalog[]
-  isCatalogsCollapsed: Boolean[] = []
+  // resourceCatalogs: ResourceCatalog[]
+  // isCatalogsCollapsed: Boolean[] = []
 
-  selectedCategoryRef: ResourceCategoryRef
+  // selectedCategoryRef: ResourceCategoryRef
 
-  selectedCategory: ResourceCategory
+  // selectedCategory: ResourceCategory
 
-  resourceCandidates: ResourceCandidateWithLogo[] = []
+  // resourceCandidates: ResourceCandidateWithLogo[] = []
 
-  resourceCandidatesFilterCtrl = new FormControl();
-  filteredResourceCandidates$: Observable<ResourceCandidateWithLogo[]>
+  // resourceCandidatesFilterCtrl = new FormControl();
+  // filteredResourceCandidates$: Observable<ResourceCandidateWithLogo[]>
 
-  specServiceRootUrl : string
-  config: IAppConfig
+  // specServiceRootUrl : string
+  // config: IAppConfig
 
-  resultsNotFound: boolean = false
+  // resultsNotFound: boolean = false
+  ngOnInit() {}
 
-  ngOnInit() {
-    this.config = this.appService.config
+  // ngOnInit() {
+  //   this.config = this.appService.config
 
-    this.specServiceRootUrl = this.specificationService.rootUrl
+  //   this.specServiceRootUrl = this.specificationService.rootUrl
 
-    this.retrieveCatalogsList()
+  //   this.retrieveCatalogsList()
 
-    this.treeMarketPlaceService.categorySelected$.subscribe(
-      category => {
-        this.selectedCategory = category
-        this.resourceCandidates = []
-        this.resourceCandidatesFilterCtrl.reset()
-        this.resultsNotFound = category.resourceCandidate.length === 0
-        category.resourceCandidate.forEach((candidateRef) => {
-          this.retrieveCandidateFromRef(candidateRef)
-        })
-      }
-    )
-  }
+  //   this.treeMarketPlaceService.categorySelected$.subscribe(
+  //     category => {
+  //       this.selectedCategory = category
+  //       this.resourceCandidates = []
+  //       this.resourceCandidatesFilterCtrl.reset()
+  //       this.resultsNotFound = category.resourceCandidate.length === 0
+  //       category.resourceCandidate.forEach((candidateRef) => {
+  //         this.retrieveCandidateFromRef(candidateRef)
+  //       })
+  //     }
+  //   )
+  // }
 
-  retrieveCatalogsList() {
-    this.catalogService.listResourceCatalog({}).subscribe(
-      data => { this.resourceCatalogs = data },
-      error => { console.error(error) },
-      () => {
-        this.treeMarketPlaceService.catalogs$.next(this.resourceCatalogs)
-      }
-    )
-  }
+  // retrieveCatalogsList() {
+  //   this.catalogService.listResourceCatalog({}).subscribe(
+  //     data => { this.resourceCatalogs = data },
+  //     error => { console.error(error) },
+  //     () => {
+  //       this.treeMarketPlaceService.catalogs$.next(this.resourceCatalogs)
+  //     }
+  //   )
+  // }
 
-  retrieveCandidateFromRef(candidateRef: ResourceCandidateRef) {
+  // retrieveCandidateFromRef(candidateRef: ResourceCandidateRef) {
 
-    this.candidateService.retrieveResourceCandidate({ id: candidateRef.id }).subscribe(
-      data => {
-        // console.log(data)
-        let candidate: ResourceCandidateWithLogo = data
-        candidate.fetchingLogo = true
-        candidate.logo = this.themingService.getConfig().DEFAULT_SERVICE_LOGO_PATH //set Default App Image, path defined in theming.service.ts
+  //   this.candidateService.retrieveResourceCandidate({ id: candidateRef.id }).subscribe(
+  //     data => {
+  //       // console.log(data)
+  //       let candidate: ResourceCandidateWithLogo = data
+  //       candidate.fetchingLogo = true
+  //       candidate.logo = this.themingService.getConfig().DEFAULT_SERVICE_LOGO_PATH //set Default App Image, path defined in theming.service.ts
 
-        this.resourceCandidates.push(candidate)
+  //       this.resourceCandidates.push(candidate)
 
-        this.specificationService.getAttachment({id: data.resourceSpecification.id, attid:'logo'}).subscribe(
-          data => {
-            const reader = new FileReader();
-            reader.readAsDataURL(data);
-            reader.onload = (__event) => {
-              const base64data = reader.result;
-              this.resourceCandidates.find(cand => cand.id === candidateRef.id).logo = base64data
-              candidate.fetchingLogo = false
-            }
-          },
-          error => {
-            candidate.fetchingLogo = false
-            // console.error (error)
-          }
-        )
+  //       this.specificationService.getAttachment1({id: data.resourceSpecification.id, attid:'logo'}).subscribe(
+  //         data => {
+  //           const reader = new FileReader();
+  //           //reader.readAsDataURL(data);
+  //           reader.onload = (__event) => {
+  //             const base64data = reader.result;
+  //             this.resourceCandidates.find(cand => cand.id === candidateRef.id).logo = base64data
+  //             candidate.fetchingLogo = false
+  //           }
+  //         },
+  //         error => {
+  //           candidate.fetchingLogo = false
+  //           // console.error (error)
+  //         }
+  //       )
 
-      },
-      error => { console.error(error) },
-      () => {
-        this.resourceCandidates.sort(this.sortingService.ascStringSortingFunctionByNameProperty())
-        this.filteredResourceCandidates$ = this.resourceCandidatesFilterCtrl.valueChanges.pipe(
-          startWith(null),
-          map( (value:null | string) => value ? this._filterOnResourceCandidates(value) : this.resourceCandidates.slice() )
-        )
-      }
-    )
-  }
+  //     },
+  //     error => { console.error(error) },
+  //     () => {
+  //       this.resourceCandidates.sort(this.sortingService.ascStringSortingFunctionByNameProperty())
+  //       this.filteredResourceCandidates$ = this.resourceCandidatesFilterCtrl.valueChanges.pipe(
+  //         startWith(null),
+  //         map( (value:null | string) => value ? this._filterOnResourceCandidates(value) : this.resourceCandidates.slice() )
+  //       )
+  //     }
+  //   )
+  // }
 
-  private _filterOnResourceCandidates(filterValue: string) {
-    filterValue = filterValue.trim();
-    filterValue = filterValue.toLowerCase();
-    return this.resourceCandidates.filter( cand =>  cand.name.toLowerCase().includes(filterValue) )
-  }
+  // private _filterOnResourceCandidates(filterValue: string) {
+  //   filterValue = filterValue.trim();
+  //   filterValue = filterValue.toLowerCase();
+  //   return this.resourceCandidates.filter( cand =>  cand.name.toLowerCase().includes(filterValue) )
+  // }
 
-  previewResourceSpec(candidate: ResourceCandidate) {
-    const dialogRef = this.dialog.open(PreviewMarketplaceItemComponent, {
-      data: {
-        serviceCandidate: candidate
-      },
-      autoFocus: false
-    })
+  // previewResourceSpec(candidate: ResourceCandidate) {
+  //   const dialogRef = this.dialog.open(PreviewMarketplaceItemComponent, {
+  //     data: {
+  //       serviceCandidate: candidate
+  //     },
+  //     autoFocus: false
+  //   })
 
-    dialogRef.afterClosed().subscribe(
-      result => {
-        // console.log(result);
-      }
-    )
-  }
+  //   dialogRef.afterClosed().subscribe(
+  //     result => {
+  //       // console.log(result);
+  //     }
+  //   )
+  // }
 
 }

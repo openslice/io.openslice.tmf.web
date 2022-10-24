@@ -2,28 +2,34 @@
 import { TimePeriod } from './time-period';
 
 /**
- * An aggregation, migration, substitution, dependency or exclusivity relationship between/among resourceSpecCharacteristics.
+ * An aggregation, migration, substitution, dependency or exclusivity relationship between/among Specification Characteristics.
  */
 export interface ResourceSpecCharRelationship {
-  '@baseType'?: string;
-  '@schemaLocation'?: string;
+
+  /**
+   * class type of target specification
+   */
   '@type'?: string;
+
+  /**
+   * Hyperlink reference to the target specification
+   */
+  href?: string;
+
+  /**
+   * Unique identifier of the target specification
+   */
   id?: string;
+
+  /**
+   * Name of the target characteristic
+   */
   name?: string;
-
-  /**
-   * Type of relationship such as aggregation, migration, substitution, dependency, exclusivity
-   */
   relationshipType?: string;
-
-  /**
-   * The association role for this resource specification
-   */
-  role?: string;
   uuid?: string;
 
   /**
-   * The period for which the resourceSpecCharRelationship is valid
+   * The period for which the object is valid
    */
   validFor?: TimePeriod;
 }

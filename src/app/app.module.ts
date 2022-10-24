@@ -10,7 +10,7 @@ import enGB from '@angular/common/locales/en-GB';
 import { registerLocaleData } from '@angular/common';
 
 
-import { 
+import {
   NgbCollapseModule,
   NgbDropdownModule
 } from '@ng-bootstrap/ng-bootstrap'

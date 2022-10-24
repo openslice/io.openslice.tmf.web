@@ -1,7 +1,7 @@
 /* tslint:disable */
 
 /**
- * ResourceCandidate reference. ResourceCandidate is an entity that makes a ResourceSpecification available to a catalog.
+ * ResourceCandidate is an entity that makes a resource specification available to a catalog. A ResourceCandidate and its associated resource specification may be published - made visible - in any number of resource catalogs, or in none.
  */
 export interface ResourceCandidateRef {
 
@@ -11,20 +11,19 @@ export interface ResourceCandidateRef {
   '@baseType'?: string;
 
   /**
-   * The actual type of the target instance when needed for disambiguation.
-   */
-  '@referredType'?: string;
-
-  /**
    * A URI to a JSON-Schema file that defines additional attributes and relationships
    */
   '@schemaLocation'?: string;
   '@type'?: string;
 
   /**
-   * Unique reference of the entity
+   * Reference of the resource candidate
    */
   href?: string;
+
+  /**
+   * Unique identifier of the resource candidate
+   */
   id?: string;
 
   /**

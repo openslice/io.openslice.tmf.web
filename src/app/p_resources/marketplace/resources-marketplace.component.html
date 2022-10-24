@@ -40,15 +40,6 @@
                               <div class="card-body">
                                   <div class="row align-items-center justify-content-center">
                                       <div class="col-6">
-                                          <div class="img-container">
-                                              <img class="img-fluid" *ngIf="!candidate?.fetchingLogo"
-                                                  [src]="candidate.logo"
-                                                  alt="Resource Image">
-                                              <mat-progress-spinner *ngIf="candidate?.fetchingLogo" color="primary" mode="indeterminate" diameter="100"></mat-progress-spinner>
-
-                                          </div>
-                                      </div>
-                                      <div class="col-6">
                                           <div class="">Version: {{candidate.version}}</div>
                                           <div>
                                               <div class="badge badge-info mr-1"

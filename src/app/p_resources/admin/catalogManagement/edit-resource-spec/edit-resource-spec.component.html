@@ -142,7 +142,7 @@
                                           <div *ngIf="!editForm.controls.isBundle.value">
                                               Resource Specification must be checked as <b>Bundle</b> in order to assign Resource Specification Relationships (See Main Properties Tab).
                                           </div>
-                                          <div  *ngIf="editForm.controls.isBundle.value!=undefined">
+                                          <div  *ngIf="editForm.controls.isBundle.value">
                                               <div class="filter-container row align-items-center justify-content-center">
                                                   <mat-form-field *ngIf="spec?.resourceSpecRelationship.length > 0"
                                                       class="col-sm-10">
@@ -311,69 +311,6 @@
                                   </div>
                               </div>
                               <!-- END OF Resource Specification Characteristics Tab -->
-
-
-                              <!-- Logo Tab -->
-                              <div class="tab-pane active" *ngIf="activeListItem === 'Logo'" role="tabpanel"
-                                  [@fadeIn]>
-                                  <div class="card mat-elevation-z1 bg-light">
-                                      <div class="card-body space-between">
-                                          <div class="row justify-content-center align-items-center">
-                                              <div class="col-lg-4 col-md-12 mb-2 mb-lg-0">
-                                                  <div *ngIf="!specLogoRef" class=" text-center">
-                                                      There is not an assigned logo for this specification
-                                                  </div>
-
-                                                  <div *ngIf="specLogoRef"
-                                                      class="d-flex flex-column justify-content-center align-items-center">
-                                                      <div class="text-center p-2 font-weight-normal shadowed">Current
-                                                          Logo Preview</div>
-
-                                                      <div [@fadeIn] class="logo-preview-container mat-elevation-z3">
-                                                          <img [src]="currentSpecLogoAsDataUrl"
-                                                              alt="Current Logo Preview">
-                                                      </div>
-                                                  </div>
-                                              </div>
-
-                                              <div class="col-lg-4 col-md-6 mb-2 mb-lg-0">
-                                                  <file-upload [control]="logoImageCtrl" multiple="false">
-                                                  </file-upload>
-                                                  <mat-hint *ngIf="!logoImageCtrl.invalid">Supported file types:
-                                                      image/* (150 x 150 px)</mat-hint>
-                                                  <mat-error *ngIf="logoImageCtrl.invalid">Supported file types:
-                                                      image/* (150 x 150 px)</mat-error>
-                                              </div>
-                                              <div
-                                                  class="col-lg-4 col-md-6 d-flex justify-content-center align-items-center">
-                                                  <div *ngIf="logoImageCtrl.value.length === 0" [@fadeIn]>New Logo
-                                                      Preview</div>
-                                                  <div *ngIf="logoImageCtrl.value.length && logoImageCtrl.valid"
-                                                      [@fadeIn] class="logo-preview-container mat-elevation-z3">
-                                                      <img *ngIf="!dataUrlConverting" [src]="specLogoAsDataUrl"
-                                                          alt="New Logo Preview" class="">
-                                                      <mat-progress-spinner *ngIf="dataUrlConverting" color="primary"
-                                                          mode="indeterminate" diameter="50">
-                                                      </mat-progress-spinner>
-                                                  </div>
-                                              </div>
-                                          </div>
-
-                                          <div class="container-fluid mt-3">
-                                              <div class="row justify-content-end">
-                                                  <button class="btn btn-secondary mr-2" (click)="clearLogoList()"><i
-                                                          class="fas fa-times mr-2"></i>Clear</button>
-                                                  <button type="submit" class="btn btn-primary"
-                                                      (click)="submitLogo()"><i
-                                                          class="fas fa-upload mr-2"></i>Upload</button>
-                                              </div>
-                                          </div>
-                                      </div>
-                                      <div class="card-footer"></div>
-
-                                  </div>
-                              </div>
-                              <!-- END OF Logo Tab -->
 
                               <!-- Attachments Tab -->
                               <div class="tab-pane active" *ngIf="activeListItem === 'Attachments'" role="tabpanel"

@@ -2,8 +2,8 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 
 import { MatTableDataSource, MatSort, MatPaginator, MatDialog } from '@angular/material';
 
+import { ResourceSpecification } from 'src/app/openApis/resourceCatalogManagement/models';
 import { ResourceSpecificationService } from 'src/app/openApis/resourceCatalogManagement/services';
-import { ResourceSpecification, ResourceSpecificationCreate } from 'src/app/openApis/resourceCatalogManagement/models';
 import { DeleteResourceSpecComponent } from '../delete-resource-spec/delete-resource-spec.component';
 import { ToastrService } from 'ngx-toastr';
 import { HttpErrorResponse } from '@angular/common/http';

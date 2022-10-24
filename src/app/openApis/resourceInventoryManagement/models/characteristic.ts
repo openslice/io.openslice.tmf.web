@@ -1,4 +1,5 @@
 /* tslint:disable */
+import { CharacteristicRelationship } from './characteristic-relationship';
 import { Any } from './any';
 
 /**
@@ -16,21 +17,19 @@ export interface Characteristic {
    */
   '@schemaLocation'?: string;
   '@type'?: string;
+  characteristicRelationship?: Array<CharacteristicRelationship>;
 
   /**
    * Unique reference of the entity
    */
   href?: string;
+  id?: string;
 
   /**
-   * Name of the entity
+   * Name of the characteristic
    */
-  name?: string;
+  name: string;
   uuid?: string;
-
-  /**
-   * The value of the characteristic
-   */
   value: Any;
 
   /**

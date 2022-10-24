@@ -1,14 +1,14 @@
 import { Component, OnInit, Inject, ViewChild } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef, MatTableDataSource, MatSort, MatCheckboxChange } from '@angular/material';
-import { ResourceCandidate, ResourceSpecification, ResourceSpecCharacteristicValue, ResourceSpecCharacteristic, AttachmentRef } from 'src/app/openApis/resourceCatalogManagement/models';
+import { ResourceCandidate, ResourceSpecification, AttachmentRefOrValue, ResourceSpecificationCharacteristicValue} from 'src/app/openApis/resourceCatalogManagement/models';
 import { ResourceSpecificationService } from 'src/app/openApis/resourceCatalogManagement/services';
-//import { RequesterService } from 'src/app/p_resources/orderCheckout/services/requester.service';
 import { ToastrService } from 'ngx-toastr';
 import { SortingService } from 'src/app/shared/functions/sorting.service';
 import { trigger } from '@angular/animations';
 import { fadeIn } from 'src/app/shared/animations/animations';
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { ThemingService } from 'src/app/theming/theming.service';
+import { Console } from 'console';
 
 
 @Component({
@@ -35,8 +35,6 @@ export class PreviewMarketplaceItemComponent implements OnInit {
 
   candidate: ResourceCandidate
   spec: ResourceSpecification
-  specLogoRef: AttachmentRef
-  specLogoUrl: string
   specServiceRootUrl: string
 
   displayedColumns = ['name', 'defaultValues']
@@ -58,8 +56,10 @@ export class PreviewMarketplaceItemComponent implements OnInit {
   }
 
   configurableFilterChanged(event:MatCheckboxChange) {
-    if (event.checked) this.dataSourceConf.data = this.spec.resourceSpecCharacteristic.filter(spec => spec.configurable)
-    else this.dataSourceConf.data = this.spec.resourceSpecCharacteristic
+    if (event.checked)
+      this.dataSourceConf.data = this.spec.resourceSpecCharacteristic.filter(spec => spec.configurable)
+    else
+      this.dataSourceConf.data = this.spec.resourceSpecCharacteristic
   }
 
   retrieveResourceSpec(candidate: ResourceCandidate) {
@@ -71,14 +71,6 @@ export class PreviewMarketplaceItemComponent implements OnInit {
         this.dataSourceConf.sort = this.sort1
         this.dataSourceNonConf.data = this.spec.resourceSpecCharacteristic.filter(spec => !spec.configurable)
         this.dataSourceNonConf.sort = this.sort2
-
-        //Check if spec has a defined logo
-        this.specLogoRef = this.spec.attachment.find( att => att.name.includes('logo') )
-        if (this.specLogoRef) {
-          this.specLogoUrl = this.specServiceRootUrl+this.specLogoRef.url
-        } else {
-          this.specLogoUrl = this.themingService.getConfig().DEFAULT_SERVICE_LOGO_PATH
-        }
       }
     )
   }
@@ -117,20 +109,20 @@ export class PreviewMarketplaceItemComponent implements OnInit {
     let initialCharValues: {
       name: string,
       valueType: string,
-      value: ResourceSpecCharacteristicValue[]
+      value: ResourceSpecificationCharacteristicValue[]
     }[] =[]
 
     const configurableSpecChar = this.spec.resourceSpecCharacteristic.filter(specChar => specChar.configurable)
 
     configurableSpecChar.forEach( confSpecChar => {
 
-      const charDefaultValueArray = confSpecChar.resourceSpecCharacteristicValue.filter( val => val.isDefault )
+      const charDefaultValueArray = []// confSpecChar.resourceSpecCharacteristicValue.filter( val => val.isDefault )
 
       //In case there are no Default Values assigned, initiate Default Value Array with null values
       if (charDefaultValueArray.length === 0) {charDefaultValueArray[0] = {value: {value:'' , alias:''}}}
 
       initialCharValues.push({
-        name: confSpecChar.name,
+        name: "A", //confSpecChar.name,
         valueType: confSpecChar.valueType,
         value: charDefaultValueArray
       })

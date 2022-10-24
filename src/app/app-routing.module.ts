@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
+
 import { LandingComponent } from './landing/landing.component';
 import { PortalsComponent } from './landing/portals/portals.component';
 import { PageNotFoundComponent } from './shared/components/page-not-found/page-not-found.component';

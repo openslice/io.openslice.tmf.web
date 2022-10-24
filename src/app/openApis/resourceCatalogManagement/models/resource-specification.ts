@@ -1,15 +1,14 @@
 /* tslint:disable */
-import { AttachmentRef } from './attachment-ref';
+import { AttachmentRefOrValue } from './attachment-ref-or-value';
+import { FeatureSpecificationRes } from './feature-specification-res';
 import { RelatedParty } from './related-party';
-import { ResourceSpecificationRef } from './resource-specification-ref';
-import { ResourceLevelSpecificationRef } from './resource-level-specification-ref';
-import { ResourceSpecCharacteristic } from './resource-spec-characteristic';
-import { ResourceSpecRelationship } from './resource-spec-relationship';
+import { ResourceSpecificationCharacteristicRes } from './resource-specification-characteristic-res';
+import { ResourceSpecificationRelationshipRes } from './resource-specification-relationship-res';
 import { TargetResourceSchema } from './target-resource-schema';
 import { TimePeriod } from './time-period';
 
 /**
- * ResourceSpecification is a class that offers characteristics to describe a type of resource. Functionally, it acts as a template by which resources may be instantiated. By sharing the same  specification, these resources would therefore share the same set of characteristics.
+ * Resources are physical or non-physical components (or some combination of these) within an enterprise's infrastructure or inventory. They are typically consumed or used by services (for example a physical port assigned to a service) or contribute to the realization of a Product (for example, a SIM card). They can be drawn from the Application, Computing and Network domains, and include, for example, Network Elements, software, IT systems, content and information, and technology components. A ResourceSpecification is an abstract base class for representing a generic means for implementing a particular type of Resource. In essence, a ResourceSpecification defines the common attributes and relationships of a set of related Resources, while Resource defines a specific instance that is based on a particular ResourceSpecification.
  */
 export interface ResourceSpecification {
 
@@ -22,26 +21,49 @@ export interface ResourceSpecification {
    * A URI to a JSON-Schema file that defines additional attributes and relationships
    */
   '@schemaLocation'?: string;
+
+  /**
+   * When sub-classing, this defines the sub-class entity name
+   */
   '@type'?: string;
 
   /**
-   * A list of attachments (Attachment [*]). Complements the description of the specification through video, pictures...
+   * A URI to a JSON-Schema file that defines additional attributes and relationships
    */
-  attachment?: Array<AttachmentRef>;
+  atSchemaLocation?: string;
 
   /**
-   * Description of this catalog
+   * Complements the description of an element (for instance a resource) through video, pictures ...
+   */
+  attachment?: Array<AttachmentRefOrValue>;
+
+  /**
+   * Category of the target resource like NetworkConnectivity, PhysicalLinks, Generic, L2Network and so on.
+   */
+  category?: string;
+
+  /**
+   * Description of this REST resource
    */
   description?: string;
 
   /**
-   * Unique reference of the entity
+   * A list of Features for this specification.
+   */
+  featureSpecification?: Array<FeatureSpecificationRes>;
+
+  /**
+   * Hyperlink reference to this REST resource
    */
   href?: string;
+
+  /**
+   * Unique identifier of this REST resource
+   */
   id?: string;
 
   /**
-   * isBundle determines whether a ResourceSpecification represents a single ResourceSpecification (false), or a bundle of ResourceSpecification (true).
+   * A flag indicates that if this resource specification is a bundled specification (true) or single (false).
    */
   isBundle?: boolean;
 
@@ -51,43 +73,25 @@ export interface ResourceSpecification {
   lastUpdate?: string;
 
   /**
-   * Used to indicate the current lifecycle status
+   * Used to indicate the current lifecycle status of the resource specification
    */
   lifecycleStatus?: string;
 
   /**
-   * Name of the entity
+   * Name given to this REST resource
    */
   name?: string;
-
-  /**
-   * A list of related party references (RelatedParty [*]). A related party defines party or party role linked to a specific entity.
-   */
   relatedParty?: Array<RelatedParty>;
 
   /**
-   * A list of resource specification references (ResourceSpecificationRef [*]). The ResourceSpecification is required for a resource specification with type ResourceFacingResourceSpecification (RFSS).
+   * A characteristic quality or distinctive feature of a ResourceSpecification.  The characteristic can be take on a discrete value, such as color, can take on a range of values, (for example, sensitivity of 100-240 mV), or can be derived from a formula (for example, usage time (hrs) = 30 - talk time *3). Certain characteristics, such as color, may be configured during the ordering or some other process.
    */
-  resourceSpecification?: Array<ResourceSpecificationRef>;
+  resourceSpecCharacteristic?: Array<ResourceSpecificationCharacteristicRes>;
 
   /**
-   * A list of resource level specifications related to this resource specification, and which will need to be satisifiable for corresponding resource instances; e.g. Gold, Platinum
+   * A migration, substitution, dependency or exclusivity relationship between/among resource specifications.
    */
-  resourceLevelSpecification?: Array<ResourceLevelSpecificationRef>;
-
-  /**
-   * A list of resource spec characteristics (ResourceSpecCharacteristic [*]). This class represents the key features of this resource specification.
-   */
-  resourceSpecCharacteristic?: Array<ResourceSpecCharacteristic>;
-
-  /**
-   * A list of resource specifications related to this specification, e.g. migration, substitution, dependency or exclusivity relationship
-   */
-  resourceSpecRelationship?: Array<ResourceSpecRelationship>;
-
-  /**
-   * A target resource schema reference (TargetResourceSchemaRef). The reference object to the schema and type of target resource which is described by resource specification.
-   */
+  resourceSpecRelationship?: Array<ResourceSpecificationRelationshipRes>;
   targetResourceSchema?: TargetResourceSchema;
   uuid?: string;
 
@@ -97,7 +101,7 @@ export interface ResourceSpecification {
   validFor?: TimePeriod;
 
   /**
-   * Entity version
+   * Resource Specification version
    */
   version?: string;
 }

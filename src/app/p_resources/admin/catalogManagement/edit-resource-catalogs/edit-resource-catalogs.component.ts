@@ -187,7 +187,7 @@ export class EditResourceCatalogsComponent implements OnInit {
     }
 
     else {
-      this.catalogService.patchResourceCatalog({id: this.catalogID, resourceCatalog: updateObj}).subscribe(
+      this.catalogService.patchResourceCatalog({id: this.catalogID, body: updateObj}).subscribe(
         data => console.log(data),
         error => console.error(error),
         () => this.dialogRef.close('updated')

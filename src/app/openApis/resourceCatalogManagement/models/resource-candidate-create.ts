@@ -4,28 +4,24 @@ import { ResourceSpecificationRef } from './resource-specification-ref';
 import { TimePeriod } from './time-period';
 
 /**
- * ResourceCandidate is an entity that makes a resource specification available to a catalog. A ResourceCandidate and its associated resource specification may be published - made visible - in any number of resource catalogs, or in none. One resource specification can be composed of other resource specifications. Skipped properties: id,href
+ * ResourceCandidate is an entity that makes a resource specification available to a catalog. A ResourceCandidate and its associated resource specification may be published - made visible - in any number of resource catalogs, or in none. Skipped properties: id,href
  */
 export interface ResourceCandidateCreate {
 
   /**
-   * When sub-classing, this defines the super-class
+   * The (immediate) base class type of this REST resource
    */
   '@baseType'?: string;
 
   /**
-   * A URI to a JSON-Schema file that defines additional attributes and relationships
+   * This field provides a link to the schema describing this REST resource
    */
   '@schemaLocation'?: string;
 
   /**
-   * When sub-classing, this defines the sub-class entity name
+   * Class type of this REST resource
    */
   '@type'?: string;
-
-  /**
-   * List of categories for this candidate
-   */
   category?: Array<ResourceCategoryRef>;
 
   /**
@@ -47,10 +43,6 @@ export interface ResourceCandidateCreate {
    * Name given to this REST resource
    */
   name?: string;
-
-  /**
-   * The resource specification implied by this candidate
-   */
   resourceSpecification?: ResourceSpecificationRef;
 
   /**

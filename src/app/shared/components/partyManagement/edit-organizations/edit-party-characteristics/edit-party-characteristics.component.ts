@@ -46,7 +46,6 @@ export class EditPartyCharacteristicsComponent implements OnInit {
   }
 
   submitDialog() {
-    console.log('submit')
     
     if (this.newSpec) {
       this.data.organization.partyCharacteristic.push(this.editCharacteristicForm.value)
@@ -59,9 +58,8 @@ export class EditPartyCharacteristicsComponent implements OnInit {
       partyCharacteristic: this.data.organization.partyCharacteristic
     }
 
-    console.log(organizationUpdateObj)
     this.orgService.patchOrganization({id: this.data.organization.id, organization: organizationUpdateObj}).subscribe(
-      data => console.log(data),
+      data => {},
       error => { console.error(error); this.toast.error("An error occurred upon updating Organization Characteristics") },
       () => {this.dialogRef.close('updated')}
     )

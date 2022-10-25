@@ -42,7 +42,7 @@ export class AppComponent {
 
       this.themeID = this.themingService.getConfig().THEME_ID
       this.favIcon.href = this.themingService.getConfig().FAVICON_PATH
-      this.titleService.setTitle(`${this.config.TITLE} Services portal`)
+      this.titleService.setTitle(`${this.config.TITLE} portal`)
   }
 
 

@@ -57,7 +57,6 @@ export class EditServiceTestComponent implements OnInit {
         console.error(error)
       },
       () => {
-        console.log(this.serviceTest)
         this.finishedLoading = true
         if (!this.serviceTest) {
           this.serviceTestNotFound = true
@@ -93,7 +92,7 @@ export class EditServiceTestComponent implements OnInit {
     }
 
     this.testService.patchServiceTest({serviceSpecification: serviceTestUpdate, id: this.serviceTestID}).subscribe(
-      data => { console.log(data), this.toast.success("Service Test Instance is successfully updated") },
+      data => { this.toast.success("Service Test Instance is successfully updated") },
       error => { console.error(error), this.toast.error("An error occurred while updating this Service Test Instance") },
       () => {
         this.editMode = false

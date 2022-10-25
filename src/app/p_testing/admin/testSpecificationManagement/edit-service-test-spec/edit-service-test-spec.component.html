@@ -139,8 +139,21 @@
                                 <div class="tab-pane active" *ngIf="activeListItem === 'Attachments'" role="tabpanel" [@fadeIn]>
                                     <div class="card mat-elevation-z1 bg-light">
                                         <div class="card-body space-between">
+                                            <div class="mb-3">
+                                                <h6 id="example-radio-group-label" class="mb-3">Test type</h6>
+                                                <mat-radio-group aria-labelledby="example-radio-group-label" class="d-flex flex-column" [formControl]="testType" color="primary">
+                                                    <mat-radio-button class="example-radio-button" value="preDefined" [disabled]="testSpec?.attachment.length > 1">Predefined</mat-radio-button>
+                                                    <mat-radio-button class="example-radio-button" value="developerDefined">Developer-defined</mat-radio-button>
+                                                </mat-radio-group>
+                                            </div>
+
                                             <div *ngIf="testSpec?.attachment.length === 0" class="mb-3">
-                                                Please upload a test descriptor to assign it to the Service Test Specification.
+                                                <span *ngIf="testType.value === 'preDefined'">Please upload a test descriptor to assign it to the Service Test Specification.</span>
+                                                <div *ngIf="testType.value === 'developerDefined'">
+                                                    <span>Please upload a test descriptor and the respective developer-defined test scripts to assign them to the Service Test Specification.</span>
+                                                    <h6 class="font-italic">Note: The script names must match the respective testcase names in the test descriptor.</h6>
+                                                    
+                                                </div>
                                             </div>
                                 
                                             <div *ngIf="testSpec?.attachment.length > 0" class="mb-3 row">
@@ -156,16 +169,34 @@
                                                 </div>
                                             </div>
 
-                                            <div *ngIf="testSpec?.attachment.length > 0" class="mt-4 text-center">
-                                                Only one test descriptor can be uploaded per single Service Test Specification.
+                                            <div *ngIf="(testSpec?.attachment.length > 0) && testType.value === 'preDefined'" class="mt-4 text-center">
+                                                Only one test descriptor can be uploaded per single Service Test Specification when the selected test type is "Predefined".
                                             </div>
                                 
-                                            <ng-container *ngIf="testSpec?.attachment.length < 1">
+                                            <ng-container *ngIf="(testSpec?.attachment.length === 0) && testType.value === 'preDefined'">
                                                 <file-upload [control]="attachmentFilesCtrl" multiple="false">
                                                 </file-upload>
                                                 <mat-hint *ngIf="!attachmentFilesCtrl.invalid" class="ml-1">Supported file type: .yaml
                                                 </mat-hint>
                                                 <mat-error *ngIf="attachmentFilesCtrl.invalid" class="ml-1">Supported file type: .yaml
+                                                </mat-error>
+                                    
+                                                <div class="container-fluid mt-3">
+                                                    <div class="row justify-content-end">
+                                                        <button class="btn btn-secondary mr-2" (click)="clearAttachmentsList()"><i
+                                                                class="fas fa-times mr-2"></i>Clear</button>
+                                                        <button type="submit" class="btn btn-primary" (click)="submitAttachment()"><i
+                                                                class="fas fa-upload mr-2"></i>Upload</button>
+                                                    </div>
+                                                </div>
+                                            </ng-container>
+
+                                            <ng-container *ngIf="testType.value === 'developerDefined'">
+                                                <file-upload [control]="attachmentFilesCtrl" multiple="true">
+                                                </file-upload>
+                                                <mat-hint *ngIf="!attachmentFilesCtrl.invalid" class="ml-1">Supported file types: .yaml .py
+                                                </mat-hint>
+                                                <mat-error *ngIf="attachmentFilesCtrl.invalid" class="ml-1">Supported file types: .yaml .py
                                                 </mat-error>
                                     
                                                 <div class="container-fluid mt-3">

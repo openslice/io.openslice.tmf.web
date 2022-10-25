@@ -242,7 +242,7 @@ export class ServiceOrderCheckoutComponent implements OnInit {
 
 
     this.orderService.createServiceOrder(newOrder).subscribe(
-      response => { console.log(response) },
+      response => { },
       error => { console.error(error); this.toast.error("An error occurred while processing your Service Order") },
       () => {
         this.toast.success("Service Order was successfully placed")

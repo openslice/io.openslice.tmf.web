@@ -47,7 +47,6 @@ export class ListServiceSpecsComponent implements OnInit {
       () => {
         this.dataSource.data = this.serviceSpecs
         this.dataSource.sort = this.sort
-        // console.log(this.sort)
         this.dataSource.paginator = this.paginator;
         this.dataSource.sortingDataAccessor = (item, property): string | number => {
           switch (property) {
@@ -65,7 +64,6 @@ export class ListServiceSpecsComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe (
       result => {
-        console.log(result)
         if (result) {
           if (result instanceof HttpErrorResponse) {
             this.toast.error("An error occurred while attempting to delete Service Specification")
@@ -103,7 +101,7 @@ export class ListServiceSpecsComponent implements OnInit {
     // )
 
     this.specService.cloneServiceSpecification(spec.id).subscribe(
-      data => console.log(data),
+      data => {},
       error => { 
         console.error(error)
         this.toast.error("An error occured while attempting to clone Service Specification") 

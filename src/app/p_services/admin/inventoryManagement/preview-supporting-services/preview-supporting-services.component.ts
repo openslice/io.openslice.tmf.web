@@ -42,7 +42,6 @@ export class PreviewSupportingServicesComponent implements OnInit {
         data => { this.supportingService = data },
         error => { console.error(error); this.toastr.error("An error occurred retrieving supporting Service information")},
         () => { 
-          // console.log(this.supportingService)
           this.editForm.patchValue({
             state: this.supportingService.state
           })
@@ -79,10 +78,7 @@ export class PreviewSupportingServicesComponent implements OnInit {
   }
 
   submitDialog() {
-    console.log('submit')
-
-    console.log(this.editForm)
-    
+   
     let updateServiceObj: ServiceUpdate = {}
 
     if (!this.editForm.get('state').pristine) 
@@ -92,11 +88,9 @@ export class PreviewSupportingServicesComponent implements OnInit {
         author: this.authService.portalUserJWT.preferred_username,
         text: this.editForm.get('note').value
       }]
-      
-    console.log(updateServiceObj)
-    
+          
     this.inventoryService.patchService({service: updateServiceObj, id: this.supportingService.id}).subscribe(
-      data => { console.log(data) },
+      data => { },
       error => { console.error(error), this.toastr.error("An error occurred updating this Supporting Service") },
       () => { this.dialogRef.close('updated') }
     )

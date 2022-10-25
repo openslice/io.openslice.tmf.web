@@ -22,7 +22,7 @@ export class DeleteServiceCatalogComponent implements OnInit {
 
   confirmDelete() { 
     this.catalogService.deleteServiceCatalog(this.data.id).subscribe(
-      data => console.log(data),
+      data => { },
       error => console.error(error),
       () => this.dialogRef.close('deleted')
     )

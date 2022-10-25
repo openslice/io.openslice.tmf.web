@@ -104,6 +104,8 @@ export class ServiceRuleDesignComponent implements OnInit {
 
     ngOnInit() {
 
+      localStorage.setItem('previous_navigation_state', 'lcm_tab' )
+
       this.workspace = Blockly.inject('blocklyDiv', {
         toolbox: document.getElementById('toolbox'),
         trashcan: true,
@@ -1425,7 +1427,9 @@ export class ServiceRuleDesignComponent implements OnInit {
           error => console.error(error),
           () => { 
             this.newLCMRuleSpecification = false
-            this.toast.success("Service Specification was successfully created") 
+            this.toast.success("Service Specification was successfully created")
+            this.router.navigate(['services', 'service_spec_update', this.specID])
+ 
             
           }
         )
@@ -1437,6 +1441,8 @@ export class ServiceRuleDesignComponent implements OnInit {
           error => console.error(error),
           () => { 
             this.toast.success("Service Specification was successfully updated");
+            this.router.navigate(['services', 'service_spec_update', this.specID])
+
             
           }
         )
@@ -1461,6 +1467,7 @@ export class ServiceRuleDesignComponent implements OnInit {
   
      
       console.log('cancelProgram the program - ' );
+      this.router.navigate(['services', 'service_spec_update', this.specID])
     }
 
 

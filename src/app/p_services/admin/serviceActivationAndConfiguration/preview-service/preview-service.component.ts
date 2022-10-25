@@ -117,10 +117,9 @@ export class PreviewServiceComponent implements OnInit {
       }]
     }
 
-    console.log(serviceUpdate)
 
     this.serviceService.patchService({service: serviceUpdate, id: this.serviceID}).subscribe(
-      data => { console.log(data), this.toast.success("Service is successfully updated") },
+      data => { this.toast.success("Service is successfully updated") },
       error => { console.error(error), this.toastr.error("An error occurred updating this Service") },
       () => {
         this.triggerNewNote()
@@ -165,8 +164,8 @@ export class PreviewServiceComponent implements OnInit {
       result => {
         if (result) {
           this.toast.success("Service is successfully updated")
-          this.retrieveService()
         }
+        this.retrieveService()
       }
     )
   }

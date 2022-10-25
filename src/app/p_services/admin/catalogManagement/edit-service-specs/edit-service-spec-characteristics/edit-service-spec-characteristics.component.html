@@ -1,12 +1,12 @@
 <div class="container">
 
     <h4 mat-dialog-title class="row shadowed mb-3" *ngIf="newSpec">
-            <i class="row far fa-clipboard mr-2"></i>
+            <i class="far fa-clipboard mr-2"></i>
             <span>Design New Service Characteristic</span>
     </h4>
     
     <h4  mat-dialog-title class=" shadowed mb-3" *ngIf="!newSpec">
-            <i class="row far fa-edit mr-2"></i>
+            <i class="far fa-edit mr-2"></i>
             <span>Edit Service Characteristic</span>
     </h4>
     
@@ -51,7 +51,7 @@
                     </div>
                 </div>
     
-                <mat-form-field [ngClass]="{'col-md-2':subTypeSelection, 'col-md-4':!subTypeSelection}">
+                <mat-form-field [ngClass]="{'col-lg-2':subTypeSelection, 'col-lg-4':!subTypeSelection}">
                     <mat-label>Value Type</mat-label>
                     <mat-select formControlName="valueType">
                         <mat-option *ngFor="let type of valueTypes" [value]="type">
@@ -59,7 +59,7 @@
                     </mat-select>
                 </mat-form-field>
                 
-                <mat-form-field class="col-md-2" *ngIf="subTypeSelection">
+                <mat-form-field class="col-lg-2" *ngIf="subTypeSelection">
                     <mat-label>Of</mat-label>
                     <mat-select [formControl]="subValueTypeCtrl">
                         <mat-option *ngFor="let type of subValueTypes" [value]="type">
@@ -75,23 +75,27 @@
                     </mat-select>
                 </mat-form-field> -->
                 
-                <mat-form-field class="col-md-2">
+                <mat-form-field class="col-lg-2">
                     <mat-label>Min Cardinality</mat-label>
                     <input matInput type="number" formControlName="minCardinality">
                 </mat-form-field>
                 
-                <mat-form-field class="col-md-2">
+                <mat-form-field class="col-lg-2">
                     <mat-label>Max Cardinality</mat-label>
                     <input matInput type="number" formControlName="maxCardinality">
                 </mat-form-field>
                 
-                <div class="col-md-2 text-center">
-                    <mat-checkbox color="primary" formControlName="extensible">Extensible</mat-checkbox>
+                <div class="col-lg-4">
+                    <div class="row">
+                        <div class="col-6 text-center">
+                            <mat-checkbox color="primary" formControlName="extensible">Extensible</mat-checkbox>
+                        </div>
+                        
+                        <div class="col-6 text-center ">
+                            <mat-checkbox color="primary" formControlName="configurable">Configurable</mat-checkbox>
+                        </div>    
+                    </div>
                 </div>
-                
-                <div class="col-md-2 text-center ">
-                    <mat-checkbox color="primary" formControlName="configurable">Configurable</mat-checkbox>
-                </div>    
     
             </div>
         
@@ -107,49 +111,109 @@
                     </div>
                 </h5>
             
+                <div formArrayName="serviceSpecCharacteristicValue" class="container-fluid">
             
-                <div formArrayName="serviceSpecCharacteristicValue">
-            
-                    <div  
-                    *ngFor="let val of editFormCharacteristic.get('serviceSpecCharacteristicValue')['controls']; let i = index;" 
-                    [formGroupName]="i" 
-                    class="row align-items-center justify-content-center" [@fadeIn] >
-                        <div formGroupName="value" class="col-md-6">
-                            <div class="row">
-                                <mat-form-field class="col-md-6">
+                    <div *ngFor="let val of editFormCharacteristic.get('serviceSpecCharacteristicValue')['controls']; let i = index;"
+                        [formGroupName]="i" class="row align-items-center justify-content-center characteristic-value-container" [@fadeIn]>
+                    
+                        <ng-template [ngIf]="!isCharValueBlockExpanded[i]" [ngIfElse]="blockExpanded">
+                            <div formGroupName="value" class="col-lg-6 mt-2">
+                                <div class="row">
+                                    <mat-form-field class="col-lg-6">
+                                        <mat-label>Alias</mat-label>
+                                        <input matInput formControlName="alias">
+                                    </mat-form-field>
+                                    <mat-form-field class="col-lg-6">
+                                        <mat-label>Value</mat-label>
+                                        <input matInput formControlName="value">
+                                    </mat-form-field>
+                    
+                                </div>
+                            </div>
+                    
+                            <mat-form-field class="col-lg-2 mt-2">
+                                <mat-label>Unit Of Measure</mat-label>
+                                <input matInput formControlName="unitOfMeasure">
+                            </mat-form-field>
+                    
+                            <div class="col-lg-2 text-center mt-2">
+                                <mat-checkbox color="primary" formControlName="isDefault" (change)="isDefaultCheckboxChanged(i, $event)">Is
+                                    Default
+                                </mat-checkbox>
+                            </div>
+
+                            <div class="col-lg-2">
+                                <div class="row">
+                                    <div class="col-6">
+                                        <div class="text-left text-lg-center mt-1">
+                                            <button class="btn btn-md" (click)="deleteFormArrayItem(i)"><i
+                                                    class="far fa-trash-alt" aria-hidden="true" matTooltip="Delete value"></i></button>
+                                        </div>
+                                    </div>
+        
+                                    <div class="col-6">
+                                        <div class="text-right">
+                                            <button class="btn btn-lg" (click)="expandCharValueBlock(i)"><i
+                                                    class="fa fa-expand" aria-hidden="true" matTooltip="Expand block"></i></button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </ng-template>
+                    
+                        <ng-template #blockExpanded>
+                    
+                            <div formGroupName="value" class="col-lg-6 mt-2 order-1">
+                                <!-- <div class="row"> -->
+                                <mat-form-field>
                                     <mat-label>Alias</mat-label>
                                     <input matInput formControlName="alias">
                                 </mat-form-field>
-                                <mat-form-field class="col-md-6">
-                                    <mat-label>Value</mat-label>
-                                    <input matInput formControlName="value">
-                                </mat-form-field>
-            
                             </div>
-                        </div>
-                        <!-- <mat-form-field appearance="" class="col-md-2">
-                            <mat-label>Value Type</mat-label>
-                            <mat-select formControlName="valueType">
-                                <mat-option *ngFor="let type of valueTypes" [value]="type">
-                                    {{type}}</mat-option>
-                            </mat-select>
-                        </mat-form-field> -->
-            
-                        <mat-form-field class="col-md-2">
-                            <mat-label>Unit Of Measure</mat-label>
-                            <input matInput formControlName="unitOfMeasure">
-                        </mat-form-field>
-            
-                        <div class="col-md-2 text-center">
-                            <mat-checkbox color="primary" formControlName="isDefault" (change)="isDefaultCheckboxChanged(i, $event)">Is Default</mat-checkbox>
-                        </div>
-            
-                        <div class="col-md-2 text-center">
-                            <button mat-icon-button><i class="material-icons" (click)="deleteFormArrayItem(i)" aria-label="Clear Characteristic Value">clear</i></button>
-                           
-                        </div>
-            
+
+                            <mat-form-field class="col-lg-2 mt-2 order-3 order-md-2">
+                                <mat-label>Unit Of Measure</mat-label>
+                                <input matInput formControlName="unitOfMeasure">
+                            </mat-form-field>
+                    
+                            <div class="col-lg-2 text-center mt-2 order-4">
+                                <mat-checkbox color="primary" formControlName="isDefault" (change)="isDefaultCheckboxChanged(i, $event)">Is
+                                    Default
+                                </mat-checkbox>
+                            </div>
+
+
+                            <div class="col-lg-2  order-5">
+                                <div class="row">
+                                    <div class="col-6">
+                                        <div class="text-left text-lg-center mt-1">
+                                            <button class="btn btn-md" (click)="deleteFormArrayItem(i)"><i
+                                                    class="far fa-trash-alt" aria-hidden="true" matTooltip="Delete value"></i></button>
+                                        </div>
+                                    </div>
+        
+                                    <div class="col-6">
+                                        <div class="text-right">
+                                            <button class="btn btn-lg" (click)="expandCharValueBlock(i)"><i
+                                                    class="fa fa-compress" aria-hidden="true" matTooltip="Collapse block"></i></button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                    
+                            <div class="col-md-12 order-2 order-lg-6" formGroupName="value">
+                                <mat-form-field>
+                                    <mat-label>Value</mat-label>
+                                    <textarea matTextareaAutosize="true" matAutosizeMaxRows="4" matInput formControlName="value"></textarea>
+                                    <!-- <input matInput formControlName="value"> -->
+                                </mat-form-field>
+                            </div>
+                            
+                        </ng-template>
+                                       
                     </div>
+
                 </div>
             
             </div>

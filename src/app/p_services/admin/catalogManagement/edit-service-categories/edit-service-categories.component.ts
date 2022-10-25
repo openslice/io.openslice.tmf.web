@@ -94,7 +94,6 @@ export class EditServiceCategoriesComponent implements OnInit, OnDestroy {
       this.router.events.subscribe(
         (event) => {
           if (event instanceof ActivationEnd) {
-            console.log(event.snapshot.params.id)
             this.categoryID = event.snapshot.params.id
             this.retrieveServiceCategory()
           }
@@ -126,7 +125,6 @@ export class EditServiceCategoriesComponent implements OnInit, OnDestroy {
       () => {
         if (!this.category.validFor) this.category.validFor = {endDateTime:null, startDateTime:null}
         this.editForm.patchValue(this.category)
-        console.log(this.editForm)
 
         if (this.category.parentId) {
           this.editForm.get('isRoot').disable()
@@ -189,7 +187,6 @@ export class EditServiceCategoriesComponent implements OnInit, OnDestroy {
 
     dialogRef.afterClosed().subscribe (
       result => { 
-        console.log(result)
         if (result){ 
           this.toast.success("Children Categories list is successfully updated")
           this.retrieveServiceCategory()
@@ -216,7 +213,6 @@ export class EditServiceCategoriesComponent implements OnInit, OnDestroy {
 
     dialogRef.afterClosed().subscribe (
       result => {
-        console.log(result)
         if (result) {
           this.toast.success("Service Specifications list is successfully updated")
           this.retrieveServiceCategory()
@@ -252,7 +248,6 @@ export class EditServiceCategoriesComponent implements OnInit, OnDestroy {
     if (!this.editForm.get('isRoot').value) updateObj.parentId = this.editForm.get('parentId').value.id
     
     let updatedCategory: ServiceCategory
-    console.log(updateObj)
     if (this.newCategory) {
       this.categoryService.createServiceCategory(updateObj).subscribe(
         data => { updatedCategory = data },

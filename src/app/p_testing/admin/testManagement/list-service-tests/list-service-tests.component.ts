@@ -8,6 +8,8 @@ import { fadeIn } from 'src/app/shared/animations/animations';
 import { ServiceTestService } from 'src/app/openApis/serviceTestManagement/services';
 import { ServiceTest } from 'src/app/openApis/serviceTestManagement/models';
 import { AppService } from 'src/app/shared/services/app.service';
+import { DeleteServiceTestComponent } from '../delete-service-test/delete-service-test.component';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-list-service-tests',
@@ -20,7 +22,8 @@ export class ListServiceTestsComponent implements OnInit {
   constructor(
     private testSpecificationService: ServiceTestService,
     private toast: ToastrService,
-    public appService: AppService
+    public appService: AppService,
+    private dialog: MatDialog
   ) { }
 
   displayedColumns = ['name', 'description', 'lastUpdate', 'testSpecification', 'service', 'actions']
@@ -41,7 +44,6 @@ export class ListServiceTestsComponent implements OnInit {
       data => { this.serviceSpecifications = data },
       error => { console.error(error) },
       () => {
-        console.log(this.serviceSpecifications)
         this.dataSource.data = this.serviceSpecifications
         this.dataSource.sort = this.sort
         this.dataSource.paginator = this.paginator
@@ -52,6 +54,23 @@ export class ListServiceTestsComponent implements OnInit {
         //   }
         // }
 
+      }
+    )
+  }
+
+  openTestDeleteDialog(element: ServiceTest) {
+    const dialogRef = this.dialog.open(DeleteServiceTestComponent, {data: element})
+
+    dialogRef.afterClosed().subscribe (
+      result => {
+        if (result) {
+          if (result instanceof HttpErrorResponse) {
+            this.toast.error("An error occurred while attempting to delete Service Test Instance")
+          } else {
+            this.toast.success("Service Test Instance list is successfully updated")
+            this.retrieveTestsList()
+          }
+        }
       }
     )
   }

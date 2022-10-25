@@ -109,7 +109,6 @@ export class EditOrganizationsComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe (
       result => { 
-        console.log(result)
         if (result) { 
           this.toast.success("Organization characteristics list was successfully updated")
           this.retrieveOrganization() 
@@ -135,7 +134,6 @@ export class EditOrganizationsComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe (
       result => { 
-        console.log(result)
         if (result){ 
           this.toast.success("Organization characteristics list was successfully updated")
           this.retrieveOrganization()

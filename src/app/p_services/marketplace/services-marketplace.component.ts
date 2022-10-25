@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ServiceCatalogService, ServiceCandidateService, ServiceSpecificationService } from 'src/app/openApis/serviceCatalogManagement/services';
-import { ServiceCatalog, ServiceCategoryRef, ServiceCategory, ServiceCandidateRef, ServiceCandidate } from 'src/app/openApis/serviceCatalogManagement/models';
+import { ServiceCatalog, ServiceCategoryRef, ServiceCategory, ServiceCandidateRef, ServiceCandidate, ServiceSpecification } from 'src/app/openApis/serviceCatalogManagement/models';
 import { TreeServiceMarketPlaceService } from './services/tree-service-market-place.service';
-import { Observable } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { FormControl } from '@angular/forms';
 import { startWith, map } from 'rxjs/operators';
 import { MatDialog } from '@angular/material';
@@ -14,6 +14,7 @@ import { ServiceCandidateWithLogo } from 'src/app/shared/models/service-candidat
 import { AppService } from 'src/app/shared/services/app.service';
 import { IAppConfig } from 'src/app/shared/models/app-config.model';
 import { ThemingService } from 'src/app/theming/theming.service';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-services-marketplace',
@@ -33,7 +34,8 @@ export class ServicesMarketplaceComponent implements OnInit {
     private treeMarketPlaceService: TreeServiceMarketPlaceService,
     private dialog: MatDialog,
     private sortingService: SortingService,
-    private themingService: ThemingService
+    private themingService: ThemingService,
+    private activatedRoute: ActivatedRoute
   ) { }
 
   serviceCatalogs: ServiceCatalog[]
@@ -52,6 +54,7 @@ export class ServicesMarketplaceComponent implements OnInit {
   config: IAppConfig
 
   resultsNotFound: boolean = false
+  subscriptions = new Subscription()
 
   ngOnInit() {
     this.config = this.appService.config
@@ -66,11 +69,18 @@ export class ServicesMarketplaceComponent implements OnInit {
         this.serviceCandidates = []
         this.serviceCandidatesFilterCtrl.reset()
         this.resultsNotFound = category.serviceCandidate.length === 0
+        this.subscriptions.unsubscribe()
+        this.subscriptions = new Subscription()
         category.serviceCandidate.forEach((candidateRef) => {
           this.retrieveCandidateFromRef(candidateRef)
         })
       }
     )
+
+    const queryParams = this.activatedRoute.snapshot.queryParams.spec
+    if (queryParams) {
+      this.retrieveCandidateFromSpecID(queryParams)
+    }
   }
 
   retrieveCatalogsList() {
@@ -83,10 +93,24 @@ export class ServicesMarketplaceComponent implements OnInit {
     )
   }
 
-  retrieveCandidateFromRef(candidateRef: ServiceCandidateRef) {
-
-    this.candidateService.retrieveServiceCandidate({ id: candidateRef.id }).subscribe(
+  retrieveCandidateFromSpecID(specID: string) {
+    this.candidateService.listServiceCandidate({}).subscribe(
       data => {
+        const candidate = data.find(cand => {
+            if (cand.serviceSpecification && cand.serviceSpecification.id) {
+              return cand.serviceSpecification.id === specID
+            }
+        })
+        if (candidate) {this.previewServiceSpec(candidate)}
+      },
+      error => { console.error(error) }
+    )
+  }
+
+  retrieveCandidateFromRef(candidateRef: ServiceCandidateRef) {
+    
+    this.subscriptions.add(this.candidateService.retrieveServiceCandidate({ id: candidateRef.id }).subscribe(
+      data => { 
         // console.log(data)
         let candidate: ServiceCandidateWithLogo = data
         candidate.fetchingLogo = true
@@ -119,7 +143,7 @@ export class ServicesMarketplaceComponent implements OnInit {
           map( (value:null | string) => value ? this._filterOnServiceCandidates(value) : this.serviceCandidates.slice() )
         )
       }
-    )
+    ))
   }
 
   private _filterOnServiceCandidates(filterValue: string) {
@@ -141,6 +165,10 @@ export class ServicesMarketplaceComponent implements OnInit {
         // console.log(result);
       }
     )
+  }
+
+  ngOnDestroy() {
+    this.subscriptions.unsubscribe()
   }
 
 }

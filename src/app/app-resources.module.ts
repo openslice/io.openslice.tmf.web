@@ -19,9 +19,6 @@ import { EditResourceSpecCharacteristicsComponent } from './p_resources/admin/ca
 import { DeleteResourceSpecCharacteristicsComponent } from './p_resources/admin/catalogManagement/edit-resource-spec/delete-resource-spec-characteristics/delete-resource-spec-characteristics.component';
 import { DeleteResourceSpecComponent } from './p_resources/admin/catalogManagement/delete-resource-spec/delete-resource-spec.component';
 import { ListResourceInventoryComponent } from './p_resources/admin/inventoryManagement/list-resource-inventory/list-resource-inventory.component';
-import { ResourcesMarketplaceComponent } from './p_resources/marketplace/resources-marketplace.component';
-import { PreviewMarketplaceItemComponent } from './p_resources/marketplace/preview-marketplace-item/preview-marketplace-item.component';
-import { TreeSidenavComponent } from './p_resources/marketplace/tree-sidenav/tree-sidenav.component';
 import { DeleteResourceSpecAttachmentComponent } from './p_resources/admin/catalogManagement/edit-resource-spec/delete-resource-spec-attachment/delete-resource-spec-attachment.component';
 import { AssignResourceSpecRelationshipsComponent } from './p_resources/admin/catalogManagement/edit-resource-spec/assign-resource-spec-relationships/assign-resource-spec-relationships.component';
 import { DeleteResourceComponent } from './p_resources/admin/catalogManagement/delete-resource/delete-resource.component';
@@ -49,15 +46,13 @@ import { AssignResourceRelationshipsComponent } from './p_resources/admin/invent
     ListResourceSpecsComponent,
     DeleteResourceSpecComponent,
     ListResourceInventoryComponent,
-    ResourcesMarketplaceComponent,
-    PreviewMarketplaceItemComponent,
-    TreeSidenavComponent,
     AssignResourceSpecRelationshipsComponent,
     DeleteResourceComponent,
     PreviewResourceComponent,
     EditResourceComponent,
     EditResourceRelationshipsComponent,
-    AssignResourceRelationshipsComponent],
+    AssignResourceRelationshipsComponent
+  ],
   imports: [
     CommonModule,
     SharedModule,

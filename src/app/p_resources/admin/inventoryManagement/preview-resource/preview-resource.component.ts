@@ -2,9 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router, ActivationEnd } from '@angular/router';
 import { ResourceService } from 'src/app/openApis/resourceInventoryManagement/services';
 import { ToastrService } from 'ngx-toastr';
-import { Resource, ResourceSpecificationRef, ResourceUpdate } from 'src/app/openApis/resourceInventoryManagement/models';
+import { Resource, ResourceRelationshipRes, ResourceSpecificationRef, ResourceUpdate } from 'src/app/openApis/resourceInventoryManagement/models';
 import { FormGroup, FormControl } from '@angular/forms';
-import { Subscription } from 'rxjs';
+import { Subscription, Observable } from 'rxjs';
+import { startWith, map} from 'rxjs/operators'
 import { trigger } from '@angular/animations';
 import { fadeIn } from 'src/app/shared/animations/animations';
 import { MatDialog } from '@angular/material';
@@ -15,7 +16,6 @@ import { AppService } from 'src/app/shared/services/app.service';
 import { AssignResourceRelationshipsComponent } from '../edit-resource/assign-resource-relationships/assign-resource-relationships.component';
 import { ResourceRefOrValueReq,ResourceOrderItemReq, ResourceOrder, ResourceOrderCreate } from 'src/app/openApis/resourceOrderManagement/models';
 import { ResourceOrderService } from 'src/app/openApis/resourceOrderManagement/services';
-import { ResourceCategory } from 'src/app/openApis/resourceCatalogManagement/models';
 import { ResourceSpecificationService } from 'src/app/openApis/resourceCatalogManagement/services';
 
 @Component({
@@ -71,6 +71,8 @@ export class PreviewResourceComponent implements OnInit {
   listItems = ["Main Properties", "Resource Characteristics","Resource Relationships"]
   activeListItem = "Main Properties"
 
+  relatedResourcesFilterCtrl = new FormControl();
+  filteredResourceRelationships$: Observable<ResourceRelationshipRes[]>
 
 
   ngOnInit() {
@@ -84,6 +86,7 @@ export class PreviewResourceComponent implements OnInit {
       this.editMode = true
     }
   }
+
   retrieveResourceSpecificationsList() {
     this.resourceSpecificationService.listResourceSpecification({}).subscribe(
       data => { this.availableCategories = data.map(tmp=>tmp.name) },
@@ -240,17 +243,24 @@ export class PreviewResourceComponent implements OnInit {
       () => {
         if (!this.resource) {
           this.resourceNotFound = true
+        } else {
+          this.resource.resourceCharacteristic.sort(this.sortingService.ascStringSortingFunctionByNameProperty())
+          this.resource.note.sort(this.sortingService.ascDateSortingFuncByDateProperty())
+          this.editForm.patchValue({
+            operationalState: this.resource.operationalState,
+            administrativeState: this.resource.administrativeState,
+            usageState: this.resource.usageState,
+            resourceStatus: this.resource.resourceStatus,
+            startOperatingDate: this.resource.startOperatingDate,
+            endOperatingDate: this.resource.endOperatingDate
+          })
+
+          //populate Specification Relationships Panel Info
+          this.filteredResourceRelationships$ = this.relatedResourcesFilterCtrl.valueChanges.pipe(
+            startWith(null),
+            map((value: null | string) => value ? this._filterOnRelatedResources(value) : this.resource.resourceRelationship.slice())
+          )
         }
-        this.resource.resourceCharacteristic.sort(this.sortingService.ascStringSortingFunctionByNameProperty())
-        this.resource.note.sort(this.sortingService.ascDateSortingFuncByDateProperty())
-        this.editForm.patchValue({
-          operationalState: this.resource.operationalState,
-          administrativeState: this.resource.administrativeState,
-          usageState: this.resource.usageState,
-          resourceStatus: this.resource.resourceStatus,
-          startOperatingDate: this.resource.startOperatingDate,
-          endOperatingDate: this.resource.endOperatingDate
-        })
       }
     )
   }
@@ -286,6 +296,12 @@ export class PreviewResourceComponent implements OnInit {
         cssClass += ' text-danger'
     }
     return cssClass
+  }
+
+  private _filterOnRelatedResources(filterValue: string) {
+    filterValue = filterValue.trim();
+    filterValue = filterValue.toLowerCase();
+    return this.resource.resourceRelationship.filter( relatedSpec =>  relatedSpec.resource.name.toLowerCase().includes(filterValue) )
   }
 
   openAssignResourceRelationshipDialog() {

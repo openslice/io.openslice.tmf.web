@@ -26,10 +26,10 @@
                   <b class="card-stats shadowed">{{ resource["@type"] }}</b>
                 </p>
 
-                <div class="card-stats" *ngIf="!newResource">
+                <!-- <div class="card-stats" *ngIf="!newResource">
                   <i class="far fa-plus-square mr-2"></i>Resource created at
                   {{ resource?.resourceDate | date: "short" }} (Local Time)
-                </div>
+                </div> -->
               </div>
             </div>
           </div>
@@ -528,16 +528,12 @@
               >
                 <div class="card mat-elevation-z1 bg-light">
                   <div class="card-body">
-                    <!-- <div *ngIf="!editForm.controls.isBundle.value">
-                                              Resource must be checked as <b>Bundle</b> in order to assign Resource Specification Relationships (See Main Properties Tab).
-                                          </div> -->
-                    <!-- <div  *ngIf="editForm.controls.isBundle.value"> -->
                     <div>
                       <div
                         class="filter-container row align-items-center justify-content-center"
                       >
                         <mat-form-field
-                          *ngIf="spec?.resourceRelationship.length > 0"
+                          *ngIf="resource?.resourceRelationship.length > 0"
                           class="col-sm-10"
                         >
                           <mat-label
@@ -545,16 +541,15 @@
                           </mat-label>
                           <input
                             matInput
-                            [formControl]="resourceRelatedResourcesFilterCtrl"
+                            [formControl]="relatedResourcesFilterCtrl"
                           />
                         </mat-form-field>
 
                         <div
-                          *ngIf="spec?.serviceSpecRelationship.length === 0"
+                          *ngIf="resource?.resourceRelationship.length === 0"
                           class="col-sm-10 children-categories-font"
                         >
-                          <!-- Category <dfn>{{category.name}}</dfn> has no service specifications assigned yet -->
-                          There are not any service specification relationships
+                          There are not any resource relationships
                           assigned yet.
                         </div>
 
@@ -571,18 +566,18 @@
 
                       <div
                         *ngFor="
-                          let relatedSpec of filteredRelatedSpecs$ | async
+                          let resourceRelationship of filteredResourceRelationships$ | async
                         "
                         class="spec-relationship-container pt-3"
                       >
                         <div>
-                          <b>{{ relatedSpec.name }}</b>
+                          <b>{{ resourceRelationship.resource.name }}</b>
                         </div>
                         <button
                           class="btn btn-warning btn-sm"
                           routerLink="/{{
                             appService.portalDomain
-                          }}/service_spec_update/{{ relatedSpec.id }}"
+                          }}/resource/{{ resourceRelationship.resource.id }}"
                         >
                           <i class="far fa-edit"></i>
                         </button>

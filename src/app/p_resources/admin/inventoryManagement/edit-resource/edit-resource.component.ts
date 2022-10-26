@@ -5,7 +5,7 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { ResourceService } from 'src/app/openApis/resourceInventoryManagement/services';
 import { ResourceSpecificationService } from 'src/app/openApis/resourceCatalogManagement/services';
 import { ResourceSpecificationRef , Characteristic, ResourceUpdate, Resource} from 'src/app/openApis/resourceInventoryManagement/models';
-import { ResourceSpecification, ResourceSpecificationCharacteristicReq } from 'src/app/openApis/resourceCatalogManagement/models';
+import { ResourceSpecification, ResourceSpecificationCharacteristicReq, ResourceSpecificationCharacteristicRes } from 'src/app/openApis/resourceCatalogManagement/models';
 import { FormArray, FormGroup, FormControl } from '@angular/forms';
 import { SortingService } from 'src/app/shared/functions/sorting.service';
 import { ToastrService } from 'ngx-toastr';
@@ -36,7 +36,7 @@ export class EditResourceComponent implements OnInit {
   specCharFormArray = new FormArray([])
 
   resourceCharacteristics: Characteristic[] = []
-  specificationCharacteristics: ResourceSpecificationCharacteristicReq[] = []
+  specificationCharacteristics: ResourceSpecificationCharacteristicRes[] = []
 
   ngOnInit() {
     this.retrieveResourceSpec()

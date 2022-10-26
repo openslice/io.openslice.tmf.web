@@ -5,7 +5,6 @@ import { ResourceCandidateService, ResourceCategoryService } from 'src/app/openA
 import { Observable } from 'rxjs';
 import { FormControl } from '@angular/forms';
 import { startWith, map } from 'rxjs/operators';
-import { ServiceCandidate} from 'src/app/openApis/ServiceCatalogManagement/models';
 @Component({
   selector: 'app-assign-service-candidates',
   templateUrl: './assign-resource-candidates.component.html',

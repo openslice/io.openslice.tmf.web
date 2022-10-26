@@ -1,5 +1,5 @@
 import { Component, OnInit, Inject } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { ResourceCategory } from 'src/app/openApis/resourceCatalogManagement/models';
 import { ResourceCategoryService } from 'src/app/openApis/resourceCatalogManagement/services';
 

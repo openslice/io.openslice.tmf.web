@@ -1,6 +1,7 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { MatCheckboxChange, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
+import { MatCheckboxChange } from '@angular/material/checkbox';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { LCMRuleSpecification, LCMRuleSpecificationCreate } from 'src/app/openApis/lcmRuleSpecificationAPI/models';
 import { LcmRuleSpecificationService } from 'src/app/openApis/lcmRuleSpecificationAPI/services';
 import { ServiceSpecification } from 'src/app/openApis/serviceCatalogManagement/models';

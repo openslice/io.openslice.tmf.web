@@ -1,5 +1,5 @@
 import { Component, OnInit, Inject } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { ServiceOrder } from 'src/app/openApis/serviceOrderingManagement/models';
 import { DeleteServiceSpecComponent } from 'src/app/p_services/admin/catalogManagement/delete-service-spec/delete-service-spec.component';
 import { ServiceOrderService } from 'src/app/openApis/serviceOrderingManagement/services';

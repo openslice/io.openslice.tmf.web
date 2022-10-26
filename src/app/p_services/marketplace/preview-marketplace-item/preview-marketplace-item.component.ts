@@ -1,5 +1,8 @@
 import { Component, OnInit, Inject, ViewChild } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialogRef, MatTableDataSource, MatSort, MatCheckboxChange } from '@angular/material';
+import { MatCheckboxChange } from '@angular/material/checkbox';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { MatSort } from '@angular/material/sort';
+import { MatTableDataSource } from '@angular/material/table';
 import { ServiceCandidate, ServiceSpecification, ServiceSpecCharacteristicValue, ServiceSpecCharacteristic, AttachmentRef } from 'src/app/openApis/serviceCatalogManagement/models';
 import { ServiceSpecificationService } from 'src/app/openApis/serviceCatalogManagement/services';
 import { RequesterService } from 'src/app/p_services/orderCheckout/services/requester.service';

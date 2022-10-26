@@ -1,6 +1,9 @@
 import { trigger } from '@angular/animations';
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { MatDialog, MatPaginator, MatSort, MatTableDataSource } from '@angular/material';
+import { MatDialog } from '@angular/material/dialog';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatSort } from '@angular/material/sort';
+import { MatTableDataSource } from '@angular/material/table';
 import { ToastrService } from 'ngx-toastr';
 import { stricterDefinedAlarmCreate } from 'src/app/shared/models/augmentedOpenAPImodels/stricter-defined-alarm-management.model';
 import { Alarm, AlarmCreate } from 'src/app/openApis/alarmManagement/models';

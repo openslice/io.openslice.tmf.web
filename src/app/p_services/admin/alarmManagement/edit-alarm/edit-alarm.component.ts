@@ -1,7 +1,7 @@
 import { trigger } from '@angular/animations';
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
-import { MatSelectChange } from '@angular/material';
+import { MatSelectChange } from '@angular/material/select';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { stricterDefinedAlarm } from 'src/app/shared/models/augmentedOpenAPImodels/stricter-defined-alarm-management.model';

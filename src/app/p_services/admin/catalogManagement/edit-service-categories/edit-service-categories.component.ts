@@ -4,7 +4,10 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 
 import { ActivatedRoute, Router, ActivationEnd } from '@angular/router';
 
-import { MatCheckboxChange, MatDialog, MatTableDataSource, MatSort } from '@angular/material';
+import { MatCheckboxChange } from '@angular/material/checkbox';
+import { MatDialog } from '@angular/material/dialog';
+import { MatSort } from '@angular/material/sort';
+import { MatTableDataSource } from '@angular/material/table';
 import { ServiceCategory, ServiceCategoryUpdate, ServiceCategoryCreate, ServiceCategoryRef, ServiceCandidateRef, ServiceCandidate } from 'src/app/openApis/serviceCatalogManagement/models';
 import { ServiceCategoryService, ServiceCandidateService } from 'src/app/openApis/serviceCatalogManagement/services';
 import { Observable, Subscription } from 'rxjs';

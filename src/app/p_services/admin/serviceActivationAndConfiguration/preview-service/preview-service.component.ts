@@ -7,7 +7,7 @@ import { FormGroup, FormControl } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { trigger } from '@angular/animations';
 import { fadeIn } from 'src/app/shared/animations/animations';
-import { MatDialog } from '@angular/material';
+import { MatDialog } from '@angular/material/dialog';
 import { SortingService } from 'src/app/shared/functions/sorting.service';
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { EditServiceCharacteristicsComponent } from '../edit-service-characteristics/edit-service-characteristics.component';

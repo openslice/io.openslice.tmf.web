@@ -1,6 +1,9 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { IndividualService } from 'src/app/openApis/partyManagement/services';
-import { MatDialog, MatTableDataSource, MatSort, MatPaginator } from '@angular/material';
+import { MatDialog } from '@angular/material/dialog';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatSort } from '@angular/material/sort';
+import { MatTableDataSource } from '@angular/material/table';
 import { ToastrService } from 'ngx-toastr';
 import { Individual } from 'src/app/openApis/partyManagement/models';
 import { DeleteIndividualComponent } from '../delete-individual/delete-individual.component';

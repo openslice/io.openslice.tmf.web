@@ -5,7 +5,9 @@ import { ResourceCatalog, ResourceCatalogUpdate, ResourceCategory, ResourceCatal
 
 
 import { Observable } from 'rxjs';
-import { MatAutocomplete, MatChipInputEvent, MatAutocompleteSelectedEvent, MatAutocompleteTrigger, MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
+import { MatAutocomplete, MatAutocompleteSelectedEvent, MatAutocompleteTrigger } from '@angular/material/autocomplete';
+import { MatChipInputEvent } from '@angular/material/chips';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { startWith, map } from 'rxjs/operators';
 
 @Component({

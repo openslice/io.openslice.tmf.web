@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router, ActivationEnd } from '@angular/router';
 import { IndividualService, OrganizationService } from 'src/app/openApis/partyManagement/services';
-import { MatDialog } from '@angular/material';
+import { MatDialog } from '@angular/material/dialog';
 import { ToastrService } from 'ngx-toastr';
 import { Individual, Organization, IndividualCreate, IndividualUpdate } from 'src/app/openApis/partyManagement/models';
 import { FormGroup, FormControl } from '@angular/forms';

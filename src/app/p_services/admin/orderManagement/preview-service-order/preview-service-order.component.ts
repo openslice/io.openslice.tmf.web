@@ -8,7 +8,7 @@ import { ServiceService } from 'src/app/openApis/serviceInventoryManagement/serv
 import { Service } from 'src/app/openApis/serviceInventoryManagement/models';
 import { delay } from 'rxjs/operators';
 import { AuthService } from 'src/app/shared/services/auth.service';
-import { MatDialog } from '@angular/material';
+import { MatDialog } from '@angular/material/dialog';
 
 import { timer, Subscription } from 'rxjs';
 import { SortingService } from 'src/app/shared/functions/sorting.service';

@@ -1,6 +1,6 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { ResourceSpecificationUpdate, ResourceSpecification, AttachmentRefOrValue } from 'src/app/openApis/resourceCatalogManagement/models';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { ResourceSpecificationService } from 'src/app/openApis/resourceCatalogManagement/services';
 
 @Component({

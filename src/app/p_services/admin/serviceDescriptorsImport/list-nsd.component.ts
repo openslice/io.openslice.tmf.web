@@ -1,6 +1,9 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ArtifactsApiControllerService } from 'src/app/openApis/portalRepositoryAPI/services';
-import { MatTableDataSource, MatSort, MatPaginator, MatDialog } from '@angular/material';
+import { MatDialog } from '@angular/material/dialog';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatSort } from '@angular/material/sort';
+import { MatTableDataSource } from '@angular/material/table';
 import { ImportNsdDialogComponent } from './import-nsd-dialog/import-nsd-dialog.component';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';

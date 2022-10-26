@@ -1,7 +1,10 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ResourceService } from 'src/app/openApis/resourceInventoryManagement/services';
 import { ToastrService } from 'ngx-toastr';
-import { MatTableDataSource, MatSort, MatPaginator, MatDialog } from '@angular/material';
+import { MatDialog } from '@angular/material/dialog';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatSort } from '@angular/material/sort';
+import { MatTableDataSource } from '@angular/material/table';
 import { Resource } from 'src/app/openApis/resourceInventoryManagement/models';
 import { trigger } from '@angular/animations';
 import { fadeIn } from 'src/app/shared/animations/animations';

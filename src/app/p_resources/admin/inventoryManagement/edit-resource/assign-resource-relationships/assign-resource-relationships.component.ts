@@ -1,5 +1,8 @@
 import { Component, OnInit, Inject, ViewChild, ElementRef } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialogRef, MatAutocompleteTrigger, MatAutocomplete, MatAutocompleteSelectedEvent, MatTableDataSource, MatSort } from '@angular/material';
+import { MatAutocompleteTrigger, MatAutocomplete, MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { MatSort } from '@angular/material/sort';
+import { MatTableDataSource } from '@angular/material/table';
 import { ResourceService } from 'src/app/openApis/resourceInventoryManagement/services';
 import { Resource } from 'src/app/openApis/resourceInventoryManagement/models/resource';
 import { Observable } from 'rxjs';

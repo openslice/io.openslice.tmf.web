@@ -1,5 +1,5 @@
 import { Component, OnInit, Inject } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { Organization, Characteristic, OrganizationUpdate } from 'src/app/openApis/partyManagement/models';
 import { OrganizationService } from 'src/app/openApis/partyManagement/services';
 import { FormGroup, FormControl } from '@angular/forms';

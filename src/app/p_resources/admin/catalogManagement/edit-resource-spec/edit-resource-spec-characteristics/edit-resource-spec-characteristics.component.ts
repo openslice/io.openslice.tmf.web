@@ -1,5 +1,6 @@
 import { Component, OnInit, Inject } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialogRef, MatCheckboxChange } from '@angular/material';
+import { MatCheckboxChange } from '@angular/material/checkbox';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { ResourceSpecificationCharacteristicRes, ResourceSpecification, ResourceSpecificationUpdate, ResourceSpecificationCharacteristicValue } from 'src/app/openApis/resourceCatalogManagement/models';
 import { FormGroup, FormControl, FormArray } from '@angular/forms';
 import { ResourceSpecificationService } from 'src/app/openApis/resourceCatalogManagement/services';

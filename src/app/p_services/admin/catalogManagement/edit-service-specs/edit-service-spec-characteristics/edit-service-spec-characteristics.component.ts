@@ -1,5 +1,6 @@
 import { Component, OnInit, Inject } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialogRef, MatCheckboxChange } from '@angular/material';
+import { MatCheckboxChange } from '@angular/material/checkbox';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { ServiceSpecCharacteristic, ServiceSpecCharacteristicValue, ServiceSpecification, ServiceSpecificationUpdate } from 'src/app/openApis/serviceCatalogManagement/models';
 import { FormGroup, FormControl, FormArray } from '@angular/forms';
 import { ServiceSpecificationService } from 'src/app/openApis/serviceCatalogManagement/services';

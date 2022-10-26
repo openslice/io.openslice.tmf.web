@@ -60,7 +60,7 @@ export class EditServiceTestSpecComponent implements OnInit {
   displayedColumnsCharacteristics = ['name', 'description', 'actions']
   dataSource = new MatTableDataSource<CharacteristicSpecificationRes>()
 
-  @ViewChild('charSort', {static: false}) set matSort(ms: MatSort) {
+  @ViewChild('charSort') set matSort(ms: MatSort) {
     this.dataSource.sort = ms;
   } 
 

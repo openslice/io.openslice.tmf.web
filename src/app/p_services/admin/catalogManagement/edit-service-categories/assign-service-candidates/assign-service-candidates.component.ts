@@ -21,10 +21,10 @@ export class AssignServiceCandidatesComponent implements OnInit {
 
   ) { }
 
-  @ViewChild('candidateInput', {static: false}) candidateInput: ElementRef<HTMLInputElement>;  
-  @ViewChild('candidateInput', {static: false, read: MatAutocompleteTrigger}) matAutocompleteTrigger: MatAutocompleteTrigger;
+  @ViewChild('candidateInput') candidateInput: ElementRef<HTMLInputElement>;  
+  @ViewChild('candidateInput', { read: MatAutocompleteTrigger }) matAutocompleteTrigger: MatAutocompleteTrigger;
 
-  @ViewChild('auto', {static: false}) matAutocomplete: MatAutocomplete;
+  @ViewChild('auto') matAutocomplete: MatAutocomplete;
 
   displayedCandidateTableColumns = ['name', 'actions']
   dataSource  = new MatTableDataSource<ServiceCandidate>()

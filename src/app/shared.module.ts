@@ -4,7 +4,9 @@ import { CommonModule } from '@angular/common';
 import { NgProgressModule } from '@ngx-progressbar/core';
 import { NgProgressHttpModule } from '@ngx-progressbar/http';
 
-import { OwlDateTimeModule, OwlNativeDateTimeModule } from 'ng-pick-datetime';
+import { OwlDateTimeModule } from '@danielmoncada/angular-datetime-picker';
+import { OwlMomentDateTimeModule } from '@danielmoncada/angular-datetime-picker-moment-adapter';
+
 
 import { ToastrModule } from 'ngx-toastr';
 
@@ -104,7 +106,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     // NgProgressModule,
     // NgProgressHttpModule,
     OwlDateTimeModule,
-    OwlNativeDateTimeModule,
+    OwlMomentDateTimeModule,
     // ToastrModule.forRoot({progressBar: true, preventDuplicates: true}),
     // OAuthModule.forRoot(),
     FileUploadModule,
@@ -158,7 +160,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     NgProgressModule,
     NgProgressHttpModule,
     OwlDateTimeModule,
-    OwlNativeDateTimeModule,
+    OwlMomentDateTimeModule,
     ToastrModule,
     OAuthModule,
     FileUploadModule,

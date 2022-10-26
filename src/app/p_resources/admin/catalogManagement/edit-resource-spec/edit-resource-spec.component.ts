@@ -68,12 +68,12 @@ export class EditResourceSpecsComponent implements OnInit {
 
 
 
-  @ViewChild('specSort', {static: false}) set matSort(ms: MatSort) {
+  @ViewChild('specSort') set matSort(ms: MatSort) {
     this.dataSource.sort = ms;
   }
   // @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
 
-  @ViewChild('specRelationshipsPanel', {static: false}) specRelationshipsPanel: MatExpansionPanel
+  @ViewChild('specRelationshipsPanel') specRelationshipsPanel: MatExpansionPanel
 
   newSpecification = false
 

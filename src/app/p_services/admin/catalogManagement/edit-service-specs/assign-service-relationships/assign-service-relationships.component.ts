@@ -24,10 +24,10 @@ export class AssignServiceRelationshipsComponent implements OnInit {
   ) { }
 
 
-  @ViewChild('specInput', {static: false}) specInput: ElementRef<HTMLInputElement>;  
-  @ViewChild('specInput', {static: false, read: MatAutocompleteTrigger}) matAutocompleteTrigger: MatAutocompleteTrigger;
+  @ViewChild('specInput') specInput: ElementRef<HTMLInputElement>;  
+  @ViewChild('specInput', { read: MatAutocompleteTrigger }) matAutocompleteTrigger: MatAutocompleteTrigger;
 
-  @ViewChild('auto', {static: false}) matAutocomplete: MatAutocomplete;
+  @ViewChild('auto') matAutocomplete: MatAutocomplete;
 
   displayedColumnsSpecRelationships = ['name', 'actions']
   dataSource  = new MatTableDataSource<ServiceSpecification>()

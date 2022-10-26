@@ -25,10 +25,10 @@ export class AssignResourceRelationshipsComponent implements OnInit {
   ) { }
 
 
-  @ViewChild('specInput', {static: false}) resourceInput: ElementRef<HTMLInputElement>;
-  @ViewChild('specInput', {static: false, read: MatAutocompleteTrigger}) matAutocompleteTrigger: MatAutocompleteTrigger;
+  @ViewChild('specInput') resourceInput: ElementRef<HTMLInputElement>;
+  @ViewChild('specInput', { read: MatAutocompleteTrigger }) matAutocompleteTrigger: MatAutocompleteTrigger;
 
-  @ViewChild('auto', {static: false}) matAutocomplete: MatAutocomplete;
+  @ViewChild('auto') matAutocomplete: MatAutocomplete;
 
   displayedColumnsResourceRelationships = ['name', 'actions']
   dataSource  = new MatTableDataSource<Resource>()

@@ -59,11 +59,11 @@ export class EditResourceCatalogsComponent implements OnInit {
   nonSelectedRootCategories: ResourceCategory[] = []
 
 
-  @ViewChild('categoryInput', {static: false}) categoryInput: ElementRef<HTMLInputElement>;
+  @ViewChild('categoryInput') categoryInput: ElementRef<HTMLInputElement>;
 
-  @ViewChild('categoryInput', {static: false, read: MatAutocompleteTrigger}) matAutocompleteTrigger: MatAutocompleteTrigger;
+  @ViewChild('categoryInput', { read: MatAutocompleteTrigger }) matAutocompleteTrigger: MatAutocompleteTrigger;
 
-  @ViewChild('auto', {static: false}) matAutocomplete: MatAutocomplete;
+  @ViewChild('auto') matAutocomplete: MatAutocomplete;
 
   // @ViewChild('auto', {static: false}) matAutocompleteTrigger: MatAutocompleteTrigger;
 

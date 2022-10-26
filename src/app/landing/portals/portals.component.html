@@ -2,13 +2,25 @@
 	<div  class="container">
 		<div class="row shadowed-dark" >
 		<div class="" [ngClass]="{'col-12':loggedIn, 'col-sm-12 col-md-8 col-lg-8':!loggedIn}">
-			
+
 			<ng-container *ngIf="appService.portalDomain === 'services'">
 				<h3>
 					Welcome to the {{config.TITLE}} Services portal
 				</h3>
 				<h5>Use the fields on the right to login
-					to {{config.TITLE}} Services and easily deploy services over 
+					to {{config.TITLE}} Services and easily deploy services over
+					the {{config.TITLE}} infrastructure</h5>
+				<h5>Check our <strong><a style="color:#FFFFFF;" href="{{config.WIKI}}">wiki</a></strong> for further documenation</h5>
+				<h5>Report platform issues at our <strong><a style="color:#FFFFFF;" href="{{config.BUGZILLA}}">Bugzilla</a></strong></h5>
+				<h5>Check the <strong><a style="color:#FFFFFF;" href="{{config.STATUS}}">Health Status</a></strong> of our infrastructure</h5>
+			</ng-container>
+
+			<ng-container *ngIf="appService.portalDomain === 'resources'">
+				<h3>
+					Welcome to the {{config.TITLE}} Resources portal
+				</h3>
+				<h5>Use the fields on the right to login
+					to {{config.TITLE}} Resources and easily deploy resources over
 					the {{config.TITLE}} infrastructure</h5>
 				<h5>Check our <strong><a style="color:#FFFFFF;" href="{{config.WIKI}}">wiki</a></strong> for further documenation</h5>
 				<h5>Report platform issues at our <strong><a style="color:#FFFFFF;" href="{{config.BUGZILLA}}">Bugzilla</a></strong></h5>
@@ -20,18 +32,18 @@
 					Welcome to the {{config.TITLE}} Testing portal
 				</h3>
 				<h5>Use the fields on the right to login
-					to {{config.TITLE}} Testing and easily design tests over 
+					to {{config.TITLE}} Testing and easily design tests over
 					the {{config.TITLE}} infrastructure</h5>
 				<h5>Check our <strong><a style="color:#FFFFFF;" href="{{config.WIKI}}">wiki</a></strong> for further documenation</h5>
 				<h5>Report platform issues at our <strong><a style="color:#FFFFFF;" href="{{config.BUGZILLA}}">Bugzilla</a></strong></h5>
 				<h5>Check the <strong><a style="color:#FFFFFF;" href="{{config.STATUS}}">Health Status</a></strong> of our infrastructure</h5>
 			</ng-container>
 
-				
+
 			</div>
 			<div class="col-sm-12 col-md-4 col-lg-4" *ngIf="!loggedIn">
 				<!-- <h2>Sign In</h2> -->
-				<button type="submit" class="btn btn-lg btn-light"  (click)="login()" >Sign In</button> 
+				<button type="submit" class="btn btn-lg btn-light"  (click)="login()" >Sign In</button>
 				<!-- or <a style="color: white;" href="http://portal.openslice.io/nfvportal/#!/signup" ><b>Sign up</b> for the {{config.TITLE}}!</a>				 -->
 			</div>
 		</div>
@@ -48,13 +60,20 @@
 						and share services over the {{config.TITLE}} infrastructure
 					</h6>
 				</ng-container>
-	
+
+				<ng-container *ngIf="appService.portalDomain === 'resources'">
+					<h2 class="shadowed">Deploy {{config.TITLE}} resources</h2>
+					<h6 class="mb-0">Access, create
+						and share resources over the {{config.TITLE}} infrastructure
+					</h6>
+				</ng-container>
+
 				<ng-container *ngIf="appService.portalDomain === 'testing'">
 					<h2 class="shadowed">Design {{config.TITLE}} tests</h2>
 					<h6 class="mb-0">Access, create
 						and share tests over the {{config.TITLE}} infrastructure</h6>
 				</ng-container>
-            </div>          
+            </div>
         </div>
 	</div>
 </section>

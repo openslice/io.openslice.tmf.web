@@ -1,5 +1,5 @@
 <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top mat-elevation-z4" role="navigation">
-				
+
     <!-- <div class="container-fluid"> -->
         <!-- Brand and toggle get grouped for better mobile display -->
             <!-- <button type="button" class="navbar-toggle" data-toggle="collapse"
@@ -15,8 +15,8 @@
             <img src="{{themeConfig.DEPLOYMENT_LOGO_PATH}}" height="25px">
         </a>
         <!-- Collect the nav links, forms, and other content for toggling -->
-        <button class="navbar-toggler" type="button" (click)="isNavbarCollapsed = !isNavbarCollapsed" 
-            aria-controls="navbarsDefault" 
+        <button class="navbar-toggler" type="button" (click)="isNavbarCollapsed = !isNavbarCollapsed"
+            aria-controls="navbarsDefault"
             [attr.aria-expanded]="!isNavbarCollapsed"
             aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -30,6 +30,9 @@
                     <a class="nav-link" routerLink="services/">Services Portal</a>
                 </li>
                 <li class="nav-item">
+                  <a class="nav-link" routerLink="resources/">Resources Portal</a>
+                </li>
+                <li class="nav-item">
                     <a class="nav-link" href="nfvportal/">NFV Portal</a>
                 </li>
                 <li class="nav-item">
@@ -38,7 +41,7 @@
             </ul>
             <!-- ----- -->
             <!-- ENDOF Landing Portal Menu -->
-            
+
             <!-- Services Portal Menu -->
             <!-- ----- -->
             <ul class="navbar-nav mr-auto" *ngIf="appService.portalDomain === 'services'">
@@ -55,7 +58,7 @@
                 <li class="nav-item" routerLinkActive="active" *ngIf="(authService.isAuthenticated$ | async) && !authService.portalUserJWT?.realm_access.roles.includes('ADMIN')" [@fadeIn]>
                     <a class="nav-link" routerLink="/{{appService.portalDomain}}/my_service_orders">My Service Orders</a>
                 </li>
-                
+
                 <li class="nav-item" routerLinkActive="active" *ngIf="(authService.isAuthenticated$ | async) && !authService.portalUserJWT?.realm_access.roles.includes('ADMIN')" [@fadeIn]>
                     <a class="nav-link" routerLink="/{{appService.portalDomain}}/service_inventory">My Service Inventory</a>
                 </li>
@@ -83,11 +86,11 @@
                             <li><a class="dropdown-item" tabindex="0" routerLink="/{{appService.portalDomain}}/list_tests">Import from Tests list</a></li>
                             <div class="dropdown-divider"></div>
                             <!-- <div class="optgroup-label">Order Management</div> -->
-                            <li><a class="dropdown-item" tabindex="0" routerLink="/{{appService.portalDomain}}/service_orders">Service Orders</a></li> 
+                            <li><a class="dropdown-item" tabindex="0" routerLink="/{{appService.portalDomain}}/service_orders">Service Orders</a></li>
                             <!-- <a class="dropdown-item">More</a> -->
                             <div class="dropdown-divider"></div>
                             <!-- <div class="optgroup-label">Order Management</div> -->
-                            <li><a class="dropdown-item" tabindex="0" routerLink="/{{appService.portalDomain}}/service_inventory">Service Inventory</a></li> 
+                            <li><a class="dropdown-item" tabindex="0" routerLink="/{{appService.portalDomain}}/service_inventory">Service Inventory</a></li>
 
                         </ul>
                     </a>
@@ -116,7 +119,52 @@
             <!-- ENDOF Services Portal Menu -->
             <!-- ----- -->
 
-            
+            <!-- Resources Portal Menu -->
+            <!-- ----- -->
+            <ul class="navbar-nav mr-auto" *ngIf="appService.portalDomain === 'resources'">
+              <!-- <li class="nav-item" routerLinkActive="active">
+                  <a class="nav-link" routerLink="/{{appService.portalDomain}}/resources_marketplace">Resources Marketplace</a>
+              </li> -->
+
+              <!-- <li class="nav-item" routerLinkActive="active" *ngIf="(authService.isAuthenticated$ | async) && !authService.portalUserJWT?.realm_access.roles.includes('ADMIN')" [@fadeIn]>
+                  <a class="nav-link" routerLink="/{{appService.portalDomain}}/my_resource_orders">My Resource Orders</a>
+              </li> -->
+
+              <li class="nav-item" routerLinkActive="active" *ngIf="(authService.isAuthenticated$ | async) && !authService.portalUserJWT?.realm_access.roles.includes('ADMIN')" [@fadeIn]>
+                  <a class="nav-link" routerLink="/{{appService.portalDomain}}/resource_inventory">My Resource Inventory</a>
+              </li>
+
+
+              <li class="nav-item dropdown" ngbDropdown *ngIf="(authService.isAuthenticated$ | async) && authService.portalUserJWT?.realm_access.roles.includes('ADMIN')" [@fadeIn]>
+                  <a class="nav-link dropdown-toggle" id="navbarDropdown" aria-haspopup="true" ngbDropdownToggle tabindex="0">Manage Resources
+                      <ul class="dropdown-menu" aria-labelledby="navbarDropdown" ngbDropdownMenu>
+                          <!-- <div class="optgroup-label">Catalog Management</div> -->
+                          <li><a class="dropdown-item" tabindex="0" routerLink="/{{appService.portalDomain}}/resource_catalogs">Resource Catalogs</a></li>
+                          <li><a class="dropdown-item" tabindex="0" routerLink="/{{appService.portalDomain}}/resource_categories">Resource Categories</a></li>
+                          <li class="dropdown dropdown-submenu" ngbDropdown>
+                              <a class="dropdown-toggle" id="navbarDropdown1" aria-haspopup="true" ngbDropdownToggle tabindex="0">Resource Specifications</a>
+                              <ul class="dropdown-menu" aria-labelledby="navbarDropdown1" ngbDropdownMenu>
+                                    <li><a class="dropdown-item" tabindex="0" routerLink="/{{appService.portalDomain}}/resource_specs">List Resource Specifications</a></li>
+                                    <li><a class="dropdown-item" tabindex="0" routerLink="/{{appService.portalDomain}}/resource_spec_update">New Resource Specification</a></li>
+                              </ul>
+                          </li>
+                          <!-- <li><a class="dropdown-item" tabindex="0" routerLink="/{{appService.portalDomain}}/resource_osm_add">Add OSM Resource</a></li> -->
+                          <li><a class="dropdown-item" tabindex="0" routerLink="/{{appService.portalDomain}}/new_resource">New Resource</a></li>
+                          <!-- <div class="optgroup-label">Order Management</div> -->
+                          <!-- <li><a class="dropdown-item" tabindex="0" routerLink="/{{appService.portalDomain}}/resource_orders">Resource Orders</a></li> -->
+                          <!-- <a class="dropdown-item">More</a> -->
+                          <div class="dropdown-divider"></div>
+                          <!-- <div class="optgroup-label">Order Management</div> -->
+                          <li><a class="dropdown-item" tabindex="0" routerLink="/{{appService.portalDomain}}/resource_inventory">Resource Inventory</a></li>
+
+                      </ul>
+                  </a>
+              </li>
+          </ul>
+          <!-- ENDOF Resources Portal Menu -->
+          <!-- ----- -->
+
+
             <!-- Product Portal Menu -->
             <!-- ----- -->
             <ul class="navbar-nav mr-auto" *ngIf="appService.portalDomain === 'products'">
@@ -125,7 +173,7 @@
             <!-- ----- -->
             <!-- ENDOF Landing Portal Menu -->
 
-                        
+
             <!-- Testing Portal Menu -->
             <!-- ----- -->
             <ul class="navbar-nav mr-auto" *ngIf="appService.portalDomain === 'testing'">
@@ -169,7 +217,7 @@
                                 <a class="nav-link dropdown-toggle" id="navbarDropdown2" aria-haspopup="true" ngbDropdownToggle tabindex="-1">{{authService.portalUserJWT.preferred_username}}</a>
                                 <ul class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown2" ngbDropdownMenu>
                                     <li class="user-info">Name: {{authService.portalUser.familyName}} {{authService.portalUser.givenName}}</li>
-                                    <li class="user-info">Organization: 
+                                    <li class="user-info">Organization:
                                         <span *ngFor="let characteristic of authService.portalUser.partyCharacteristic">
                                             <span *ngIf="characteristic.name === 'organization'"> {{characteristic.value.value}}
                                             </span>
@@ -177,19 +225,19 @@
                                     </li>
                                     <li class="user-info">Email: {{authService.portalUser.contactMedium[0].characteristic.emailAddress}}</li>
                                     <li class="user-info">Roles: <span *ngFor="let role of authService.portalUserJWT.realm_access.roles; let last = last">{{role | titlecase}}<span *ngIf="!last">, </span></span></li>
-    
+
                                     <div class="dropdown-divider"></div>
                                     <li class="dropdown-item" routerLink='/{{appService.portalDomain}}/individual_update/myuser' >
                                         <a class="dropdown-link" ><i class="far fa-edit mr-2"></i>Edit my profile</a>
                                     </li>
-                                    
+
                                     <div class="dropdown-divider"></div>
                                     <li class="dropdown-item" (click)="logout()" >
                                         <a class="dropdown-link" ><i class="fas fa-sign-out-alt mr-2"></i>Sign out</a>
                                     </li>
                                 </ul>
                             </li>
-                    </ul> 
+                    </ul>
                 </ng-container>
 
                 <ng-template #elseTemplate>
@@ -197,7 +245,7 @@
                         <li class="nav-item" [@fadeIn]>
                             <a class="nav-link" (click)="login()">Sign in</a>
                         </li>
-                    </ul> 
+                    </ul>
                 </ng-template>
             </ng-container>
         </div>

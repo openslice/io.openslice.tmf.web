@@ -4,7 +4,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
 import { ServiceSpecificationService } from 'src/app/openApis/serviceCatalogManagement/services';
 
 @Component({
-  selector: 'app-delete-attachment',
+  selector: 'app-delete-resource-spec-attachment',
   templateUrl: './delete-attachment.component.html',
   styleUrls: ['./delete-attachment.component.scss']
 })

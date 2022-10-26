@@ -1,0 +1,79 @@
+<div class="container-fluid py-5">
+  <div class="row">
+      <div class="col-12">
+          <div class="card card-paper mb-0">
+              <div class="card-header">
+                  <div class="container-fluid">
+                      <div class="row justify-content-between align-items-center">
+                          <div>
+                              <h2 class="shadowed">OSM Resource Submission</h2>
+                              <p class="shadowed mb-0">Design a new OSM resource</p>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+
+              <div class="card-body">
+                  <div class="row">
+                      <div class="col-xl-10 col-lg-9">
+                          <div class="tab-content">
+                              <!-- Main Properties Tab -->
+                              <form [formGroup]="editForm">
+                                <mat-form-field class="col-md-6">
+                                  <mat-label>Name</mat-label>
+                                  <input matInput formControlName="osmTenantName">
+                                </mat-form-field>
+                                <mat-form-field class="col-md-12">
+                                  <mat-label>Description (supports Markdown)</mat-label>
+                                  <textarea matTextareaAutosize="true" matAutosizeMinRows="2" matInput formControlName="osmTenantDescription"></textarea>
+                                </mat-form-field>
+                                <mat-form-field class="col-md-12">
+                                    <mat-label>Supported MANO Platform</mat-label>
+                                    <mat-select formControlName="supportedManoPlatform">
+                                        <mat-option *ngFor="let supportedManoPlatform of supportedManoPlatforms"
+                                            [value]="supportedManoPlatform">
+                                            {{supportedManoPlatform}}
+                                        </mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                                <mat-form-field class="col-md-4 col-sm-6">
+                                  <mat-label>API URL Endpoint</mat-label>
+                                  <input matInput formControlName="apiUrlEndpoint">
+                                </mat-form-field>
+                                <mat-form-field class="col-md-4 col-sm-6">
+                                  <mat-label>Username</mat-label>
+                                  <input matInput formControlName="username">
+                                </mat-form-field>
+                                <mat-form-field class="col-md-4 col-sm-6">
+                                  <mat-label>Password</mat-label>
+                                  <input matInput formControlName="password">
+                                </mat-form-field>
+                                <mat-form-field class="col-md-4 col-sm-6">
+                                  <mat-label>Project</mat-label>
+                                  <input matInput formControlName="project">
+                                </mat-form-field>
+                                <mat-form-field class="col-md-4 col-sm-6">
+                                  <mat-label>Basic Auth Header</mat-label>
+                                  <input matInput formControlName="basicAuthHeader">
+                                </mat-form-field>
+                                <mat-checkbox class="col-md-4 col-sm-6" formControlName="enabledForSync">Enabled for Sync</mat-checkbox>
+                                <mat-checkbox class="col-md-4 col-sm-6" formControlName="enabledForOnboarding">Enabled for Onboarding</mat-checkbox>
+                            </form>
+                              <!-- END OF Main Properties Tab -->
+ 
+                          </div>
+                      </div>
+                  </div>
+                  <div class="container-fluid">
+                    <div class="row justify-content-end">
+                        <button type="submit" class="btn btn-primary"
+                            (click)="updateResourceGeneral()"><i
+                                class="fas fa-check mr-2"></i>Submit</button>
+                    </div>
+                  </div>
+              </div>
+              <div class="card-footer"></div>
+          </div>
+      </div>
+  </div>
+</div>

@@ -7,8 +7,7 @@ import { FormGroup, FormControl } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { trigger } from '@angular/animations';
 import { fadeIn } from 'src/app/shared/animations/animations';
-import { MatDialogRef, MatDialog } from '@angular/material';
-import { DiscardChangesComponent } from '../../catalogManagement/edit-service-specs/edit-service-specs.component';
+import { MatDialog } from '@angular/material';
 import { SortingService } from 'src/app/shared/functions/sorting.service';
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { EditServiceCharacteristicsComponent } from '../edit-service-characteristics/edit-service-characteristics.component';
@@ -61,7 +60,7 @@ export class PreviewServiceComponent implements OnInit {
 
     this.initSubscriptions()
 
-    if (this.activatedRoute.snapshot.params.id) 
+    if (this.activatedRoute.snapshot.params.id)
     {
       this.serviceID = this.activatedRoute.snapshot.params.id
       this.retrieveService()
@@ -88,7 +87,7 @@ export class PreviewServiceComponent implements OnInit {
 
   selectListitem(item: string) {
     this.activeListItem = item
-  } 
+  }
 
   enableServiceEditing() {
     this.editMode = true
@@ -124,7 +123,7 @@ export class PreviewServiceComponent implements OnInit {
       error => { console.error(error), this.toastr.error("An error occurred updating this Service") },
       () => {
         this.triggerNewNote()
-        this.retrieveService() 
+        this.retrieveService()
       }
     )
 
@@ -155,9 +154,9 @@ export class PreviewServiceComponent implements OnInit {
 
   openCharacteristicsEditDialog() {
     const dialogRef = this.dialog.open(EditServiceCharacteristicsComponent, {
-      data: { 
+      data: {
         service: this.service,
-      }, 
+      },
       minWidth: "60vw"
     })
 

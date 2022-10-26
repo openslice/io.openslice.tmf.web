@@ -100,10 +100,10 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     MatListModule,
     DragDropModule,
     MatNativeDateModule,
-    MatDatepickerModule,  
+    MatDatepickerModule,
     // NgProgressModule,
     // NgProgressHttpModule,
-    OwlDateTimeModule, 
+    OwlDateTimeModule,
     OwlNativeDateTimeModule,
     // ToastrModule.forRoot({progressBar: true, preventDuplicates: true}),
     // OAuthModule.forRoot(),
@@ -154,15 +154,15 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     MatListModule,
     DragDropModule,
     MatNativeDateModule,
-    MatDatepickerModule,  
+    MatDatepickerModule,
     NgProgressModule,
     NgProgressHttpModule,
-    OwlDateTimeModule, 
+    OwlDateTimeModule,
     OwlNativeDateTimeModule,
     ToastrModule,
     OAuthModule,
     FileUploadModule,
-    MarkdownModule    
+    MarkdownModule
   ],
 })
 export class SharedModule { }

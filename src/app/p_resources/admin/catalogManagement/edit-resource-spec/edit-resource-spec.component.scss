@@ -1,0 +1,87 @@
+.nav-link:hover {
+  cursor: pointer;
+}
+
+.nav-link.disabled:not(.active) {
+  color: rgba(0,0,0,.30);
+}
+
+.nav-pills .nav-link.active {
+  color: #fff;
+  transition: all 0.2s;
+}
+
+.tab-pane > .card:nth-child(1) {
+  min-height: max(350px, 20vh);
+}
+
+.tab-pane .card .card-body.space-between{
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.card-paper {
+  box-shadow: 0 2px 4px -1px rgba(0,0,0,.2), 0 4px 5px 0 rgba(0,0,0,.14), 0 1px 10px 0 rgba(0,0,0,.12);
+}
+
+td.mat-cell:first-of-type, th.mat-header-cell:first-of-type {
+  padding-left: 16px;
+}
+
+td.mat-cell:last-of-type, th.mat-header-cell:last-of-type {
+  padding-right: 16px;
+}
+
+span.hidden {
+  display: none;
+}
+
+.mat-column-defaultValues span:last-child span span.comma-separator {
+  display: none;
+}
+
+.value-measureUnits {
+  color: #727272;
+  font-size: 11px;
+  line-height: 1.1;
+}
+
+.mat-cell {
+  font-size: 13px;
+}
+
+.mat-header-cell {
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.spec-relationship-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+mat-chip {
+  cursor: pointer;
+}
+
+file-upload {
+  outline-offset: -5px;
+}
+
+file-upload.ng-touched.ng-invalid {
+  outline-color: #ff0000;
+  background-color: #fdf4f4;
+}
+
+.file-icon {
+  // border: 1px solid #c9c9c9;
+  border-radius: 4px;
+  // color: #909293;
+  height: 25px;
+  width: 25px;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+}

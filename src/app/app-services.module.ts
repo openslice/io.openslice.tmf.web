@@ -163,7 +163,7 @@ import { ImportLcmruleComponent } from './p_services/admin/catalogManagement/edi
     // DeleteIndividualComponent
   ],
   exports: [
-    
+
   ],
   schemas: [NO_ERRORS_SCHEMA]
 })

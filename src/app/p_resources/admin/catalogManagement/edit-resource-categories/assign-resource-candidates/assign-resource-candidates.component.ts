@@ -1,5 +1,8 @@
 import { Component, OnInit, Inject, ViewChild, ElementRef } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialogRef, MatAutocompleteTrigger, MatAutocomplete, MatTableDataSource, MatSort, MatAutocompleteSelectedEvent } from '@angular/material';
+import { MatAutocompleteTrigger, MatAutocomplete, MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { MatSort } from '@angular/material/sort';
+import { MatTableDataSource } from '@angular/material/table';
 import { ResourceCategory, ResourceCandidate, ResourceCandidateRef, ResourceCategoryUpdate, ResourceSpecification } from 'src/app/openApis/resourceCatalogManagement/models';
 import { ResourceCandidateService, ResourceCategoryService } from 'src/app/openApis/resourceCatalogManagement/services';
 import { Observable } from 'rxjs';
@@ -20,10 +23,10 @@ export class AssignResourceCandidatesComponent implements OnInit {
 
   ) { }
 
-  @ViewChild('candidateInput', {static: false}) candidateInput: ElementRef<HTMLInputElement>;
-  @ViewChild('candidateInput', {static: false, read: MatAutocompleteTrigger}) matAutocompleteTrigger: MatAutocompleteTrigger;
+  @ViewChild('candidateInput') candidateInput: ElementRef<HTMLInputElement>;
+  @ViewChild('candidateInput', { read: MatAutocompleteTrigger }) matAutocompleteTrigger: MatAutocompleteTrigger;
 
-  @ViewChild('auto', {static: false}) matAutocomplete: MatAutocomplete;
+  @ViewChild('auto') matAutocomplete: MatAutocomplete;
 
   displayedCandidateTableColumns = ['name', 'actions']
   dataSource  = new MatTableDataSource<ResourceCandidate>()

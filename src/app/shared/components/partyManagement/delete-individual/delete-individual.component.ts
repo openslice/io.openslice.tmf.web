@@ -1,6 +1,6 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { Individual } from 'src/app/openApis/partyManagement/models';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { IndividualService } from 'src/app/openApis/partyManagement/services';
 
 @Component({

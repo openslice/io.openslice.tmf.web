@@ -2,7 +2,7 @@ import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { ServiceSpecification } from 'src/app/openApis/serviceCatalogManagement/models/service-specification';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { CloneGstTemplateComponent } from 'src/app/p_services/admin/catalogManagement/edit-service-specs/clone-gst-template/clone-gst-template.component';
-import { MatDialog } from '@angular/material';
+import { MatDialog } from '@angular/material/dialog';
 import { ToastrService } from 'ngx-toastr';
 import { CloneVinniTemplateComponent } from 'src/app/p_services/admin/catalogManagement/edit-service-specs/clone-vinni-template/clone-vinni-template.component';
 import { AuthService } from 'src/app/shared/services/auth.service';

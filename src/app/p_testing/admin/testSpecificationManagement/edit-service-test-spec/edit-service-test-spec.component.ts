@@ -1,7 +1,9 @@
 import { trigger } from '@angular/animations';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { MatDialog, MatDialogRef, MatSort, MatTableDataSource } from '@angular/material';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { MatSort } from '@angular/material/sort';
+import { MatTableDataSource } from '@angular/material/table';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FileUploadControl, FileUploadValidators } from '@iplab/ngx-file-upload';
 import { ToastrService } from 'ngx-toastr';
@@ -60,7 +62,7 @@ export class EditServiceTestSpecComponent implements OnInit {
   displayedColumnsCharacteristics = ['name', 'description', 'actions']
   dataSource = new MatTableDataSource<CharacteristicSpecificationRes>()
 
-  @ViewChild('charSort', {static: false}) set matSort(ms: MatSort) {
+  @ViewChild('charSort') set matSort(ms: MatSort) {
     this.dataSource.sort = ms;
   } 
 

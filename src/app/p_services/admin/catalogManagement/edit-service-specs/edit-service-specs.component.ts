@@ -7,7 +7,12 @@ import { ActivatedRoute, Router, ActivationEnd } from '@angular/router';
 import { FormGroup, FormControl, FormArray, Validators } from '@angular/forms';
 import { ServiceSpecification, ServiceSpecCharacteristic, ServiceSpecificationUpdate, ServiceSpecificationCreate, ServiceSpecRelationship, AttachmentRef, Attachment } from 'src/app/openApis/serviceCatalogManagement/models';
 import { ServiceSpecificationService } from 'src/app/openApis/serviceCatalogManagement/services';
-import { MatTableDataSource, MatSort, MatPaginator, MatDialog, MatCheckboxChange, MatExpansionPanel, MatDialogRef } from '@angular/material';
+import { MatCheckboxChange } from '@angular/material/checkbox';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { MatExpansionPanel } from '@angular/material/expansion';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatSort } from '@angular/material/sort';
+import { MatTableDataSource } from '@angular/material/table';
 import { EditServiceSpecCharacteristicsComponent } from './edit-service-spec-characteristics/edit-service-spec-characteristics.component';
 import { DeleteServiceSpecCharacteristicsComponent } from './delete-service-spec-characteristics/delete-service-spec-characteristics.component';
 import { ToastrService } from 'ngx-toastr';
@@ -78,12 +83,12 @@ export class EditServiceSpecsComponent implements OnInit {
   lcmRulesTags: string[] = ["Creation", "Pre-Provision", "After-Activation", "Supervision", "After-Deactivation"]
   lcmRulesTagValue:string = "All"
 
-@ViewChild('specSort', {static: false}) set matSort(ms: MatSort) {
+@ViewChild('specSort') set matSort(ms: MatSort) {
     this.dataSource.sort = ms;
   }
   // @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
 
-  @ViewChild('specRelationshipsPanel', {static: false}) specRelationshipsPanel: MatExpansionPanel
+  @ViewChild('specRelationshipsPanel') specRelationshipsPanel: MatExpansionPanel
 
   newSpecification = false
 

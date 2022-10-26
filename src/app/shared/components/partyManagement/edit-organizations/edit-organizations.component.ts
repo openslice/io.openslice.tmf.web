@@ -1,7 +1,9 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router, ActivationEnd } from '@angular/router';
 import { OrganizationService } from 'src/app/openApis/partyManagement/services';
-import { MatDialog, MatTableDataSource, MatSort } from '@angular/material';
+import { MatDialog } from '@angular/material/dialog';
+import { MatSort } from '@angular/material/sort';
+import { MatTableDataSource } from '@angular/material/table';
 import { ToastrService } from 'ngx-toastr';
 import { Organization, Characteristic, Any, OrganizationUpdate, OrganizationCreate } from 'src/app/openApis/partyManagement/models';
 import { FormGroup, FormControl, FormArray } from '@angular/forms';

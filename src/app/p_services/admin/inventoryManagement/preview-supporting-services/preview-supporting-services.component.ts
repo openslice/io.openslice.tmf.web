@@ -1,5 +1,5 @@
 import { Component, OnInit, Inject } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { ServiceRef } from 'src/app/openApis/serviceOrderingManagement/models';
 import { ServiceService } from 'src/app/openApis/serviceInventoryManagement/services';
 import { Service, ServiceUpdate } from 'src/app/openApis/serviceInventoryManagement/models';

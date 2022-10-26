@@ -5,7 +5,7 @@ import { TreeServiceMarketPlaceService } from './services/tree-service-market-pl
 import { Observable, Subscription } from 'rxjs';
 import { FormControl } from '@angular/forms';
 import { startWith, map } from 'rxjs/operators';
-import { MatDialog } from '@angular/material';
+import { MatDialog } from '@angular/material/dialog';
 import { PreviewMarketplaceItemComponent } from './preview-marketplace-item/preview-marketplace-item.component';
 import { SortingService } from 'src/app/shared/functions/sorting.service';
 import { trigger } from '@angular/animations';

@@ -1,5 +1,6 @@
 import { Component, OnInit, Inject } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialogRef, MatTabChangeEvent } from '@angular/material';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { MatTabChangeEvent } from '@angular/material/tabs';
 import { ServiceOrderItem, ServiceOrderUpdate } from 'src/app/openApis/serviceOrderingManagement/models';
 import { ServiceSpecificationService } from 'src/app/openApis/serviceCatalogManagement/services';
 import { forkJoin } from 'rxjs';

@@ -1,7 +1,8 @@
 import { trigger } from '@angular/animations';
 import { Component, OnInit } from '@angular/core';
 import { FormArray, FormControl, FormGroup } from '@angular/forms';
-import { MatOptionSelectionChange, MatSelectChange } from '@angular/material';
+import { MatOptionSelectionChange } from '@angular/material/core';
+import { MatSelectChange } from '@angular/material/select';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { Action, ActionSpecification, RuleSpecification, RuleSpecificationCreate, RuleSpecificationUpdate } from 'src/app/openApis/assuranceServicesManagementAPI/models';

@@ -1,6 +1,6 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { ServiceSpecificationUpdate, ServiceSpecification, Attachment, AttachmentRef } from 'src/app/openApis/serviceCatalogManagement/models';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { ServiceSpecificationService } from 'src/app/openApis/serviceCatalogManagement/services';
 
 @Component({

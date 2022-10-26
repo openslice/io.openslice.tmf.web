@@ -8,7 +8,7 @@ import { Subscription, Observable } from 'rxjs';
 import { startWith, map} from 'rxjs/operators'
 import { trigger } from '@angular/animations';
 import { fadeIn } from 'src/app/shared/animations/animations';
-import { MatDialog } from '@angular/material';
+import { MatDialog } from '@angular/material/dialog';
 import { SortingService } from 'src/app/shared/functions/sorting.service';
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { EditResourceComponent } from '../edit-resource/edit-resource.component';

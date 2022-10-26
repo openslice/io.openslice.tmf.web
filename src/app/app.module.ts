@@ -18,7 +18,7 @@ import {
 import { NgProgressModule } from '@ngx-progressbar/core';
 import { NgProgressHttpModule } from '@ngx-progressbar/http';
 
-import { OwlDateTimeModule, OwlNativeDateTimeModule, OWL_DATE_TIME_LOCALE } from 'ng-pick-datetime';
+import { OwlDateTimeModule, OwlNativeDateTimeModule, OWL_DATE_TIME_LOCALE } from '@danielmoncada/angular-datetime-picker';
 
 import { ToastrModule } from 'ngx-toastr';
 
@@ -29,31 +29,29 @@ import { FileUploadModule } from '@iplab/ngx-file-upload'
 import { MarkdownModule } from 'ngx-markdown'
 
 
-import {
-  MatTableModule,
-  MatSortModule,
-  MatPaginatorModule,
-  MatInputModule,
-  MatSelectModule,
-  MatDatepickerModule,
-  MatNativeDateModule,
-  MatIconModule,
-  MatDialogModule,
-  MatTabsModule,
-  MatCheckboxModule,
-  MatTooltipModule,
-  MatButtonModule,
-  MatAutocompleteModule,
-  MatChipsModule,
-  MatExpansionModule,
-  MatToolbarModule,
-  MatTreeModule,
-  MatProgressBarModule,
-  MatButtonToggleModule,
-  MatRadioModule,
-  MatProgressSpinnerModule,
-  MatListModule
-} from '@angular/material'
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { MatButtonModule } from '@angular/material/button';
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatChipsModule } from '@angular/material/chips';
+import { MatNativeDateModule } from '@angular/material/core';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatExpansionModule } from '@angular/material/expansion';
+import { MatIconModule } from '@angular/material/icon';
+import { MatInputModule } from '@angular/material/input';
+import { MatListModule } from '@angular/material/list';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatRadioModule } from '@angular/material/radio';
+import { MatSelectModule } from '@angular/material/select';
+import { MatSortModule } from '@angular/material/sort';
+import { MatTableModule } from '@angular/material/table';
+import { MatTabsModule } from '@angular/material/tabs';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatTreeModule } from '@angular/material/tree';
 
 import {DragDropModule} from '@angular/cdk/drag-drop';
 

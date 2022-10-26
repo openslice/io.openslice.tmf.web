@@ -2,7 +2,10 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { ServiceOrderService } from 'src/app/openApis/serviceOrderingManagement/services';
 import { ToastrService } from 'ngx-toastr';
 import { ServiceOrder } from 'src/app/openApis/serviceOrderingManagement/models';
-import { MatTableDataSource, MatSort, MatPaginator, MatDialog } from '@angular/material';
+import { MatDialog } from '@angular/material/dialog';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatSort } from '@angular/material/sort';
+import { MatTableDataSource } from '@angular/material/table';
 import { FormGroup, FormControl } from '@angular/forms';
 import { DeleteServiceOrderComponent } from '../delete-service-order/delete-service-order.component';
 import { HttpErrorResponse } from '@angular/common/http';
@@ -83,7 +86,7 @@ export class ListServiceOrdersComponent implements OnInit {
 
 
           if (this.fromDate && this.toDate) {
-            filterExpression = filterExpression && new Date(data.orderDate).getTime() >= this.fromDate.getTime() && new Date(data.orderDate).getTime() <= this.toDate.getTime()
+            filterExpression = filterExpression && new Date(data.orderDate).getTime() >= new Date(this.fromDate).getTime() && new Date(data.orderDate).getTime() <= new Date(this.toDate).getTime()
           }
 
           return filterExpression
@@ -95,7 +98,7 @@ export class ListServiceOrdersComponent implements OnInit {
             const dataString = `${data.relatedParty[0].name} (${data.relatedParty[0].role})`
             let filterExpression = dataString.trim().toLowerCase().includes(filter)
             if (this.fromDate && this.toDate) {
-              filterExpression = new Date(data.orderDate).getTime() >= this.fromDate.getTime() && new Date(data.orderDate).getTime() <= this.toDate.getTime() && dataString.trim().toLowerCase().includes(filter)
+              filterExpression = new Date(data.orderDate).getTime() >= new Date(this.fromDate).getTime() && new Date(data.orderDate).getTime() <= new Date(this.toDate).getTime() && dataString.trim().toLowerCase().includes(filter)
             }
             return filterExpression        
           }
@@ -103,7 +106,7 @@ export class ListServiceOrdersComponent implements OnInit {
           else 
           {
             if (this.fromDate && this.toDate) {
-            return new Date(data.orderDate).getTime() >= this.fromDate.getTime() && new Date(data.orderDate).getTime() <= this.toDate.getTime()
+            return new Date(data.orderDate).getTime() >= new Date(this.fromDate).getTime() && new Date(data.orderDate).getTime() <= new Date(this.toDate).getTime()
             }
           }
           

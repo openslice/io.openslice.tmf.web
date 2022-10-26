@@ -1,7 +1,7 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { trigger } from '@angular/animations';
 import { fadeIn } from 'src/app/shared/animations/animations';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { ResourceService } from 'src/app/openApis/resourceInventoryManagement/services';
 import { ResourceSpecificationService } from 'src/app/openApis/resourceCatalogManagement/services';
 import { ResourceSpecificationRef , Characteristic, ResourceUpdate, Resource} from 'src/app/openApis/resourceInventoryManagement/models';

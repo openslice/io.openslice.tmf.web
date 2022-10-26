@@ -1,7 +1,7 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { trigger } from '@angular/animations';
 import { fadeIn } from 'src/app/shared/animations/animations';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { ServiceService } from 'src/app/openApis/serviceActivationAndConfiguration/services';
 import { ServiceSpecificationService } from 'src/app/openApis/serviceCatalogManagement/services';
 import { ServiceSpecificationRef , Characteristic, ServiceUpdate, Service} from 'src/app/openApis/serviceActivationAndConfiguration/models';

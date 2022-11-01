@@ -49,3 +49,4 @@ src/assets/config/config.prod.default.json
 src/assets/config/config.prod.json
 src/assets/config/config.theming.json
 src/assets/config/config.prod.default.json
+/src/assets/config/theming.scss

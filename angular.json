@@ -17,6 +17,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
+            "allowedCommonJsDependencies": ["jwt-decode"],
             "outputPath": "dist/io-openslice-portal-web",
             "index": "src/index.html",
             "main": "src/main.ts",
@@ -41,7 +42,7 @@
               "node_modules/ngx-toastr/toastr.css"
             ],
             "scripts": [
-              "node_modules/marked/lib/marked.js",
+              "node_modules/marked/marked.min.js",
               "node_modules/blockly/blockly_compressed.js",
               "node_modules/blockly/blocks_compressed.js",
               "node_modules/blockly/msg/js/en.js",

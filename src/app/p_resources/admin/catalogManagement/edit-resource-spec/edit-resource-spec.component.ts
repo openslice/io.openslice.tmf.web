@@ -85,7 +85,7 @@ export class EditResourceSpecsComponent implements OnInit {
   resourceRelatedSpecsFilterCtrl = new FormControl();
   filteredRelatedSpecs$: Observable<ResourceSpecificationRelationshipRes[]>
 
-  attachmentFilesCtrl = new FileUploadControl(FileUploadValidators.accept(['.jpeg', '.jpg', '.png', '.zip', '.pdf', '.yaml', '.json', '.xml', '.txt', '.tar.gz']))
+  attachmentFilesCtrl = new FileUploadControl( null, FileUploadValidators.accept(['.jpeg', '.jpg', '.png', '.zip', '.pdf', '.yaml', '.json', '.xml', '.txt', '.tar.gz']))
 
 
   dataUrlConverting = false

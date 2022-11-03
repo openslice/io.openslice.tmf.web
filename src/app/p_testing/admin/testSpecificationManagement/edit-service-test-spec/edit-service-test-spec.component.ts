@@ -68,7 +68,7 @@ export class EditServiceTestSpecComponent implements OnInit {
 
   testType = new FormControl('preDefined')
 
-  attachmentFilesCtrl = new FileUploadControl(FileUploadValidators.accept(['.yaml']))
+  attachmentFilesCtrl = new FileUploadControl(null, FileUploadValidators.accept(['.yaml']))
   testSpecServiceRootUrl: string
 
   subscriptions = new Subscription()
@@ -162,9 +162,9 @@ export class EditServiceTestSpecComponent implements OnInit {
   subscribeOnTestTypeChanged() {
     this.subscriptions = this.testType.valueChanges.subscribe( _ => {
       if (this.testType.value === "developerDefined") {
-        this.attachmentFilesCtrl = new FileUploadControl(FileUploadValidators.accept(['.yaml', '.py']))
+        this.attachmentFilesCtrl = new FileUploadControl(null, FileUploadValidators.accept(['.yaml', '.py']))
       } else {
-        this.attachmentFilesCtrl = new FileUploadControl(FileUploadValidators.accept(['.yaml']))
+        this.attachmentFilesCtrl = new FileUploadControl(null, FileUploadValidators.accept(['.yaml']))
       }
     })
   }

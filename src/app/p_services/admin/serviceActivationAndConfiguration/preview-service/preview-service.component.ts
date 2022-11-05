@@ -190,4 +190,8 @@ export class PreviewServiceComponent implements OnInit {
     }
     return cssClass
   }
+
+  ngOnDestroy() {
+    this.subscriptions.unsubscribe()
+  }
 }

@@ -75,18 +75,18 @@
                           </div>
                           <div class="col-lg-4" *ngIf="newResource&&editMode">
                             <mat-form-field *ngIf="newResource&&editMode">
-                              <mat-label>Name</mat-label>
+                              <mat-label>Name (Mandatory)</mat-label>
                               <input matInput formControlName="resourceName">
                             </mat-form-field>
                           </div>
 
                           <div class="col-lg-4" *ngIf="!newResource||!editMode">
                             <h6>Category</h6>
-                            <p>{{ resource?.category }}</p>
+                            <p>{{ resource?.category }} ({{resource['@type']}})</p>
                           </div>
                           <div class="col-lg-4" *ngIf="newResource&&editMode">
                             <mat-form-field *ngIf="editMode">
-                              <mat-label>Category</mat-label>
+                              <mat-label>Category (Mandatory)</mat-label>
                               <mat-select formControlName="resourceCategory">
                                 <mat-option
                                   *ngFor="
@@ -101,12 +101,12 @@
                           </div>
 
 
-                          <div class="col-lg-4" *ngIf="!newResource||!editMode">
+                          <div class="col-lg-4" *ngIf="!editMode">
                             <h6>Description</h6>
                             <p>{{ resource?.description }}</p>
                           </div>
-                          <div class="col-lg-4" *ngIf="newResource&&editMode">
-                            <mat-form-field *ngIf="newResource&&editMode">
+                          <div class="col-lg-4" *ngIf="editMode">
+                            <mat-form-field *ngIf="editMode">
                               <mat-label>Description</mat-label>
                               <input matInput formControlName="resourceDescription">
                             </mat-form-field>

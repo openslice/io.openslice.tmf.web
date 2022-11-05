@@ -13,7 +13,7 @@ import { PushCreate } from '../models/push-create';
   providedIn: 'root',
 })
 class PushService extends __BaseService {
-  static readonly createPushPath = '/tmf-api/resourcePoolManagement/v1/push';
+  static readonly createPushPath = '/resourcePoolManagement/v1/push';
 
   constructor(
     config: __Configuration,
@@ -36,7 +36,7 @@ class PushService extends __BaseService {
     __body = body;
     let req = new HttpRequest<any>(
       'POST',
-      this.rootUrl + `/tmf-api/resourcePoolManagement/v1/push`,
+      this.rootUrl + `/resourcePoolManagement/v1/push`,
       __body,
       {
         headers: __headers,

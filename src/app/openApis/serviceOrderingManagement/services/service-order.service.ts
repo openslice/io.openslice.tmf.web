@@ -46,6 +46,8 @@ class ServiceOrderService extends __BaseService {
     if (params.offset != null) __params = __params.set('offset', params.offset.toString());
     if (params.limit != null) __params = __params.set('limit', params.limit.toString());
     if (params.fields != null) __params = __params.set('fields', params.fields.toString());
+    if (params.starttime != null) __params = __params.set('starttime', params.starttime.toString());
+    if (params.endtime != null) __params = __params.set('endtime', params.endtime.toString());
     let req = new HttpRequest<any>(
       'GET',
       this.rootUrl + `/serviceOrdering/v4/serviceOrder`,
@@ -275,6 +277,18 @@ module ServiceOrderService {
      * Comma-separated properties to be provided in response
      */
     fields?: string;
+
+    
+    /**
+     * Requested starttime for start of resources to be provided in response
+     */
+     starttime?: string;
+
+     
+    /**
+     * Requested endtime for end of resources to be provided in response
+     */
+     endtime?: string;
   }
 
   /**

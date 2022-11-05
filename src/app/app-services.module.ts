@@ -1,3 +1,4 @@
+
 import { NgModule, NO_ERRORS_SCHEMA } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
@@ -64,6 +65,23 @@ import { ListTestsComponent } from './p_services/admin/testSpecificationImport/l
 import { ImportTestDialogComponent } from './p_services/admin/testSpecificationImport/import-test-dialog/import-test-dialog.component';
 import { ImportLcmruleComponent } from './p_services/admin/catalogManagement/edit-service-specs/import-lcmrule/import-lcmrule.component';
 
+import { FullCalendarModule } from '@fullcalendar/angular';
+import dayGridPlugin from '@fullcalendar/daygrid';
+import timeGridPlugin from '@fullcalendar/timegrid';
+import listPlugin from '@fullcalendar/list';
+import interactionPlugin from '@fullcalendar/interaction';
+import resourceTimelinePlugin  from '@fullcalendar/resource-timeline';
+
+import { ServiceOrdersCalendarComponent } from './p_services/admin/orderManagement/service-order-calendar/service-order-calendar.component';
+
+FullCalendarModule.registerPlugins([ // register FullCalendar plugins
+    dayGridPlugin,
+    timeGridPlugin,
+    listPlugin,
+    interactionPlugin,
+    resourceTimelinePlugin
+    
+]);
 
 @NgModule({
   declarations: [
@@ -115,6 +133,7 @@ import { ImportLcmruleComponent } from './p_services/admin/catalogManagement/edi
     ListTestsComponent,
     ImportTestDialogComponent,
     ImportLcmruleComponent,
+    ServiceOrdersCalendarComponent
     // ListOrganizationsComponent,
     // EditOrganizationsComponent,
     // EditPartyCharacteristicsComponent,
@@ -128,6 +147,7 @@ import { ImportLcmruleComponent } from './p_services/admin/catalogManagement/edi
     CommonModule,
     SharedModule,
     AppServicesRoutingModule,
+    FullCalendarModule
   ],
   entryComponents: [
     EditServiceCatalogsComponent,
@@ -156,7 +176,7 @@ import { ImportLcmruleComponent } from './p_services/admin/catalogManagement/edi
     EditActionSpecsComponent,
     DeleteLcmruleComponent,
     ImportTestDialogComponent,
-    ImportLcmruleComponent,
+    ImportLcmruleComponent
     // EditPartyCharacteristicsComponent,
     // DeletePartyCharacteristicComponent,
     // DeleteOrganizationComponent,

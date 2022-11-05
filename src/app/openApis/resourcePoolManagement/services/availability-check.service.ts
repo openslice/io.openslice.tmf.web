@@ -13,7 +13,7 @@ import { AvailabilityCheckCreate } from '../models/availability-check-create';
   providedIn: 'root',
 })
 class AvailabilityCheckService extends __BaseService {
-  static readonly createAvailabilityCheckPath = '/tmf-api/resourcePoolManagement/v1/availabilityCheck';
+  static readonly createAvailabilityCheckPath = '/resourcePoolManagement/v1/availabilityCheck';
 
   constructor(
     config: __Configuration,
@@ -36,7 +36,7 @@ class AvailabilityCheckService extends __BaseService {
     __body = body;
     let req = new HttpRequest<any>(
       'POST',
-      this.rootUrl + `/tmf-api/resourcePoolManagement/v1/availabilityCheck`,
+      this.rootUrl + `/resourcePoolManagement/v1/availabilityCheck`,
       __body,
       {
         headers: __headers,

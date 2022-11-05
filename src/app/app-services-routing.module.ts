@@ -29,7 +29,7 @@ import { ListActionRulesComponent } from './p_services/admin/assuranceServicesMa
 import { EditActionRulesComponent } from './p_services/admin/assuranceServicesManagement/edit-action-rules/edit-action-rules.component';
 import { ServiceRuleDesignComponent } from './p_services/admin/lifeCycleManagement/service-rule-design/service-rule-design.component';
 import { ListTestsComponent } from './p_services/admin/testSpecificationImport/list-tests.component';
-
+import { ServiceOrdersCalendarComponent } from './p_services/admin/orderManagement/service-order-calendar/service-order-calendar.component';
 
 const routes: Routes = [
 
@@ -51,6 +51,9 @@ const routes: Routes = [
 
       { path: 'service_order_checkout', component: ServiceOrderCheckoutComponent },
       { path: 'my_service_orders', component: ListServiceOrdersComponent },
+
+      
+      { path: 'service_orders_calendar', component: ServiceOrdersCalendarComponent },
 
       { path: 'organizations', component: ListOrganizationsComponent },
       { path: 'organization_update/:id', component: EditOrganizationsComponent },
@@ -77,7 +80,8 @@ const routes: Routes = [
 
 
       { path: 'service_rule_design/:id', component: ServiceRuleDesignComponent },
-      { path: 'service_rule_design', component: ServiceRuleDesignComponent }
+      { path: 'service_rule_design', component: ServiceRuleDesignComponent },
+      
     ]
   }
 

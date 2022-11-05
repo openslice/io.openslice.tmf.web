@@ -15,11 +15,11 @@ import { ResourcePoolUpdate } from '../models/resource-pool-update';
   providedIn: 'root',
 })
 class ResourcePoolService extends __BaseService {
-  static readonly listResourcePoolPath = '/tmf-api/resourcePoolManagement/v1/resourcePool';
-  static readonly createResourcePoolPath = '/tmf-api/resourcePoolManagement/v1/resourcePool';
-  static readonly retrieveResourcePoolPath = '/tmf-api/resourcePoolManagement/v1/resourcePool/{id}';
-  static readonly deleteResourcePoolPath = '/tmf-api/resourcePoolManagement/v1/resourcePool/{id}';
-  static readonly patchResourcePoolPath = '/tmf-api/resourcePoolManagement/v1/resourcePool/{id}';
+  static readonly listResourcePoolPath = '/resourcePoolManagement/v1/resourcePool';
+  static readonly createResourcePoolPath = '/resourcePoolManagement/v1/resourcePool';
+  static readonly retrieveResourcePoolPath = '/resourcePoolManagement/v1/resourcePool/{id}';
+  static readonly deleteResourcePoolPath = '/resourcePoolManagement/v1/resourcePool/{id}';
+  static readonly patchResourcePoolPath = '/resourcePoolManagement/v1/resourcePool/{id}';
 
   constructor(
     config: __Configuration,
@@ -54,7 +54,7 @@ class ResourcePoolService extends __BaseService {
     if (params.fields != null) __params = __params.set('fields', params.fields.toString());
     let req = new HttpRequest<any>(
       'GET',
-      this.rootUrl + `/tmf-api/resourcePoolManagement/v1/resourcePool`,
+      this.rootUrl + `/resourcePoolManagement/v1/resourcePool`,
       __body,
       {
         headers: __headers,
@@ -109,7 +109,7 @@ class ResourcePoolService extends __BaseService {
     if (params.name != null) __params = __params.set('name', params.name.toString());
     let req = new HttpRequest<any>(
       'POST',
-      this.rootUrl + `/tmf-api/resourcePoolManagement/v1/resourcePool`,
+      this.rootUrl + `/resourcePoolManagement/v1/resourcePool`,
       __body,
       {
         headers: __headers,
@@ -163,7 +163,7 @@ class ResourcePoolService extends __BaseService {
     if (params.fields != null) __params = __params.set('fields', params.fields.toString());
     let req = new HttpRequest<any>(
       'GET',
-      this.rootUrl + `/tmf-api/resourcePoolManagement/v1/resourcePool/${encodeURIComponent(params.id)}`,
+      this.rootUrl + `/resourcePoolManagement/v1/resourcePool/${encodeURIComponent(params.id)}`,
       __body,
       {
         headers: __headers,
@@ -216,7 +216,7 @@ class ResourcePoolService extends __BaseService {
     if (params.name != null) __params = __params.set('name', params.name.toString());
     let req = new HttpRequest<any>(
       'DELETE',
-      this.rootUrl + `/tmf-api/resourcePoolManagement/v1/resourcePool/${encodeURIComponent(params.id)}`,
+      this.rootUrl + `/resourcePoolManagement/v1/resourcePool/${encodeURIComponent(params.id)}`,
       __body,
       {
         headers: __headers,
@@ -268,7 +268,7 @@ class ResourcePoolService extends __BaseService {
     if (params.name != null) __params = __params.set('name', params.name.toString());
     let req = new HttpRequest<any>(
       'PATCH',
-      this.rootUrl + `/tmf-api/resourcePoolManagement/v1/resourcePool/${encodeURIComponent(params.id)}`,
+      this.rootUrl + `/resourcePoolManagement/v1/resourcePool/${encodeURIComponent(params.id)}`,
       __body,
       {
         headers: __headers,

@@ -1,0 +1,116 @@
+<div class="container-fluid py-5" *ngIf="specNotFound" [@fadeIn]>
+    <div class="row align-items-center justify-content-center minh-30vh">
+        <div class="col-12 text-center">
+            <h4>Resource Pool with id #{{resourcePoolID}} is not found</h4>
+        </div>
+    </div>
+</div>
+
+
+
+
+<div class="container-fluid py-5" *ngIf="!specNotFound ">
+    <div class="row">
+        <div class="col-12">
+            <div class="card card-paper mb-0">
+                <div class="card-header">
+                    <div class="container-fluid">
+                        <div class="row justify-content-between align-items-center">
+                            <div>
+                                <h2 class="shadowed">Resource Pool Designer</h2>
+
+                                <p class="shadowed mb-0" *ngIf="newResourcePool">Design a new Resource Pool</p>
+
+                                <p class="shadowed mb-0" *ngIf="!newResourcePool">Edit 
+                                    <dfn><b>{{resourcePool?.name}}</b></dfn> Resource Pool
+                                </p>
+                                
+
+                                <div class="card-stats" *ngIf="!newResourcePool">
+                                    <i class="fas fa-sync spin mr-2"></i>Last updated at
+                                    {{resourcePool?.lastUpdate | date:'short'}} (Local Time)
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+
+
+                <div class="card-body">
+                    <div class="row">
+
+                        <div class="col-xl-10 col-lg-9">
+
+                            <form [formGroup]="editForm">
+
+                                <mat-dialog-content>
+                                    <div class="row">
+                                        <mat-form-field appearance="" class="col-md-6">
+                                            <mat-label>Name</mat-label>
+                                            <input matInput formControlName="name">
+                                        </mat-form-field>
+                        
+                                        
+                                        <mat-form-field appearance="" class="col-md-12">
+                                            <mat-label>Description</mat-label>
+                                            <textarea matTextareaAutosize="true" matAutosizeMinRows="2" matInput formControlName="description"></textarea>
+                                        </mat-form-field>                        
+                                    
+                                    </div>
+
+                                    <div class="col-xl-8 col-lg-7 filter-container row align-items-center justify-content-center">
+                                        
+                                            
+                        
+                                            <div *ngIf="!this.newResourcePool" class="col-sm-10 children-categories-font">
+                                                Assigned resources in pool:
+                                                <div *ngFor="let resourceRef of filteredResourceRefs$ | async"
+                                                    class="spec-relationship-container pt-3">
+                                                    <div><b>{{resourceRef.name}}</b></div>
+                                                    
+                                                </div>
+                                            </div>
+
+                                            <div *ngIf="this.newResourcePool || resourcePool?.capacity?.resources.length === 0 "
+                                                class="col-sm-8 children-categories-font">
+                                                There are not any resources assigned yet.
+                                            </div>
+
+                                            
+                        
+                                            <div class="text-right col-sm-2 ">
+                                                <button type="button" class="btn btn-success btn-sm"
+                                                    (click)="openAssignResourceRelationshipDialog()"><i
+                                                        class="fas fa-cart-arrow-down mr-2"></i>Assign</button>
+                                            </div>
+                                        
+                                        </div>
+                        
+                        
+                        
+                                </mat-dialog-content>
+                        
+                                <div class="container-fluid">
+                                    <div class="row justify-content-end">
+                                        <button type="submit" class="btn btn-success m-2" (click)="submitDialog()">Submit</button>
+                                    </div>
+                                </div>
+                            </form>
+
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+
+
+
+
+    
+
+</div>

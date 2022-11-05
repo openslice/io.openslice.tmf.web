@@ -14,8 +14,8 @@ import { Error } from '../models/error';
   providedIn: 'root',
 })
 class EventsSubscriptionService extends __BaseService {
-  static readonly registerListener15Path = '/tmf-api/resourcePoolManagement/v1/hub';
-  static readonly unregisterListener15Path = '/tmf-api/resourcePoolManagement/v1/hub/{id}';
+  static readonly registerListener15Path = '/resourcePoolManagement/v1/hub';
+  static readonly unregisterListener15Path = '/resourcePoolManagement/v1/hub/{id}';
 
   constructor(
     config: __Configuration,
@@ -38,7 +38,7 @@ class EventsSubscriptionService extends __BaseService {
     __body = body;
     let req = new HttpRequest<any>(
       'POST',
-      this.rootUrl + `/tmf-api/resourcePoolManagement/v1/hub`,
+      this.rootUrl + `/resourcePoolManagement/v1/hub`,
       __body,
       {
         headers: __headers,
@@ -80,7 +80,7 @@ class EventsSubscriptionService extends __BaseService {
 
     let req = new HttpRequest<any>(
       'DELETE',
-      this.rootUrl + `/tmf-api/resourcePoolManagement/v1/hub/${encodeURIComponent(id)}`,
+      this.rootUrl + `/resourcePoolManagement/v1/hub/${encodeURIComponent(id)}`,
       __body,
       {
         headers: __headers,

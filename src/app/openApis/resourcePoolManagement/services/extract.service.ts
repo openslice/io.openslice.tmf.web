@@ -13,7 +13,7 @@ import { ExtractCreate } from '../models/extract-create';
   providedIn: 'root',
 })
 class ExtractService extends __BaseService {
-  static readonly createExtractPath = '/tmf-api/resourcePoolManagement/v1/extract';
+  static readonly createExtractPath = '/resourcePoolManagement/v1/extract';
 
   constructor(
     config: __Configuration,
@@ -36,7 +36,7 @@ class ExtractService extends __BaseService {
     __body = body;
     let req = new HttpRequest<any>(
       'POST',
-      this.rootUrl + `/tmf-api/resourcePoolManagement/v1/extract`,
+      this.rootUrl + `/resourcePoolManagement/v1/extract`,
       __body,
       {
         headers: __headers,

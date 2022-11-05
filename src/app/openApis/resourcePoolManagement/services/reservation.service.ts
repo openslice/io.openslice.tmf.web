@@ -14,10 +14,11 @@ import { ReservationUpdate } from '../models/reservation-update';
   providedIn: 'root',
 })
 class ReservationService extends __BaseService {
-  static readonly listReservationPath = '/tmf-api/resourcePoolManagement/v1/reservation';
-  static readonly createReservationPath = '/tmf-api/resourcePoolManagement/v1/reservation';
-  static readonly retrieveReservationPath = '/tmf-api/resourcePoolManagement/v1/reservation/{id}';
-  static readonly patchReservationPath = '/tmf-api/resourcePoolManagement/v1/reservation/{id}';
+  static readonly listReservationPath = 'resourcePoolManagement/v1/reservation';
+  static readonly createReservationPath = '/resourcePoolManagement/v1/reservation';
+  static readonly retrieveReservationPath = '/resourcePoolManagement/v1/reservation/{id}';
+  static readonly patchReservationPath = '/resourcePoolManagement/v1/reservation/{id}';
+  static readonly deleteReservationPoolPath = '/resourcePoolManagement/v1/reservation/{id}';
 
   constructor(
     config: __Configuration,
@@ -50,7 +51,7 @@ class ReservationService extends __BaseService {
     if (params.fields != null) __params = __params.set('fields', params.fields.toString());
     let req = new HttpRequest<any>(
       'GET',
-      this.rootUrl + `/tmf-api/resourcePoolManagement/v1/reservation`,
+      this.rootUrl + `/resourcePoolManagement/v1/reservation`,
       __body,
       {
         headers: __headers,
@@ -103,7 +104,7 @@ class ReservationService extends __BaseService {
     if (params.name != null) __params = __params.set('name', params.name.toString());
     let req = new HttpRequest<any>(
       'POST',
-      this.rootUrl + `/tmf-api/resourcePoolManagement/v1/reservation`,
+      this.rootUrl + `/resourcePoolManagement/v1/reservation`,
       __body,
       {
         headers: __headers,
@@ -152,7 +153,7 @@ class ReservationService extends __BaseService {
     if (params.name != null) __params = __params.set('name', params.name.toString());
     let req = new HttpRequest<any>(
       'GET',
-      this.rootUrl + `/tmf-api/resourcePoolManagement/v1/reservation/${encodeURIComponent(params.id)}`,
+      this.rootUrl + `/resourcePoolManagement/v1/reservation/${encodeURIComponent(params.id)}`,
       __body,
       {
         headers: __headers,
@@ -177,9 +178,9 @@ class ReservationService extends __BaseService {
    *
    * @return Ok
    */
-  retrieveReservation(params: ReservationService.RetrieveReservationParams): __Observable<Array<Reservation>> {
+  retrieveReservation(params: ReservationService.RetrieveReservationParams): __Observable< Reservation> {
     return this.retrieveReservationResponse(params).pipe(
-      __map(_r => _r.body as Array<Reservation>)
+      __map(_r => _r.body as Reservation)
     );
   }
 
@@ -204,7 +205,7 @@ class ReservationService extends __BaseService {
     if (params.name != null) __params = __params.set('name', params.name.toString());
     let req = new HttpRequest<any>(
       'PATCH',
-      this.rootUrl + `/tmf-api/resourcePoolManagement/v1/reservation/${encodeURIComponent(params.id)}`,
+      this.rootUrl + `/resourcePoolManagement/v1/reservation/${encodeURIComponent(params.id)}`,
       __body,
       {
         headers: __headers,
@@ -236,6 +237,57 @@ class ReservationService extends __BaseService {
       __map(_r => _r.body as Reservation)
     );
   }
+
+
+
+   /**
+   * Deletes a 'Reservation' by Id
+   * @param params The `ReservationService.DeleteReservationParams` containing the following parameters:
+   *
+   * - `id`: Identifier of the Resource Pool
+   *
+   * - `name`:
+   *
+   * @return Deleted
+   */
+    deleteReservationResponse(params: ReservationService.DeleteReservationParams): __Observable<__StrictHttpResponse<Error>> {
+      let __params = this.newParams();
+      let __headers = new HttpHeaders();
+      let __body: any = null;
+  
+      if (params.name != null) __params = __params.set('name', params.name.toString());
+      let req = new HttpRequest<any>(
+        'DELETE',
+        this.rootUrl + `/resourcePoolManagement/v1/reservation/${encodeURIComponent(params.id)}`,
+        __body,
+        {
+          headers: __headers,
+          params: __params,
+          responseType: 'json'
+        });
+  
+      return this.http.request<any>(req).pipe(
+        __filter(_r => _r instanceof HttpResponse),
+        __map((_r) => {
+          return _r as __StrictHttpResponse<Error>;
+        })
+      );
+    }
+    /**
+     * Deletes a 'Reservation' by Id
+     * @param params The `ReservationService.DeleteReservationParams` containing the following parameters:
+     *
+     * - `id`: Identifier of the Resource Pool
+     *
+     * - `name`:
+     *
+     * @return Deleted
+     */
+    deleteReservation(params: ReservationService.DeleteReservationParams): __Observable<Error> {
+      return this.deleteReservationResponse(params).pipe(
+        __map(_r => _r.body as Error)
+      );
+    }
 }
 
 module ReservationService {
@@ -285,6 +337,18 @@ module ReservationService {
     id: string;
     name?: string;
   }
+
+    /**
+   * Parameters for deleteReservation
+   */
+     export interface DeleteReservationParams {
+
+      /**
+       * Identifier of the Reservation
+       */
+      id: string;
+      name?: string;
+    }
 
   /**
    * Parameters for patchReservation

@@ -26,6 +26,7 @@ export interface ReservationUpdate {
   /**
    * A string. free-text description of the reservation.
    */
+  name?: string;
   description?: string;
   relatedParty?: RelatedParty;
   requestedPeriodEndDateTime?: string;

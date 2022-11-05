@@ -1,15 +1,15 @@
 <div class="container-fluid py-5">
         <div class="row">
-            <div class="col-12">
+
+            <div class="col-6">
                 <div class="jumbotron jumbotron-small jumbotron-list-container bg-light mat-elevation-z5 mb-0">
                     <div class="jumbotron-heading">
                         <div>
                             <h2 class="shadowed">Service Orders</h2>
                             <p class="shadowed">View and manage service orders</p>
                         </div>
-                        <!-- <button type="button" class="btn btn-success btn-lg" (click)="openCatalogUpdateDialog(null)">
-                                <i class="fas fa-clipboard-list mr-2"></i>Create New Catalog
-                            </button> -->
+
+                        
                     </div>
     
                     <div class="filter-container pt-3 px-3 row" [formGroup]="filterForm">
@@ -70,7 +70,7 @@
                                 <td mat-cell *matCellDef="let element"> {{element.state}}
                                 </td>
                             </ng-container>
-                    
+                            <!--
                             <ng-container matColumnDef="requested_startdate">
                                 <th mat-header-cell *matHeaderCellDef mat-sort-header> Requested Start Date (Local Time) </th>
                                 <td mat-cell *matCellDef="let element"> {{element.requestedStartDate | date:'d MMM y, h:mm a'}} </td>
@@ -80,7 +80,7 @@
                                 <th mat-header-cell *matHeaderCellDef mat-sort-header> Requested Completion Date (Local Time)</th>
                                 <td mat-cell *matCellDef="let element"> {{element.requestedCompletionDate | date:'d MMM y, h:mm a'}} </td>
                             </ng-container>
-                    
+                            -->
                             <ng-container matColumnDef="actions">
                                 <th mat-header-cell *matHeaderCellDef>Actions</th>
                                 <td mat-cell *matCellDef="let element">
@@ -100,7 +100,25 @@
     
                 </div>
             </div>
+
+            <div class="col-6">
+                <div class="jumbotron jumbotron-small jumbotron-list-container bg-light mat-elevation-z5 mb-0">
+                    <div class="jumbotron-heading align-items-center justify-content-between row">
+                        <div class="col-md-12">
+                            <h2 class="shadowed">Service Orders Calendar</h2>
+                            <p class="shadowed">View Service Orders</p>
+                        </div>
+                        
+                    </div>
+    
+                        <full-calendar [options]='calendarOptions'></full-calendar>
+    
+                </div>
+            </div>
+            
         </div>
+
+        
     </div>
     
     

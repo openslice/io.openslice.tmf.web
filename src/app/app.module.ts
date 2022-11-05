@@ -87,6 +87,7 @@ import { SharedModule } from './shared.module';
 import { RedirectComponent } from './shared/components/redirect/redirect.component';
 
 
+
 registerLocaleData(enGB);
 export function initializeApp(bootstrap: BootstrapService) {
   return () => bootstrap.loadConfig()

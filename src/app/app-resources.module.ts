@@ -1,5 +1,7 @@
+import { AssignPoolResourceRelationshipsComponent } from './p_resources/admin/resourcePoolManagement/assign-resources/assign-pool-resources.component';
 import { NgModule, NO_ERRORS_SCHEMA } from '@angular/core';
 import { CommonModule } from '@angular/common';
+
 import { ListResourceCatalogsComponent } from './p_resources/admin/catalogManagement/list-resource-catalogs/list-resource-catalogs.component';
 
 import { AppResourcesRoutingModule } from './app-resources-routing.module';
@@ -27,6 +29,32 @@ import { EditResourceComponent } from './p_resources/admin/inventoryManagement/e
 import { EditResourceRelationshipsComponent } from './p_resources/admin/inventoryManagement/edit-resource/edit-resource-relationships/edit-resource-relationships.component';
 import { AssignResourceRelationshipsComponent } from './p_resources/admin/inventoryManagement/edit-resource/assign-resource-relationships/assign-resource-relationships.component';
 
+
+import { ResourcePoolManagementComponent } from './p_resources/admin/resourcePoolManagement/resource-pool-management/resource-pool-management.component';
+import { EditResourcePoolComponent } from './p_resources/admin/resourcePoolManagement/edit-resource-pool/edit-resource-pool.component';
+import { DeleteResourcePoolComponent } from './p_resources/admin/resourcePoolManagement/delete-resource-pool/delete-resource-pool.component';
+import { ResourceReservationManagementComponent } from './p_resources/admin/resourcePoolManagement/resource-reservation-management/resource-reservation-management.component';
+import { EditResourceReservationComponent } from './p_resources/admin/resourcePoolManagement/edit-resource-reservation/edit-resource-reservation.component';
+
+import { FullCalendarModule } from '@fullcalendar/angular';
+import dayGridPlugin from '@fullcalendar/daygrid';
+import timeGridPlugin from '@fullcalendar/timegrid';
+import listPlugin from '@fullcalendar/list';
+import interactionPlugin from '@fullcalendar/interaction';
+import resourceTimelinePlugin  from '@fullcalendar/resource-timeline';
+
+
+import { ResourceReservationCalendarComponent } from './p_resources/admin/resourcePoolManagement/resource-reservation-calendar/resource-reservation-calendar.component';
+
+
+FullCalendarModule.registerPlugins([ // register FullCalendar plugins
+    dayGridPlugin,
+    timeGridPlugin,
+    listPlugin,
+    interactionPlugin,
+    resourceTimelinePlugin
+]);
+
 @NgModule({
   declarations: [
     ListResourceCatalogsComponent,
@@ -51,12 +79,20 @@ import { AssignResourceRelationshipsComponent } from './p_resources/admin/invent
     PreviewResourceComponent,
     EditResourceComponent,
     EditResourceRelationshipsComponent,
-    AssignResourceRelationshipsComponent
+    AssignResourceRelationshipsComponent,
+    ResourcePoolManagementComponent,
+    EditResourcePoolComponent,
+    DeleteResourcePoolComponent,
+    ResourceReservationManagementComponent,
+    EditResourceReservationComponent,
+    ResourceReservationCalendarComponent,
+    AssignPoolResourceRelationshipsComponent
   ],
   imports: [
     CommonModule,
     SharedModule,
-    AppResourcesRoutingModule
+    AppResourcesRoutingModule,
+    FullCalendarModule
   ],
   entryComponents: [
     EditResourceCatalogsComponent,
@@ -73,7 +109,11 @@ import { AssignResourceRelationshipsComponent } from './p_resources/admin/invent
     DeleteResourceCatalogsComponent,
     DeleteResourceSpecComponent,
     AssignResourceSpecRelationshipsComponent,
-    EditResourceComponent
+    EditResourceComponent,
+    EditResourcePoolComponent,
+    DeleteResourcePoolComponent,
+    EditResourceReservationComponent,
+    AssignPoolResourceRelationshipsComponent
   ],
     exports: [
 

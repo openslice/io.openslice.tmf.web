@@ -49,7 +49,7 @@ export interface ResourceRefOrValueRes {
   /**
    * The URI for the object itself.
    */
-  href: string;
+  href?: string;
 
   /**
    * Identifier of an instance of the resource. Required to be unique within the resource type.  Used in URIs as the identifier for specific instances of a type.

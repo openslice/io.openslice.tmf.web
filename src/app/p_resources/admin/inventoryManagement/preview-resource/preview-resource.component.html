@@ -17,9 +17,7 @@
                 <h2 class="shadowed" *ngIf="!newResource">Resource Overview And Management</h2>
                 <p class="shadowed mb-0" *ngIf="!newResource">
                   Overview and Manage
-                  <dfn
-                    ><b>{{ resource?.name }}</b></dfn
-                  >
+                  <dfn><b>{{ resource?.name }}</b></dfn>
                   resource
                 </p>
                 <p *ngIf="!newResource && resource">
@@ -38,33 +36,17 @@
         <div class="card-body">
           <div class="row">
             <div class="col-xl-2 col-lg-3">
-              <div
-                class="nav flex-column nav-pills mb-3 mb-lg-0"
-                role="tablist"
-                aria-orientation="vertical"
-              >
-                <a
-                  class="nav-link"
-                  [class.active]="item === activeListItem"
-                  [class.mat-elevation-z2]="item === activeListItem"
-                  [class.disabled]="newResource"
-                  (click)="selectListitem(item)"
-                  *ngFor="let item of listItems"
-                  role="tab"
-                  aria-selected="true"
-                  >{{ item }}</a
-                >
+              <div class="nav flex-column nav-pills mb-3 mb-lg-0" role="tablist" aria-orientation="vertical">
+                <a class="nav-link" [class.active]="item === activeListItem"
+                  [class.mat-elevation-z2]="item === activeListItem" [class.disabled]="newResource"
+                  (click)="selectListitem(item)" *ngFor="let item of listItems" role="tab" aria-selected="true">{{ item
+                  }}</a>
               </div>
             </div>
 
             <div class="col-xl-10 col-lg-9">
               <div class="tab-content">
-                <div
-                  class="tab-pane active"
-                  *ngIf="activeListItem === 'Main Properties'"
-                  role="tabpanel"
-                  [@fadeIn]
-                >
+                <div class="tab-pane active" *ngIf="activeListItem === 'Main Properties'" role="tabpanel" [@fadeIn]>
                   <form [formGroup]="editForm">
                     <div class="card mat-elevation-z1 bg-light">
                       <div class="card-body">
@@ -82,18 +64,17 @@
 
                           <div class="col-lg-4" *ngIf="!newResource||!editMode">
                             <h6>Category</h6>
-                            <p>{{ resource?.category }} ({{resource['@type']}})</p>
+                            <p>{{ resource?.category }}
+                               <!-- ({({resource['@type']}}) -->
+                              </p>
                           </div>
                           <div class="col-lg-4" *ngIf="newResource&&editMode">
                             <mat-form-field *ngIf="editMode">
                               <mat-label>Category (Mandatory)</mat-label>
                               <mat-select formControlName="resourceCategory">
-                                <mat-option
-                                  *ngFor="
+                                <mat-option *ngFor="
                                     let categoryName of availableCategories
-                                  "
-                                  [value]="categoryName"
-                                >
+                                  " [value]="categoryName">
                                   {{ categoryName }}
                                 </mat-option>
                               </mat-select>
@@ -119,14 +100,11 @@
                           <div class="col-lg-4" *ngIf="!newResource||!editMode">
                             <h6>Resource Specification</h6>
                             <p>
-                              <a
-                                routerLink="/{{
+                              <a routerLink="/{{
                                   appService.portalDomain
                                 }}/resource_spec_update/{{
                                   resource?.resourceSpecification.id
-                                }}"
-                                >{{ resource?.resourceSpecification.name }}</a
-                              >
+                                }}">{{ resource?.resourceSpecification.name }}</a>
                             </p>
                           </div>
                           <div class="col-lg-4" *ngIf="!newResource||!editMode">
@@ -143,12 +121,9 @@
                             <mat-form-field *ngIf="editMode">
                               <mat-label>Operational State</mat-label>
                               <mat-select formControlName="operationalState">
-                                <mat-option
-                                  *ngFor="
+                                <mat-option *ngFor="
                                     let operationalState of availableOperationalStates
-                                  "
-                                  [value]="operationalState"
-                                >
+                                  " [value]="operationalState">
                                   {{ operationalState }}
                                 </mat-option>
                               </mat-select>
@@ -162,12 +137,9 @@
                             <mat-form-field *ngIf="editMode">
                               <mat-label>Administrative State</mat-label>
                               <mat-select formControlName="administrativeState">
-                                <mat-option
-                                  *ngFor="
+                                <mat-option *ngFor="
                                     let administrativeState of availableAdministrativeStates
-                                  "
-                                  [value]="administrativeState"
-                                >
+                                  " [value]="administrativeState">
                                   {{ administrativeState }}
                                 </mat-option>
                               </mat-select>
@@ -181,12 +153,9 @@
                             <mat-form-field *ngIf="editMode">
                               <mat-label>Usage State</mat-label>
                               <mat-select formControlName="usageState">
-                                <mat-option
-                                  *ngFor="
+                                <mat-option *ngFor="
                                     let usageState of availableUsageStates
-                                  "
-                                  [value]="usageState"
-                                >
+                                  " [value]="usageState">
                                   {{ usageState }}
                                 </mat-option>
                               </mat-select>
@@ -197,48 +166,34 @@
                           <div class="col-lg-4">
                             <ng-container *ngIf="!editMode">
                               <h6>Starting Date</h6>
-                              <p
-                                [class.mb-0]="resource?.startOperatingDate"
-                                *ngIf="resource?.startOperatingDate"
-                              >
+                              <p [class.mb-0]="resource?.startOperatingDate" *ngIf="resource?.startOperatingDate">
                                 {{
-                                  resource?.startOperatingDate
-                                    | date: "d MMM y, h:mm a"
+                                resource?.startOperatingDate
+                                | date: "d MMM y, h:mm a"
                                 }}
                                 - Local Time
                               </p>
                               <p *ngIf="resource?.startOperatingDate">
                                 {{
-                                  resource?.startOperatingDate
-                                    | date: "d MMM y, h:mm a":"UTC"
+                                resource?.startOperatingDate
+                                | date: "d MMM y, h:mm a":"UTC"
                                 }}
                                 - UTC
                               </p>
                             </ng-container>
 
-                            <mat-form-field
-                              *ngIf="editMode"
-                              [owlDateTimeTrigger]="pickerFrom"
-                              class="mb-2"
-                            >
+                            <mat-form-field *ngIf="editMode" [owlDateTimeTrigger]="pickerFrom" class="mb-2">
                               <mat-label>Starting Date</mat-label>
-                              <input
-                                matInput
-                                [owlDateTime]="pickerFrom"
-                                placeholder="Date Time"
-                                formControlName="startOperatingDate"
-                              />
+                              <input matInput [owlDateTime]="pickerFrom" placeholder="Date Time"
+                                formControlName="startOperatingDate" />
                               <mat-icon matSuffix>date_range</mat-icon>
                               <owl-date-time #pickerFrom></owl-date-time>
-                              <mat-hint
-                                >Date is displayed in Local Time
-                                <span *ngIf="editForm.value.startOperatingDate"
-                                  >(UTC:
+                              <mat-hint>Date is displayed in Local Time
+                                <span *ngIf="editForm.value.startOperatingDate">(UTC:
                                   {{
-                                    editForm.value.startOperatingDate
-                                      | date: "dd/MM/yy, HH:mm":"UTC"
-                                  }})</span
-                                >
+                                  editForm.value.startOperatingDate
+                                  | date: "dd/MM/yy, HH:mm":"UTC"
+                                  }})</span>
                               </mat-hint>
                             </mat-form-field>
                           </div>
@@ -246,48 +201,34 @@
                           <div class="col-lg-4">
                             <ng-container *ngIf="!editMode">
                               <h6>Ending Date</h6>
-                              <p
-                                [class.mb-0]="resource?.endOperatingDate"
-                                *ngIf="resource?.endOperatingDate"
-                              >
+                              <p [class.mb-0]="resource?.endOperatingDate" *ngIf="resource?.endOperatingDate">
                                 {{
-                                  resource?.endOperatingDate
-                                    | date: "d MMM y, h:mm a"
+                                resource?.endOperatingDate
+                                | date: "d MMM y, h:mm a"
                                 }}
                                 - Local Time
                               </p>
                               <p *ngIf="resource?.endOperatingDate">
                                 {{
-                                  resource?.endOperatingDate
-                                    | date: "d MMM y, h:mm a":"UTC"
+                                resource?.endOperatingDate
+                                | date: "d MMM y, h:mm a":"UTC"
                                 }}
                                 - UTC
                               </p>
                             </ng-container>
 
-                            <mat-form-field
-                              *ngIf="editMode"
-                              [owlDateTimeTrigger]="pickerFrom"
-                              class="mb-2"
-                            >
+                            <mat-form-field *ngIf="editMode" [owlDateTimeTrigger]="pickerFrom" class="mb-2">
                               <mat-label>Ending Date</mat-label>
-                              <input
-                                matInput
-                                [owlDateTime]="pickerFrom"
-                                placeholder="Date Time"
-                                formControlName="endOperatingDate"
-                              />
+                              <input matInput [owlDateTime]="pickerFrom" placeholder="Date Time"
+                                formControlName="endOperatingDate" />
                               <mat-icon matSuffix>date_range</mat-icon>
                               <owl-date-time #pickerFrom></owl-date-time>
-                              <mat-hint
-                                >Date is displayed in Local Time
-                                <span *ngIf="editForm.value.endOperatingDate"
-                                  >(UTC:
+                              <mat-hint>Date is displayed in Local Time
+                                <span *ngIf="editForm.value.endOperatingDate">(UTC:
                                   {{
-                                    editForm.value.endOperatingDate
-                                      | date: "dd/MM/yy, HH:mm":"UTC"
-                                  }})</span
-                                >
+                                  editForm.value.endOperatingDate
+                                  | date: "dd/MM/yy, HH:mm":"UTC"
+                                  }})</span>
                               </mat-hint>
                             </mat-form-field>
                           </div>
@@ -299,12 +240,9 @@
                             <mat-form-field *ngIf="editMode">
                               <mat-label>Resource Status</mat-label>
                               <mat-select formControlName="resourceStatus">
-                                <mat-option
-                                  *ngFor="
+                                <mat-option *ngFor="
                                     let resourceStatus of availableResourceStatuses
-                                  "
-                                  [value]="resourceStatus"
-                                >
+                                  " [value]="resourceStatus">
                                   {{ resourceStatus }}
                                 </mat-option>
                               </mat-select>
@@ -330,37 +268,20 @@
                             </div>
 
                             <div *ngIf="editMode">
-                              <button
-                                type="button"
-                                *ngIf="!newNote"
-                                class="btn btn-primary btn-sm btn-block mb-2"
-                                (click)="triggerNewNote()"
-                              >
+                              <button type="button" *ngIf="!newNote" class="btn btn-primary btn-sm btn-block mb-2"
+                                (click)="triggerNewNote()">
                                 <i class="far fa-sticky-note mr-2"></i>Add Note
                               </button>
-                              <div
-                                class="card card-paper mb-2 bg-white"
-                                *ngIf="newNote"
-                              >
+                              <div class="card card-paper mb-2 bg-white" *ngIf="newNote">
                                 <div class="note-card-body pb-0">
-                                  <div
-                                    class="d-flex justify-content-center align-items-center"
-                                  >
+                                  <div class="d-flex justify-content-center align-items-center">
                                     <mat-form-field>
                                       <mat-label>New Note</mat-label>
-                                      <textarea
-                                        cdkTextareaAutosize
-                                        #autosize="cdkTextareaAutosize"
-                                        cdkAutosizeMinRows="2"
-                                        matInput
-                                        formControlName="note"
-                                      ></textarea>
+                                      <textarea cdkTextareaAutosize #autosize="cdkTextareaAutosize"
+                                        cdkAutosizeMinRows="2" matInput formControlName="note"></textarea>
                                     </mat-form-field>
-                                    <button
-                                      type="button"
-                                      class="btn btn-danger btn-sm ml-2 mb-1"
-                                      (click)="triggerNewNote()"
-                                    >
+                                    <button type="button" class="btn btn-danger btn-sm ml-2 mb-1"
+                                      (click)="triggerNewNote()">
                                       <i class="fas fa-times fa"></i>
                                     </button>
                                   </div>
@@ -374,36 +295,20 @@
                       <div class="card-footer">
                         <div class="container-fluid mt-2">
                           <div class="row justify-content-end">
-                            <button
-                              type="button"
-                              *ngIf="!editMode"
-                              class="btn btn-warning"
-                              (click)="enableResourceEditing()"
-                            >
+                            <button type="button" *ngIf="!editMode" class="btn btn-warning"
+                              (click)="enableResourceEditing()">
                               <i class="far fa-edit mr-1"></i>edit
                             </button>
-                            <button
-                              type="button"
-                              *ngIf="editMode&&newResource"
-                              class="btn btn-danger mr-2"
-                              (click)="cancelResourceCreation()"
-                            >
+                            <button type="button" *ngIf="editMode&&newResource" class="btn btn-danger mr-2"
+                              (click)="cancelResourceCreation()">
                               Cancel
                             </button>
-                            <button
-                              type="button"
-                              *ngIf="editMode&&!newResource"
-                              class="btn btn-danger mr-2"
-                              (click)="cancelResourceEditing()"
-                            >
+                            <button type="button" *ngIf="editMode&&!newResource" class="btn btn-danger mr-2"
+                              (click)="cancelResourceEditing()">
                               Cancel
                             </button>
-                            <button
-                              type="button"
-                              *ngIf="editMode"
-                              class="btn btn-success"
-                              (click)="submitResourceEditing()"
-                            >
+                            <button type="button" *ngIf="editMode" class="btn btn-success"
+                              (click)="submitResourceEditing()">
                               Submit
                             </button>
                           </div>
@@ -413,25 +318,16 @@
                   </form>
                 </div>
 
-                <div
-                  class="tab-pane active"
-                  *ngIf="activeListItem === 'Resource Characteristics'"
-                  role="tabpanel"
-                  [@fadeIn]
-                >
+                <div class="tab-pane active" *ngIf="activeListItem === 'Resource Characteristics'" role="tabpanel"
+                  [@fadeIn]>
                   <div class="card mat-elevation-z1 bg-light">
                     <div class="card-body">
-                      <div
-                        *ngIf="resource?.resourceCharacteristic.length === 0"
-                      >
+                      <div *ngIf="resource?.resourceCharacteristic.length === 0">
                         There are not any Resource Characteristics
                         allocated.
                       </div>
 
-                      <div
-                        class="table-responsive"
-                        *ngIf="resource?.resourceCharacteristic.length > 0"
-                      >
+                      <div class="table-responsive" *ngIf="resource?.resourceCharacteristic.length > 0">
                         <table class="table table-inverse bg-white mb-0">
                           <thead class="thead-inverse">
                             <tr class="table-light">
@@ -444,17 +340,13 @@
                             </tr>
                           </thead>
                           <tbody>
-                            <tr
-                              *ngFor="
+                            <tr *ngFor="
                                 let specCharacteristic of resource?.resourceCharacteristic
-                              "
-                            >
+                              ">
                               <td class="align-middle">
                                 <b>{{ specCharacteristic.name }}</b>
                               </td>
-                              <ng-container
-                                [ngSwitch]="specCharacteristic.valueType"
-                              >
+                              <ng-container [ngSwitch]="specCharacteristic.valueType">
                                 <ng-container *ngSwitchCase="'SET'">
                                   <ng-container *ngTemplateOutlet="iterables">
                                   </ng-container>
@@ -468,11 +360,9 @@
                                 <ng-container *ngSwitchDefault>
                                   <td class="align-middle">
                                     {{ specCharacteristic.value.value }}
-                                    <span *ngIf="specCharacteristic.value.alias"
-                                      >({{
-                                        specCharacteristic.value.alias
-                                      }})</span
-                                    >
+                                    <span *ngIf="specCharacteristic.value.alias">({{
+                                      specCharacteristic.value.alias
+                                      }})</span>
                                   </td>
                                 </ng-container>
 
@@ -480,17 +370,13 @@
                                   <td class="align-middle">
                                     <table class="table-borderless">
                                       <tbody>
-                                        <tr
-                                          *ngFor="
+                                        <tr *ngFor="
                                             let value of specCharacteristic
                                               .value.value | jsonParse
-                                          "
-                                        >
+                                          ">
                                           <td>
                                             {{ value.value }}
-                                            <span *ngIf="value.alias"
-                                              >({{ value.alias }})</span
-                                            >
+                                            <span *ngIf="value.alias">({{ value.alias }})</span>
                                           </td>
                                         </tr>
                                       </tbody>
@@ -506,10 +392,7 @@
                     <div class="card-footer">
                       <div class="container-fluid mt-3">
                         <div class="row justify-content-end">
-                          <button
-                            class="btn btn-block btn-warning"
-                            (click)="openCharacteristicsEditDialog()"
-                          >
+                          <button class="btn btn-block btn-warning" (click)="openCharacteristicsEditDialog()">
                             <i class="far fa-edit mr-1"></i>Edit Resource
                             Characteristics
                           </button>
@@ -520,103 +403,76 @@
                 </div>
               </div>
               <!-- Resource Relationships Tab -->
-              <div
-                class="tab-pane active disable"
-                *ngIf="activeListItem === 'Resource Relationships'"
-                role="tabpanel"
-                [@fadeIn]
-              >
+              <div class="tab-pane active disable" *ngIf="activeListItem === 'Resource Relationships'" role="tabpanel"
+                [@fadeIn]>
                 <div class="card mat-elevation-z1 bg-light">
                   <div class="card-body">
                     <div>
-                      <div
-                        class="filter-container row align-items-center justify-content-center"
-                      >
-                        <mat-form-field
-                          *ngIf="resource?.resourceRelationship.length > 0"
-                          class="col-sm-10"
-                        >
-                          <mat-label
-                            >Apply Filter to related Resources...
-                          </mat-label>
-                          <input
-                            matInput
-                            [formControl]="relatedResourcesFilterCtrl"
-                          />
-                        </mat-form-field>
+                      <!-- <h4 mat-dialog-title class="row shadowed mb-3">
+                        <i class="row far fa-clipboard mr-2"></i>
+                        <span>Assign Related Resources</span>
+                      </h4> -->
+                        <div class="row dialog-content-container">
+                          <mat-form-field appearance="" class="col-md-12">
 
-                        <div
-                          *ngIf="resource?.resourceRelationship.length === 0"
-                          class="col-sm-10 children-categories-font"
-                        >
-                          There are not any resource relationships
-                          assigned yet.
+                            <input placeholder="Add Resource Relationship From Available Resources" #resourceInput
+                              [formControl]="resourceInputCtrl" [matAutocomplete]="auto" matInput (click)="openList()">
+
+                            <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)"
+                              autoActiveFirstOption>
+                              <mat-option *ngFor="let filteredResource of filteredResources$ | async" [value]="filteredResource">
+                                {{filteredResource.resource.name}}
+                              </mat-option>
+                            </mat-autocomplete>
+                          </mat-form-field>
                         </div>
 
-                        <div class="text-right col-sm-2">
-                          <button
-                            type="button"
-                            class="btn btn-success btn-sm"
-                            (click)="openAssignResourceRelationshipDialog()"
-                          >
-                            <i class="fas fa-cart-arrow-down mr-2"></i>Assign
-                          </button>
-                        </div>
-                      </div>
 
-                      <div
-                        *ngFor="
-                          let resourceRelationship of filteredResourceRelationships$ | async
-                        "
-                        class="spec-relationship-container pt-3"
-                      >
-                        <div>
-                          <b>{{ resourceRelationship.resource.name }}</b>
+                        <div class="table-responsive">
+                          <table mat-table [dataSource]="dataSource" class="table table-generic">
+                            <ng-container matColumnDef="name">
+                              <th mat-header-cell *matHeaderCellDef> Assigned Resources </th>
+                              <td mat-cell *matCellDef="let element" matTooltipClass="universal-tooltip"
+                                [matTooltip]="element.description" matTooltipPosition="above">
+                                <b>{{element.resource.name}}</b>
+                              </td>
+                            </ng-container>
+                            <ng-container matColumnDef="relationshipType">
+                              <th mat-header-cell *matHeaderCellDef> Relationship Type </th>
+                              <td mat-cell *matCellDef="let element">
+                                <div class="d-flex justify-content-center col-md-4">
+                                  <mat-form-field>
+                                    <select matNativeControl [(ngModel)]="element.relationshipType" name="relationshipType">
+                                      <option *ngFor="let relationshipType of relationshipTypes" [value]="relationshipType.viewValue">
+                                        {{relationshipType.viewValue}}
+                                      </option>
+                                    </select>
+                                  </mat-form-field>
+                                </div>
+                              </td>
+                            </ng-container>
+                            <ng-container matColumnDef="actions">
+                              <th mat-header-cell *matHeaderCellDef >Actions</th>
+                              <td mat-cell *matCellDef="let element">
+                                  <button class="btn btn-warning mr-1 btn-sm" (click)="onClickEdit(element)" routerLink='/{{appService.portalDomain}}/resource/{{element.resource.id}}'><i
+                                    class="far fa-edit"></i></button>
+                                  <button class="btn btn-danger btn-sm" (click)="removeResource(element)"><i
+                                      class="far fa-trash-alt"></i></button>
+                              </td>
+                            </ng-container>
+                            <tr mat-header-row *matHeaderRowDef="displayedColumnsResourceRelationships"></tr>
+                            <tr mat-row *matRowDef="let row; columns: displayedColumnsResourceRelationships;"></tr>
+                          </table>
                         </div>
-                        <button
-                          class="btn btn-warning btn-sm"
-                          routerLink="/{{
-                            appService.portalDomain
-                          }}/resource/{{ resourceRelationship.resource.id }}"
-                        >
-                          <i class="far fa-edit"></i>
-                        </button>
-                      </div>
+                        <div class="d-flex justify-content-end">
+                          <!-- <button type="button" class="btn btn-danger m-2" (click)="closeDialog()">Cancel</button> -->
+                          <button type="button" class="btn btn-success m-2" (click)="confirmAssignment()">Submit</button>
+                        </div>
                     </div>
                   </div>
                   <div class="card-footer"></div>
                 </div>
                 <!-- END OF Service Specification Relationships Tab -->
-
-                <!-- <div class="tab-pane active" *ngIf="activeListItem === 'Supporting Resources'"
-                                  role="tabpanel" [@fadeIn]>
-                                  <div class="card mat-elevation-z1 bg-light">
-                                      <div class="card-body">
-                                          <div *ngIf="resource?.supportingResource.length === 0">
-                                              There are not any Supporting Resources allocated.
-                                          </div>
-                                          <p *ngFor="let suppServ of resource?.supportingResource" class="mb-2">
-                                              <a routerLink='/{{appResource.portalDomain}}/resource/{{suppServ.id}}'>{{suppServ.name}}</a>
-                                          </p>
-                                      </div>
-                                      <div class="card-footer"></div>
-                                  </div>
-                              </div>
-
-
-                              <div class="tab-pane active" *ngIf="activeListItem === 'Supporting Resources'"
-                                  role="tabpanel" [@fadeIn]>
-                                  <div class="card mat-elevation-z1 bg-light">
-                                      <div class="card-body">
-                                          <div *ngIf="resource?.supportingResource.length === 0">
-                                              There are not any Supporting Resources allocated.
-                                          </div>
-                                          <p *ngFor="let resource of resource?.supportingResource" class="mb-2">
-                                              {{resource.name}}</p>
-                                      </div>
-                                      <div class="card-footer"></div>
-                                  </div>
-                              </div> -->
               </div>
             </div>
           </div>

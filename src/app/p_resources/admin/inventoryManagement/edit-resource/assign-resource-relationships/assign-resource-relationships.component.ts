@@ -1,16 +1,14 @@
 import { Component, OnInit, Inject, ViewChild, ElementRef } from '@angular/core';
 import { MatAutocompleteTrigger, MatAutocomplete, MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
+import { MatSort } from '@angular/material/sort';
 import { ResourceService } from 'src/app/openApis/resourceInventoryManagement/services';
 import { Resource } from 'src/app/openApis/resourceInventoryManagement/models/resource';
 import { Observable } from 'rxjs';
 import { FormControl, FormGroup } from '@angular/forms';
 import { startWith, map } from 'rxjs/operators';
-import { ResourceRelationshipRes, ResourceUpdate } from 'src/app/openApis/resourceInventoryManagement/models';
-import { NGB_TIMEPICKER_I18N_FACTORY } from '@ng-bootstrap/ng-bootstrap/timepicker/timepicker-i18n';
-import { ResourceRefOrValueReq } from 'src/app/openApis/resourceOrderManagement/models';
+import { ResourceUpdate } from 'src/app/openApis/resourceInventoryManagement/models';
 
 
 

@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router, ActivationEnd } from '@angular/router';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ResourceService } from 'src/app/openApis/resourceInventoryManagement/services';
 import { ToastrService } from 'ngx-toastr';
 import { Resource, ResourceRelationshipRes, ResourceSpecificationRef, ResourceUpdate } from 'src/app/openApis/resourceInventoryManagement/models';
@@ -13,10 +13,21 @@ import { SortingService } from 'src/app/shared/functions/sorting.service';
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { EditResourceComponent } from '../edit-resource/edit-resource.component';
 import { AppService } from 'src/app/shared/services/app.service';
-import { AssignResourceRelationshipsComponent } from '../edit-resource/assign-resource-relationships/assign-resource-relationships.component';
 import { ResourceRefOrValueReq,ResourceOrderItemReq, ResourceOrder, ResourceOrderCreate } from 'src/app/openApis/resourceOrderManagement/models';
 import { ResourceOrderService } from 'src/app/openApis/resourceOrderManagement/services';
 import { ResourceSpecificationService } from 'src/app/openApis/resourceCatalogManagement/services';
+import { MatAutocomplete, MatAutocompleteSelectedEvent, MatAutocompleteTrigger } from '@angular/material/autocomplete';
+import { MatTableDataSource } from '@angular/material/table';
+import { MatSort } from '@angular/material/sort';
+interface RelationshipType {
+  value: string;
+  viewValue: string;
+}
+
+interface RelationshipWithParent {
+  key: string;
+  value: string;
+}
 
 @Component({
   selector: 'app-preview-resource',
@@ -24,8 +35,22 @@ import { ResourceSpecificationService } from 'src/app/openApis/resourceCatalogMa
   styleUrls: ['./preview-resource.component.scss'],
   animations: [ trigger('fadeIn', fadeIn()) ]
 })
+
 export class PreviewResourceComponent implements OnInit {
 
+// =========================================================================================================================
+  selectedResources: ResourceRelationshipRes[] = []
+  nonSelectedResources: Resource[]
+  nonSelectedResourceRelationshipRes : ResourceRelationshipRes[]
+  filteredResources$: Observable<ResourceRelationshipRes[]>
+  resourceInputCtrl = new FormControl();
+  displayedColumnsResourceRelationships = ['name', 'relationshipType', 'actions']
+  dataSource  = new MatTableDataSource<ResourceRelationshipRes>()
+  @ViewChild('auto') matAutocomplete: MatAutocomplete;
+  //@ViewChild('resourceInput') resourceInput: ElementRef<HTMLInputElement>;
+  @ViewChild('resourceInput', { read: MatAutocompleteTrigger }) matAutocompleteTrigger: MatAutocompleteTrigger;
+  @ViewChild(MatSort, {static: true}) sort: MatSort;
+// =========================================================================================================================
   constructor(
     private resourceSpecificationService: ResourceSpecificationService,
     private activatedRoute: ActivatedRoute,
@@ -67,9 +92,14 @@ export class PreviewResourceComponent implements OnInit {
   availableCategories = ['OSM Tenant', 'OSM VIM']
 
   subscriptions = new Subscription()
-
   listItems = ["Main Properties", "Resource Characteristics","Resource Relationships"]
   activeListItem = "Main Properties"
+
+  relationshipTypes: RelationshipType[] = [
+    {value: 'bundled', viewValue: 'bundled'},
+    {value: 'dependson', viewValue: 'dependson'}
+  ];
+  selectedRelationshipType: RelationshipWithParent[]
 
   relatedResourcesFilterCtrl = new FormControl();
   filteredResourceRelationships$: Observable<ResourceRelationshipRes[]>
@@ -85,6 +115,13 @@ export class PreviewResourceComponent implements OnInit {
       this.newResource = true
       this.editMode = true
     }
+  }
+
+  onClickEdit(element)
+  {
+    this.resourceID = element.resource.id
+    this.activeListItem = 'Main Properties'
+    this.retrieveResource()
   }
 
   retrieveResourceSpecificationsList() {
@@ -129,6 +166,10 @@ export class PreviewResourceComponent implements OnInit {
       endOperatingDate: this.resource.endOperatingDate
     })
     this.editMode = false
+  }
+
+  btnClickEdit= function (element) {
+    this.router.navigateByUrl(element.resource.id)
   }
 
   createDefaultResourceOrderObj(resourceCategory:string):ResourceOrderCreate
@@ -223,15 +264,6 @@ export class PreviewResourceComponent implements OnInit {
     }
   }
 
-  getCheched(input:string)
-  {
-    if(input==="true")
-      return 0
-    if(input==="false")
-      return 0
-    return 0
-  }
-
   retrieveResource() {
     this.resourceService.retrieveResource({id: this.resourceID}).subscribe(
       data => {
@@ -260,6 +292,7 @@ export class PreviewResourceComponent implements OnInit {
             startWith(null),
             map((value: null | string) => value ? this._filterOnRelatedResources(value) : this.resource.resourceRelationship.slice())
           )
+          this.listResources()
         }
       }
     )
@@ -283,43 +316,104 @@ export class PreviewResourceComponent implements OnInit {
     )
   }
 
-  resourceStateClassSelector(state:'enabled'| 'disabled') {
-    let cssClass: string = ''
-    switch (state) {
-      case 'enabled':
-        cssClass += ' text-success'
-        break;
-      case 'disabled':
-        cssClass += ' text-warning'
-        break;
-      default:
-        cssClass += ' text-danger'
-    }
-    return cssClass
-  }
-
   private _filterOnRelatedResources(filterValue: string) {
     filterValue = filterValue.trim();
     filterValue = filterValue.toLowerCase();
     return this.resource.resourceRelationship.filter( relatedSpec =>  relatedSpec.resource.name.toLowerCase().includes(filterValue) )
   }
 
-  openAssignResourceRelationshipDialog() {
-    const dialogRef = this.dialog.open(AssignResourceRelationshipsComponent, {
-      data: this.resource,
-      autoFocus: false,
-      disableClose: true
+  // =========================================================================================================================
+
+  openList() {
+    if (!this.matAutocomplete.isOpen) this.matAutocompleteTrigger.openPanel()
+  }
+
+  selected(event: MatAutocompleteSelectedEvent): void {
+    this.selectedResources.push(event.option.value);
+    this.dataSource.data = this.selectedResources
+    console.log("selected event "+JSON.stringify(event.option.value.resource.name))
+    console.log("nonSelectedResource before"+JSON.stringify(this.nonSelectedResources))
+    this.nonSelectedResources = this.nonSelectedResources.filter(el =>  el.name != event.option.value.resource.name)
+    console.log("nonSelectedResource after"+JSON.stringify(this.nonSelectedResources))
+    this.resourceInputCtrl.setValue(null);
+    this.listResources()
+  }
+
+  removeResource(resourceRelationshipRes:ResourceRelationshipRes) {
+    console.log("Remove resource"+JSON.stringify(resourceRelationshipRes))
+    const index = this.selectedResources.indexOf(resourceRelationshipRes);
+    console.log("Found at index "+index)
+    if (index >= 0) {
+      this.selectedResources.splice(index, 1);
+      console.log("Found " + this.selectedResources.length + " selected elements.")
+      this.dataSource.data = this.selectedResources
+
+      this.nonSelectedResources.push(resourceRelationshipRes.resource);
+      console.log("Found " + this.nonSelectedResources.length + " non selected elements.")
+    }
+    this.listResources()
+  }
+
+  confirmAssignment() {
+    const updateRelationshipsObj: ResourceUpdate = { }
+    updateRelationshipsObj.resourceRelationship=[]
+    console.log("Got Relationshiptypes"+JSON.stringify(this.relationshipTypes))
+    console.log("Found "+this.selectedResources.length+" selected resources!")
+    this.selectedResources.forEach(function (resourceRelationshipRes)
+    {
+      console.log("Found selected resource: "+JSON.stringify(resourceRelationshipRes))
+      updateRelationshipsObj.resourceRelationship.push({relationshipType:resourceRelationshipRes.relationshipType,resource:{href:resourceRelationshipRes.resource.href,id:resourceRelationshipRes.resource.id,name:resourceRelationshipRes.resource.name}})
     })
 
-    dialogRef.afterClosed().subscribe (
-      result => {
-        console.log(result)
-        if (result) {
-          this.toast.success("Resource Relationship list was successfully updated")
-          this.retrieveResource()
-        }
+    console.log(updateRelationshipsObj)
+    this.resourceService.patchResource({id: this.resource.id, resource: updateRelationshipsObj}).subscribe(
+      data => console.log(data),
+      error => {
+        this.toast.error("Resource Relationships Update failed!")
+        console.error(error)
+      }
+      ,
+      () => {
+        this.toast.success("Resource Relationships Updated Successfully!")
       }
     )
+  }
+
+  listResources() {
+    this.resourceService.listResource({}).subscribe(
+      data => this.nonSelectedResources = data,
+      error => console.error(error),
+      () => {
+        // Remove self from available spec list as well as the allready assigned specs
+        console.log("Resource:"+JSON.stringify(this.resource))
+        this.nonSelectedResources.splice(this.nonSelectedResources.findIndex(el => el.id === this.resource.id), 1)
+        // Remove already existing relationships
+        const initiallyAssignedResourceIDs: string[] = this.resource.resourceRelationship.map(el => el.resource.id)
+        this.nonSelectedResources = this.nonSelectedResources.filter(resource => !initiallyAssignedResourceIDs.includes(resource.id))
+        // Convert Resource[] to ResourceRelationshipRes[]
+        console.log("nonSelectedResources:"+JSON.stringify(this.nonSelectedResources))
+        const nonSelectedResourceRelationshipRes:ResourceRelationshipRes[] = []
+        this.nonSelectedResources.forEach(function(resource_tmp){
+          resource_tmp.href=""
+          nonSelectedResourceRelationshipRes.push({relationshipType:"bundled",resource:resource_tmp})
+        })
+        console.log("nonSelectedResourceRelationshipRes:"+JSON.stringify(nonSelectedResourceRelationshipRes))
+        this.nonSelectedResourceRelationshipRes=nonSelectedResourceRelationshipRes
+        this.selectedResources = this.resource.resourceRelationship
+        console.log("Getting this"+ JSON.stringify(this.selectedResources))
+        this.dataSource.data = this.selectedResources
+        this.filteredResources$ = this.resourceInputCtrl.valueChanges.pipe(
+          startWith(null),
+          map( (resource: string | ResourceRelationshipRes) => typeof(resource) === 'string' ? this._filter(resource) : nonSelectedResourceRelationshipRes.slice() )
+        )
+      }
+    )
+  }
+
+  private _filter(value: string): ResourceRelationshipRes[] {
+    console.log("Filter value:"+value)
+    const filterValue = value.toLowerCase();
+    return (this.nonSelectedResourceRelationshipRes.filter(tmp=>tmp.resource.name!==null).filter(cat => cat.resource.name.toLowerCase().indexOf(filterValue) !== -1))
   }
 
 }

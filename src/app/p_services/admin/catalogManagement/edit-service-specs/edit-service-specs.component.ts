@@ -95,7 +95,7 @@ export class EditServiceSpecsComponent implements OnInit {
   serviceRelatedSpecsFilterCtrl = new FormControl();
   filteredRelatedSpecs$: Observable<ServiceSpecRelationship[]>
 
-  attachmentFilesCtrl = new FileUploadControl(null, FileUploadValidators.accept(['.jpeg', '.jpg', '.png', '.zip', '.pdf', '.yaml', '.json', '.xml', '.txt', '.tar.gz']))
+  attachmentFilesCtrl = new FileUploadControl(null, FileUploadValidators.accept(['.jpeg', '.jpg', '.png', '.zip', '.pdf', '.yaml', '.json', '.xml', '.txt', '.gz', 'application/gzip', 'application/x-gzip']))
   logoImageCtrl = new FileUploadControl(null, FileUploadValidators.accept(['image/*']))
 
   specLogoRef: AttachmentRef

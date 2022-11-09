@@ -194,9 +194,9 @@
                                             <ng-container *ngIf="testType.value === 'developerDefined'">
                                                 <file-upload [control]="attachmentFilesCtrl" multiple="true">
                                                 </file-upload>
-                                                <mat-hint *ngIf="!attachmentFilesCtrl.invalid" class="ml-1">Supported file types: .yaml .py
+                                                <mat-hint *ngIf="!attachmentFilesCtrl.invalid" class="ml-1">Supported file types: .yaml, .tar.gz
                                                 </mat-hint>
-                                                <mat-error *ngIf="attachmentFilesCtrl.invalid" class="ml-1">Supported file types: .yaml .py
+                                                <mat-error *ngIf="attachmentFilesCtrl.invalid" class="ml-1">Supported file types: .yaml, .tar.gz
                                                 </mat-error>
                                     
                                                 <div class="container-fluid mt-3">

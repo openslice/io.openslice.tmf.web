@@ -68,7 +68,7 @@ export class EditServiceTestSpecComponent implements OnInit {
 
   testType = new FormControl('preDefined')
 
-  attachmentFilesCtrl = new FileUploadControl(null, FileUploadValidators.accept(['.yaml']))
+  attachmentFilesCtrl = new FileUploadControl({listVisible: true}, FileUploadValidators.accept(['.yaml']))
   testSpecServiceRootUrl: string
 
   subscriptions = new Subscription()
@@ -162,9 +162,9 @@ export class EditServiceTestSpecComponent implements OnInit {
   subscribeOnTestTypeChanged() {
     this.subscriptions = this.testType.valueChanges.subscribe( _ => {
       if (this.testType.value === "developerDefined") {
-        this.attachmentFilesCtrl = new FileUploadControl(null, FileUploadValidators.accept(['.yaml', '.py']))
+        this.attachmentFilesCtrl = new FileUploadControl({listVisible: true}, FileUploadValidators.accept(['.yaml', '.gz', 'application/gzip', 'application/x-gzip']))
       } else {
-        this.attachmentFilesCtrl = new FileUploadControl(null, FileUploadValidators.accept(['.yaml']))
+        this.attachmentFilesCtrl = new FileUploadControl({listVisible: true}, FileUploadValidators.accept(['.yaml']))
       }
     })
   }
@@ -316,7 +316,7 @@ export class EditServiceTestSpecComponent implements OnInit {
             data => {
               //regular expression to identify strings inside {{ }}, and parse them omitting brackets in capture group 1
               const regex = /\{{2}([^{}]*)\}{2}/gm;
-              variablesArray = Array.from(data.matchAll(regex), m => m[1]);
+              variablesArray = Array.from(data.matchAll(regex), m => m[1].trim());
             }
           )
           .catch(
@@ -401,6 +401,7 @@ export class EditServiceTestSpecComponent implements OnInit {
         if (result){ 
           this.toast.success("Service Test Specification attachments list was successfully updated")
           this.retrieveTestSpec()
+          this.testType.value === "developerDefined"
         }
       }
     )

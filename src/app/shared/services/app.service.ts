@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { BootstrapService } from 'src/app/bootstrap/bootstrap.service';
 import { ApiConfiguration as PortalAPIconfig} from 'src/app/openApis/portalRepositoryAPI/api-configuration'
 import { ApiConfiguration as ServiceCatalogAPIconfig} from 'src/app/openApis/serviceCatalogManagement/api-configuration'
-import { ApiConfiguration as ResourceCatalogAPIconfig} from 'src/app/openApis/resourceCatalogManagement/api-configuration'
 import { ApiConfiguration as ServiceInventoryAPIconfig} from 'src/app/openApis/serviceInventoryManagement/api-configuration'
 import { ApiConfiguration as ServiceOrderingAPIconfig} from 'src/app/openApis/serviceOrderingManagement/api-configuration'
 import { ApiConfiguration as PartyManagementAPIconfig} from 'src/app/openApis/partyManagement/api-configuration'
@@ -11,6 +10,8 @@ import { ApiConfiguration as AlarmManagementAPIconfig} from 'src/app/openApis/al
 import { ApiConfiguration as assuranceServicesManagementAPIconfig} from 'src/app/openApis/assuranceServicesManagementAPI/api-configuration'
 import { ApiConfiguration as lcmRuleSpecificationAPIconfig } from 'src/app/openApis/lcmRuleSpecificationAPI/api-configuration'
 import { ApiConfiguration as serviceTestManagementAPIconfig } from 'src/app/openApis/serviceTestManagement/api-configuration'
+import { ApiConfiguration as ResourceCatalogAPIconfig} from 'src/app/openApis/resourceCatalogManagement/api-configuration'
+import { ApiConfiguration as ResourceInventoryAPIconfig} from 'src/app/openApis/resourceInventoryManagement/api-configuration'
 import { ApiConfiguration as resourcePoolManagementAPIconfig} from 'src/app/openApis/resourcePoolManagement/api-configuration'
 import { NavigationEnd, NavigationStart, Router } from '@angular/router';
 import { filter, first } from 'rxjs/operators';
@@ -26,7 +27,6 @@ export class AppService {
     private bootstrapService: BootstrapService,
     private portalAPIConfig: PortalAPIconfig,
     private tmfServiceCatalogConfig: ServiceCatalogAPIconfig,
-    private tmfResourceCatalogConfig: ResourceCatalogAPIconfig,
     private tmfServiceInventoryConfig: ServiceInventoryAPIconfig,
     private tmfServiceOrderingConfig: ServiceOrderingAPIconfig,
     private tmfPartyManagementConfig: PartyManagementAPIconfig,
@@ -35,6 +35,8 @@ export class AppService {
     private assuranceServicesManagementAPIConfig: assuranceServicesManagementAPIconfig,
     private lcmRuleSpecificationAPIConfig: lcmRuleSpecificationAPIconfig,
     private serviceTestManagementAPIconfig: serviceTestManagementAPIconfig,
+    private tmfResourceCatalogConfig: ResourceCatalogAPIconfig,
+    private tmfResourceInventoryConfig: ResourceInventoryAPIconfig,
     private resourcePoolManagementAPIconfig: resourcePoolManagementAPIconfig
   ) { 
     this.setAPIurls()
@@ -47,7 +49,6 @@ export class AppService {
   setAPIurls() {
     this.portalAPIConfig.rootUrl = this.config.PORTAL_REPO_APIURL
     this.tmfServiceCatalogConfig.rootUrl = this.config.APITMFURL
-    this.tmfResourceCatalogConfig.rootUrl = this.config.APITMFURL
     this.tmfServiceInventoryConfig.rootUrl = this.config.APITMFURL
     this.tmfServiceOrderingConfig.rootUrl = this.config.APITMFURL
     this.tmfPartyManagementConfig.rootUrl = this.config.APITMFURL
@@ -55,6 +56,8 @@ export class AppService {
     this.tmfAlarmManagementConfig.rootUrl = this.config.APITMFURL
     this.assuranceServicesManagementAPIConfig.rootUrl = this.config.ASSURANCE_SERVICE_MGMT_APIURL
     this.lcmRuleSpecificationAPIConfig.rootUrl = this.config.APITMFURL
+    this.tmfResourceCatalogConfig.rootUrl = this.config.APITMFURL
+    this.tmfResourceInventoryConfig.rootUrl = this.config.APITMFURL
     this.serviceTestManagementAPIconfig.rootUrl = this.config.APITMFURL
     this.resourcePoolManagementAPIconfig.rootUrl = this.config.APITMFURL
   }

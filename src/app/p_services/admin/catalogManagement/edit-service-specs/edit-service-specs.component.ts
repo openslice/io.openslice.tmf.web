@@ -100,6 +100,7 @@ export class EditServiceSpecsComponent implements OnInit {
 
   specLogoRef: AttachmentRef
   currentSpecLogoAsDataUrl: string | ArrayBuffer
+  currentSpecRelationshipsUrl: string | ArrayBuffer
 
   dataUrlConverting = false
   specLogoAsDataUrl: string | ArrayBuffer
@@ -206,6 +207,10 @@ export class EditServiceSpecsComponent implements OnInit {
             this.currentSpecLogoAsDataUrl = this.specServiceRootUrl+this.specLogoRef.url
           }
 
+          //http://portal.openslice.io/tmf-api/serviceCatalogManagement/v4/serviceSpecification/123/relationship_graph
+          this.currentSpecRelationshipsUrl = this.specServiceRootUrl + "/serviceCatalogManagement/v4/serviceSpecification/" + this.specID + "/relationship_graph";
+
+          
           this.retrieveLCMRulesSpecs();
   
           if (localStorage.getItem('previous_navigation_state') === 'lcm_tab') {

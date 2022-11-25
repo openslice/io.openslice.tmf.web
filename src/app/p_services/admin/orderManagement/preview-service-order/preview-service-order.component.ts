@@ -78,6 +78,7 @@ export class PreviewServiceOrderComponent implements OnInit {
 
   subscription = new Subscription
 
+  currentItemRelationshipsUrl: string | ArrayBuffer
   
   ngOnInit() {
     this.isAdminUser = this.authService.portalUserJWT.realm_access.roles.includes('ADMIN')
@@ -121,6 +122,7 @@ export class PreviewServiceOrderComponent implements OnInit {
   
           this.checkboxesOrderItemList = []
           this.serviceOrder.orderItem.forEach((orderItem, index) => {
+
             this.checkboxesOrderItemList.push({orderItem: orderItem, isChecked: false})
 
             orderItem.service.serviceCharacteristic.sort(this.sortingService.ascStringSortingFunctionByNameProperty())
@@ -130,6 +132,10 @@ export class PreviewServiceOrderComponent implements OnInit {
                 data => this.supportingServices[index][serviceIndex] = data
               )
             })
+
+            
+
+            this.currentItemRelationshipsUrl = this.orderService.rootUrl + "/serviceOrdering/v4/serviceOrder/" + this.serviceOrder.id + "/item/" + orderItem.id + "/relationship_graph";
           })
           
           if (this.activatedRoute.snapshot.queryParams &&  this.serviceOrder.orderItem.some(item => item.id === this.activatedRoute.snapshot.queryParams.item)) {

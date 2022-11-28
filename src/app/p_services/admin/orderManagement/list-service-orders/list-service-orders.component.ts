@@ -115,6 +115,7 @@ export class ListServiceOrdersComponent implements OnInit {
               
               return {
                 title: eventEl.relatedParty[0].name  ,
+                extendedProps: eventEl ,
                 start: eventEl.startDate,
                 end:  eventEl.expectedCompletionDate
               }
@@ -147,7 +148,7 @@ export class ListServiceOrdersComponent implements OnInit {
   }
 
   handleEventClick(clickInfo: EventClickArg) {
-    this.router.navigate([`services/service_order/${clickInfo.event.title}`]); 
+    this.router.navigate([`services/service_order/${clickInfo.event.extendedProps.id}`]); 
   }
 
   handleEvents(events: EventApi[]) {

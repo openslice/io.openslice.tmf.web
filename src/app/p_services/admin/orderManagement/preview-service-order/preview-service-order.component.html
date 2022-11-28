@@ -219,7 +219,7 @@
                                                         </mat-form-field>
                                                     </div>
                 
-                                                    <div class="col-lg-12">
+                                                    <div class="col-lg-6">
                                                         <h6>Notes</h6>
                                                         <div class="notes-container">
                                                             <div *ngFor="let note of serviceOrder?.note">
@@ -234,6 +234,7 @@
                                                                 </div>
                                                             </div>
                                                         </div>
+
                                                         <div *ngIf="editMode">
                                                             <button *ngIf="!editModeNotes" type="button"
                                                                 class="btn btn-primary btn-sm btn-block mb-2"
@@ -257,6 +258,14 @@
                                                             </div>
                                                         </div>
                                                     </div>
+                                                    <div class="col-lg-6">
+                                                        <div class="notes-graph-container">
+                                                            <img [src]="notesGraphUrl" [alt]="notesGraphUrl" >
+                                                        </div>
+                                                    </div>
+
+
+
                                                 </div>
                                             </form>
                 
@@ -472,7 +481,7 @@
 
                                                             <div class="col-md-12">
                                                                 <br/>
-                                                                <mat-label>Relationships overview</mat-label>
+                                                                <mat-label>Relationships overview {{currentItemRelationshipsUrl[0]}}</mat-label>
                                                                 <br/>
                                                                 <img [src]="currentItemRelationshipsUrl" [alt]="currentItemRelationshipsUrl" >
                                                             </div>

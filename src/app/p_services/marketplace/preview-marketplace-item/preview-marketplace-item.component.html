@@ -38,12 +38,12 @@
 
                     </div>
 
-                    <button *ngIf="(authService.isAuthenticated$ | async)" type="button" class="btn btn-primary my-3" (click)="placeInOrderList()">
+                    <button *ngIf="(authService.isAuthenticated$ | async) && data.mode !== 'preview'" type="button" class="btn btn-primary my-3" (click)="placeInOrderList()">
                         <i class="fas fa-shopping-cart mr-1"></i>
                         <span> Place in Order List </span>
                     </button>
 
-                    <div *ngIf="!(authService.isAuthenticated$ | async)" class="my-3">
+                    <div *ngIf="!(authService.isAuthenticated$ | async) && data.mode !== 'preview'" class="my-3">
                         <b class="shadowed">You must be logged in to place an order</b>
                     </div>
                     <!-- <div class="separator-div"></div> -->

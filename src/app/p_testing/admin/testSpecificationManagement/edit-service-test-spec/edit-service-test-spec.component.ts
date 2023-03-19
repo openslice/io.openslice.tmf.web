@@ -54,8 +54,8 @@ export class EditServiceTestSpecComponent implements OnInit {
     // })
   })
 
-  listItems = ["Main Properties", "Attachments","Test Specification Characteristics", "Related Service Specification"]
-  activeListItem = "Main Properties"
+  listItems: ("Main Properties"|"Attachments"|"Test Specification Characteristics"|"Related Service Specification")[] = ["Main Properties", "Attachments","Test Specification Characteristics", "Related Service Specification"]
+  activeListItem: "Main Properties"|"Attachments"|"Test Specification Characteristics"|"Related Service Specification" = "Main Properties"
 
   lifecycleStatuses = ["In study", "In design", "In test", "Active", "Launched", "Retired", "Obsolete", "Rejected"]
 
@@ -66,15 +66,10 @@ export class EditServiceTestSpecComponent implements OnInit {
     this.dataSource.sort = ms;
   } 
 
-  testType = new FormControl('preDefined')
-
-  attachmentFilesCtrl = new FileUploadControl({listVisible: true}, FileUploadValidators.accept(['.yaml']))
-  testSpecServiceRootUrl: string
 
   subscriptions = new Subscription()
 
   ngOnInit() {
-    this.testSpecServiceRootUrl = this.testSpecService.rootUrl
 
     const urlParam = this.activatedRoute.snapshot.params.id
     if (urlParam) {
@@ -85,8 +80,6 @@ export class EditServiceTestSpecComponent implements OnInit {
       this.newTestSpec = true
       this.finishedLoading = true
     }
-
-    this.subscribeOnTestTypeChanged()
   }
 
 
@@ -111,9 +104,10 @@ export class EditServiceTestSpecComponent implements OnInit {
           this.editForm.markAsPristine()
 
           // populate Attachments Panel Info
-          if (this.testSpec.attachment.length > 1) {
-            this.testType.setValue('developerDefined')
-          }
+          // if (this.testSpec.attachment.length > 1) {
+          //   this.testType.setValue('developerDefined')
+          // }
+          // EDIT: This is handled by the discrete component 'manage-service-test-spec-attachments'
         }
         else {
           this.testSpecNotFound = true
@@ -159,17 +153,7 @@ export class EditServiceTestSpecComponent implements OnInit {
     }
   }
 
-  subscribeOnTestTypeChanged() {
-    this.subscriptions = this.testType.valueChanges.subscribe( _ => {
-      if (this.testType.value === "developerDefined") {
-        this.attachmentFilesCtrl = new FileUploadControl({listVisible: true}, FileUploadValidators.accept(['.yaml', '.gz', 'application/gzip', 'application/x-gzip']))
-      } else {
-        this.attachmentFilesCtrl = new FileUploadControl({listVisible: true}, FileUploadValidators.accept(['.yaml']))
-      }
-    })
-  }
-
-  selectListItem(item: string) {
+  selectListItem(item: "Main Properties"|"Attachments"|"Test Specification Characteristics"|"Related Service Specification") {
     if (this.editForm.pristine) {
       this.activeListItem = item 
     } else {
@@ -182,6 +166,10 @@ export class EditServiceTestSpecComponent implements OnInit {
           this.activeListItem = item
         }
       })
+    }
+
+    if (this.activeListItem === "Test Specification Characteristics") {
+      this.retrieveTestSpec()
     }
   }
 
@@ -279,129 +267,6 @@ export class EditServiceTestSpecComponent implements OnInit {
         if (res) {
           this.toast.success("Service Test Specification related services list was successfully updated")
           this.retrieveTestSpec()
-        }
-      }
-    )
-  }
-
-  submitAttachment() {
-    if (this.attachmentFilesCtrl.valid) {
-      
-      this.attachmentFilesCtrl.value.forEach (attachmentFile => {
-        this.testSpecService.addAttachmentToServiceTestSpecification({ id: this.testSpecID, afile: attachmentFile }).subscribe(
-          data => { },
-          error => {
-            console.error(error)
-            this.toast.error("An error occurred while uploading attachment")
-          },
-          () => {
-            this.toast.success("Attachment was successfully uploaded")
-            this.clearAttachmentsList()
-            this.retrieveTestSpec()
-          }
-        )
-      })
-    
-      // Asynchronously check if there is a text-typed file uploaded (Test Descriptor), and try to automatically extract the variables within {{ }}, e.g. {{ variable1 }}
-      let variablesArray = []
-
-      // Comment1: Recognized type of yaml files is '' and for py files is 'text/x-python'
-      // Comment2: Interface Blob doesn't support text in TS 3.5.3 so indirect reference is made
-      const yamlFile = this.attachmentFilesCtrl.value.find( yamlFile => yamlFile.type === '')
-      if (yamlFile) {
-        // this.attachmentFilesCtrl.value[0]['text']() //Interface Blob doesn't support text in TS 3.5.3 so indirect reference is made
-
-        yamlFile['text']()
-          .then(
-            data => {
-              //regular expression to identify strings inside {{ }}, and parse them omitting brackets in capture group 1
-              const regex = /\{{2}([^{}]*)\}{2}/gm;
-              variablesArray = Array.from(data.matchAll(regex), m => m[1].trim());
-            }
-          )
-          .catch(
-            onrejected => console.error(onrejected)
-          )
-          .finally(
-            () => {
-              if (variablesArray.length) {
-                const dialogRef = this.dialog.open(ImportCharacteristicsFromYamlComponent, {
-                  data: {
-                    variablesArray: variablesArray
-                  },
-                  autoFocus: false
-                })
-
-                dialogRef.afterClosed().subscribe(
-                  result => {
-                    if (result) {
-                      if (result !== 'no') {
-
-                        let exportedCharacteristicsArray: CharacteristicSpecificationRes[] = []
-                        variablesArray.forEach(variable => {
-                          exportedCharacteristicsArray.push({
-                            name: variable,
-                            description: 'auto exported user variable'
-                          })
-                        })
-
-
-                        if (result === 'override') {
-                          this.testSpec.specCharacteristic = exportedCharacteristicsArray
-                        }
-
-                        if (result === 'append') {
-                          this.testSpec.specCharacteristic = this.testSpec.specCharacteristic.concat(exportedCharacteristicsArray)
-                        }
-
-                        const updateCharacteristicObj: ServiceTestSpecificationUpdate = {
-                          specCharacteristic: this.testSpec.specCharacteristic
-                        }
-
-
-                        this.testSpecService.patchServiceTestSpecification({ id: this.testSpec.id, serviceSpecification: updateCharacteristicObj }).subscribe(
-                          data => { },
-                          error => { console.error(error); this.toast.error("An error occurred upon auto-exporting Test Specification Characteristics") },
-                          () => {
-                            this.retrieveTestSpec()
-                          }
-                        )
-                      }
-                    }
-                  }
-                )
-              }
-            }
-          )
-      }
-    }
-  }
-
-  clearAttachmentsList() {
-    this.attachmentFilesCtrl.clear()
-  }
-
-  openAttachmentDeleteDialog(attachment: AttachmentRefOrValue) {
-    const attToBeDeletedIndex = this.testSpec.attachment.findIndex(char => char.id === attachment.id)
-
-    const newSpecAttArray: AttachmentRefOrValue[] = this.testSpec.attachment.slice()
-    
-    newSpecAttArray.splice(attToBeDeletedIndex, 1)
-
-    const dialogRef = this.dialog.open(DeleteTestSpecAttachmentComponent, {
-      data: {
-        serviceTestSpec: this.testSpec,
-        serviceTestSpecAttachmentArray: newSpecAttArray, 
-        attachmentToBeDeleted: this.testSpec.attachment[attToBeDeletedIndex]
-      }
-    })
-
-    dialogRef.afterClosed().subscribe (
-      result => { 
-        if (result){ 
-          this.toast.success("Service Test Specification attachments list was successfully updated")
-          this.retrieveTestSpec()
-          this.testType.value === "developerDefined"
         }
       }
     )

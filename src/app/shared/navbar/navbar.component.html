@@ -38,6 +38,9 @@
                 <li class="nav-item">
                     <a class="nav-link" routerLink="testing/">Testing Portal</a>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link" routerLink="networking/">Networking Portal</a>
+                </li>
             </ul>
             <!-- ----- -->
             <!-- ENDOF Landing Portal Menu -->
@@ -187,7 +190,7 @@
 
             </ul>
             <!-- ----- -->
-            <!-- ENDOF Landing Portal Menu -->
+            <!-- ENDOF Product Portal Menu -->
 
 
             <!-- Testing Portal Menu -->
@@ -217,6 +220,17 @@
             <!-- ----- -->
             <!-- ENDOF Testing Portal Menu -->
 
+            
+            <!-- Networking Portal Menu -->
+            <!-- ----- -->
+            <ul class="navbar-nav mr-auto" *ngIf="appService.portalDomain === 'networking'">
+                <li class="nav-item" routerLinkActive="active">
+                    <a class="nav-link" routerLink="/{{appService.portalDomain}}/design_services">Design Services</a>
+                </li>
+
+            </ul>
+            <!-- ----- -->
+            <!-- ENDOF Networking Portal Menu -->
 
             <ng-container *ngIf="appService.portalDomain !== ''">
                 <ng-container *ngIf="authService.isAuthenticated$ | async; else elseTemplate">

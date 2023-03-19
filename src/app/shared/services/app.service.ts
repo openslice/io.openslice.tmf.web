@@ -44,7 +44,7 @@ export class AppService {
   }
 
   config = this.bootstrapService.getConfig()
-  portalDomain: "services" | "resources" |"testing" | "products" | "" = ""
+  portalDomain: "services" | "resources" |"testing" | "products" | "networking" | "" = ""
 
   setAPIurls() {
     this.portalAPIConfig.rootUrl = this.config.PORTAL_REPO_APIURL
@@ -68,8 +68,8 @@ export class AppService {
       filter(e => e instanceof NavigationStart),
     ).subscribe( (e: NavigationEnd) => {
       const activatedRoute = e.url.split('/')[1].toLowerCase()
-      if (["","services","resources", "testing", "products"].includes(activatedRoute)) {
-        this.portalDomain = <"" | "services" | "resources" | "testing" | "products"> activatedRoute
+      if (["","services","resources", "testing", "products", "networking"].includes(activatedRoute)) {
+        this.portalDomain = <"" | "services" | "resources" | "testing" | "products" | "networking"> activatedRoute
         localStorage.setItem("active_portal", this.portalDomain)
       }
     })

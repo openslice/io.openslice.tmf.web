@@ -1,0 +1,479 @@
+<div class="container py-5">
+    <div class="row">
+        <div class="col-12">
+            <mat-accordion class="example-headers-align">
+
+                <!-- First Tab - Network Slice -->
+                <!--  -->
+                <!--  -->
+
+                <mat-expansion-panel [expanded]="step === 0" (opened)="setStep(0)" hideToggle>
+                  <mat-expansion-panel-header>
+                    <mat-panel-title>
+                      <mat-icon *ngIf="networkSliceSelection.value" class="checked mr-1">check_circle_outline</mat-icon> Network Slice
+                    </mat-panel-title>
+                    <mat-panel-description>
+                      Select the accommodating Network Slice
+                      <mat-icon>5g</mat-icon>
+                    </mat-panel-description>
+                  </mat-expansion-panel-header>
+                  <!-- <h2 class="shadowed1">Available Network Slices</h2> -->
+                  <!-- <div class="container-fluid"> -->
+                  <div class="row mt-3">
+                    <div class="col-xl-4 col-lg-6 col-md-12" *ngFor="let candidate of serviceCandidates; let index = index"
+                      [@simpleFade]>
+                      <div class="card card-paper" (click)="onSelectNetworkSliceCard(index)"
+                        [ngClass]="{'card-selected mat-elevation-z6': networkSliceCardSelected[index]} ">
+                        <span [matTooltip]="networkSliceCardSelected[index] ? 'Network Slice selected' : 'Select '+candidate.name"
+                          class="selection">
+                          <mat-icon>check_circle</mat-icon>
+                        </span>
+                        <div class="card-header appTitle">
+                          {{candidate.name}}
+                          <!-- <div class="small">{{candidate.description}}</div> -->
+                        </div>
+                        <div class="card-body">
+                          <div class="row align-items-center justify-content-center">
+                            <div class="col-6">
+                              <div class="img-container">
+                                <img class="img-fluid" *ngIf="!candidate?.fetchingLogo" [src]="candidate.logo" alt="Service Image">
+                                <mat-progress-spinner *ngIf="candidate?.fetchingLogo" color="primary" mode="indeterminate"
+                                  diameter="100"></mat-progress-spinner>
+
+                              </div>
+                            </div>
+                            <div class="col-6">
+                              <div class="">Version: {{candidate.version}}</div>
+                              <div>
+                                <div class="badge badge-info mr-1" *ngFor="let category of candidate.category">
+                                  {{category.name}}
+                                </div>
+                              </div>
+
+                              <div class="mt-3 description-container">
+                                <!-- {{candidate.description | slice:0:59}} -->
+                                <!-- <span *ngIf="candidate.description.length > 59">...</span> -->
+                                <span markdown *ngIf="candidate.description && candidate.description.length > 59" ngPreserveWhitespaces>
+                                  {{candidate.description | slice:0:59}} ...
+                                </span>
+                                <span markdown *ngIf="candidate.description && candidate.description.length <= 59"
+                                  ngPreserveWhitespaces>
+                                  {{candidate.description}}
+                                </span>
+
+                              </div>
+
+                              <!-- <div class="mt-3">Status: {{candidate.lifecycleStatus}}</div>
+                                                                                <div class="mt-2" *ngIf="candidate.validFor">Starts: {{candidate.validFor.startDateTime | date:'short'}}</div>
+                                                                                <div *ngIf="candidate.validFor">Expires: {{candidate.validFor.endDateTime | date:'short'}}</div> -->
+                              <button type="button" class="btn btn-outline-secondary mt-3"
+                                (click)="previewServiceSpec(candidate)">Preview</button>
+                            </div>
+                          </div>
+                        </div>
+
+                        <div class="card-footer">
+                          <hr>
+                          <div class="card-stats">
+                            <ng-container>
+                              <i class="far fa-calendar mr-2"></i>
+                              <div>
+                                Last updated at {{candidate.lastUpdate | date:'medium'}} (Local Time)
+                              </div>
+                            </ng-container>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+               
+                  <mat-form-field class="mt-2" appearance="fill">
+                    <mat-label>Selected host Network Slice</mat-label>
+                    <input type="text" placeholder="Pick one of the available Network Slices" aria-label="Selected host Network Slice"
+                      matInput [matAutocomplete]="auto" [formControl]="networkSliceSelection">
+                    <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn" (optionSelected)="onSelectNetworkSlice($event)">
+                      <mat-option *ngFor="let candidate of serviceCandidates" [value]="candidate">
+                        {{candidate.name}}
+                      </mat-option>
+                    </mat-autocomplete>
+                    <mat-error *ngIf="networkSliceSelection.hasError('required')">This field is required</mat-error>
+                  </mat-form-field>
+                                
+                  <mat-action-row>
+                    <button mat-button color="primary" (click)="nextStep()">Next</button>
+                  </mat-action-row>
+                </mat-expansion-panel>
+
+                <!--  -->
+                <!--  -->
+                <!-- First Tab - Network Slice -->
+
+
+                <!-- Second Tab - NFV Artifacts -->
+                <!--  -->
+                <!--  -->
+
+                <mat-expansion-panel [expanded]="step === 1" (opened)="setStep(1)" hideToggle [disabled]="!networkSliceSelection.value">
+                  <mat-expansion-panel-header>
+                    <mat-panel-title>
+                      <mat-icon *ngIf="(uploadedNSpackages.length > 0) && (uploadedVNFpackages.length > 0)" class="checked mr-1">check_circle_outline</mat-icon> NFV Artifacts
+                    </mat-panel-title>
+                    <mat-panel-description>
+                      Upload your VNF/NS Descriptors
+                      <mat-icon>note_add</mat-icon>
+                    </mat-panel-description>
+                  </mat-expansion-panel-header>
+              
+                  <mat-form-field appearance="fill" class="mt-3">
+                    <mat-label>NFV Package format</mat-label>
+                    <mat-select [formControl]="manoPlatformSelection">
+                      <mat-option *ngFor="let manoPlatform of manoPlatforms" [value]="manoPlatform.name">{{manoPlatform.name}}</mat-option>
+                    </mat-select>
+                    <mat-error *ngIf="manoPlatformSelection.hasError('required')">This field is required</mat-error>
+
+                  </mat-form-field>
+
+                  <ng-container *ngIf="manoPlatformSelection.value">
+                    <h5 class="my-3">VNF Package Upload</h5>
+                    
+                    <ng-container *ngIf="uploadedVNFpackages.length === 0">
+                      <file-upload [control]="vnfUploadController" multiple="true">
+                      </file-upload>
+                      <mat-hint *ngIf="!vnfUploadController.invalid" class="pl-2 font-size-75">Supported file type: .tar.gz
+                      </mat-hint>
+                      <mat-error *ngIf="vnfUploadController.invalid" class="pl-2 font-size-75">Supported file type: .tar.gz
+                      </mat-error>
+    
+                      <div class="container-fluid my-3">
+                        <div class="row">
+                          <button type="submit" class="btn btn-block btn-outline-primary"
+                              (click)="submitVNFpackages()"><i
+                                  class="fas fa-check mr-2"></i>Submit
+                          </button>
+                        </div>
+                      </div>
+                    </ng-container>
+  
+                    <div *ngIf="uploadedVNFpackages.length > 0" class="row" [@simpleFade]>
+                      <div *ngFor="let package of uploadedVNFpackages"
+                        class="my-1 col-md-12 d-flex align-items-center justify-content-between">
+                        <a target="_blank" href="">
+                          <i class="far fa-file mr-1"></i> {{package.name}}
+                        </a>
+                        <span class="file-size"> {{package.size/1000}} KB
+                        </span>
+                      </div>
+                    </div>
+                  </ng-container>
+
+                  <ng-container *ngIf="uploadedVNFpackages.length > 0">
+                    <h5 class="my-3 mt-4">NS Package Upload</h5>
+  
+                    <div *ngIf="uploadedNSpackages.length > 0" class="row">
+                      <div *ngFor="let package of uploadedNSpackages"
+                        class="my-1 col-md-12 d-flex align-items-center justify-content-between">
+                        <a target="_blank" href="">
+                          <i class="far fa-file mr-1"></i> {{package.name}}
+                        </a>
+                        <span class="file-size"> {{package.size/1000}} KB
+                        </span>
+                      </div>
+                    </div>
+  
+                    <ng-container *ngIf="uploadedNSpackages.length === 0">
+                      <file-upload [control]="nsUploadController" multiple="false">
+                      </file-upload>
+                      <mat-hint *ngIf="!nsUploadController.invalid" class="pl-2 font-size-75">Supported file type: .tar.gz
+                      </mat-hint>
+                      <mat-error *ngIf="nsUploadController.invalid" class="pl-2 font-size-75">Supported file type: .tar.gz
+                      </mat-error>
+    
+                      <div class="container-fluid my-3">
+                        <div class="row">
+                          <button type="submit" class="btn btn-block btn-outline-primary"
+                              (click)="submitNSpackages()"><i
+                                  class="fas fa-check mr-2"></i>Submit
+                          </button>
+                        </div>
+                      </div>
+                    </ng-container>
+                  </ng-container>
+    
+                  <mat-action-row>
+                    <button mat-button color="warn" (click)="prevStep()">Previous</button>
+                    <button mat-button color="primary" (click)="nextStep()">Next</button>
+                  </mat-action-row>
+                </mat-expansion-panel>
+
+                <!--  -->
+                <!--  -->
+                <!-- Second Tab - NFV Artifacts -->
+
+
+                <!-- Third Tab - Test Artifacts -->
+                <!--  -->
+                <!--  -->
+
+                <mat-expansion-panel [expanded]="step === 2" (opened)="setStep(2)" hideToggle [disabled]="uploadedNSpackages.length === 0">
+                  <mat-expansion-panel-header>
+                    <mat-panel-title>
+                      <mat-icon *ngIf="testSpecification && testSpecification.attachment.length > 0" class="checked mr-1">check_circle_outline</mat-icon> Test Artifacts
+                    </mat-panel-title>
+                    <mat-panel-description>
+                      Upload your Test Descriptor and design the test pipeline
+                      <mat-icon>bug_report</mat-icon>
+                    </mat-panel-description>
+                  </mat-expansion-panel-header>
+                  
+                  <h5 class="my-3">Test Suite general properties</h5>
+
+                  <form [formGroup]="testSpecMainPropertiesForm" *ngIf="!testSpecification">
+                    <div class="row">
+                      <mat-form-field class="col-lg-6">
+                        <mat-label>Name</mat-label>
+                        <input matInput formControlName="name">
+                      </mat-form-field>
+                    
+                      <mat-form-field class="col-lg-6">
+                        <mat-label>Version</mat-label>
+                        <input matInput formControlName="version">
+                      </mat-form-field>
+                    
+                      <mat-form-field class="col-lg-12">
+                        <mat-label>Description</mat-label>
+                        <textarea matTextareaAutosize="true" matAutosizeMinRows="2" matInput formControlName="description"></textarea>
+                      </mat-form-field>                    
+                    
+                    </div>
+
+                    <div class="container-fluid my-3">
+                      <div class="row">
+                        <button type="submit" class="btn btn-block btn-outline-primary"
+                            (click)="submitServiceTestMainProperties()"><i
+                                class="fas fa-check mr-2"></i>Submit
+                        </button>
+                      </div>
+                    </div>
+                  </form>
+
+                  <div class="row" *ngIf="testSpecification">
+                    <div class="col-lg-6">
+                      <h6>Name</h6>
+                      <p>{{testSpecification.name}}</p>
+                    </div>
+                    <div class="col-lg-6">
+                      <h6>Version</h6>
+                      <p>{{testSpecification.version}}</p>
+                    </div>
+                    <div class="col-lg-12">
+                      <h6>Description</h6>
+                      <p>{{testSpecification.description}}</p>
+                    </div>
+                  </div>
+                    
+                  <ng-container *ngIf="testSpecification">
+                    <h5 class="my-3 mt-4">Test Descriptor Upload</h5>
+  
+                    <app-manage-service-test-spec-attachments [serviceTestSpecInput]="testSpecification" (serviceTestSpecOutputEvent)="refreshTestSpecificationEvent($event)"></app-manage-service-test-spec-attachments>
+                  </ng-container>
+              
+                  <mat-action-row>
+                    <button mat-button color="warn" (click)="prevStep()">Previous</button>
+                    <button mat-button color="primary" (click)="nextStep()">Next</button>
+                  </mat-action-row>
+                </mat-expansion-panel>
+
+                <!--  -->
+                <!--  -->
+                <!-- Third Tab - Test Artifacts -->
+
+
+                <!-- Fourth Tab - Confirm Submission -->
+                <!--  -->
+                <!--  -->
+
+                <mat-expansion-panel [expanded]="step === 3" (opened)="setStep(3)" hideToggle [disabled]="!testSpecification || testSpecification.attachment.length === 0">
+                  <mat-expansion-panel-header>
+                    <mat-panel-title>
+                      Service Creation
+                    </mat-panel-title>
+                    <mat-panel-description>
+                      Confirm the Service Creation comprising of the above elements
+                      <span><mat-icon>5g</mat-icon><mat-icon>note_add</mat-icon><mat-icon>bug_report</mat-icon></span>
+                    </mat-panel-description>
+                  </mat-expansion-panel-header>
+                  
+                  <h5 class="my-3" *ngIf="!createdBundle">Bundle general properties</h5>
+
+                  <form [formGroup]="bundleServiceSpecificationMainPropertiesForm" *ngIf="!createdBundle">
+                    <div class="row">
+                      <mat-form-field class="col-lg-6">
+                        <mat-label>Name</mat-label>
+                        <input matInput formControlName="name">
+                      </mat-form-field>
+                    
+                      <mat-form-field class="col-lg-6">
+                        <mat-label>Version</mat-label>
+                        <input matInput formControlName="version">
+                      </mat-form-field>
+                    
+                      <mat-form-field class="col-lg-12">
+                        <mat-label>Description</mat-label>
+                        <textarea matTextareaAutosize="true" matAutosizeMinRows="2" matInput formControlName="description"></textarea>
+                      </mat-form-field>        
+                      
+                      <div class="col-12" formGroupName="validFor">
+                        <div class="row">
+                            <mat-form-field class="col-md-6"
+                                [owlDateTimeTrigger]="pickerFrom">
+                                <mat-label>Valid From</mat-label>
+
+                                <input matInput [owlDateTime]="pickerFrom"
+                                    placeholder="Date Time"
+                                    formControlName="startDateTime">
+                                <mat-icon matSuffix>date_range</mat-icon>
+                                <owl-date-time #pickerFrom></owl-date-time>
+                                <mat-hint>Date is displayed in Local Time <span *ngIf="bundleServiceSpecificationMainPropertiesForm.value.validFor.startDateTime">(UTC: {{bundleServiceSpecificationMainPropertiesForm.value.validFor.startDateTime | date:'dd/MM/yy, HH:mm':'UTC'}})</span></mat-hint>
+                            </mat-form-field>
+
+                            <mat-form-field class="col-md-6"
+                                [owlDateTimeTrigger]="pickerUntil">
+                                <mat-label>Valid Until</mat-label>
+                                <input matInput [owlDateTime]="pickerUntil"
+                                    placeholder="Date Time"
+                                    formControlName="endDateTime">
+                                <mat-icon matSuffix>date_range</mat-icon>
+                                <owl-date-time #pickerUntil></owl-date-time>
+                                <mat-hint>Date is displayed in Local Time <span *ngIf="bundleServiceSpecificationMainPropertiesForm.value.validFor.endDateTime">(UTC: {{bundleServiceSpecificationMainPropertiesForm.value.validFor.endDateTime | date:'dd/MM/yy, HH:mm':'UTC'}})</span></mat-hint>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                    
+                    </div>
+
+                    <div class="container-fluid my-4">
+                      <div class="row">
+                        <button type="submit" class="btn btn-block btn-outline-primary"
+                            (click)="submitBundleCreation()"><i
+                                class="fas fa-check mr-2"></i>Submit
+                        </button>
+                      </div>
+                    </div>
+
+
+                  </form>
+
+                  <ng-container *ngIf="createdBundle" >
+                    <div class="row" *ngIf="false" >
+                      <div class="col-lg-6">
+                        <h6>Name</h6>
+                        <p>{{createdBundle.name}}</p>
+                      </div>
+                      <div class="col-lg-6">
+                        <h6>Version</h6>
+                        <p>{{createdBundle.version}}</p>
+                      </div>
+                      <div class="col-lg-12">
+                        <h6>Description</h6>
+                        <p>{{createdBundle.description}}</p>
+                      </div>
+                  
+                      <div class="col-lg-6">
+                        <h6>Valid from</h6>
+                        <p class="mb-0">
+                          {{createdBundle.validFor.startDateTime | date:'d MMM y, h:mm a'}} - Local
+                          Time</p>
+                        <p>
+                          {{createdBundle.validFor.startDateTime | date:'d MMM y, h:mm a':'UTC'}} -
+                          UTC</p>
+                      </div>
+                      <div class="col-lg-6">
+                        <h6>Valid until</h6>
+                        <p class="mb-0">
+                          {{createdBundle.validFor.endDateTime | date:'d MMM y, h:mm a'}} - Local
+                          Time</p>
+                        <p>
+                          {{createdBundle.validFor.endDateTime | date:'d MMM y, h:mm a':'UTC'}} -
+                          UTC</p>
+                      </div>
+                    </div>
+                  
+                    <h5 class="mt-4 text-center" [@simpleFade]>Congratulations, you may edit the created Bundle at the
+                     <a routerLink="/services/service_spec_update/{{createdBundle.id}}">link</a> or by clicking the card below</h5>
+                  
+                    <div class="row justify-content-center mt-5">
+                      <a class="col-6" [@simpleFade] routerLink="/services/service_spec_update/{{createdBundle.id}}">
+                      
+                        <div class="card card-paper card-bundle">
+                      
+                      
+                          <div class="card-header appTitle">
+                            {{createdBundle.name}}
+                          </div>
+                          <div class="card-body">
+                            <div class="row align-items-center justify-content-center">
+                              <div class="col-6">
+                                <div class="img-container">
+                                  <img class="img-fluid" [src]="defaultCardLogo" alt="Service Image">
+                                </div>
+                              </div>
+                              <div class="col-6">
+                                <div class="">Version: {{createdBundle.version}}</div>
+                                <div>
+                                  <div class="badge badge-info mr-1">
+                                    New Bundle
+                                  </div>
+                                </div>
+                      
+                                <div class="mt-3 description-container">
+                                  <!-- {{candidate.description | slice:0:59}} -->
+                                  <!-- <span *ngIf="candidate.description.length > 59">...</span> -->
+                                  <span markdown *ngIf="createdBundle.description && createdBundle.description.length > 59"
+                                    ngPreserveWhitespaces>
+                                    {{createdBundle.description | slice:0:59}} ...
+                                  </span>
+                                  <span markdown *ngIf="createdBundle.description && createdBundle.description.length <= 59"
+                                    ngPreserveWhitespaces>
+                                    {{createdBundle.description}}
+                                  </span>
+                      
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                      
+                          <div class="card-footer">
+                            <hr>
+                            <div class="card-stats">
+                              <ng-container>
+                                <i class="far fa-calendar mr-2"></i>
+                                <div>
+                                  Last updated at {{createdBundle.lastUpdate | date:'medium'}} (Local Time)
+                                </div>
+                              </ng-container>
+                            </div>
+                          </div>
+                        </div>
+                      </a>
+                    
+                    </div>
+                    
+                  </ng-container>
+                  
+                  <mat-action-row>
+                    <button mat-button color="warn" (click)="prevStep()">Previous</button>
+                  </mat-action-row>
+                </mat-expansion-panel>
+
+                
+                
+                <!--  -->
+                <!--  -->
+                <!-- Fourth Tab - Confirm Submission -->
+
+              
+              </mat-accordion>
+
+        </div>
+    </div>
+</div>

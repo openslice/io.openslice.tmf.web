@@ -22,6 +22,8 @@ const routes: Routes = [
   { path: 'testing', component: PortalsComponent},
   { path: 'testing', loadChildren: () => import('./app-testing.module').then(m => m.AppTestingModule)},
 
+  { path: 'networking', component: PortalsComponent},
+  { path: 'networking', loadChildren: () => import('./app-networking.module').then(m => m.AppNetworkingModule)},
 
   { path: '**', redirectTo: '404'},
   { path: '404', component: PageNotFoundComponent},

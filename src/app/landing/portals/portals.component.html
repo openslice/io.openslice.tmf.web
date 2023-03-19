@@ -39,6 +39,18 @@
 				<h5>Check the <strong><a style="color:#FFFFFF;" href="{{config.STATUS}}">Health Status</a></strong> of our infrastructure</h5>
 			</ng-container>
 
+			
+			<ng-container *ngIf="appService.portalDomain === 'networking'">
+				<h3>
+					Welcome to the {{config.TITLE}} Networking portal
+				</h3>
+				<h5>Use the fields on the right to login
+					to {{config.TITLE}} Testing and easily design tests over
+					the {{config.TITLE}} infrastructure</h5>
+				<h5>Check our <strong><a style="color:#FFFFFF;" href="{{config.WIKI}}">wiki</a></strong> for further documenation</h5>
+				<h5>Report platform issues at our <strong><a style="color:#FFFFFF;" href="{{config.BUGZILLA}}">Bugzilla</a></strong></h5>
+				<h5>Check the <strong><a style="color:#FFFFFF;" href="{{config.STATUS}}">Health Status</a></strong> of our infrastructure</h5>
+			</ng-container>
 
 			</div>
 			<div class="col-sm-12 col-md-4 col-lg-4" *ngIf="!loggedIn">
@@ -73,6 +85,13 @@
 					<h6 class="mb-0">Access, create
 						and share tests over the {{config.TITLE}} infrastructure</h6>
 				</ng-container>
+
+				<ng-container *ngIf="appService.portalDomain === 'networking'">
+					<h2 class="shadowed">Design 5G, B5G, 6G related {{config.TITLE}} network services</h2>
+					<h6 class="mb-0">Access, create
+						and share network services over the {{config.TITLE}} infrastructure</h6>
+				</ng-container>
+
             </div>
         </div>
 	</div>

@@ -25,7 +25,8 @@ export class PreviewMarketplaceItemComponent implements OnInit {
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: {
-      serviceCandidate: ServiceCandidate
+      serviceCandidate: ServiceCandidate,
+      mode: string
     },
     private dialogRef: MatDialogRef<PreviewMarketplaceItemComponent>,
     private specService: ServiceSpecificationService,

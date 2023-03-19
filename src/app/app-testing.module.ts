@@ -24,6 +24,7 @@ import { ImportCharacteristicsFromYamlComponent } from './p_testing/admin/testSp
 import { EditServiceTestComponent } from './p_testing/admin/testManagement/edit-service-test/edit-service-test.component';
 import { DeleteServiceRelationshipComponent } from './p_testing/admin/testSpecificationManagement/edit-service-test-spec/delete-service-relationship/delete-service-relationship.component';
 import { DeleteServiceTestComponent } from './p_testing/admin/testManagement/delete-service-test/delete-service-test.component';
+import { ManageServiceTestSpecAttachmentsComponent } from './p_testing/admin/testSpecificationManagement/manage-service-test-spec-attachments/manage-service-test-spec-attachments.component';
 
 
 
@@ -49,7 +50,8 @@ import { DeleteServiceTestComponent } from './p_testing/admin/testManagement/del
     DiscardChangesComponent,
     EditServiceTestComponent,
     DeleteServiceRelationshipComponent,
-    DeleteServiceTestComponent
+    DeleteServiceTestComponent,
+    ManageServiceTestSpecAttachmentsComponent
   ],
   imports: [
     CommonModule,
@@ -71,6 +73,9 @@ import { DeleteServiceTestComponent } from './p_testing/admin/testManagement/del
     DeleteServiceRelationshipComponent,
     DeleteServiceTestComponent
   ],
+  exports: [
+    ManageServiceTestSpecAttachmentsComponent
+  ]
 })
 
 export class AppTestingModule { }

@@ -735,10 +735,10 @@ class ArtifactsApiControllerService extends __BaseService {
     let __body: any = null;
     let __formData = new FormData();
     __body = __formData;
+    if (params.exprm != null) { __formData.append('exprm', params.exprm as string);}
     (params.screenshots || []).forEach(val => {if (val != null) __formData.append('screenshots', val as string | Blob)});
     if (params.prodIcon != null) { __formData.append('prodIcon', params.prodIcon as string | Blob);}
     if (params.prodFile != null) { __formData.append('prodFile', params.prodFile as string | Blob);}
-    __body = params.exprm;
     let req = new HttpRequest<any>(
       'POST',
       this.rootUrl + `/admin/experiments`,
@@ -2210,8 +2210,8 @@ class ArtifactsApiControllerService extends __BaseService {
     let __body: any = null;
     let __formData = new FormData();
     __body = __formData;
-    if (params.prodFile != null) { __formData.append('prodFile', params.prodFile as string | Blob);}
-    __body = params.vxf;
+    if (params.vxf != null) {__formData.append('vxf', params.vxf as string)}
+    if (params.prodFile != null) { __formData.append('prodFile', params.prodFile as string | Blob);}  
     (params.screenshots || []).forEach(val => {if (val != null) __formData.append('screenshots', val as string | Blob)});
     if (params.prodIcon != null) { __formData.append('prodIcon', params.prodIcon as string | Blob);}
     let req = new HttpRequest<any>(

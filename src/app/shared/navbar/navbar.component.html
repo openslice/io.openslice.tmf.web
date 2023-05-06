@@ -38,6 +38,9 @@
                 <li class="nav-item">
                     <a class="nav-link" routerLink="testing/">Testing Portal</a>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link" routerLink="products/">Products Portal</a>
+                </li>
             </ul>
             <!-- ----- -->
             <!-- ENDOF Landing Portal Menu -->
@@ -184,6 +187,37 @@
             <!-- Product Portal Menu -->
             <!-- ----- -->
             <ul class="navbar-nav mr-auto" *ngIf="appService.portalDomain === 'products'">
+
+                <li class="nav-item" routerLinkActive="active">
+                    <a class="nav-link" routerLink="/{{appService.portalDomain}}/marketplace">Marketplace</a>
+                </li>
+
+                <li class="nav-item dropdown" ngbDropdown *ngIf="(authService.isAuthenticated$ | async) && authService.portalUserJWT?.realm_access.roles.includes('ADMIN')" [@fadeIn]>
+                    <a class="nav-link dropdown-toggle" id="navbarDropdown" aria-haspopup="true" ngbDropdownToggle tabindex="0">Manage Products
+                        <ul class="dropdown-menu" aria-labelledby="navbarDropdown" ngbDropdownMenu>
+                            <li><a class="dropdown-item" tabindex="0" routerLink="/{{appService.portalDomain}}/product_catalogs">Product Catalogs</a></li>
+                            <li><a class="dropdown-item" tabindex="0" routerLink="/{{appService.portalDomain}}/product_categories">Product Categories</a></li>
+                            <li class="dropdown dropdown-submenu" ngbDropdown>
+                                <a class="dropdown-toggle" id="navbarDropdown1" aria-haspopup="true" ngbDropdownToggle tabindex="0">Product Specifications</a>
+                                <ul class="dropdown-menu" aria-labelledby="navbarDropdown1" ngbDropdownMenu>
+                                        <li><a class="dropdown-item" tabindex="0" routerLink="/{{appService.portalDomain}}/product_specs">List Product Specifications</a></li>
+                                        <li><a class="dropdown-item" tabindex="0" routerLink="/{{appService.portalDomain}}/product_spec_update">New Product Specification</a></li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </a>
+                </li>
+
+                <li class="nav-item dropdown" ngbDropdown *ngIf="(authService.isAuthenticated$ | async) && authService.portalUserJWT?.realm_access.roles.includes('ADMIN')" [@fadeIn]>
+                    <a class="nav-link dropdown-toggle" id="navbarDropdown" aria-haspopup="true" ngbDropdownToggle tabindex="0">Manage Entities
+                        <ul class="dropdown-menu" aria-labelledby="navbarDropdown" ngbDropdownMenu>
+                            <!-- <div class="optgroup-label">Catalog Management</div> -->
+                            <li><a class="dropdown-item" tabindex="0" routerLink="/{{appService.portalDomain}}/organizations">Organizations</a></li>
+                            <li><a class="dropdown-item" tabindex="0" routerLink="/{{appService.portalDomain}}/individuals">Individuals</a></li>
+                        </ul>
+                    </a>
+                </li>
+
 
             </ul>
             <!-- ----- -->

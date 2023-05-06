@@ -22,9 +22,12 @@ const routes: Routes = [
   { path: 'testing', component: PortalsComponent},
   { path: 'testing', loadChildren: () => import('./app-testing.module').then(m => m.AppTestingModule)},
 
+  { path: 'products', component: PortalsComponent},
+  { path: 'products', loadChildren: () => import('./app-products.module').then(m => m.AppProductsModule)},
 
   { path: '**', redirectTo: '404'},
-  { path: '404', component: PageNotFoundComponent},
+  { path: '404', component: PageNotFoundComponent}
+
 ];
 
 @NgModule({

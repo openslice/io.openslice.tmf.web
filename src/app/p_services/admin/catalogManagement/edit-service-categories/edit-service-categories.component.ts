@@ -20,6 +20,7 @@ import { error } from 'protractor';
 import { trigger } from '@angular/animations';
 import { fadeIn } from 'src/app/shared/animations/animations';
 import { AppService } from 'src/app/shared/services/app.service';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-edit-service-categories',
@@ -46,11 +47,11 @@ export class EditServiceCategoriesComponent implements OnInit, OnDestroy {
 
   editForm =  new FormGroup({
     category: new FormControl([]),
-    isRoot: new FormControl(),
+    isRoot: new FormControl({value: true, disabled: true}),
     description: new FormControl(),
     lifecycleStatus: new FormControl("In design"),
     name: new FormControl(),
-    parentId: new FormControl(),
+    parentId: new FormControl({value:null, disabled: true}),
     validFor: new FormGroup({
       endDateTime: new FormControl(new Date(new Date().setFullYear(new Date().getFullYear()+20))),
       startDateTime: new FormControl(new Date())
@@ -81,22 +82,13 @@ export class EditServiceCategoriesComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.retrieveServiceCategoryList()
     this.subscriptionsInit()
-
-
-    if (this.activatedRoute.snapshot.params.id) 
-    {
-      this.categoryID = this.activatedRoute.snapshot.params.id
-      this.retrieveServiceCategory()
-    } 
-    else { this.newCategory = true }
-
   }
 
   subscriptionsInit() {
     this.subscriptions.add(
       this.router.events.subscribe(
         (event) => {
-          if (event instanceof ActivationEnd) {
+          if (event instanceof ActivationEnd && event.snapshot.params && event.snapshot.params.id) {
             this.categoryID = event.snapshot.params.id
             this.retrieveServiceCategory()
           }
@@ -126,7 +118,7 @@ export class EditServiceCategoriesComponent implements OnInit, OnDestroy {
       data => this.category = data,
       error => console.error(error),
       () => {
-        if (!this.category.validFor) this.category.validFor = {endDateTime:null, startDateTime:null}
+        // if (!this.category.validFor) this.category.validFor = {endDateTime:null, startDateTime:null}
         this.editForm.patchValue(this.category)
 
         if (this.category.parentId) {
@@ -134,7 +126,7 @@ export class EditServiceCategoriesComponent implements OnInit, OnDestroy {
           this.editForm.patchValue({parentId: this.allCategories.find(el => el.id === this.category.parentId)})
           this.editForm.get('parentId').disable()
         } else {
-          this.editForm.get('isRoot').enable()
+          // this.editForm.get('isRoot').enable()
         }
 
         this.filteredChildrenCategories$ = this.childrenCategoryFilterCtrl.valueChanges.pipe( 
@@ -159,6 +151,15 @@ export class EditServiceCategoriesComponent implements OnInit, OnDestroy {
           startWith(null),
           map( (value: null | string | ServiceCategory) => typeof(value) === 'string' ? this._filterParentCategories(value) : this.allCategories.slice() )
         )
+
+        if (this.activatedRoute.snapshot.params.id) 
+        {
+          this.categoryID = this.activatedRoute.snapshot.params.id
+          this.retrieveServiceCategory()
+        } 
+        else { 
+          this.newCategory = true 
+        }
       }
     )
   }
@@ -191,7 +192,7 @@ export class EditServiceCategoriesComponent implements OnInit, OnDestroy {
     dialogRef.afterClosed().subscribe (
       result => { 
         if (result){ 
-          this.toast.success("Children Categories list is successfully updated")
+          this.toast.success("Subcategories list is successfully updated")
           this.retrieveServiceCategory()
         }
       }
@@ -203,8 +204,10 @@ export class EditServiceCategoriesComponent implements OnInit, OnDestroy {
 
     dialogRef.afterClosed().subscribe (
       result => {
-        if (result){ 
-          this.toast.success("Children Categories list is successfully updated")
+        if (result instanceof HttpErrorResponse) {
+          this.toast.error("An error occurred while attempting to delete Service Category. Please check dependencies.")
+        } else {
+          this.toast.success("Subcategories list is successfully updated")
           this.retrieveServiceCategory()
         }
       }
@@ -240,7 +243,7 @@ export class EditServiceCategoriesComponent implements OnInit, OnDestroy {
 
     const updateObj: ServiceCategoryCreate | ServiceCategoryUpdate = {
       // category: this.editForm.value.category.map(el => {return {'id': el.id}}),
-      isRoot: this.editForm.value.isRoot,
+      isRoot: this.editForm.getRawValue().isRoot,
       description: this.editForm.value.description,
       lifecycleStatus: this.editForm.value.lifecycleStatus,
       name: this.editForm.value.name,

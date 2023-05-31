@@ -1,0 +1,12 @@
+<h4 mat-dialog-title class="shadowed mb-3">
+    <i class="fa fa-undo mr-2"></i>
+    <span>Discard Changes</span>
+</h4>
+<div mat-dialog-content>
+    Unsubmitted changes will be discarded. Are you sure you want to discard changes and continue with the navigation?
+</div>
+
+<div mat-dialog-actions class="d-flex justify-content-end">
+    <button type="button" class="btn btn-outline-primary m-2" (click)="onNoClick()">No</button>
+    <button type="button" class="btn btn-danger m-2" (click)="onYesClick()">Discard Changes</button>
+</div>

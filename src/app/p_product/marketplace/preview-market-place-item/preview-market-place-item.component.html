@@ -1,0 +1,88 @@
+<div class="container-fluid" >
+    
+    <ng-container>
+
+        <mat-dialog-content class="dialog-content-container" >
+            <div class="row">
+                <div class="col-md-4 d-flex flex-column justify-content-center align-items-center">
+                    <div class="image-container">
+                        <img class="img-fluid" *ngIf="specLogoUrl" [src]="specLogoUrl" alt="Service Image">
+                        <mat-progress-spinner *ngIf="!specLogoUrl" color="primary" mode="indeterminate" diameter="100"></mat-progress-spinner>
+
+                    </div>
+                </div>
+    
+                <div class="col-md-8" >
+                    <div class="header-section">{{productOffering?.name}}</div>
+                    <!-- <div class="separator-div"></div> -->
+                    <div class="mt-1">
+                        <!-- <div class="badge badge-info mr-1" 
+                        *ngFor="let category of offering.category">
+                        {{category.name}}
+                        </div> -->
+                    </div>
+                    
+                    <div class="row mt-3 general-info-tab">
+                        <div class="col-6">
+                            <b>Version</b>
+                            <div>
+                                {{productOffering?.version}}
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <b>Bundle</b>
+                            <div>
+                                <span *ngIf="productSpec">{{productSpec?.isBundle}}</span>
+                                <span *ngIf="!productSpec && finishedLoading">Not Specified</span>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <!-- <button *ngIf="(authService.isAuthenticated$ | async)" type="button" class="btn btn-primary my-3" (click)="placeInOrderList()">
+                        <i class="fas fa-shopping-cart mr-1"></i>
+                        <span> Place in Order List </span>
+                    </button>
+
+                    <div *ngIf="!(authService.isAuthenticated$ | async)" class="my-3">
+                        <b class="shadowed">You must be logged in to place an order</b>
+                    </div> -->
+                    <!-- <div class="separator-div"></div> -->
+
+                </div>
+
+
+            </div>
+            <div class="general-info-tab">
+                <b>Description</b>
+                <div class="text-justify mt-2">
+                    <!-- {{spec?.description}} -->
+                    <div markdown [data]="productOffering?.description" ngPreserveWhitespaces></div>
+                </div>
+            </div>
+
+            <!-- <button type="button" class="btn btn-primary " (click)="placeInOrderList()">
+                <i class="fas fa-shopping-cart mr-1"></i>
+                <span> Place in Order List </span>
+            </button> -->
+            <div class="separator-div"></div>
+            
+                
+            
+            
+        </mat-dialog-content>
+
+    </ng-container>
+
+    <div mat-dialog-actions class="d-flex justify-content-end">
+        <button type="button" class="btn btn-outline-danger my-2" (click)="closeDialog()">Cancel</button>
+
+    </div>
+   
+</div>
+
+
+
+
+
+

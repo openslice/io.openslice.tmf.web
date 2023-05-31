@@ -28,7 +28,7 @@ export class RedirectComponent implements OnInit {
     }
 
     else if (activePortal === 'products') {
-      this.router.navigate(['/'])
+      this.router.navigate(['products', 'marketplace'])
     }
 
     else {

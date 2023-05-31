@@ -11,6 +11,8 @@ import { IAppConfig } from 'src/app/shared/models/app-config.model';
 import { map, startWith } from 'rxjs/operators';
 import { trigger } from '@angular/animations';
 import { simpleFade } from 'src/app/shared/animations/animations';
+import { PreviewMarketPlaceItemComponent } from './preview-market-place-item/preview-market-place-item.component';
+import { ThemingService } from 'src/app/theming/theming.service';
 
 @Component({
   selector: 'app-product-marketplace',
@@ -28,6 +30,7 @@ export class ProductMarketplaceComponent implements OnInit {
     private treeMarketPlaceService: TreeServiceMarketPlaceService,
     private dialog: MatDialog,
     private sortingService: SortingService,
+    private themingService: ThemingService
   ) { }
 
   productCatalogs: Catalog[]
@@ -42,7 +45,6 @@ export class ProductMarketplaceComponent implements OnInit {
   productOfferingsFilterCtrl = new FormControl();
   filteredProductOfferings$: Observable<ProductOffering[]>
 
-  specServiceRootUrl : string
   config: IAppConfig
 
   resultsNotFound: boolean = false
@@ -50,8 +52,6 @@ export class ProductMarketplaceComponent implements OnInit {
 
   ngOnInit() {
     this.config = this.appService.config
-
-    // this.specServiceRootUrl = this.specificationService.rootUrl
 
     this.retrieveCatalogsList()
 
@@ -80,28 +80,13 @@ export class ProductMarketplaceComponent implements OnInit {
     )
   }
 
-  // retrieveCandidateFromSpecID(specID: string) {
-  //   this.candidateService.listServiceCandidate({}).subscribe(
-  //     data => {
-  //       const candidate = data.find(cand => {
-  //           if (cand.serviceSpecification && cand.serviceSpecification.id) {
-  //             return cand.serviceSpecification.id === specID
-  //           }
-  //       })
-  //       if (candidate) {this.previewServiceSpec(candidate)}
-  //     },
-  //     error => { console.error(error) }
-  //   )
-  // }
-
   retrieveOfferingFromRef(offeringRef: ProductOfferingRef) {
     
     this.subscriptions.add(this.productOfferingService.retrieveProductOffering({ id: offeringRef.id }).subscribe(
       data => { 
-        // console.log(data)
         let productOffering: ProductOffering = data
         // offering.fetchingLogo = true
-        // candidate.logo = this.themingService.getConfig().DEFAULT_SERVICE_LOGO_PATH //set Default App Image, path defined in theming.service.ts
+        productOffering['logo'] = this.themingService.getConfig().DEFAULT_SERVICE_LOGO_PATH //set Default App Image, path defined in theming.service.ts
 
         this.productOfferings.push(productOffering)
 
@@ -140,18 +125,13 @@ export class ProductMarketplaceComponent implements OnInit {
   }
 
   previewProductOffering(offering: ProductOffering) {
-    // const dialogRef = this.dialog.open(PreviewMarketplaceItemComponent, {
-    //   data: {
-    //     serviceCandidate: candidate
-    //   },
-    //   autoFocus: false
-    // })
+    const dialogRef = this.dialog.open(PreviewMarketPlaceItemComponent, {
+      data: {
+        productOffering: offering
+      },
+      autoFocus: false
+    })
 
-    // dialogRef.afterClosed().subscribe(
-    //   result => {
-    //     // console.log(result);
-    //   }
-    // )
   }
 
   ngOnDestroy() {

@@ -23,7 +23,7 @@ export class DeleteServiceCategoryComponent implements OnInit {
   confirmDelete() {
     this.categoryService.deleteServiceCategory(this.data.id).subscribe(
       data => {},
-      error =>  console.error(error),
+      error =>  {this.dialogRef.close(error); console.error(error)},
       () => this.dialogRef.close('deleted')
     )
   }

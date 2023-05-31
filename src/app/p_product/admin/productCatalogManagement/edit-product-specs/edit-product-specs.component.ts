@@ -73,8 +73,8 @@ export class EditProductSpecsComponent implements OnInit {
   initSubscriptions() {
     this.subscriptions.add(this.router.events.subscribe(
       event => {
-        if (event instanceof ActivationEnd) {
-          this.specID = this.activatedRoute.snapshot.params.id
+        if (event instanceof ActivationEnd && event.snapshot.params && event.snapshot.params.id) {
+          this.specID = event.snapshot.params.id
           this.retrieveProductSpec()
         }
       }
@@ -100,7 +100,7 @@ export class EditProductSpecsComponent implements OnInit {
   retrieveProductSpec() {
     this.specService.retrieveProductSpecification({id: this.specID}).subscribe(
       data => this.spec = data,
-      error => {console.error(error), this.toastrService.error("An error occured while loading Product Specification")},
+      error => {console.error(error), this.toastrService.error("An error occurred while loading Product Specification")},
       () => {
         if (this.spec) {
           this.finishedLoading = true
@@ -167,7 +167,7 @@ export class EditProductSpecsComponent implements OnInit {
           error => console.error(error),
           () => {
             this.newSpecification = false
-            this.toastrService.success("Service Specification was successfully created")
+            this.toastrService.success("Product Specification was successfully created")
             this.refreshProductSpecification(updatedSpec)
           }
         )
@@ -177,7 +177,7 @@ export class EditProductSpecsComponent implements OnInit {
           data => { updatedSpec = data },
           error => console.error(error),
           () => {
-            this.toastrService.success("Service Specification was successfully updated")
+            this.toastrService.success("Product Specification was successfully updated")
             this.refreshProductSpecification(updatedSpec)
           }
         )

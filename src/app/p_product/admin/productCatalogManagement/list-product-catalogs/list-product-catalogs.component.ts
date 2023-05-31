@@ -9,6 +9,7 @@ import { Catalog } from 'src/app/openApis/productCatalogManagement/models';
 import { CatalogService } from 'src/app/openApis/productCatalogManagement/services';
 import { fadeIn } from 'src/app/shared/animations/animations';
 import { DeleteProductCatalogsComponent } from '../delete-product-catalogs/delete-product-catalogs.component';
+import { AppService } from 'src/app/shared/services/app.service';
 
 @Component({
   selector: 'app-list-product-catalogs',
@@ -21,7 +22,8 @@ export class ListProductCatalogsComponent implements OnInit {
   constructor(
     private catalogService: CatalogService,
     public dialog: MatDialog,
-    private toastrService: ToastrService
+    private toastrService: ToastrService,
+    public appService: AppService
   ) { }
 
   displayedColumns = ['name', 'description', 'version', 'lastUpdate',  'lifecycleStatus', 'actions']

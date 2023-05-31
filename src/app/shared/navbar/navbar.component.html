@@ -27,19 +27,19 @@
             <!-- ----- -->
             <ul class="navbar-nav mr-auto" *ngIf="appService.portalDomain === ''" [@fadeIn]>
                 <li class="nav-item">
-                    <a class="nav-link" routerLink="services/">Services Portal</a>
+                    <a class="nav-link" routerLink="services/">Services</a>
                 </li>
                 <li class="nav-item">
-                  <a class="nav-link" routerLink="resources/">Resources Portal</a>
+                  <a class="nav-link" routerLink="resources/">Resources</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="nfvportal/">NFV Portal</a>
+                    <a class="nav-link" href="nfvportal/">NFV</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" routerLink="testing/">Testing Portal</a>
+                    <a class="nav-link" routerLink="testing/">Testing</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" routerLink="products/">Products Portal</a>
+                    <a class="nav-link" routerLink="products/">Products</a>
                 </li>
             </ul>
             <!-- ----- -->
@@ -197,13 +197,15 @@
                         <ul class="dropdown-menu" aria-labelledby="navbarDropdown" ngbDropdownMenu>
                             <li><a class="dropdown-item" tabindex="0" routerLink="/{{appService.portalDomain}}/product_catalogs">Product Catalogs</a></li>
                             <li><a class="dropdown-item" tabindex="0" routerLink="/{{appService.portalDomain}}/product_categories">Product Categories</a></li>
-                            <li class="dropdown dropdown-submenu" ngbDropdown>
+                            <li><a class="dropdown-item" tabindex="0" routerLink="/{{appService.portalDomain}}/product_offerings">Product Offerings</a></li>
+                            <li><a class="dropdown-item" tabindex="0" routerLink="{{appService.portalDomain}}/product_specs">Product Specifications</a></li>
+                            <!-- <li class="dropdown dropdown-submenu" ngbDropdown>
                                 <a class="dropdown-toggle" id="navbarDropdown1" aria-haspopup="true" ngbDropdownToggle tabindex="0">Product Specifications</a>
                                 <ul class="dropdown-menu" aria-labelledby="navbarDropdown1" ngbDropdownMenu>
                                         <li><a class="dropdown-item" tabindex="0" routerLink="/{{appService.portalDomain}}/product_specs">List Product Specifications</a></li>
                                         <li><a class="dropdown-item" tabindex="0" routerLink="/{{appService.portalDomain}}/product_spec_update">New Product Specification</a></li>
                                 </ul>
-                            </li>
+                            </li> -->
                         </ul>
                     </a>
                 </li>

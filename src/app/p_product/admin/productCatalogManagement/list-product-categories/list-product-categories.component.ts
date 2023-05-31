@@ -10,6 +10,7 @@ import { CategoryService } from 'src/app/openApis/productCatalogManagement/servi
 import { fadeIn } from 'src/app/shared/animations/animations';
 import { AppService } from 'src/app/shared/services/app.service';
 import { DeleteProductCategoriesComponent } from '../delete-product-categories/delete-product-categories.component';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-list-product-categories',
@@ -65,9 +66,11 @@ export class ListProductCategoriesComponent implements OnInit {
   openCategoryDeleteDialog(element: Category) {
     const dialogRef = this.dialog.open(DeleteProductCategoriesComponent, {data: element})
 
-    dialogRef.afterClosed().subscribe (
+    dialogRef.afterClosed().subscribe(
       result => {
-        if (result) {
+        if (result instanceof HttpErrorResponse) {
+          this.toastrService.error("An error occurred while attempting to delete Product Category. Please check dependencies.")
+        } else {
           this.toastrService.success("Product Categories list is successfully updated")
           this.retrieveCategoriesList()
         }

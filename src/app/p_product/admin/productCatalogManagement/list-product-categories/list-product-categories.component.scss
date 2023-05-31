@@ -4,16 +4,19 @@
     align-items: center;
 }
 
-.isRoot-class td{
-    color:#3f51b5
+.isRoot-class td:first-of-type{
+    // color:#3f51b5;
+    text-decoration: underline;
+    
 }
 
 mat-hint {
     background: #fff;
 }
 
-.isRootcolor {
-    color:#3f51b5
+.isRootDecoration {
+    text-decoration: underline;
+    
 }
 
 .checked {

@@ -127,7 +127,7 @@ export class EditServiceSpecsComponent implements OnInit {
   initSubscriptions() {
     this.subscriptions.add(this.router.events.subscribe(
       event => {
-        if (event instanceof ActivationEnd) {
+        if (event instanceof ActivationEnd && event.snapshot.params && event.snapshot.params.id) {
           this.specID = this.activatedRoute.snapshot.params.id
           this.retrieveServiceSpec()
         }

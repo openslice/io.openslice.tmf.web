@@ -42,7 +42,7 @@
                                 <span *ngIf="category?.parentId" class="d-flex align-items-center">
                                     <mat-icon *ngIf="!editForm.controls.parentId.value?.isRoot">keyboard_arrow_right</mat-icon>
                                     <a mat-button
-                                        routerLink='/{{appService.portalDomain}}/service_categories_update/{{editForm.controls.parentId.value.id}}'>{{editForm.controls.parentId.value.name}}
+                                        routerLink='/{{appService.portalDomain}}/service_categories_update/{{editForm.controls.parentId.value?.id}}'>{{editForm.controls.parentId.value?.name}}
                                     </a>
                                 </span>
                             
@@ -137,19 +137,19 @@
                             <mat-expansion-panel [expanded]="!newCategory" [disabled]="newCategory" class="bg-light" [@fadeIn]>
                                 <mat-expansion-panel-header>
                                     <mat-panel-title>
-                                        Assign Children Categories to Service Category
+                                        Create and assign Subcategories to Service Category
                                     </mat-panel-title>
                                 </mat-expansion-panel-header>
                             
                                 <div class="filter-container row align-items-center justify-content-center">
                                     <mat-form-field *ngIf="category?.category.length > 0" class="col-lg-10">
-                                        <mat-label>Apply Filter to Children Categories...</mat-label>
+                                        <mat-label>Apply filter to assigned Subcategories...</mat-label>
                                         <input matInput [formControl]="childrenCategoryFilterCtrl">
                                     </mat-form-field>
                             
                                     <div *ngIf="category?.category.length === 0" class="col-lg-10 children-categories-font">
                                         <!-- Category <dfn>{{category.name}}</dfn> has no children categories assigned yet -->
-                                        There are no children categories assigned yet
+                                        There are no subcategories assigned yet
                                     </div>
                             
                             
@@ -175,7 +175,7 @@
                             <mat-expansion-panel [expanded]="!newCategory" [disabled]="newCategory" class="bg-light" [@fadeIn]>
                                 <mat-expansion-panel-header>
                                     <mat-panel-title>
-                                        Assign Service Specifications to Service Category
+                                        Manage the assignment of Service Specifications to Service Category
                                     </mat-panel-title>
                                 </mat-expansion-panel-header>
                             
@@ -192,7 +192,7 @@
                             
                                     <div class="text-right col-lg-2">
                                         <button type="button" class="btn btn-success btn-sm" (click)="openAssignCandidatesDialog(category)"><i
-                                                class="fas fa-cart-arrow-down mr-2"></i>Assign</button>
+                                                class="fas fa-cart-arrow-down mr-2"></i>Manage</button>
                                     </div>
                                 </div>
                             

@@ -15,6 +15,12 @@ import { DeleteProductCategoriesComponent } from './p_product/admin/productCatal
 import { DeleteProductSpecsComponent } from './p_product/admin/productCatalogManagement/delete-product-specs/delete-product-specs.component';
 import { TreeSidenavComponent } from './p_product/marketplace/tree-sidenav/tree-sidenav.component';
 import { AssignServiceSpecificationComponent } from './p_product/admin/productCatalogManagement/edit-product-specs/assign-service-specification/assign-service-specification.component';
+import { ListProductOfferingsComponent } from './p_product/admin/productCatalogManagement/list-product-offerings/list-product-offerings.component';
+import { DeleteProductOfferingComponent } from './p_product/admin/productCatalogManagement/delete-product-offering/delete-product-offering.component';
+import { EditProductOfferingsComponent } from './p_product/admin/productCatalogManagement/edit-product-offerings/edit-product-offerings.component';
+import { PreviewMarketPlaceItemComponent } from './p_product/marketplace/preview-market-place-item/preview-market-place-item.component';
+import { AssignProductOfferingsComponent } from './p_product/admin/productCatalogManagement/edit-product-categories/assign-product-offerings/assign-product-offerings.component';
+import { AssignSubcategoriesComponent } from './p_product/admin/productCatalogManagement/edit-product-categories/assign-subcategories/assign-subcategories.component';
 
 
 
@@ -32,6 +38,12 @@ import { AssignServiceSpecificationComponent } from './p_product/admin/productCa
     DeleteProductCategoriesComponent,
     DeleteProductSpecsComponent,
     AssignServiceSpecificationComponent,
+    ListProductOfferingsComponent,
+    DeleteProductOfferingComponent,
+    EditProductOfferingsComponent,
+    PreviewMarketPlaceItemComponent,
+    AssignProductOfferingsComponent,
+    AssignSubcategoriesComponent
   ],
   imports: [
     CommonModule,
@@ -42,7 +54,9 @@ import { AssignServiceSpecificationComponent } from './p_product/admin/productCa
     DeleteProductCatalogsComponent,
     DeleteProductSpecsComponent,
     DeleteProductCategoriesComponent,
-    AssignServiceSpecificationComponent
+    DeleteProductOfferingComponent,
+    AssignServiceSpecificationComponent,
+    PreviewMarketPlaceItemComponent
   ],
 })
 

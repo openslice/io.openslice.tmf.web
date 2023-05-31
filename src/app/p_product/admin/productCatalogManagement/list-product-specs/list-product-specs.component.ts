@@ -68,7 +68,7 @@ export class ListProductSpecsComponent implements OnInit {
           if (result instanceof HttpErrorResponse) {
             this.toastrService.error("An error occurred while attempting to delete Product Specification")
           } else {
-            this.toastrService.success("Service Specification list is successfully updated")
+            this.toastrService.success("Product Specification list is successfully updated")
             this.retrieveSpecsList()
           }
         }

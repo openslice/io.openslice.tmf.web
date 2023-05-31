@@ -102,6 +102,9 @@ export class AssignServiceCandidatesComponent implements OnInit {
       this.assignedCandidates.splice(index, 1);
       this.dataSource.data = this.assignedCandidates
       this.availableCandidates.push(spec);
+
+      this.candidateInput.nativeElement.value = '';
+      this.candidateInputCtrl.setValue(null);  
     }
   }
 

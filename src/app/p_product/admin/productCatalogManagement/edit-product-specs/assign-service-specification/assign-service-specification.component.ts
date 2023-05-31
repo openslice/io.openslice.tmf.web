@@ -45,7 +45,6 @@ export class AssignServiceSpecificationComponent implements OnInit {
 
   ngOnInit(): void {
     this.listServiceSpecs()
-    console.log(this.data)
   }
 
   listServiceSpecs() {

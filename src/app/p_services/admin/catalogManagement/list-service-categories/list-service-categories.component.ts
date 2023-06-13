@@ -12,6 +12,7 @@ import { ToastrService } from 'ngx-toastr';
 import { trigger } from '@angular/animations';
 import { fadeIn } from 'src/app/shared/animations/animations';
 import { AppService } from 'src/app/shared/services/app.service';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-list-service-categories',
@@ -68,7 +69,10 @@ export class ListServiceCategoriesComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe (
       result => {
-        if (result) {
+        console.log(result)
+        if (result instanceof HttpErrorResponse) {
+          this.toast.error("An error occurred while attempting to delete Service Category. Please check dependencies.")
+        } else {
           this.toast.success("Service Categories list is successfully updated")
           this.retrieveCategoriesList()
         }

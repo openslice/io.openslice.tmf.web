@@ -1,0 +1,106 @@
+<div class="container-fluid py-4">
+    <div class="row">
+        <div class="col-lg-4 col-xl-2">
+
+            <div class="card card-paper">
+                <div class="catalog-tree-header shadowed"><h5 class="mb-0">Product Catalog Explorer</h5></div> 
+                <div class="catalog-tree-container">
+                    <app-tree-sidenav></app-tree-sidenav>
+                </div>
+            </div>
+
+        </div>
+        <div class="col-lg-8 col-xl-10">
+            <div class="jumbotron card card-paper bg-light shadowed">
+                <h2>Welcome to the {{config.TITLE}} Products Marketplace</h2>
+                <h5>Browse available products and sign in to order the respective services</h5>
+            </div>
+
+            <div class="card1" *ngIf="selectedCategory">
+                <div class="card-header">
+                    <div>Product offerings of <b>{{selectedCategory.name}}</b> category</div>
+                    <small *ngIf="selectedCategory.description">{{selectedCategory.description}}</small>
+                    <small *ngIf="!selectedCategory.description"><i>Description not available</i></small>
+                </div>
+                <div class="row" >
+                    <mat-form-field appearance="outline" class="white-background col-12">
+                        <mat-label>Filter products...</mat-label>
+                        <input matInput placeholder="Start typing your preferred product name"  [formControl]="productOfferingsFilterCtrl">
+                    </mat-form-field>
+                </div>
+                
+                <div class="card-body1">                
+                    <div class="row">
+                        <div class="col-xl-4 col-lg-6 col-md-12" *ngFor="let offering of filteredProductOfferings$ | async; let index = index" [@simpleFade]>
+                            <div class="card card-paper">
+                                <div class="card-header appTitle">
+                                    {{offering.name}}
+                                    <!-- <div class="small">{{offering.description}}</div> -->
+                                </div>
+                                <div class="card-body">
+                                    <div class="row align-items-center justify-content-center">
+                                        <div class="col-6">
+                                            <div class="img-container">
+                                                <img class="img-fluid" *ngIf="!offering?.fetchingLogo"
+                                                    [src]="offering.logo"
+                                                    alt="Service Image">
+                                                <mat-progress-spinner *ngIf="offering?.fetchingLogo" color="primary" mode="indeterminate" diameter="100"></mat-progress-spinner>
+
+                                            </div>
+                                        </div>
+                                        <div class="col-6">
+                                            <div class="">Version: {{offering.version}}</div>
+                                            <div>
+                                                <div class="badge badge-info mr-1"
+                                                    *ngFor="let category of offering.category">
+                                                    {{category.name}}
+                                                </div>
+                                            </div>
+
+                                            <div class="mt-3 description-container">
+                                                <!-- {{offering.description | slice:0:59}} -->
+                                                <!-- <span *ngIf="offering.description.length > 59">...</span> -->
+                                                <span markdown *ngIf="offering.description && offering.description.length > 59" ngPreserveWhitespaces >
+                                                    {{offering.description | slice:0:59}} ...
+                                                </span>
+                                                <span markdown *ngIf="offering.description && offering.description.length <= 59" ngPreserveWhitespaces >
+                                                    {{offering.description}}
+                                                </span>
+                                                
+                                            </div>
+                                            
+                                            <!-- <div class="mt-3">Status: {{offering.lifecycleStatus}}</div>
+                                            <div class="mt-2" *ngIf="offering.validFor">Starts: {{offering.validFor.startDateTime | date:'short'}}</div>
+                                            <div *ngIf="offering.validFor">Expires: {{offering.validFor.endDateTime | date:'short'}}</div> -->
+                                            <button type="button" class="btn btn-outline-secondary mt-3" (click)="previewProductOffering(offering)">Preview</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            
+                                <div class="card-footer">
+                                    <hr>
+                                    <div class="card-stats">
+                                        <ng-container>
+                                            <i class="far fa-calendar mr-2" ></i>
+                                            <div>
+                                                Last updated at {{offering.lastUpdate | date:'medium'}} (Local Time)
+                                            </div>
+                                        </ng-container>                          
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card-body1" *ngIf="resultsNotFound" [@simpleFade]>
+                        No results found...
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+
+</div>

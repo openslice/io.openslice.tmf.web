@@ -53,7 +53,7 @@ export class ResourceOsmAddComponent implements OnInit {
   initSubscriptions() {
     this.subscriptions.add(this.router.events.subscribe(
       event => {
-        if (event instanceof ActivationEnd) {
+        if (event instanceof ActivationEnd && event.snapshot.params && event.snapshot.params.id) {
           console.log(event.snapshot.params.id)
           this.resourceID = this.activatedRoute.snapshot.params.id
           this.retrieveResource()

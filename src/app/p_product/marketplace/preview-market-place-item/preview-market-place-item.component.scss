@@ -1,0 +1,75 @@
+.mat-dialog-title {
+    font-weight: 500;
+}
+
+.description-text {
+    color: #9a9a9a;
+}
+
+.image-container {
+    height: 150px;
+    // border: 2px solid #ccc;
+    margin-bottom: .5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.image-container img {
+    border-radius: 6px;
+}
+
+
+.img-fluid {
+    max-height: 100%;
+}
+
+.isConfigurable-class td{
+    color:#3f51b5
+}
+
+
+/////@at-root
+.dialog-content-container {
+    min-width: 40vw;
+}
+
+.header-section {
+    font-size: 1.4rem;
+    font-weight: 500;    
+}
+
+.general-info-tab {
+    margin-bottom: .75rem;
+}
+
+.separator-div {
+    height: 0;
+    margin: 1rem 0;
+    overflow: hidden;
+    border-top: 1px solid #e9ecef;
+}
+
+.table th, .table td {
+    border-top: 0
+}
+
+.no-chars-found {
+    font-style: italic;
+    margin-top: 1rem;
+    // text-align: center;
+}
+
+span.hidden {
+    display: none;
+}
+
+.mat-column-defaultValues span:last-child span span.comma-separator {
+    display: none;
+}
+
+.value-measureUnits {
+    color: #727272;
+    font-size: 11px;
+    line-height: 1.1;
+}

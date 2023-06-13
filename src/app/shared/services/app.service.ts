@@ -13,6 +13,8 @@ import { ApiConfiguration as serviceTestManagementAPIconfig } from 'src/app/open
 import { ApiConfiguration as ResourceCatalogAPIconfig} from 'src/app/openApis/resourceCatalogManagement/api-configuration'
 import { ApiConfiguration as ResourceInventoryAPIconfig} from 'src/app/openApis/resourceInventoryManagement/api-configuration'
 import { ApiConfiguration as resourcePoolManagementAPIconfig} from 'src/app/openApis/resourcePoolManagement/api-configuration'
+import { ApiConfiguration as ProductCatalogAPIconfig} from 'src/app/openApis/productCatalogManagement/api-configuration'
+
 import { NavigationEnd, NavigationStart, Router } from '@angular/router';
 import { filter, first } from 'rxjs/operators';
 
@@ -37,7 +39,8 @@ export class AppService {
     private serviceTestManagementAPIconfig: serviceTestManagementAPIconfig,
     private tmfResourceCatalogConfig: ResourceCatalogAPIconfig,
     private tmfResourceInventoryConfig: ResourceInventoryAPIconfig,
-    private resourcePoolManagementAPIconfig: resourcePoolManagementAPIconfig
+    private resourcePoolManagementAPIconfig: resourcePoolManagementAPIconfig,
+    private tmfProductCatalogConfig: ProductCatalogAPIconfig
   ) { 
     this.setAPIurls()
     this.recognizePortalDomain()
@@ -60,6 +63,7 @@ export class AppService {
     this.tmfResourceInventoryConfig.rootUrl = this.config.APITMFURL
     this.serviceTestManagementAPIconfig.rootUrl = this.config.APITMFURL
     this.resourcePoolManagementAPIconfig.rootUrl = this.config.APITMFURL
+    this.tmfProductCatalogConfig.rootUrl = this.config.APITMFURL
   }
 
   //recognition of which portal is used (services/testing/product)

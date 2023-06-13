@@ -40,12 +40,24 @@
 			</ng-container>
 
 			
+			<ng-container *ngIf="appService.portalDomain === 'products'">
+				<h3>
+					Welcome to the {{config.TITLE}} Product portal
+				</h3>
+				<h5>Use the fields on the right to login
+					to {{config.TITLE}} Products and easily browse the available products that are offered as deployable services over 
+					the {{config.TITLE}} infrastructure</h5>
+				<h5>Check our <strong><a style="color:#FFFFFF;" href="{{config.WIKI}}">wiki</a></strong> for further documenation</h5>
+				<h5>Report platform issues at our <strong><a style="color:#FFFFFF;" href="{{config.BUGZILLA}}">Bugzilla</a></strong></h5>
+				<h5>Check the <strong><a style="color:#FFFFFF;" href="{{config.STATUS}}">Health Status</a></strong> of our infrastructure</h5>
+			</ng-container>
+			
 			<ng-container *ngIf="appService.portalDomain === 'networking'">
 				<h3>
 					Welcome to the {{config.TITLE}} Networking portal
 				</h3>
 				<h5>Use the fields on the right to login
-					to {{config.TITLE}} Testing and easily design tests over
+					to {{config.TITLE}} Networking and easily design network services over
 					the {{config.TITLE}} infrastructure</h5>
 				<h5>Check our <strong><a style="color:#FFFFFF;" href="{{config.WIKI}}">wiki</a></strong> for further documenation</h5>
 				<h5>Report platform issues at our <strong><a style="color:#FFFFFF;" href="{{config.BUGZILLA}}">Bugzilla</a></strong></h5>
@@ -84,6 +96,13 @@
 					<h2 class="shadowed">Design {{config.TITLE}} tests</h2>
 					<h6 class="mb-0">Access, create
 						and share tests over the {{config.TITLE}} infrastructure</h6>
+				</ng-container>
+
+				<ng-container *ngIf="appService.portalDomain === 'products'">
+					<h2 class="shadowed">Browse {{config.TITLE}} products</h2>
+					<h6 class="mb-0">Access, create
+						and browse products offered as services over the {{config.TITLE}} infrastructure
+					</h6>
 				</ng-container>
 
 				<ng-container *ngIf="appService.portalDomain === 'networking'">

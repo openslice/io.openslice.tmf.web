@@ -72,7 +72,7 @@ export class PreviewServiceComponent implements OnInit {
   initSubscriptions() {
     this.subscriptions.add(this.router.events.subscribe(
       event => {
-        if (event instanceof ActivationEnd) {
+        if (event instanceof ActivationEnd && event.snapshot.params && event.snapshot.params.id) {
           this.serviceID = this.activatedRoute.snapshot.params.id
           this.retrieveService()
         }

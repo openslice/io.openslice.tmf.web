@@ -19,6 +19,7 @@ import { ServiceTestSpecificationService } from 'src/app/openApis/serviceTestMan
 import { ToastrService } from 'ngx-toastr';
 import { PortalRepositoryAPIAuthService } from '../shared/portal-repository-api-auth.service';
 import { forkJoin } from 'rxjs'
+import { MatCheckboxChange } from '@angular/material/checkbox';
 
 
 @Component({
@@ -45,13 +46,19 @@ export class ServiceDesignComponent implements OnInit {
 
   step = 0;
   subscriptions = new Subscription()
+  testSpecServiceRootUrl: string
 
   ngOnInit(): void {
-    this.portalRepositoryAPIAuthService.fetchPortalRepositoryUserInfo()
     this.retrieveCatalogsList()
     this.retrieveCategoriesList()
-
+    
     this.retrieveMANOPlatforms()
+    this.retrieveUserInfoForNFVArtifacts()
+
+    this.retrieveAvailableTestSpecs()
+    this.testSpecServiceRootUrl = this.testSpecService.rootUrl
+    //DEVELOPMENT
+    this.setStep(2)
   }
 
   setStep(index: number) {
@@ -118,7 +125,7 @@ export class ServiceDesignComponent implements OnInit {
   }
 
   retrieveNetworkSlices() {
-    let networkSliceCategory = this.serviceCategories.find(cat => cat.name === 'eMBB')
+    let networkSliceCategory = this.serviceCategories.find(cat => cat.name.toLowerCase().includes("embb"))
     if (networkSliceCategory) {
       networkSliceCategory.serviceCandidate.forEach( (candidateRef) => {
         this.retrieveCandidateFromRef(candidateRef)
@@ -203,39 +210,68 @@ export class ServiceDesignComponent implements OnInit {
     )
   }
 
+  retrieveUserInfoForNFVArtifacts() {
+    this.portalRepositoryAPIAuthService.fetchPortalRepositoryUserInfo()
+  }
+
   submitVNFpackages() {
 
     if (this.vnfUploadController.valid) {
-      // const vnfObj: ArtifactsApiControllerService.AddVxFMetadataUsingPOSTParams = {
-      //   vxf: JSON.stringify({"owner":this.portalRepositoryAPIAuthService.portalRepositoryUser,"extensions":[],"packagingFormat":this.manoPlatformSelection.value}),
-      //   prodFile: this.vnfUploadController.value[0]
-      // }
+      this.vnfUploadController.value.forEach( vnfPackage => {
+        const vnfObj: ArtifactsApiControllerService.AddVxFMetadataUsingPOSTParams = {
+          vxf: JSON.stringify({"owner":this.portalRepositoryAPIAuthService.portalRepositoryUser,"extensions":[],"packagingFormat":this.manoPlatformSelection.value}),
+          prodFile: vnfPackage
+        }
 
-      // this.artifactsControllerService.addVxFMetadataUsingPOST(vnfObj).subscribe(
-      //   data => {console.log(data)},
-      //   error => {console.error(error)}
-      // ) 
-      this.uploadedVNFpackages.push(...this.vnfUploadController.value)
-      this.toast.success("VNF package(s) was successfully uploaded")
-      this.manoPlatformSelection.disable()      
+        let vnfResponse;
+        this.artifactsControllerService.addVxFMetadataUsingPOST(vnfObj).subscribe(
+          data => {vnfResponse = data},
+          error => {
+            if (error.error && error.error.message.includes("already exists")) {
+              this.toast.error(`The VNF package(s) under the name ${vnfPackage.name} already exists. Please use a different name.`)
+            } else {
+              this.toast.error("Please check the VNF package(s) format and reassure it meets the selected NFV Package format")
+            }
+          },
+          () => {
+            vnfPackage['location'] = vnfResponse.packageLocation
+            this.uploadedVNFpackages.push(vnfPackage)
+            this.toast.success("VNF package(s) was successfully uploaded")
+            this.manoPlatformSelection.disable()    
+          }
+        ) 
+
+      })  
     }
 
   }
 
   submitNSpackages() {
     if (this.nsUploadController.valid) {
-      // const nsObj: ArtifactsApiControllerService.AddExperimentMetadataUsingPOSTParams = {
-      //   exprm: JSON.stringify({"owner":this.portalRepositoryAPIAuthService.portalRepositoryUser,"extensions":[],"packagingFormat":this.manoPlatformSelection.value}),
-      //   prodFile: this.nsUploadController.value[0]
-      // }
+      this.nsUploadController.value.forEach( nsPackage => {
+        const nsObj: ArtifactsApiControllerService.AddExperimentMetadataUsingPOSTParams = {
+          exprm: JSON.stringify({"owner":this.portalRepositoryAPIAuthService.portalRepositoryUser,"extensions":[],"packagingFormat":this.manoPlatformSelection.value}),
+          prodFile: nsPackage
+        }
 
-      // this.artifactsControllerService.addExperimentMetadataUsingPOST(nsObj).subscribe(
-      //   data => {console.log(data)},
-      //   error => {console.error(error)}
-      // )
-      this.uploadedNSpackages.push(...this.nsUploadController.value)
-      this.toast.success("NS package was successfully uploaded")
-      this.manoPlatformSelection.disable()
+        let nsResponse;
+        this.artifactsControllerService.addExperimentMetadataUsingPOST(nsObj).subscribe(
+          data => {nsResponse = data},
+          error => {
+            if (error.error && error.error.message.includes("already exists")) {
+              this.toast.error(`The NS package(s) under the name ${nsPackage.name} already exists. Please use a different name.`)
+            } else {
+              this.toast.error("Please check the NS package(s) format and reassure it meets the selected NFV Package format")
+            }
+          },
+          () => {
+            nsPackage['location'] = nsResponse.packageLocation
+            this.uploadedNSpackages.push(nsPackage)
+            this.toast.success("NS package was successfully uploaded")
+            this.manoPlatformSelection.disable()    
+          }
+        )
+      })
     }
   }
 
@@ -247,9 +283,38 @@ export class ServiceDesignComponent implements OnInit {
   //Test Artifacts - Step 2 Panel functions
   //
 
+  reuseExistingTestsChecked: boolean = false
+  reuseExistingTestsDisabled: boolean = false
+
   testSpecification: ServiceTestSpecification
   testSpecificationID: string
-  
+
+  availableTestSpecifications: ServiceTestSpecification[]
+  availableTestSpecSelection = new FormControl(null, Validators.required)
+
+  reuseExistingTestCheckboxChanged(event: MatCheckboxChange) {
+    console.log(event.checked)
+    if (!event.checked) {
+      this.testSpecification = null
+      this.testSpecificationID = null
+    }
+  }
+
+  retrieveAvailableTestSpecs() {
+    this.testSpecService.listServiceTestSpecification({}).subscribe(
+      data => {this.availableTestSpecifications = data},
+      error => {console.error(error)}
+    )
+  }
+
+  onSelectAvailableTestSpec(event) {
+    console.log(event)
+    this.testSpecification = event.option.value
+    this.testSpecificationID = event.option.value.id
+    console.log(this.testSpecification)
+    console.log(this.testSpecificationID)
+  }
+
   testSpecMainPropertiesForm = new FormGroup ({
     name: new FormControl("", Validators.required),
     description: new FormControl("", Validators.required),
@@ -277,6 +342,7 @@ export class ServiceDesignComponent implements OnInit {
           this.toast.success("Service Test Suite was successfully created")
           this.testSpecificationID = createdSpec.id
           this.retrieveTestSpec()
+          this.reuseExistingTestsDisabled = true
         }
       )
       

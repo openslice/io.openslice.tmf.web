@@ -22,10 +22,10 @@
                   <div class="row mt-3">
                     <div class="col-xl-4 col-lg-6 col-md-12" *ngFor="let candidate of serviceCandidates; let index = index"
                       [@simpleFade]>
-                      <div class="card card-paper" (click)="onSelectNetworkSliceCard(index)"
+                      <div class="card card-paper" 
                         [ngClass]="{'card-selected mat-elevation-z6': networkSliceCardSelected[index]} ">
                         <span [matTooltip]="networkSliceCardSelected[index] ? 'Network Slice selected' : 'Select '+candidate.name"
-                          class="selection">
+                          class="selection" (click)="onSelectNetworkSliceCard(index)">
                           <mat-icon>check_circle</mat-icon>
                         </span>
                         <div class="card-header appTitle">
@@ -146,7 +146,7 @@
     
                       <div class="container-fluid my-3">
                         <div class="row">
-                          <button type="submit" class="btn btn-block btn-outline-primary"
+                          <button type="submit" class="btn btn-block btn-primary"
                               (click)="submitVNFpackages()"><i
                                   class="fas fa-check mr-2"></i>Submit
                           </button>
@@ -157,7 +157,7 @@
                     <div *ngIf="uploadedVNFpackages.length > 0" class="row" [@simpleFade]>
                       <div *ngFor="let package of uploadedVNFpackages"
                         class="my-1 col-md-12 d-flex align-items-center justify-content-between">
-                        <a target="_blank" href="">
+                        <a href={{package.location}}>
                           <i class="far fa-file mr-1"></i> {{package.name}}
                         </a>
                         <span class="file-size"> {{package.size/1000}} KB
@@ -172,7 +172,7 @@
                     <div *ngIf="uploadedNSpackages.length > 0" class="row">
                       <div *ngFor="let package of uploadedNSpackages"
                         class="my-1 col-md-12 d-flex align-items-center justify-content-between">
-                        <a target="_blank" href="">
+                        <a href={{package.location}}>
                           <i class="far fa-file mr-1"></i> {{package.name}}
                         </a>
                         <span class="file-size"> {{package.size/1000}} KB
@@ -190,7 +190,7 @@
     
                       <div class="container-fluid my-3">
                         <div class="row">
-                          <button type="submit" class="btn btn-block btn-outline-primary"
+                          <button type="submit" class="btn btn-block btn-primary"
                               (click)="submitNSpackages()"><i
                                   class="fas fa-check mr-2"></i>Submit
                           </button>
@@ -225,57 +225,117 @@
                     </mat-panel-description>
                   </mat-expansion-panel-header>
                   
-                  <h5 class="my-3">Test Suite general properties</h5>
-
-                  <form [formGroup]="testSpecMainPropertiesForm" *ngIf="!testSpecification">
-                    <div class="row">
-                      <mat-form-field class="col-lg-6">
-                        <mat-label>Name</mat-label>
-                        <input matInput formControlName="name">
-                      </mat-form-field>
-                    
-                      <mat-form-field class="col-lg-6">
-                        <mat-label>Version</mat-label>
-                        <input matInput formControlName="version">
-                      </mat-form-field>
-                    
-                      <mat-form-field class="col-lg-12">
-                        <mat-label>Description</mat-label>
-                        <textarea matTextareaAutosize="true" matAutosizeMinRows="2" matInput formControlName="description"></textarea>
-                      </mat-form-field>                    
-                    
-                    </div>
-
-                    <div class="container-fluid my-3">
-                      <div class="row">
-                        <button type="submit" class="btn btn-block btn-outline-primary"
-                            (click)="submitServiceTestMainProperties()"><i
-                                class="fas fa-check mr-2"></i>Submit
-                        </button>
-                      </div>
-                    </div>
-                  </form>
-
-                  <div class="row" *ngIf="testSpecification">
-                    <div class="col-lg-6">
-                      <h6>Name</h6>
-                      <p>{{testSpecification.name}}</p>
-                    </div>
-                    <div class="col-lg-6">
-                      <h6>Version</h6>
-                      <p>{{testSpecification.version}}</p>
-                    </div>
-                    <div class="col-lg-12">
-                      <h6>Description</h6>
-                      <p>{{testSpecification.description}}</p>
+                  <div class="row">
+                    <div class="col-12">
+                        <mat-checkbox color="primary" [(ngModel)]="reuseExistingTestsChecked" 
+                          [disabled]="reuseExistingTestsDisabled" class="letter-spacing-1" 
+                          (change)="reuseExistingTestCheckboxChanged($event)">Reuse an existing Test Suite
+                        </mat-checkbox>
+                      
                     </div>
                   </div>
-                    
-                  <ng-container *ngIf="testSpecification">
-                    <h5 class="my-3 mt-4">Test Descriptor Upload</h5>
-  
-                    <app-manage-service-test-spec-attachments [serviceTestSpecInput]="testSpecification" (serviceTestSpecOutputEvent)="refreshTestSpecificationEvent($event)"></app-manage-service-test-spec-attachments>
-                  </ng-container>
+                  
+                  <hr>
+
+                  <!-- Reuse existing Test Spec -->
+                  <mat-form-field class="mt-2" appearance="fill" *ngIf="reuseExistingTestsChecked" [@simpleFade]>
+                    <mat-label>Selected Test Suite</mat-label>
+                    <input type="text" placeholder="Pick one of the available Test Suites" aria-label="Selected Test Suite"
+                      matInput [matAutocomplete]="auto" [formControl]="availableTestSpecSelection">
+                    <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn" (optionSelected)="onSelectAvailableTestSpec($event)">
+                      <mat-option *ngFor="let testSpec of availableTestSpecifications" [value]="testSpec">
+                        {{testSpec.name}}
+                      </mat-option>
+                    </mat-autocomplete>
+                    <mat-error *ngIf="availableTestSpecSelection.hasError('required')">This field is required</mat-error>
+                  </mat-form-field>
+
+                  <div *ngIf="reuseExistingTestsChecked && testSpecification">
+                    <h6 class=" my-3 letter-spacing-1 text-decoration-underline">Test Suite general properties</h6>
+                    <div class="row">
+                      <div class="col-lg-6">
+                        <h6>Name</h6>
+                        <p>{{testSpecification.name}}</p>
+                      </div>
+                      <div class="col-lg-6">
+                        <h6>Version</h6>
+                        <p>{{testSpecification.version}}</p>
+                      </div>
+                      <div class="col-lg-12">
+                        <h6>Description</h6>
+                        <p>{{testSpecification.description}}</p>
+                      </div>
+                    </div>
+
+                    <h6 class="my-3 letter-spacing-1 text-decoration-underline">Test Suite attachments</h6>
+                    <div *ngIf="testSpecification.attachment.length > 0" class="mb-3 row">
+    
+                      <div *ngFor="let attachment of testSpecification.attachment"
+                          class="my-1 col-md-12 d-flex align-items-center justify-content-between">
+                          <a target="_blank" href="{{testSpecServiceRootUrl}}{{attachment.url}}">
+                              <i class="far fa-file mr-1"></i> {{attachment.name}}
+                          </a>
+                      </div>
+                  </div>
+
+                  </div>
+
+                  <!-- Create new Test Spec -->
+                  <div class="mt-4" *ngIf="!reuseExistingTestsChecked" [@simpleFade]>
+                    <span class="letter-spacing-1">Or design a new one</span>
+                  
+                    <h6 class="mt-5 my-4 letter-spacing-1 text-decoration-underline">Test Suite general properties</h6>
+                  
+                    <form [formGroup]="testSpecMainPropertiesForm" *ngIf="!testSpecification">
+                      <div class="row">
+                        <mat-form-field class="col-lg-6">
+                          <mat-label>Name</mat-label>
+                          <input matInput formControlName="name">
+                        </mat-form-field>
+                  
+                        <mat-form-field class="col-lg-6">
+                          <mat-label>Version</mat-label>
+                          <input matInput formControlName="version">
+                        </mat-form-field>
+                  
+                        <mat-form-field class="col-lg-12">
+                          <mat-label>Description</mat-label>
+                          <textarea matTextareaAutosize="true" matAutosizeMinRows="2" matInput formControlName="description"></textarea>
+                        </mat-form-field>
+                  
+                      </div>
+                  
+                      <div class="container-fluid my-3">
+                        <div class="row">
+                          <button type="submit" class="btn btn-block btn-primary" (click)="submitServiceTestMainProperties()"><i
+                              class="fas fa-check mr-2"></i>Submit
+                          </button>
+                        </div>
+                      </div>
+                    </form>
+                  
+                    <div class="row" *ngIf="testSpecification">
+                      <div class="col-lg-6">
+                        <h6>Name</h6>
+                        <p>{{testSpecification.name}}</p>
+                      </div>
+                      <div class="col-lg-6">
+                        <h6>Version</h6>
+                        <p>{{testSpecification.version}}</p>
+                      </div>
+                      <div class="col-lg-12">
+                        <h6>Description</h6>
+                        <p>{{testSpecification.description}}</p>
+                      </div>
+                    </div>
+                  
+                    <ng-container *ngIf="testSpecification">
+                      <h6 class="my-4 letter-spacing-1 text-decoration-underline">Test Descriptor Upload</h6>
+                  
+                      <app-manage-service-test-spec-attachments [serviceTestSpecInput]="testSpecification"
+                        (serviceTestSpecOutputEvent)="refreshTestSpecificationEvent($event)"></app-manage-service-test-spec-attachments>
+                    </ng-container>
+                  </div>
               
                   <mat-action-row>
                     <button mat-button color="warn" (click)="prevStep()">Previous</button>

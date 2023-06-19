@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ServiceCandidate, ServiceCandidateRef, ServiceCatalog, ServiceCategory, ServiceSpecification, ServiceSpecificationCreate } from 'src/app/openApis/serviceCatalogManagement/models';
 import { ServiceCandidateService, ServiceCatalogService, ServiceCategoryService, ServiceSpecificationService } from 'src/app/openApis/serviceCatalogManagement/services';
-import { Subscription } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { ThemingService } from 'src/app/theming/theming.service';
 import { ServiceCandidateWithLogo } from 'src/app/shared/models/service-candidate-with-logo.model';
 import { SortingService } from 'src/app/shared/functions/sorting.service';
@@ -57,8 +57,6 @@ export class ServiceDesignComponent implements OnInit {
 
     this.retrieveAvailableTestSpecs()
     this.testSpecServiceRootUrl = this.testSpecService.rootUrl
-    //DEVELOPMENT
-    this.setStep(2)
   }
 
   setStep(index: number) {
@@ -125,7 +123,7 @@ export class ServiceDesignComponent implements OnInit {
   }
 
   retrieveNetworkSlices() {
-    let networkSliceCategory = this.serviceCategories.find(cat => cat.name.toLowerCase().includes("embb"))
+    let networkSliceCategory = this.serviceCategories.find(cat => cat.name.toLowerCase().includes("network slices"))
     if (networkSliceCategory) {
       networkSliceCategory.serviceCandidate.forEach( (candidateRef) => {
         this.retrieveCandidateFromRef(candidateRef)
@@ -202,6 +200,8 @@ export class ServiceDesignComponent implements OnInit {
   uploadedVNFpackages = []
   uploadedNSpackages = []
 
+  uploadedNSDID: string
+
   retrieveMANOPlatforms() {
     this.artifactsControllerService.getMANOplatformsUsingGET().subscribe(
       data => {
@@ -237,7 +237,7 @@ export class ServiceDesignComponent implements OnInit {
             vnfPackage['location'] = vnfResponse.packageLocation
             this.uploadedVNFpackages.push(vnfPackage)
             this.toast.success("VNF package(s) was successfully uploaded")
-            this.manoPlatformSelection.disable()    
+            this.manoPlatformSelection.disable()   
           }
         ) 
 
@@ -268,7 +268,8 @@ export class ServiceDesignComponent implements OnInit {
             nsPackage['location'] = nsResponse.packageLocation
             this.uploadedNSpackages.push(nsPackage)
             this.toast.success("NS package was successfully uploaded")
-            this.manoPlatformSelection.disable()    
+            this.manoPlatformSelection.disable()
+            this.uploadedNSDID = nsResponse.id
           }
         )
       })
@@ -388,16 +389,21 @@ export class ServiceDesignComponent implements OnInit {
 
   submitBundleCreation() {
     if (this.bundleServiceSpecificationMainPropertiesForm.valid) {
-      const importServiceSpecifications$ = forkJoin({
-        nfv: this.specificationService.createServiceSpecificationFromNSDID("21"),
-        test: this.specificationService.createServiceSpecificationFromServiceTestSpecification(this.testSpecification.id)
-      })
+      let serviceSpecsToBeImportedObj = {
+        nfv: this.specificationService.createServiceSpecificationFromNSDID(this.uploadedNSDID),
+      }
+      
+      if (this.testSpecification && this.testSpecification.relatedServiceSpecification.length === 0) {
+        serviceSpecsToBeImportedObj['test'] = this.specificationService.createServiceSpecificationFromServiceTestSpecification(this.testSpecification.id)
+      }
+
+      const importServiceSpecifications$: Observable <{nfv: ServiceSpecification; test?: ServiceSpecification;}> = forkJoin(serviceSpecsToBeImportedObj)
   
       importServiceSpecifications$.subscribe(
         importedServiceSpecs => {  
           const selectedNetworkSliceCandidate: ServiceCandidate = this.networkSliceSelection.value
           
-          const bundleSpecCreationObj: ServiceSpecificationCreate = {
+          let bundleSpecCreationObj: ServiceSpecificationCreate = {
             name: this.bundleServiceSpecificationMainPropertiesForm.get('name').value,
             description: this.bundleServiceSpecificationMainPropertiesForm.get('description').value,
             version: this.bundleServiceSpecificationMainPropertiesForm.get('version').value,
@@ -405,9 +411,14 @@ export class ServiceDesignComponent implements OnInit {
             validFor: this.bundleServiceSpecificationMainPropertiesForm.get('validFor').value,
             serviceSpecRelationship: [
               {id: importedServiceSpecs.nfv.id, name:importedServiceSpecs.nfv.name},
-              {id: importedServiceSpecs.test.id, name:importedServiceSpecs.test.name},
               {id: selectedNetworkSliceCandidate.serviceSpecification.id, name: selectedNetworkSliceCandidate.serviceSpecification.name}
             ]
+          }
+
+          if (importedServiceSpecs.test) {
+            bundleSpecCreationObj.serviceSpecRelationship.push({id: importedServiceSpecs.test.id, name:importedServiceSpecs.test.name})
+          } else {
+            bundleSpecCreationObj.serviceSpecRelationship.push({id: this.testSpecification.relatedServiceSpecification[0].id, name: this.testSpecification.name})
           }
           
           this.specificationService.createServiceSpecification(bundleSpecCreationObj).subscribe(

@@ -24,7 +24,8 @@ export class RedirectComponent implements OnInit {
       this.router.navigate(['resources', 'resource_catalogs'])
     }
     else if (activePortal === 'testing') {
-      this.router.navigate(['testing', 'service_test_specs'])
+      // this.router.navigate(['testing', 'service_test_specs'])
+      this.router.navigate(['testing'])
     }
 
     else if (activePortal === 'products') {

@@ -94,8 +94,9 @@
 
 				<ng-container *ngIf="appService.portalDomain === 'testing'">
 					<h2 class="shadowed">Design {{config.TITLE}} tests</h2>
-					<h6 class="mb-0">Access, create
+					<h6>Access, create
 						and share tests over the {{config.TITLE}} infrastructure</h6>
+					<h6 class="mt-4" *ngIf="loggedIn && !authService.portalUserJWT?.realm_access.roles.includes('ADMIN')"><i>This portal requires an Administrator role. Please contact the portal Administrator.</i></h6>
 				</ng-container>
 
 				<ng-container *ngIf="appService.portalDomain === 'products'">

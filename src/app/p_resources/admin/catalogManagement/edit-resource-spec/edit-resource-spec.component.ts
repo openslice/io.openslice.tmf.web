@@ -56,7 +56,8 @@ export class EditResourceSpecsComponent implements OnInit {
       endDateTime: new FormControl(new Date(new Date().setFullYear(new Date().getFullYear()+20))),
       startDateTime: new FormControl(new Date())
     }),
-    version: new FormControl("0.1.0")
+    version: new FormControl("0.1.0"),
+    category: new FormControl("resource")
   })
 
   listItems = ["Main Properties", "Resource Specification Relationships", "Related Parties", "Resource Specification Characteristics", "Attachments"]
@@ -326,7 +327,8 @@ export class EditResourceSpecsComponent implements OnInit {
       lifecycleStatus: this.editForm.value.lifecycleStatus,
       name: this.editForm.value.name,
       validFor: this.editForm.value.validFor,
-      version: this.editForm.value.version
+      version: this.editForm.value.version,
+      category: this.editForm.value.category
     }
 
     let updatedSpec: ResourceSpecification

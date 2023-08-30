@@ -30,7 +30,7 @@ export class ListResourceSpecsComponent implements OnInit {
     public appService: AppService
   ) { }
 
-  displayedColumns = ['name', 'description', 'version', '@type', 'lastUpdate',  'lifecycleStatus', 'actions']
+  displayedColumns = ['name', 'description', 'version', 'type', 'lastUpdate',  'lifecycleStatus', 'actions']
   dataSource  = new MatTableDataSource<ResourceSpecification>()
 
   serviceSpecs: ResourceSpecification[]
@@ -50,12 +50,11 @@ export class ListResourceSpecsComponent implements OnInit {
       () => {
         this.dataSource.data = this.serviceSpecs
         this.dataSource.sort = this.sort
-        // console.log(this.sort)
         this.dataSource.paginator = this.paginator;
         this.dataSource.sortingDataAccessor = (item, property): string | number => {
           switch (property) {
             case 'lastUpdate': return new Date(item.lastUpdate).getTime();
-            case '@type': return item[property] === 'CustomerFacingResourceSpecification' ? 'CFSS': 'RFSS';
+            // case '@type': return item[property] === 'CustomerFacingResourceSpecification' ? 'CFSS': 'RFSS';
             default: return item[property];
           }
         }

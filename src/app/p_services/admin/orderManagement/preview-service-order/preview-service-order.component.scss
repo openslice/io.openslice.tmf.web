@@ -56,6 +56,11 @@ mat-form-field {
     overflow-y: auto;
 }
 
+.notes-graph-container {
+    display: flex;
+    justify-content: center;
+}
+
 .service-spec-container {
     display: flex;
     justify-content: space-between;

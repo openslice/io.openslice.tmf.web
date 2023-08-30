@@ -22,8 +22,8 @@ export class DeleteResourceCategoriesComponent implements OnInit {
 
   confirmDelete() {
     this.categoryService.deleteResourceCategory(this.data.id).subscribe(
-      data => console.log(data),
-      error =>  console.error(error),
+      data => {},
+      error =>  {this.dialogRef.close(error); console.error(error)},
       () => this.dialogRef.close('deleted')
     )
   }

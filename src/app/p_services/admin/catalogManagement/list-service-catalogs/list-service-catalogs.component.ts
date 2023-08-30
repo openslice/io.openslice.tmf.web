@@ -12,6 +12,8 @@ import { DeleteServiceCatalogComponent } from '../delete-service-catalog/delete-
 import { ToastrService } from 'ngx-toastr';
 import { trigger } from '@angular/animations';
 import { fadeIn } from 'src/app/shared/animations/animations';
+import { AppService } from 'src/app/shared/services/app.service';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-list-service-catalogs',
@@ -21,7 +23,11 @@ import { fadeIn } from 'src/app/shared/animations/animations';
 })
 export class ListServiceCatalogsComponent implements OnInit {
 
-  constructor(private catalogService: ServiceCatalogService, public dialog: MatDialog, private toast: ToastrService) { }
+  constructor(
+    private catalogService: ServiceCatalogService, 
+    public dialog: MatDialog, 
+    private toast: ToastrService
+    ) { }
 
   displayedColumns = ['name', 'description', 'version', 'lastUpdate',  'lifecycleStatus', 'actions']
   dataSource  = new MatTableDataSource<ServiceCatalog>()

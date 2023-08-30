@@ -56,6 +56,7 @@ export class EditResourceSpecCharacteristicsComponent implements OnInit {
 
   compDestroy$ = new Subject()
 
+  isCharValueBlockExpanded: boolean[] = []
 
   ngOnInit() {
     if (this.data.specToBeUpdated) {
@@ -65,9 +66,8 @@ export class EditResourceSpecCharacteristicsComponent implements OnInit {
       const formArray = this.editFormCharacteristic.get('resourceSpecCharacteristicValue') as FormArray
       this.data.specToBeUpdated.resourceSpecCharacteristicValue.forEach( val => {
         formArray.push(this.updateFormArrayItem(val))
+        this.isCharValueBlockExpanded.push(false)
       })
-      console.log(this.data)
-      console.log(this.editFormCharacteristic)
 
       this.subValueTypeCtrl.patchValue(this.data.specToBeUpdated.resourceSpecCharacteristicValue[0].valueType)
       if (['SET', 'ARRAY', 'ENUM'].includes(this.data.specToBeUpdated.valueType)) {
@@ -154,11 +154,17 @@ export class EditResourceSpecCharacteristicsComponent implements OnInit {
         valueType: new FormControl(subType)
       })
     )
+    this.isCharValueBlockExpanded.push(false)
   }
 
   deleteFormArrayItem(index) {
     const formArray = this.editFormCharacteristic.get('resourceSpecCharacteristicValue') as FormArray
     formArray.removeAt(index)
+    this.isCharValueBlockExpanded.splice(index, 1)
+  }
+  
+  expandCharValueBlock(index) {
+    this.isCharValueBlockExpanded[index] = !this.isCharValueBlockExpanded[index] 
   }
 
   isDefaultCheckboxChanged(index, event: MatCheckboxChange) {

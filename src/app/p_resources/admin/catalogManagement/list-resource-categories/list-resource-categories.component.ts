@@ -12,6 +12,7 @@ import { ToastrService } from 'ngx-toastr';
 import { trigger } from '@angular/animations';
 import { fadeIn } from 'src/app/shared/animations/animations';
 import { AppService } from 'src/app/shared/services/app.service';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-list-service-categories',
@@ -45,8 +46,13 @@ export class ListResourceCategoriesComponent implements OnInit {
       data => { this.resourceCategories = data },
       error => { console.error(error) },
       () => {
-        this.resourceCategories.forEach( cat => {
-          if (cat.parentId) cat['parentName'] = this.resourceCategories.find( el =>  el.id === cat.parentId)
+        this.resourceCategories.forEach(cat => {
+          if (cat.parentId) {
+            const parentCategory = this.resourceCategories.find(el => el.id === cat.parentId)
+            if (parentCategory) {
+              cat['parentName'] = parentCategory.name
+            }
+          }
         })
 
         this.dataSource.data = this.resourceCategories
@@ -68,8 +74,10 @@ export class ListResourceCategoriesComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe (
       result => {
-        if (result) {
-          this.toast.success("Service Categories list is successfully updated")
+        if (result instanceof HttpErrorResponse) {
+          this.toast.error("An error occurred while attempting to delete Resource Category. Please check dependencies.")
+        } else if (result) {
+          this.toast.success("Resource Categories list is successfully updated")
           this.retrieveCategoriesList()
         }
       }

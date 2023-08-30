@@ -260,7 +260,7 @@
                                                     </div>
                                                     <div class="col-lg-6">
                                                         <div class="notes-graph-container">
-                                                            <img [src]="notesGraphUrl" [alt]="notesGraphUrl" >
+                                                            <img [src]="notesGraphUrl" [alt]="notesGraphUrl" class="img-fluid">
                                                         </div>
                                                     </div>
 
@@ -308,8 +308,8 @@
                                 </div>
                                 <!-- END OF Related Parties Tab -->
 
-                                <!-- Related Parties Tab -->
-                                <div *ngFor="let orderItem of serviceOrder?.orderItem; let orderIndex = index; let firstItem = first">
+                                <!-- Order Item Tab -->
+                                <div *ngFor="let orderItem of serviceOrder?.orderItem; let orderItemIndex = index; let firstItem = first">
                                     <div class="tab-pane active" *ngIf="activeListItem === orderItem.id" role="tabpanel" [@fadeIn]>
                                         <div class="card mat-elevation-z1 bg-light" >
                                             <div class="card-body">
@@ -447,12 +447,12 @@
                                                                         <div class="container-fluid">
                                                                             <div class="row justify-content-between">
                                                                                 <div class="d-flex align-items-center">
-                                                                                    <span *ngIf="!supportingServices[orderIndex][ServiceIndex]">
+                                                                                    <span *ngIf="!supportingServices[orderItemIndex][ServiceIndex]">
                                                                                         <mat-spinner [diameter]="16"></mat-spinner>
                                                                                     </span>
-                                                                                    <span *ngIf="supportingServices[orderIndex][ServiceIndex]"
-                                                                                        [ngClass]="orderItemStateClassSelector(supportingServices[orderIndex][ServiceIndex].state)">
-                                                                                        {{supportingServices[orderIndex][ServiceIndex]?.state}}
+                                                                                    <span *ngIf="supportingServices[orderItemIndex][ServiceIndex]"
+                                                                                        [ngClass]="orderItemStateClassSelector(supportingServices[orderItemIndex][ServiceIndex].state)">
+                                                                                        {{supportingServices[orderItemIndex][ServiceIndex]?.state}}
                                                                                     </span>
                                                                                     <div class="ml-2">
                                                                                         <!-- <i class="fas fa-tasks mr-2"></i> -->
@@ -461,16 +461,16 @@
                                                                                 </div>
                             
                                                                                 <div class="small"
-                                                                                    *ngIf="supportingServices[orderIndex][ServiceIndex]">
+                                                                                    *ngIf="supportingServices[orderItemIndex][ServiceIndex]">
                                                                                     StartMode:
-                                                                                    <b>{{supportingServices[orderIndex][ServiceIndex]?.startMode}}</b>,
+                                                                                    <b>{{supportingServices[orderItemIndex][ServiceIndex]?.startMode}}</b>,
                                                                                     StartDate:
-                                                                                    <b>{{supportingServices[orderIndex][ServiceIndex]?.startDate | date:'d MMM y, h:mm a'}} (Local Time)</b>
+                                                                                    <b>{{supportingServices[orderItemIndex][ServiceIndex]?.startDate | date:'d MMM y, h:mm a'}} (Local Time)</b>
                                                                                 </div>
                                                                             </div>
                                                                             
                                                                         </div>
-                                                                        <div class="small">{{supportingServices[orderIndex][ServiceIndex]?.category}}</div>
+                                                                        <div class="small">{{supportingServices[orderItemIndex][ServiceIndex]?.category}}</div>
                                                                         <!-- <div class="ml-1" *ngFor="let characteristic of supportingServices[orderIndex][ServiceIndex]?.serviceCharacteristic">
                                                                             {{characteristic.name}}:
                                                                             <b>{{characteristic.value.value}}</b>
@@ -478,15 +478,19 @@
                                                                     </div>
                                                                 </a>
                                                             </div>
+                                                        </mat-expansion-panel>
 
-                                                            <div class="col-md-12">
-                                                                <br/>
-                                                                <mat-label>Relationships overview {{currentItemRelationshipsUrl[0]}}</mat-label>
-                                                                <br/>
-                                                                <img [src]="currentItemRelationshipsUrl" [alt]="currentItemRelationshipsUrl" >
+                                                        <mat-expansion-panel expanded="true" class="no-shadow">
+                                                            <mat-expansion-panel-header>
+                                                                <mat-panel-title>
+                                                                    Service relationships overview
+                                                                </mat-panel-title>
+                                                            </mat-expansion-panel-header>
+                                                            <div class="row">
+                                                                <div class="col-md-12" [@fadeIn] *ngIf="currentItemRelationshipsUrl[orderItemIndex]">                                                  
+                                                                    <img [src]="currentItemRelationshipsUrl[orderItemIndex]" alt="Relationship graph not available" class="img-fluid">
+                                                                </div>                                                            
                                                             </div>
-
-
                                                         </mat-expansion-panel>
                                                     </mat-accordion>
                                                                                                

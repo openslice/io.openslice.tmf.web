@@ -167,7 +167,7 @@ export class EditResourceSpecsComponent implements OnInit {
           this.specCharacteristicsTags = this.retrieveSpecCharaceristicsTags(this.dataSource.data)
 
           //populate Resource Descriptor Panel Info
-          this.retrieveResourceDesriptor(this.spec.id)
+          // this.retrieveResourceDesriptor(this.spec.id)
         }
         else {
           this.specNotFound = true
@@ -340,6 +340,7 @@ export class EditResourceSpecsComponent implements OnInit {
         () => {
           this.newSpecification = false
           this.toast.success("Resource Specification was successfully created")
+          this.router.navigate([updatedSpec.id], {relativeTo: this.activatedRoute})
           this.refreshResourceSpecification(updatedSpec)
         }
       )

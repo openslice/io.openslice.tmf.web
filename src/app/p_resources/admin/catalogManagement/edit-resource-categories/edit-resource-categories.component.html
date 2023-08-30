@@ -42,7 +42,7 @@
                               <span *ngIf="category?.parentId" class="d-flex align-items-center">
                                   <mat-icon *ngIf="!editForm.controls.parentId.value?.isRoot">keyboard_arrow_right</mat-icon>
                                   <a mat-button
-                                      routerLink='/{{appService.portalDomain}}/resource_categories_update/{{editForm.controls.parentId.value}}'>{{editForm.controls.parentId.value}}
+                                      routerLink='/{{appService.portalDomain}}/resource_categories_update/{{editForm.controls.parentId.value?.id}}'>{{editForm.controls.parentId.value?.name}}
                                   </a>
                               </span>
 
@@ -88,19 +88,19 @@
                                   </div>
 
                                   <mat-form-field class="col-md-6">
-                                      <!-- <input type="text" placeholder="Parent Category" aria-label="Parent category" matInput
+                                      <input type="text" placeholder="Parent Category" aria-label="Parent category" matInput
                                           formControlName="parentId" [matAutocomplete]="auto">
                                       <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete" [displayWith]="displayFn">
                                           <mat-option *ngFor="let category of filteredCategories$ | async" [value]="category">
                                               {{category.name}}
                                           </mat-option>
-                                      </mat-autocomplete> -->
+                                      </mat-autocomplete>
 
-                                      <mat-select placeholder="Parent Category" formControlName="parentId">
+                                      <!-- <mat-select placeholder="Parent Category" formControlName="parentId">
                                         <mat-option *ngFor="let category of filteredCategories$ | async" [value]="category.id">
                                           {{category.name}}
                                         </mat-option>
-                                      </mat-select>
+                                      </mat-select> -->
 
                                   </mat-form-field>
 
@@ -132,9 +132,9 @@
                                       </div>
                                   </div>
                               </div>
-                              <div class="container-fluid">
+                              <div class="container-fluid mt-4">
                                   <div class="row justify-content-end">
-                                          <button type="submit" class="btn btn-primary"
+                                          <button type="submit" class="btn btn-primary btn-block btn-sm"
                                       (click)="updateResourceCategory()"><i class="fas fa-check mr-2"></i>Submit</button>
                                   </div>
                               </div>
@@ -144,30 +144,29 @@
                           <mat-expansion-panel [expanded]="!newCategory" [disabled]="newCategory" class="bg-light" [@fadeIn]>
                               <mat-expansion-panel-header>
                                   <mat-panel-title>
-                                      Assign Children Categories to Resource Category
+                                    Create and assign Subcategories to Resource Category
                                   </mat-panel-title>
                               </mat-expansion-panel-header>
 
                               <div class="filter-container row align-items-center justify-content-center">
-                                  <mat-form-field *ngIf="category?.category.length > 0" class="col-lg-10">
-                                      <mat-label>Apply Filter to Children Categories...</mat-label>
-                                      <input matInput [formControl]="childrenCategoryFilterCtrl">
-                                  </mat-form-field>
+                                  
+                                <div class="col-md-10" *ngIf="category?.category.length === 1">{{category?.category.length}} Subcategory assigned</div>
+                                <div class="col-md-10" *ngIf="category?.category.length !== 1">{{category?.category.length}} Subcategories assigned</div>
 
-                                  <div *ngIf="category?.category.length === 0" class="col-lg-10 children-categories-font">
-                                      <!-- Category <dfn>{{category.name}}</dfn> has no children categories assigned yet -->
-                                      There are no children categories assigned yet
-                                  </div>
+                                <div class="col-md-2 my-md-0 my-2">
+                                    <button type="button" class="btn btn-success btn-sm btn-block" (click)="openCategoryChildDialog()"><i
+                                            class="fas fa-plus-circle mr-2"></i>Create</button>
+                                </div>
 
-
-                                  <div class="text-right col-lg-2">
-                                      <button type="button" class="btn btn-success btn-sm" (click)="openCategoryChildDialog()"><i
-                                              class="fas fa-plus-circle mr-2"></i>Create</button>
-                                  </div>
+                                <mat-form-field *ngIf="category?.category.length > 0" class="col-12 mt-3">
+                                    <mat-label>Apply filter to assigned Subcategories...</mat-label>
+                                    <input matInput [formControl]="childrenCategoryFilterCtrl">
+                                </mat-form-field>
+                                
                               </div>
 
-                              <div *ngFor="let category of filteredChildrenCategories$ | async" class="child-category-container pt-3 px-2">
-                                  <div><b>{{category.name}}</b></div>
+                              <div *ngFor="let category of filteredChildrenCategories$ | async" class="child-category-container pb-2" [@fadeIn]>
+                                  <a routerLink='/{{appService.portalDomain}}/resource_categories_update/{{category.id}}'>{{category.name}}</a>
                                   <div>
                                       <button class="btn btn-warning btn-sm mr-1" routerLink='/{{appService.portalDomain}}/resource_categories_update/{{category.id}}'><i
                                               class="far fa-edit"></i></button>
@@ -182,29 +181,26 @@
                           <mat-expansion-panel [expanded]="!newCategory" [disabled]="newCategory" class="bg-light" [@fadeIn]>
                               <mat-expansion-panel-header>
                                   <mat-panel-title>
-                                      Assign Resource Specifications to Resource Category
+                                    Manage the assignment of Resource Specifications to Resource Category
                                   </mat-panel-title>
                               </mat-expansion-panel-header>
 
                               <div class="filter-container row align-items-center justify-content-center">
-                                  <mat-form-field *ngIf="category?.resourceCandidate.length > 0" class="col-lg-10">
-                                      <mat-label>Apply Filter to Resource Specifications...</mat-label>
-                                      <input matInput [formControl]="resourceCandidatesFilterCtrl">
-                                  </mat-form-field>
+                                <div class="col-md-10">{{category?.resourceCandidate.length}} Resource Specification(s) assigned</div>
+                                
+                                <div class="col-md-2 my-md-0 my-2">
+                                    <button type="button" class="btn btn-success btn-sm btn-block" (click)="openAssignCandidatesDialog(category)"><i
+                                            class="fas fa-cart-arrow-down mr-2"></i>Manage</button>
+                                </div>
 
-                                  <div *ngIf="category?.resourceCandidate.length === 0" class="col-lg-10 children-categories-font">
-                                      <!-- Category <dfn>{{category.name}}</dfn> has no service specifications assigned yet -->
-                                      There are no service specifications assigned yet
-                                  </div>
-
-                                  <div class="text-right col-lg-2">
-                                      <button type="button" class="btn btn-success btn-sm" (click)="openAssignCandidatesDialog(category)"><i
-                                              class="fas fa-cart-arrow-down mr-2"></i>Assign</button>
-                                  </div>
+                                <mat-form-field *ngIf="category?.resourceCandidate.length > 0" class="col-12 mt-3">
+                                    <mat-label>Apply Filter to assigned Resource Specifications...</mat-label>
+                                    <input matInput [formControl]="resourceCandidatesFilterCtrl">
+                                </mat-form-field>   
                               </div>
 
-                              <div *ngFor="let candidate of filteredResourceCandidates$ | async" class="child-category-container pt-3">
-                                  <div><b>{{candidate.name}}</b></div>
+                              <div *ngFor="let candidate of filteredResourceCandidates$ | async" class="child-category-container pb-2">
+                                  <a routerLink="./" (click)='navigateToResourceSpec(candidate)'>{{candidate.name}}</a>
                                   <button class="btn btn-warning btn-sm" (click)='navigateToResourceSpec(candidate)'><i
                                       class="far fa-edit"></i></button>
 

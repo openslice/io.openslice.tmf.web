@@ -90,7 +90,7 @@
                                                           </mat-option>
                                                       </mat-select>
                                                   </mat-form-field>
-                                                  <mat-form-field class="col-md-4 col-sm-6">
+                                                  <mat-form-field class="col-md-6">
                                                       <mat-label>Category</mat-label>
                                                       <input matInput formControlName="category">
                                                   </mat-form-field>
@@ -123,7 +123,7 @@
                                                   </div>
                                               </div>
 
-                                              <div class="container-fluid">
+                                              <div class="container-fluid mt-2">
                                                   <div class="row justify-content-end">
                                                       <button type="submit" class="btn btn-primary"
                                                           (click)="updateResourceSpecGeneral()"><i
@@ -146,36 +146,31 @@
                                           <div *ngIf="!editForm.controls.isBundle.value">
                                               Resource Specification must be checked as <b>Bundle</b> in order to assign Resource Specification Relationships (See Main Properties Tab).
                                           </div>
-                                          <div  *ngIf="editForm.controls.isBundle.value">
-                                              <div class="filter-container row align-items-center justify-content-center">
-                                                  <mat-form-field *ngIf="spec?.resourceSpecRelationship.length > 0"
-                                                      class="col-sm-10">
-                                                      <mat-label>Apply Filter to related Resource Specifications...
-                                                      </mat-label>
-                                                      <input matInput [formControl]="resourceRelatedSpecsFilterCtrl">
-                                                  </mat-form-field>
-
-                                                  <div *ngIf="spec?.resourceSpecRelationship.length === 0"
-                                                      class="col-sm-10 children-categories-font">
-                                                      <!-- Category <dfn>{{category.name}}</dfn> has no resource specifications assigned yet -->
-                                                      There are not any resource specification relationships assigned yet.
-                                                  </div>
-
-                                                  <div class="text-right col-sm-2 ">
-                                                      <button type="button" class="btn btn-success btn-sm"
-                                                          (click)="openAssignSpecRelationshipDialog()"><i
-                                                              class="fas fa-cart-arrow-down mr-2"></i>Assign</button>
-                                                  </div>
-                                              </div>
-
-                                              <div *ngFor="let relatedSpec of filteredRelatedSpecs$ | async"
-                                                  class="spec-relationship-container pt-3">
-                                                  <div><b>{{relatedSpec.name}}</b></div>
-                                                  <button class="btn btn-warning btn-sm"
-                                                      routerLink='/{{appService.portalDomain}}/resource_spec_update/{{relatedSpec.id}}'><i
-                                                          class="far fa-edit"></i></button>
-                                              </div>
-                                          </div>
+                                        <div *ngIf="editForm.controls.isBundle.value">
+                                            <div class="filter-container row align-items-center justify-content-center">
+                                                <div class="col-md-10">{{spec.resourceSpecRelationship.length}} related Resource Specification(s) assigned</div>
+                                        
+                                                <div class="col-md-2 my-md-0 my-2">
+                                                    <button type="button" class="btn btn-success btn-sm btn-block"
+                                                        (click)="openAssignSpecRelationshipDialog()"><i class="fas fa-cart-arrow-down mr-2"></i>Assign</button>
+                                                </div>
+                                            </div>
+                                        
+                                            <div class="row mt-3">
+                                                <mat-form-field *ngIf="spec?.resourceSpecRelationship.length > 0" class="col-12">
+                                                    <mat-label>Apply Filter to related Resource Specifications...
+                                                    </mat-label>
+                                                    <input matInput [formControl]="resourceRelatedSpecsFilterCtrl">
+                                                </mat-form-field>
+                                            </div>
+                                        
+                                            <div *ngFor="let relatedSpec of filteredRelatedSpecs$ | async" class="spec-relationship-container pb-2" [@fadeIn]>
+                                                <a routerLink='/{{appService.portalDomain}}/resource_spec_update/{{relatedSpec.id}}'>{{relatedSpec.name}}</a>
+                                                <button class="btn btn-warning btn-sm"
+                                                    routerLink='/{{appService.portalDomain}}/resource_spec_update/{{relatedSpec.id}}'><i
+                                                        class="far fa-edit"></i></button>
+                                            </div>
+                                        </div>
                                       </div>
                                       <div class="card-footer"></div>
 

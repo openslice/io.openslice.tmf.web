@@ -28,7 +28,7 @@ export class ListResourceInventoryComponent implements OnInit {
     public appService: AppService
   ) { }
 
-  displayedColumns = ['id', 'name', 'resourceType', 'resourceCategory', 'actions']
+  displayedColumns = ['name', 'resourceType', 'resourceCategory', 'status', 'startOperatingDate', 'actions']
   dataSource  = new MatTableDataSource<Resource>()
 
   resources: Resource[]
@@ -51,6 +51,7 @@ export class ListResourceInventoryComponent implements OnInit {
 
         this.dataSource.sortingDataAccessor = (item, property): string | number => {
           switch (property) {
+            case 'startOperatingDate': return new Date(item.startOperatingDate).getTime();
             default: return item[property];
           }
         }

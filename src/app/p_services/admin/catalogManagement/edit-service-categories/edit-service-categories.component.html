@@ -125,9 +125,9 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="container-fluid">
+                                <div class="container-fluid mt-4">
                                     <div class="row justify-content-end">
-                                            <button type="submit" class="btn btn-primary"
+                                            <button type="submit" class="btn btn-primary btn-block btn-sm"
                                         (click)="updateServiceCategory()"><i class="fas fa-check mr-2"></i>Submit</button>
                                     </div>
                                 </div>
@@ -142,25 +142,23 @@
                                 </mat-expansion-panel-header>
                             
                                 <div class="filter-container row align-items-center justify-content-center">
-                                    <mat-form-field *ngIf="category?.category.length > 0" class="col-lg-10">
+                                    <div class="col-md-10" *ngIf="category?.category.length === 1">{{category?.category.length}} Subcategory assigned</div>
+                                    <div class="col-md-10" *ngIf="category?.category.length !== 1">{{category?.category.length}} Subcategories assigned</div>
+
+                                    <div class="col-md-2 my-md-0 my-2">
+                                        <button type="button" class="btn btn-success btn-sm btn-block" (click)="openCategoryChildDialog()"><i
+                                                class="fas fa-plus-circle mr-2"></i>Create</button>
+                                    </div>
+
+                                    <mat-form-field *ngIf="category?.category.length > 0" class="col-12 mt-3">
                                         <mat-label>Apply filter to assigned Subcategories...</mat-label>
                                         <input matInput [formControl]="childrenCategoryFilterCtrl">
                                     </mat-form-field>
-                            
-                                    <div *ngIf="category?.category.length === 0" class="col-lg-10 children-categories-font">
-                                        <!-- Category <dfn>{{category.name}}</dfn> has no children categories assigned yet -->
-                                        There are no subcategories assigned yet
-                                    </div>
-                            
-                            
-                                    <div class="text-right col-lg-2">
-                                        <button type="button" class="btn btn-success btn-sm" (click)="openCategoryChildDialog()"><i
-                                                class="fas fa-plus-circle mr-2"></i>Create</button>
-                                    </div>
                                 </div>
                             
-                                <div *ngFor="let category of filteredChildrenCategories$ | async" class="child-category-container pt-3 px-2">
-                                    <div><b>{{category.name}}</b></div>
+                                <div *ngFor="let category of filteredChildrenCategories$ | async" class="child-category-container pb-2" [@fadeIn]>
+                                    <a routerLink="/{{appService.portalDomain}}/service_categories_update/{{category.id}}">{{category.name}}</a>
+
                                     <div>
                                         <button class="btn btn-warning btn-sm mr-1" routerLink='/{{appService.portalDomain}}/service_categories_update/{{category.id}}'><i
                                                 class="far fa-edit"></i></button>
@@ -180,24 +178,21 @@
                                 </mat-expansion-panel-header>
                             
                                 <div class="filter-container row align-items-center justify-content-center">
-                                    <mat-form-field *ngIf="category?.serviceCandidate.length > 0" class="col-lg-10">
-                                        <mat-label>Apply Filter to assigned Service Specifications...</mat-label>
-                                        <input matInput [formControl]="serviceCandidatesFilterCtrl">
-                                    </mat-form-field>
-                            
-                                    <div *ngIf="category?.serviceCandidate.length === 0" class="col-lg-10 children-categories-font">
-                                        <!-- Category <dfn>{{category.name}}</dfn> has no service specifications assigned yet -->
-                                        There are no service specifications assigned yet
-                                    </div>
-                            
-                                    <div class="text-right col-lg-2">
-                                        <button type="button" class="btn btn-success btn-sm" (click)="openAssignCandidatesDialog(category)"><i
+                                    <div class="col-md-10">{{category?.serviceCandidate.length}} Service Specification(s) assigned</div>
+                                
+                                    <div class="col-md-2 my-md-0 my-2">
+                                        <button type="button" class="btn btn-success btn-sm btn-block" (click)="openAssignCandidatesDialog(category)"><i
                                                 class="fas fa-cart-arrow-down mr-2"></i>Manage</button>
                                     </div>
-                                </div>
+
+                                    <mat-form-field *ngIf="category?.serviceCandidate.length > 0" class="col-12 mt-3">
+                                        <mat-label>Apply Filter to assigned Service Specifications...</mat-label>
+                                        <input matInput [formControl]="serviceCandidatesFilterCtrl">
+                                    </mat-form-field>                   
+                               </div>
                             
-                                <div *ngFor="let candidate of filteredServiceCandidates$ | async" class="child-category-container pt-3">
-                                    <div><b>{{candidate.name}}</b></div>
+                                <div *ngFor="let candidate of filteredServiceCandidates$ | async" class="child-category-container pb-2" [@fadeIn]>
+                                    <a routerLink="./" (click)='navigateToServiceSpec(candidate)'>{{candidate.name}}</a>
                                     <button class="btn btn-warning btn-sm" (click)='navigateToServiceSpec(candidate)'><i
                                         class="far fa-edit"></i></button>   
                             

@@ -5,7 +5,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { HttpErrorResponse } from '@angular/common/http';
 import { ActivatedRoute, Router, ActivationEnd } from '@angular/router';
 import { FormGroup, FormControl, FormArray, Validators } from '@angular/forms';
-import { ServiceSpecification, ServiceSpecCharacteristic, ServiceSpecificationUpdate, ServiceSpecificationCreate, ServiceSpecRelationship, AttachmentRef, Attachment } from 'src/app/openApis/serviceCatalogManagement/models';
+import { ServiceSpecification, ServiceSpecCharacteristic, ServiceSpecificationUpdate, ServiceSpecificationCreate, ServiceSpecRelationship, AttachmentRef, Attachment, ResourceSpecificationRef } from 'src/app/openApis/serviceCatalogManagement/models';
 import { ServiceSpecificationService } from 'src/app/openApis/serviceCatalogManagement/services';
 import { MatCheckboxChange } from '@angular/material/checkbox';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
@@ -26,6 +26,7 @@ import { DeleteAttachmentComponent } from './delete-attachment/delete-attachment
 import { DeleteLcmruleComponent } from './delete-lcmrule/delete-lcmrule.component';
 import { AppService } from 'src/app/shared/services/app.service';
 import { ImportLcmruleComponent } from './import-lcmrule/import-lcmrule.component';
+import { AssignResourceRelationshipsComponent } from './assign-resource-relationships/assign-resource-relationships.component';
 
 
 @Component({
@@ -92,8 +93,13 @@ export class EditServiceSpecsComponent implements OnInit {
 
   newSpecification = false
 
-  serviceRelatedSpecsFilterCtrl = new FormControl();
-  filteredRelatedSpecs$: Observable<ServiceSpecRelationship[]>
+  relatedServiceSpecsFilterCtrl = new FormControl();
+  
+  filteredRelatedServiceSpecs$: Observable<ServiceSpecRelationship[]>
+
+  relatedResourceSpecsFilterCtrl = new FormControl();
+
+  filteredRelatedResourceSpecs$: Observable<ResourceSpecificationRef[]>
 
   attachmentFilesCtrl = new FileUploadControl(null, FileUploadValidators.accept(['.jpeg', '.jpg', '.png', '.zip', '.pdf', '.yaml', '.json', '.xml', '.txt', '.gz', 'application/gzip', 'application/x-gzip']))
   logoImageCtrl = new FileUploadControl(null, FileUploadValidators.accept(['image/*']))
@@ -186,9 +192,15 @@ export class EditServiceSpecsComponent implements OnInit {
           this.editForm.patchValue(this.spec)
           this.editForm.markAsPristine()
           //populate Specification Relationships Panel Info
-          this.filteredRelatedSpecs$ = this.serviceRelatedSpecsFilterCtrl.valueChanges.pipe(
+          this.filteredRelatedServiceSpecs$ = this.relatedServiceSpecsFilterCtrl.valueChanges.pipe(
             startWith(null),
-            map( (value:null | string) => value ? this._filterOnRelatedSpecs(value) : this.spec.serviceSpecRelationship.slice() )
+            map( (value:null | string) => value ? this._filterOnRelatedServiceSpecs(value) : this.spec.serviceSpecRelationship.slice() )
+          )
+
+          //populate Resource Specification Relationships Panel Info
+          this.filteredRelatedResourceSpecs$ = this.relatedResourceSpecsFilterCtrl.valueChanges.pipe(
+            startWith(null),
+            map( (value:null | string) => value ? this._filterOnRelatedResourceSpecs(value) : this.spec.resourceSpecification.slice() )
           )
 
           //populate Specification Characteristic Panel Info
@@ -248,10 +260,16 @@ export class EditServiceSpecsComponent implements OnInit {
     // if (!event.checked) this.specRelationshipsPanel.close()
   }
 
-  private _filterOnRelatedSpecs(filterValue: string) {
+  private _filterOnRelatedServiceSpecs(filterValue: string) {
     filterValue = filterValue.trim();
     filterValue = filterValue.toLowerCase();
     return this.spec.serviceSpecRelationship.filter( relatedSpec =>  relatedSpec.name.toLowerCase().includes(filterValue) )
+  }
+
+  private _filterOnRelatedResourceSpecs(filterValue: string) {
+    filterValue = filterValue.trim();
+    filterValue = filterValue.toLowerCase();
+    return this.spec.resourceSpecification.filter( relatedSpec =>  relatedSpec.name.toLowerCase().includes(filterValue) )
   }
 
 
@@ -271,7 +289,7 @@ export class EditServiceSpecsComponent implements OnInit {
     }
   }
 
-  openAssignSpecRelationshipDialog() {
+  openAssignServiceSpecRelationshipDialog() {
     const dialogRef = this.dialog.open(AssignServiceRelationshipsComponent, {
       data: {
         serviceSpec: this.spec
@@ -284,6 +302,25 @@ export class EditServiceSpecsComponent implements OnInit {
       result => { 
         if (result) { 
           this.toast.success("Service Specification Relationship list was successfully updated")
+          this.retrieveServiceSpec()
+        }
+      }
+    )
+  }
+
+  openAssignResourceSpecRelationshipDialog() {
+    const dialogRef = this.dialog.open(AssignResourceRelationshipsComponent, {
+      data: {
+        serviceSpec: this.spec
+      },
+      autoFocus: false,
+      disableClose: true
+    })
+
+    dialogRef.afterClosed().subscribe (
+      result => { 
+        if (result) { 
+          this.toast.success("Resource Specification Relationship list was successfully updated")
           this.retrieveServiceSpec()
         }
       }
@@ -384,6 +421,7 @@ export class EditServiceSpecsComponent implements OnInit {
         () => {
           this.newSpecification = false
           this.toast.success("Service Specification was successfully created")
+          this.router.navigate([updatedSpec.id], {relativeTo: this.activatedRoute})
           this.refreshServiceSpecification(updatedSpec)
         }
       )

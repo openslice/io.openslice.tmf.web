@@ -122,6 +122,7 @@ export class PreviewServiceOrderComponent implements OnInit {
           if (!this.serviceOrder.expectedCompletionDate) { this.serviceOrder.expectedCompletionDate = this.serviceOrder.requestedCompletionDate }
   
           this.checkboxesOrderItemList = []
+          this.currentItemRelationshipsUrl = []
           this.serviceOrder.orderItem.forEach((orderItem, index) => {
 
             this.checkboxesOrderItemList.push({orderItem: orderItem, isChecked: false})
@@ -136,7 +137,6 @@ export class PreviewServiceOrderComponent implements OnInit {
 
             
             this.currentItemRelationshipsUrl.push( this.orderService.rootUrl + "/serviceOrdering/v4/serviceOrder/" + this.serviceOrder.id + "/item/" + orderItem.id + "/relationship_graph" );
-
           })
 
           this.notesGraphUrl  = this.orderService.rootUrl + "/serviceOrdering/v4/serviceOrder/" + this.serviceOrder.id + "/notes_graph";

@@ -72,7 +72,7 @@ export class ListServiceCategoriesComponent implements OnInit {
         console.log(result)
         if (result instanceof HttpErrorResponse) {
           this.toast.error("An error occurred while attempting to delete Service Category. Please check dependencies.")
-        } else {
+        } else if (result) {
           this.toast.success("Service Categories list is successfully updated")
           this.retrieveCategoriesList()
         }

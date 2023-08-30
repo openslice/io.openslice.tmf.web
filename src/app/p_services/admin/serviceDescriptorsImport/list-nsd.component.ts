@@ -28,7 +28,7 @@ export class ListNsdComponent implements OnInit {
     private appService: AppService,
   ) { }
 
-  displayedColumns = ['name', 'short_description', 'version', 'vendor',  'packaging_format', 'actions']
+  displayedColumns = ['name', 'owner','short_description', 'onboarded',  'packaging_format', 'actions']
   dataSource  = new MatTableDataSource<any>()
   experiments: any
 

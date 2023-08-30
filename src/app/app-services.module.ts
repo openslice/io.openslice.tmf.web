@@ -73,6 +73,7 @@ import interactionPlugin from '@fullcalendar/interaction';
 import resourceTimelinePlugin  from '@fullcalendar/resource-timeline';
 
 import { ServiceOrdersCalendarComponent } from './p_services/admin/orderManagement/service-order-calendar/service-order-calendar.component';
+import { AssignResourceRelationshipsComponent } from './p_services/admin/catalogManagement/edit-service-specs/assign-resource-relationships/assign-resource-relationships.component';
 
 FullCalendarModule.registerPlugins([ // register FullCalendar plugins
     dayGridPlugin,
@@ -133,7 +134,8 @@ FullCalendarModule.registerPlugins([ // register FullCalendar plugins
     ListTestsComponent,
     ImportTestDialogComponent,
     ImportLcmruleComponent,
-    ServiceOrdersCalendarComponent
+    ServiceOrdersCalendarComponent,
+    AssignResourceRelationshipsComponent
     // ListOrganizationsComponent,
     // EditOrganizationsComponent,
     // EditPartyCharacteristicsComponent,

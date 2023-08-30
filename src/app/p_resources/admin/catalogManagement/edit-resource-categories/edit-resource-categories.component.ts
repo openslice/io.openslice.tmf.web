@@ -20,6 +20,7 @@ import { error } from 'protractor';
 import { trigger } from '@angular/animations';
 import { fadeIn } from 'src/app/shared/animations/animations';
 import { AppService } from 'src/app/shared/services/app.service';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-edit-resource-categories',
@@ -46,11 +47,11 @@ export class EditResourceCategoriesComponent implements OnInit, OnDestroy {
 
   editForm =  new FormGroup({
     category: new FormControl([]),
-    isRoot: new FormControl(),
+    isRoot: new FormControl({value: true, disabled: true}),
     description: new FormControl(),
     lifecycleStatus: new FormControl("In design"),
     name: new FormControl(),
-    parentId: new FormControl(),
+    parentId: new FormControl({value:null, disabled: true}),
     validFor: new FormGroup({
       endDateTime: new FormControl(new Date(new Date().setFullYear(new Date().getFullYear()+20))),
       startDateTime: new FormControl(new Date())
@@ -81,15 +82,6 @@ export class EditResourceCategoriesComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.retrieveResourceCategoryList()
     this.subscriptionsInit()
-
-
-    if (this.activatedRoute.snapshot.params.id)
-    {
-      this.categoryID = this.activatedRoute.snapshot.params.id
-      this.retrieveResourceCategory()
-    }
-    else { this.newCategory = true }
-
   }
 
   subscriptionsInit() {
@@ -97,7 +89,6 @@ export class EditResourceCategoriesComponent implements OnInit, OnDestroy {
       this.router.events.subscribe(
         (event) => {
           if (event instanceof ActivationEnd && event.snapshot.params && event.snapshot.params.id) {
-            console.log(event.snapshot.params.id)
             this.categoryID = event.snapshot.params.id
             this.retrieveResourceCategory()
           }
@@ -127,16 +118,15 @@ export class EditResourceCategoriesComponent implements OnInit, OnDestroy {
       data => this.category = data,
       error => console.error(error),
       () => {
-        if (this.category.validFor!==null) this.category.validFor = {endDateTime:null, startDateTime:null}
+        // if (this.category.validFor!==null) this.category.validFor = {endDateTime:null, startDateTime:null}
         this.editForm.patchValue(this.category)
-        console.log(this.editForm)
 
         if (this.category.parentId) {
           this.editForm.get('isRoot').disable()
           this.editForm.patchValue({parentId: this.allCategories.find(el => el.parentId === this.category.parentId)})
           this.editForm.get('parentId').disable()
         } else {
-          this.editForm.get('isRoot').enable()
+          // this.editForm.get('isRoot').enable()
         }
 
         this.filteredChildrenCategories$ = this.childrenCategoryFilterCtrl.valueChanges.pipe(
@@ -161,6 +151,13 @@ export class EditResourceCategoriesComponent implements OnInit, OnDestroy {
           startWith(null),
           map( (value: null | string | ResourceCategory) => typeof(value) === 'string' ? this._filterParentCategories(value) : this.allCategories.slice() )
         )
+
+        if (this.activatedRoute.snapshot.params.id)
+        {
+          this.categoryID = this.activatedRoute.snapshot.params.id
+          this.retrieveResourceCategory()
+        }
+        else { this.newCategory = true }
       }
     )
   }
@@ -194,7 +191,7 @@ export class EditResourceCategoriesComponent implements OnInit, OnDestroy {
       result => {
         console.log(result)
         if (result){
-          this.toast.success("Children Categories list is successfully updated")
+          this.toast.success("Subcategories list is successfully updated")
           this.retrieveResourceCategory()
         }
       }
@@ -206,8 +203,10 @@ export class EditResourceCategoriesComponent implements OnInit, OnDestroy {
 
     dialogRef.afterClosed().subscribe (
       result => {
-        if (result){
-          this.toast.success("Children Categories list is successfully updated")
+        if (result instanceof HttpErrorResponse) {
+          this.toast.error("An error occurred while attempting to delete Resource Category. Please check dependencies.")
+        } else {
+          this.toast.success("Subcategories list is successfully updated")
           this.retrieveResourceCategory()
         }
       }
@@ -246,21 +245,22 @@ export class EditResourceCategoriesComponent implements OnInit, OnDestroy {
       // category: this.editForm.value.category.map(el => {return {'id': el.id}}),
       name: this.editForm.value.name,
       description: this.editForm.value.description,
-      isRoot: true,
+      isRoot: this.editForm.getRawValue().isRoot,
       lifecycleStatus: this.editForm.value.lifecycleStatus,
-      version: this.editForm.value.version
+      version: this.editForm.value.version,
+      validFor: this.editForm.value.validFor,
     }
 
     //Εδώ πρέπει να πάρουμε το parentid από το name του parent resource category
     if (!this.editForm.get('isRoot').value)
     {
-      console.log("Received parent id:"+this.editForm.get('parentId').value)
-      updateObj.parentId = this.editForm.get('parentId').value
+      // console.log("Received parent id:"+this.editForm.get('parentId').value)
+      updateObj.parentId = this.editForm.get('parentId').value.id
       updateObj.isRoot=false
     }
 
     let updatedCategory: ResourceCategory
-    console.log("Updated object to be sent "+JSON.stringify(updateObj))
+    // console.log("Updated object to be sent "+JSON.stringify(updateObj))
     if (this.newCategory) {
       this.categoryService.createResourceCategory(updateObj).subscribe(
         data => { updatedCategory = data },

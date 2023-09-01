@@ -30,7 +30,7 @@ export class ListResourceSpecsComponent implements OnInit {
     public appService: AppService
   ) { }
 
-  displayedColumns = ['name', 'description', 'version', 'type', 'lastUpdate',  'lifecycleStatus', 'actions']
+  displayedColumns = ['name', 'description', 'version', 'category', 'lastUpdate',  'lifecycleStatus', 'actions']
   dataSource  = new MatTableDataSource<ResourceSpecification>()
 
   serviceSpecs: ResourceSpecification[]

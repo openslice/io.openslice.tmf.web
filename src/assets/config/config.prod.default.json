@@ -1,7 +1,7 @@
 {	      
     "TITLE": "Openslice demo",
-    "PORTALVERSION":"1.1.0-SNAPSHOT",
-    "WIKI": "http://wiki.localhost",
+    "PORTALVERSION":"2023-Q3 1.2.0-SNAPSHOT",
+    "WIKI": "https://openslice.readthedocs.io/en/stable/",
     "BUGZILLA": "{BASEURL}/bugzilla/",
     "STATUS": "http://status.localhost/",
     "WEBURL": "{BASEURL}",

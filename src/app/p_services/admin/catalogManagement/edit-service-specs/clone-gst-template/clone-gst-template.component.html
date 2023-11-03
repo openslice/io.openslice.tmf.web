@@ -1,0 +1,26 @@
+<div class="container">
+
+    <h4 mat-dialog-title class="row shadowed mb-3">
+        <i class="far fa-copy mr-2"></i>
+        <span>Create New GST External Template</span>
+    </h4>
+
+
+    <mat-dialog-content>
+        <div class="row">
+            <mat-form-field class="col-12">
+                <mat-label>Name of the cloned GST Template</mat-label>
+                <input matInput [formControl]="serviceNameCtrl">
+                <mat-error>* Required field</mat-error>
+            </mat-form-field>
+        </div>
+    </mat-dialog-content>
+    
+    <div class="container-fluid">
+        <div class="row justify-content-end">
+            <button type="button" class="btn btn-danger m-2" (click)="closeDialog()">Cancel</button>
+            <button type="submit" class="btn btn-success m-2" (click)="submitDialog()">Submit</button>
+        </div>
+    </div>
+
+</div>

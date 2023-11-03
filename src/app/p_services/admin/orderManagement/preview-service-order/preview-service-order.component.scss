@@ -1,0 +1,89 @@
+.minh-40vh {
+    min-height: 30vh;
+}
+
+.nav-link:hover {
+    cursor: pointer;
+}
+
+.nav-link.disabled {
+    color: rgba(0,0,0,.30);
+}
+
+.nav-pills .nav-link.active {
+    color: #fff;
+    transition: all 0.2s;
+}
+
+.nav-item {
+    border-bottom: 1px dashed rgba(0, 0, 0, 0.125);
+    padding: .5rem 0;
+}
+
+
+.tab-pane > .card:nth-child(1) {
+    min-height: max(350px, 20vh);
+}
+
+.tab-pane .card .card-body.space-between{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.orderItem-border {
+    border: 2px dotted #ddd;
+    padding: 1rem .5rem .5rem .5rem;
+    border-radius: 12px;    
+    margin-bottom: 1rem;
+}
+
+.orderItem-title {
+    margin-bottom: 1rem;
+    text-align: center;
+}
+
+.note-card-body {
+    padding: .5rem;
+}
+
+mat-form-field {
+    width: 100%;
+}
+
+.notes-container {
+    max-height: 660px;
+    overflow-y: auto;
+}
+
+.notes-graph-container {
+    display: flex;
+    justify-content: center;
+}
+
+.service-spec-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+table.table-borderless tbody tr td {
+    padding: 0;
+}
+
+.supporting-service-card {
+    cursor: pointer
+}
+
+.no-shadow {
+    box-shadow: none;
+}
+
+.supporting-service-card:hover {
+    box-shadow: none;
+}
+
+.supporting-service-card .note-card-body:hover {
+    background: #e5e5e5;
+    border-radius: 12px;
+}

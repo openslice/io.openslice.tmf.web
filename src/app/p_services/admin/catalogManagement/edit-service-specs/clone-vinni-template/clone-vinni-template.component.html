@@ -1,0 +1,48 @@
+<div class="container">
+
+        <h4 mat-dialog-title class="row shadowed mb-3">
+            <i class="far fa-copy mr-2"></i>
+            <span>Create New VINNI-SB Template</span>
+        </h4>
+    
+        <form [formGroup]="paramsForm">
+            <mat-dialog-content>
+                <div class="row">
+                    <mat-form-field class="col-12">
+                        <mat-label>Name of the cloned VINNI-SB Template</mat-label>
+                        <input matInput formControlName="serviceName">
+                        <mat-error>* Required field</mat-error>
+                    </mat-form-field>
+        
+                    <!-- <mat-form-field class="col-12">
+                        <mat-label>Service Specifications to include in Bundle</mat-label>
+                        <mat-select formControlName="serviceSpecsToInclude" multiple>
+                            <mat-select-trigger>
+                                {{paramsForm.controls.serviceSpecsToInclude.value?.length}} Service Specs
+                            </mat-select-trigger>
+                            <mat-option *ngFor="let spec of availableSpecs" [value]="spec.value">{{spec.display}}</mat-option>
+                        </mat-select>
+                    </mat-form-field> -->
+
+                    
+                    
+                    
+                </div>
+
+                <h6 class="my-3">Select Service Specifications to include in Bundle</h6> 
+                <div *ngFor="let spec of paramsForm.controls.serviceSpecsToInclude['controls'] let i=index" >
+                    <mat-checkbox color="primary" type="checkbox" [formControl]="spec">
+                        {{availableSpecs[i].display}}
+                    </mat-checkbox>
+                </div>
+            </mat-dialog-content>
+        </form>
+        
+        <div class="container-fluid">
+            <div class="row justify-content-end">
+                <button type="button" class="btn btn-danger m-2" (click)="closeDialog()">Cancel</button>
+                <button type="submit" class="btn btn-success m-2" (click)="submitDialog()">Submit</button>
+            </div>
+        </div>
+    
+    </div>

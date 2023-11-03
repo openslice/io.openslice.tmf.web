@@ -1,0 +1,222 @@
+<div class="container py-5">
+  <div class="row">
+      <div class="col-12">
+
+          <form [formGroup]="editForm">
+              <div class="card card-paper mb-0">
+
+                  <div class="card-header">
+                      <div class="container-fluid">
+                          <div class="row justify-content-between align-items-center">
+                              <div>
+                                  <h2 class="shadowed">Resource Category Designer</h2>
+
+                                  <p class="shadowed mb-0" *ngIf="newCategory">Design a new resource category</p>
+
+                                  <p class="shadowed" *ngIf="!newCategory">Edit Design of <dfn><b>{{category?.name}}</b></dfn> Resource Category</p>
+
+                                  <div class="card-stats" *ngIf="!newCategory">
+                                      <i class="fas fa-sync spin mr-2"></i>Last updated at
+                                      {{category?.lastUpdate | date:'short'}} (Local Time)
+                                  </div>
+
+                              </div>
+
+                          </div>
+
+                          <!-- <div class="row mt-2" *ngIf="!newCategory">
+                              <nav aria-label="breadcrumb">
+                                  <ol class="breadcrumb mb-0">
+                                      <li class="breadcrumb-item" *ngIf="category?.parentId && !editForm.controls.parentId.value?.isRoot">...</li>
+                                      <li class="breadcrumb-item"  *ngIf="category?.parentId"><span *ngIf="!editForm.controls.parentId.value?.isRoot"> </span> <a routerLink='/{{appService.portalDomain}}/resource_categories_update/{{editForm.controls.parentId.value.id}}'>{{editForm.controls.parentId.value.name}}</a></li>
+                                      <li class="breadcrumb-item active" aria-current="page"><span *ngIf="!category?.isRoot"> </span> {{category?.name}}</li>
+                                  </ol>
+                              </nav>
+                          </div> -->
+
+                          <nav class="row mt-3 " *ngIf="!(category?.isRoot || newCategory)">
+                              <span *ngIf="category?.parentId && !editForm.controls.parentId.value?.isRoot" class="d-flex align-items-center">
+                                  <a mat-button>...</a>
+                              </span>
+
+                              <span *ngIf="category?.parentId" class="d-flex align-items-center">
+                                  <mat-icon *ngIf="!editForm.controls.parentId.value?.isRoot">keyboard_arrow_right</mat-icon>
+                                  <a mat-button
+                                      routerLink='/{{appService.portalDomain}}/resource_categories_update/{{editForm.controls.parentId.value?.id}}'>{{editForm.controls.parentId.value?.name}}
+                                  </a>
+                              </span>
+
+                              <span class="d-flex align-items-center">
+                                  <mat-icon>keyboard_arrow_right</mat-icon>
+                                  <a mat-button disabled="true">{{category?.name}}</a>
+                              </span>
+                          </nav>
+
+                      </div>
+                  </div>
+
+
+                  <div class="card-body">
+                      <mat-accordion multi="true">
+                          <mat-expansion-panel expanded="true" class="bg-light" [@fadeIn]>
+                              <mat-expansion-panel-header>
+                                  <mat-panel-title>
+                                      Main Resource Category properties
+                                  </mat-panel-title>
+                              </mat-expansion-panel-header>
+
+                              <div class="row align-items-center">
+
+                                  <mat-form-field appearance="" class="col-md-6">
+                                      <mat-label>Name</mat-label>
+                                      <input matInput formControlName="name">
+                                  </mat-form-field>
+
+                                  <mat-form-field appearance="" class="col-md-6">
+                                      <mat-label>Version</mat-label>
+                                      <input matInput formControlName="version">
+                                  </mat-form-field>
+
+                                  <mat-form-field appearance="" class="col-md-12">
+                                      <mat-label>Description</mat-label>
+                                      <textarea matTextareaAutosize="true" matAutosizeMinRows="2" matInput
+                                          formControlName="description"></textarea>
+                                  </mat-form-field>
+
+                                  <div class="col-md-6">
+                                      <mat-checkbox color="primary" formControlName="isRoot">is Root</mat-checkbox>
+                                  </div>
+
+                                  <mat-form-field class="col-md-6">
+                                      <input type="text" placeholder="Parent Category" aria-label="Parent category" matInput
+                                          formControlName="parentId" [matAutocomplete]="auto">
+                                      <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete" [displayWith]="displayFn">
+                                          <mat-option *ngFor="let category of filteredCategories$ | async" [value]="category">
+                                              {{category.name}}
+                                          </mat-option>
+                                      </mat-autocomplete>
+
+                                      <!-- <mat-select placeholder="Parent Category" formControlName="parentId">
+                                        <mat-option *ngFor="let category of filteredCategories$ | async" [value]="category.id">
+                                          {{category.name}}
+                                        </mat-option>
+                                      </mat-select> -->
+
+                                  </mat-form-field>
+
+                                  <mat-form-field appearance="" class="col-md-12">
+                                      <mat-label>Lifecycle Status</mat-label>
+                                      <mat-select formControlName="lifecycleStatus">
+                                          <mat-option *ngFor="let status of lifecycleStatuses" [value]="status">{{status}}
+                                          </mat-option>
+                                      </mat-select>
+                                  </mat-form-field>
+
+                                  <div class="col-12" formGroupName="validFor">
+                                      <div class="row">
+                                          <mat-form-field appearance="" class="col-md-6" [owlDateTimeTrigger]="pickerFrom">
+                                              <mat-label>Valid From</mat-label>
+                                              <input matInput [owlDateTime]="pickerFrom" placeholder="Date Time" formControlName="startDateTime">
+                                              <mat-icon matSuffix>date_range</mat-icon>
+                                              <owl-date-time #pickerFrom></owl-date-time>
+                                              <mat-hint>Date is displayed in Local Time <span *ngIf="editForm.value.validFor.startDateTime">(UTC: {{editForm.value.validFor.startDateTime | date:'dd/MM/yy, HH:mm':'UTC'}})</span></mat-hint>
+                                          </mat-form-field>
+
+                                          <mat-form-field appearance="" class="col-md-6" [owlDateTimeTrigger]="pickerUntil">
+                                              <mat-label>Valid Until</mat-label>
+                                              <input matInput [owlDateTime]="pickerUntil" placeholder="Date Time" formControlName="endDateTime">
+                                              <mat-icon matSuffix>date_range</mat-icon>
+                                              <owl-date-time #pickerUntil></owl-date-time>
+                                              <mat-hint>Date is displayed in Local Time <span *ngIf="editForm.value.validFor.endDateTime">(UTC: {{editForm.value.validFor.endDateTime | date:'dd/MM/yy, HH:mm':'UTC'}})</span></mat-hint>
+                                          </mat-form-field>
+                                      </div>
+                                  </div>
+                              </div>
+                              <div class="container-fluid mt-4">
+                                  <div class="row justify-content-end">
+                                          <button type="submit" class="btn btn-primary btn-block btn-sm"
+                                      (click)="updateResourceCategory()"><i class="fas fa-check mr-2"></i>Submit</button>
+                                  </div>
+                              </div>
+                          </mat-expansion-panel>
+
+
+                          <mat-expansion-panel [expanded]="!newCategory" [disabled]="newCategory" class="bg-light" [@fadeIn]>
+                              <mat-expansion-panel-header>
+                                  <mat-panel-title>
+                                    Create and assign Subcategories to Resource Category
+                                  </mat-panel-title>
+                              </mat-expansion-panel-header>
+
+                              <div class="filter-container row align-items-center justify-content-center">
+                                  
+                                <div class="col-md-10" *ngIf="category?.category.length === 1">{{category?.category.length}} Subcategory assigned</div>
+                                <div class="col-md-10" *ngIf="category?.category.length !== 1">{{category?.category.length}} Subcategories assigned</div>
+
+                                <div class="col-md-2 my-md-0 my-2">
+                                    <button type="button" class="btn btn-success btn-sm btn-block" (click)="openCategoryChildDialog()"><i
+                                            class="fas fa-plus-circle mr-2"></i>Create</button>
+                                </div>
+
+                                <mat-form-field *ngIf="category?.category.length > 0" class="col-12 mt-3">
+                                    <mat-label>Apply filter to assigned Subcategories...</mat-label>
+                                    <input matInput [formControl]="childrenCategoryFilterCtrl">
+                                </mat-form-field>
+                                
+                              </div>
+
+                              <div *ngFor="let category of filteredChildrenCategories$ | async" class="child-category-container pb-2" [@fadeIn]>
+                                  <a routerLink='/{{appService.portalDomain}}/resource_categories_update/{{category.id}}'>{{category.name}}</a>
+                                  <div>
+                                      <button class="btn btn-warning btn-sm mr-1" routerLink='/{{appService.portalDomain}}/resource_categories_update/{{category.id}}'><i
+                                              class="far fa-edit"></i></button>
+                                      <button class="btn btn-danger btn-sm" (click)="openCategoryDeleteDialog(category)"><i
+                                              class="far fa-trash-alt"></i></button>
+                                  </div>
+
+                              </div>
+                          </mat-expansion-panel>
+
+
+                          <mat-expansion-panel [expanded]="!newCategory" [disabled]="newCategory" class="bg-light" [@fadeIn]>
+                              <mat-expansion-panel-header>
+                                  <mat-panel-title>
+                                    Manage the assignment of Resource Specifications to Resource Category
+                                  </mat-panel-title>
+                              </mat-expansion-panel-header>
+
+                              <div class="filter-container row align-items-center justify-content-center">
+                                <div class="col-md-10">{{category?.resourceCandidate.length}} Resource Specification(s) assigned</div>
+                                
+                                <div class="col-md-2 my-md-0 my-2">
+                                    <button type="button" class="btn btn-success btn-sm btn-block" (click)="openAssignCandidatesDialog(category)"><i
+                                            class="fas fa-cart-arrow-down mr-2"></i>Manage</button>
+                                </div>
+
+                                <mat-form-field *ngIf="category?.resourceCandidate.length > 0" class="col-12 mt-3">
+                                    <mat-label>Apply Filter to assigned Resource Specifications...</mat-label>
+                                    <input matInput [formControl]="resourceCandidatesFilterCtrl">
+                                </mat-form-field>   
+                              </div>
+
+                              <div *ngFor="let candidate of filteredResourceCandidates$ | async" class="child-category-container pb-2">
+                                  <a routerLink="./" (click)='navigateToResourceSpec(candidate)'>{{candidate.name}}</a>
+                                  <button class="btn btn-warning btn-sm" (click)='navigateToResourceSpec(candidate)'><i
+                                      class="far fa-edit"></i></button>
+
+                              </div>
+                          </mat-expansion-panel>
+
+
+                      </mat-accordion>
+
+                  </div>
+
+                  <div class="card-footer"></div>
+
+              </div>
+          </form>
+
+      </div>
+  </div>
+</div>

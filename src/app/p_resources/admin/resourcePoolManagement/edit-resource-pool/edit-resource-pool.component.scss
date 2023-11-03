@@ -1,0 +1,16 @@
+.nav-link:hover {
+    cursor: pointer;
+}
+
+.nav-link.disabled:not(.active) {
+    color: rgba(0,0,0,.4) !important;
+}
+
+.nav-pills .nav-link.active {
+    color: #fff;
+    transition: all 0.2s;
+}
+
+.tab-pane > .card:nth-child(1) {
+    min-height: max(350px, 20vh);
+}

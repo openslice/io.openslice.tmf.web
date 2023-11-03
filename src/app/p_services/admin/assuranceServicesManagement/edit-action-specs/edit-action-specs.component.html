@@ -1,0 +1,59 @@
+<div class="container">
+    <h4 mat-dialog-title class="row shadowed mb-3" *ngIf="!newAction">
+        <i class="far fa-clipboard mr-2"></i>
+        <span>Edit Action Specification</span>
+    </h4>
+
+    <h4 mat-dialog-title class="row shadowed mb-3" *ngIf="newAction">
+        <i class="far fa-clipboard mr-2"></i>
+        <span>Create New Action Specification</span>
+    </h4>
+    <form [formGroup]="editForm">
+
+        <mat-dialog-content>
+            <div class="row">
+                <mat-form-field appearance="" class="col-12">
+                    <mat-label>Name</mat-label>
+                    <input matInput formControlName="name">
+                </mat-form-field>
+
+                <mat-form-field appearance="" class="col-12">
+                    <mat-label>Description</mat-label>
+                    <textarea matTextareaAutosize="true" matAutosizeMinRows="2" matInput formControlName="description"></textarea>
+                </mat-form-field>
+            </div> 
+             
+            <h6>Action Parameters</h6>
+            <div formArrayName="params">
+                <div *ngFor="let actionParam of editForm.get('params')['controls']; let i = index" [formGroupName]="i" class="row align-items-center justify-content-center">
+                    <mat-form-field class="col-md-5">
+                        <mat-label>Param Name</mat-label>
+                        <input matInput formControlName="paramName">
+                    </mat-form-field>
+                    
+                    <mat-form-field class="col-md-5">
+                        <mat-label>Param Value</mat-label>
+                        <input matInput formControlName="paramValue">
+                    </mat-form-field>
+
+                    <div class="col-md-2 text-center">
+                        <button mat-icon-button><i class="material-icons" (click)="deleteFromActionParamsArray(i)" aria-label="Clear Parameter">clear</i></button>
+                    </div>
+
+                </div>
+
+                <button type="button" class="btn btn-primary btn-sm btn-block mb-4" (click)="addToActionParamsArray()">
+                    <i class="far fa-sticky-note mr-2"></i>Add Action Parameter
+                </button>
+            </div>   
+        </mat-dialog-content>
+
+        <div class="container-fluid">
+            <div class="row justify-content-end">
+                <button type="button" class="btn btn-danger m-2" (click)="closeDialog()">Cancel</button>
+                <button type="submit" class="btn btn-success m-2" (click)="submitDialog()">Submit</button>
+            </div>
+        </div>
+    </form>
+
+</div>

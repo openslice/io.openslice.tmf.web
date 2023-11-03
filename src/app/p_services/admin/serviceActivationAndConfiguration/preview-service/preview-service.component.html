@@ -1,0 +1,377 @@
+<div class="container-fluid py-5" *ngIf="serviceNotFound" [@fadeIn]>
+  <div class="row align-items-center justify-content-center minh-30vh">
+      <div class="col-12 text-center">
+          <h4>Service with id #{{serviceID}} is not found</h4>
+      </div>
+  </div>
+</div>
+<div class="container-fluid py-5" *ngIf="!serviceNotFound && finishedLoading">
+  <div class="row minh-30vh">
+      <div class="col-12">
+          <div class="card card-paper mb-0">
+              <div class="card-header">
+                  <div class="container-fluid">
+                      <div class="row justify-content-between align-items-center">
+                          <div>
+                              <h2 class="shadowed">Service Overview And Management</h2>
+                              <p class="shadowed mb-0" *ngIf="!newService">Overview and Manage
+                                  <dfn><b>{{service?.name}}</b></dfn> service</p>
+                              <p *ngIf="!newService && service"><b
+                                      class="card-stats shadowed">{{service['@type']}}</b></p>
+
+                              <div class="card-stats" *ngIf="!newService">
+                                  <i class="far fa-plus-square mr-2"></i>Service created at
+                                  {{service?.serviceDate | date:'short'}} (Local Time)
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+
+              <div class="card-body">
+                  <div class="row">
+                      <div class="col-xl-2 col-lg-3">
+                          <div class="nav flex-column nav-pills mb-3 mb-lg-0" role="tablist"
+                              aria-orientation="vertical">
+                              <a class="nav-link " [class.active]="item === activeListItem"
+                                  [class.mat-elevation-z2]="item === activeListItem" [class.disabled]="newService"
+                                  (click)="selectListitem(item)" *ngFor="let item of listItems" role="tab"
+                                  aria-selected="true">{{item}}</a>
+
+                          </div>
+                      </div>
+
+                      <div class="col-xl-10 col-lg-9">
+                          <div class="tab-content">
+                              <div class="tab-pane active" *ngIf="activeListItem === 'Main Properties'"
+                                  role="tabpanel" [@fadeIn]>
+                                  <form [formGroup]="editForm">
+                                      <div class="card mat-elevation-z1 bg-light">
+                                          <div class="card-body">
+                                              <div class="row">
+                                                  <div class="col-lg-4">
+                                                      <h6>Name</h6>
+                                                      <p>{{service?.name}}</p>
+                                                  </div>
+
+                                                  <div class="col-lg-4">
+                                                      <h6>Category</h6>
+                                                      <p>{{service?.category}}</p>
+                                                  </div>
+
+                                                  <div class="col-lg-4">
+                                                      <ng-container *ngIf="!editMode">
+                                                          <h6>State</h6>
+                                                          <p [ngClass]="serviceStateClassSelector(service?.state)">
+                                                              <b>{{service?.state}}</b></p>
+                                                      </ng-container>
+
+                                                      <mat-form-field *ngIf="editMode">
+                                                          <mat-label>State</mat-label>
+                                                          <mat-select formControlName="state">
+                                                              <mat-option *ngFor="let state of availableStates"
+                                                                  [value]="state">
+                                                                  {{state}}
+                                                              </mat-option>
+                                                          </mat-select>
+                                                      </mat-form-field>
+                                                  </div>
+
+
+                                                  <div class="col-lg-4">
+                                                      <h6>Description</h6>
+                                                      <p>{{service?.description}}</p>
+                                                  </div>
+
+                                                  <div class="col-lg-4">
+                                                      <h6>Service Type</h6>
+                                                      <p>{{service?.serviceType}}</p>
+                                                  </div>
+
+                                                  <div class="col-lg-4">
+                                                      <h6>Start Mode</h6>
+                                                      <p>{{service?.startMode}}</p>
+                                                  </div>
+                                              </div>
+                                              <div class="row">
+
+
+
+                                                  <div class="col-lg-4">
+                                                      <h6>Linked Service Orders</h6>
+                                                      <p *ngFor="let order of service?.serviceOrder; let last=last"
+                                                          [class.mb-0]="!last">
+                                                          <a routerLink='/{{appService.portalDomain}}/service_order/{{order.id}}'
+                                                              [queryParams]='{item: order.serviceOrderItemId}'>{{order.id}}</a>
+                                                      </p>
+                                                  </div>
+                                                  <div class="col-lg-4">
+                                                      <h6>Service Specification</h6>
+                                                      <p><a
+                                                              routerLink='/{{appService.portalDomain}}/service_spec_update/{{service?.serviceSpecification.id}}'>{{service?.serviceSpecification.name}}</a>
+                                                      </p>
+                                                  </div>
+                                              </div>
+                                              <div class="row">
+
+                                                  <div class="col-lg-4">
+                                                      <ng-container *ngIf="!editMode">
+                                                          <h6>Starting Date</h6>
+                                                          <p [class.mb-0]="service?.startDate"
+                                                              *ngIf="service?.startDate">
+                                                              {{service?.startDate | date:'d MMM y, h:mm a'}} - Local
+                                                              Time</p>
+                                                          <p *ngIf="service?.startDate">
+                                                              {{service?.startDate | date:'d MMM y, h:mm a':'UTC'}} -
+                                                              UTC</p>
+                                                      </ng-container>
+
+                                                      <mat-form-field *ngIf="editMode"
+                                                          [owlDateTimeTrigger]="pickerFrom" class="mb-2">
+                                                          <mat-label>Starting Date</mat-label>
+                                                          <input matInput [owlDateTime]="pickerFrom"
+                                                              placeholder="Date Time" formControlName="startDate">
+                                                          <mat-icon matSuffix>date_range</mat-icon>
+                                                          <owl-date-time #pickerFrom></owl-date-time>
+                                                          <mat-hint>Date is displayed in Local Time <span
+                                                                  *ngIf="editForm.value.startDate">(UTC:
+                                                                  {{editForm.value.startDate | date:'dd/MM/yy, HH:mm':'UTC'}})</span>
+                                                          </mat-hint>
+                                                      </mat-form-field>
+                                                  </div>
+
+                                                  <div class="col-lg-4">
+                                                      <ng-container *ngIf="!editMode">
+                                                          <h6>Ending Date</h6>
+                                                          <p [class.mb-0]="service?.endDate" *ngIf="service?.endDate">
+                                                              {{service?.endDate | date:'d MMM y, h:mm a'}} - Local
+                                                              Time</p>
+                                                          <p *ngIf="service?.endDate">
+                                                              {{service?.endDate | date:'d MMM y, h:mm a':'UTC'}} -
+                                                              UTC</p>
+                                                      </ng-container>
+
+                                                      <mat-form-field *ngIf="editMode"
+                                                          [owlDateTimeTrigger]="pickerFrom" class="mb-2">
+                                                          <mat-label>Ending Date</mat-label>
+                                                          <input matInput [owlDateTime]="pickerFrom"
+                                                              placeholder="Date Time" formControlName="endDate">
+                                                          <mat-icon matSuffix>date_range</mat-icon>
+                                                          <owl-date-time #pickerFrom></owl-date-time>
+                                                          <mat-hint>Date is displayed in Local Time <span
+                                                                  *ngIf="editForm.value.startDate">(UTC:
+                                                                  {{editForm.value.startDate | date:'dd/MM/yy, HH:mm':'UTC'}})</span>
+                                                          </mat-hint>
+                                                      </mat-form-field>
+                                                  </div>
+                                              </div>
+
+
+                                              <div class="row">
+
+
+                                                    <div class="col-lg-12">
+                                                        <h6>Notes</h6>
+                                                        <div class="notes-container">
+                                                            <div *ngFor="let note of service?.note">
+                                                                <div class="card card-paper mb-2 bg-white">
+                                                                    <div class="note-card-body">
+                                                                        {{note.text}}
+                                                                        <div class="small">
+                                                                                {{note.date | date:'d MMM y, h:mm:ss a'}} (Local Time)
+                                                                                <i>by {{note.author}}</i>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                      <div *ngIf="editMode">
+                                                          <button type="button" *ngIf="!newNote"
+                                                              class="btn btn-primary btn-sm btn-block mb-2"
+                                                              (click)="triggerNewNote()"><i
+                                                                  class="far fa-sticky-note mr-2"></i>Add
+                                                              Note</button>
+                                                          <div class="card card-paper mb-2 bg-white" *ngIf="newNote">
+                                                              <div class="note-card-body pb-0">
+                                                                  <div
+                                                                      class="d-flex justify-content-center align-items-center">
+                                                                      <mat-form-field>
+                                                                          <mat-label>New Note</mat-label>
+                                                                          <textarea cdkTextareaAutosize
+                                                                              #autosize="cdkTextareaAutosize"
+                                                                              cdkAutosizeMinRows="2" matInput
+                                                                              formControlName="note"></textarea>
+                                                                      </mat-form-field>
+                                                                      <button type="button"
+                                                                          class="btn btn-danger btn-sm ml-2 mb-1"
+                                                                          (click)="triggerNewNote()"><i
+                                                                              class="fas fa-times fa"></i></button>
+                                                                  </div>
+                                                              </div>
+                                                          </div>
+                                                      </div>
+                                                  </div>
+
+                                              </div>
+                                          </div>
+
+                                          <div class="card-footer">
+                                              <div class="container-fluid mt-2">
+                                                  <div class="row justify-content-end">
+                                                      <button type="button" *ngIf="!editMode" class="btn btn-warning"
+                                                          (click)="enableServiceEditing()"><i
+                                                              class="far fa-edit mr-1"></i>edit</button>
+                                                      <button type="button" *ngIf="editMode"
+                                                          class="btn btn-danger mr-2"
+                                                          (click)="cancelServiceEditing()">Cancel</button>
+                                                      <button type="button" *ngIf="editMode" class="btn btn-success"
+                                                          (click)="submitServiceEditing()">Submit</button>
+                                                  </div>
+                                              </div>
+                                          </div>
+                                      </div>
+                                  </form>
+
+
+                              </div>
+
+                              <div class="tab-pane active" *ngIf="activeListItem === 'Service Characteristics'"
+                                  role="tabpanel" [@fadeIn]>
+                                  <div class="card mat-elevation-z1 bg-light">
+                                      <div class="card-body">
+                                          <div *ngIf="service?.serviceCharacteristic.length === 0">
+                                              There are not any Service Specification Characteristics allocated.
+                                          </div>
+
+                                          <div class="table-responsive"
+                                              *ngIf="service?.serviceCharacteristic.length > 0">
+
+                                                <div class="container-fluid mb-3" *ngIf="service?.serviceCharacteristic.length > 10">
+                                                    <div class="row justify-content-end">
+                                                        <button class="btn btn-block btn-warning"
+                                                            (click)="openCharacteristicsEditDialog()"><i
+                                                                class="far fa-edit mr-1"></i>Edit Service
+                                                            Characteristics</button>
+                                                    </div>
+                                                </div>
+
+                                                <table class="table  table-inverse bg-white mb-0">
+                                                    <thead class="thead-inverse">
+                                                        <tr class="table-light">
+                                                            <th>
+                                                                <h6 class="mb-0">Characteristic</h6>
+                                                            </th>
+                                                            <th>
+                                                                <h6 class="mb-0">Value (Alias)</h6>
+                                                            </th>
+
+                                                      </tr>
+                                                  </thead>
+                                                  <tbody>
+                                                      <tr
+                                                          *ngFor="let specCharacteristic of service?.serviceCharacteristic">
+                                                          <td class="align-middle"><b>{{specCharacteristic.name}}</b>
+                                                          </td>
+                                                          <ng-container [ngSwitch]="specCharacteristic.valueType">
+
+                                                              <ng-container *ngSwitchCase="'SET'">
+                                                                  <ng-container *ngTemplateOutlet="iterables">
+                                                                  </ng-container>
+                                                              </ng-container>
+
+                                                              <ng-container *ngSwitchCase="'ARRAY'">
+                                                                  <ng-container *ngTemplateOutlet="iterables">
+                                                                  </ng-container>
+                                                              </ng-container>
+
+                                                              <ng-container *ngSwitchDefault>
+                                                                  <td class="align-middle">
+                                                                      {{specCharacteristic.value.value}} <span
+                                                                          *ngIf="specCharacteristic.value.alias">({{specCharacteristic.value.alias}})</span>
+                                                                  </td>
+
+                                                              </ng-container>
+
+                                                              <ng-template #iterables>
+                                                                  <td class="align-middle">
+                                                                      <table class="table-borderless">
+                                                                          <tbody>
+                                                                              <tr
+                                                                                  *ngFor="let value of (specCharacteristic.value.value | jsonParse)">
+                                                                                  <td>
+                                                                                      {{value.value}} <span
+                                                                                          *ngIf="value.alias">({{value.alias}})</span>
+                                                                                  </td>
+                                                                              </tr>
+                                                                          </tbody>
+                                                                      </table>
+
+                                                                  </td>
+                                                              </ng-template>
+                                                          </ng-container>
+
+                                                      </tr>
+                                                  </tbody>
+                                              </table>
+
+
+                                          </div>
+
+                                        </div>
+                                        <div class="card-footer" *ngIf="service?.serviceCharacteristic.length > 0">
+                                            <div class="container-fluid mt-3">
+                                                <div class="row justify-content-end">
+                                                    <button class="btn btn-block btn-warning"
+                                                        (click)="openCharacteristicsEditDialog()"><i
+                                                            class="far fa-edit mr-1"></i>Edit Service
+                                                        Characteristics</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                              <div class="tab-pane active" *ngIf="activeListItem === 'Supporting Services'"
+                                  role="tabpanel" [@fadeIn]>
+                                  <div class="card mat-elevation-z1 bg-light">
+                                      <div class="card-body">
+                                          <div *ngIf="service?.supportingService.length === 0">
+                                              There are not any Supporting Services allocated.
+                                          </div>
+                                          <p *ngFor="let suppServ of service?.supportingService" class="mb-2">
+                                              <a routerLink='/{{appService.portalDomain}}/service/{{suppServ.id}}'>{{suppServ.name}}</a>
+                                          </p>
+                                      </div>
+                                      <div class="card-footer"></div>
+                                  </div>
+                              </div>
+
+
+                              <div class="tab-pane active" *ngIf="activeListItem === 'Supporting Resources'"
+                                  role="tabpanel" [@fadeIn]>
+                                <div class="card mat-elevation-z1 bg-light">
+                                    <div class="card-body">
+                                        <div *ngIf="service?.supportingResource.length === 0">
+                                            There are not any Supporting Resources allocated.
+                                        </div>
+                                        <p *ngFor="let resource of service?.supportingResource" class="mb-2">
+                                            <a *ngIf="resource.id" routerLink='/resources/resource_inventory/{{resource.id}}'>{{resource.name}}</a>
+                                            <span *ngIf="!resource.id">{{resource.name}}</span>
+                                        </p>
+                                    </div>
+                                    <div class="card-footer"></div>
+                                </div>
+                              </div>
+
+                          </div>
+                      </div>
+                  </div>
+              </div>
+              <div class="card-footer"></div>
+
+          </div>
+      </div>
+  </div>
+</div>

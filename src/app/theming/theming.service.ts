@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { IAppThemingConfig } from '../models/app-config-theming.model';
+import { IAppThemingConfig } from 'src/app/shared/models/app-config-theming.model';
 
 @Injectable({
   providedIn: 'root'

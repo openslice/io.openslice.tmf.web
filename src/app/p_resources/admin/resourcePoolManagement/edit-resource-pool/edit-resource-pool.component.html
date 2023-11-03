@@ -1,0 +1,142 @@
+<div class="container-fluid py-5" *ngIf="resourcePoolNotFound" [@fadeIn]>
+    <div class="row align-items-center justify-content-center minh-30vh">
+        <div class="col-12 text-center">
+            <h4>Resource Pool with id #{{resourcePoolID}} is not found</h4>
+        </div>
+    </div>
+</div>
+
+<div class="container-fluid py-5" *ngIf="!resourcePoolNotFound && finishedLoading">
+    <div class="row">
+        <div class="col-12">
+            <div class="card card-paper mb-0">
+                <div class="card-header">
+                    <div class="container-fluid">
+                        <div class="row justify-content-between align-items-center">
+                            <div>
+                                <h2 class="shadowed">Resource Pool Designer</h2>
+
+                                <p class="shadowed mb-0" *ngIf="newResourcePool">Design a new Resource Pool</p>
+
+                                <p class="shadowed mb-0" *ngIf="!newResourcePool">Edit design of
+                                    <dfn><b>{{resourcePool?.name}}</b></dfn> Resource Pool
+                                </p>
+
+                                <div class="card-stats" *ngIf="!newResourcePool">
+                                    <i class="fas fa-sync spin mr-2"></i>Last updated at
+                                    {{resourcePool?.lastUpdate | date:'short'}} (Local Time)
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+
+                <div class="card-body">
+                    <div class="row">
+                        
+                        <div class="col-xl-2 col-lg-3">
+                            <div class="nav flex-column nav-pills mb-3 mb-lg-0" role="tablist" aria-orientation="vertical">
+                                <a class="nav-link" [class.active]="item === activeListItem"
+                                [class.mat-elevation-z2]="item === activeListItem"
+                                [class.disabled]="newResourcePool" (click)="selectListItem(item)"
+                                *ngFor="let item of listItems" role="tab" aria-selected="true">{{item}}</a>
+                            </div>
+                        </div>
+
+                        <div class="col-xl-10 col-lg-9">
+                            <div class="tab-content">
+                                <!-- Main Properties Tab -->
+                                <div class="tab-pane active" *ngIf="activeListItem === 'Main Properties'" role="tabpanel" [@fadeIn]>
+                                    <form [formGroup]="editForm">
+                                        <div class="card mat-elevation-z1 bg-light">
+                                            <div class="card-body">
+                                                
+                                                <div class="row align-items-center">
+                                                    <mat-form-field appearance="" class="col-12">
+                                                        <mat-label>Name</mat-label>
+                                                        <input matInput formControlName="name">
+                                                    </mat-form-field>
+                                                    
+                                                    
+                                                    <mat-form-field appearance="" class="col-12">
+                                                        <mat-label>Description</mat-label>
+                                                        <textarea matTextareaAutosize="true" matAutosizeMinRows="2" matInput formControlName="description"></textarea>
+                                                    </mat-form-field>
+                                                    
+                                                    <!-- <mat-form-field class="col-md-12">
+                                                        <mat-label>Lifecycle Status</mat-label>
+                                                        <mat-select formControlName="lifecycleStatus">
+                                                            <mat-option *ngFor="let status of lifecycleStatuses" [value]="status">
+                                                                {{status}}
+                                                            </mat-option>
+                                                        </mat-select>
+                                                    </mat-form-field> -->
+                                                </div>
+                                                
+                                                <div class="container-fluid">
+                                                    <div class="row justify-content-end">
+                                                        <button type="submit" class="btn btn-primary"
+                                                            (click)="updateResourcePoolMainProperties()"><i
+                                                                class="fas fa-check mr-2"></i>Submit</button>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                            <div class="card-footer"></div>
+                                        </div>
+                                    </form>
+                                </div>
+                                <!-- END OF Main Properties Tab -->
+
+                                <!-- Capacity Tab -->
+                                <div class="tab-pane active" *ngIf="activeListItem === 'Capacity'" role="tabpanel" [@fadeIn]>
+                                    <div class="card mat-elevation-z1 bg-light">
+                                        <div class="card-body">
+                                            <div class="filter-container row align-items-center justify-content-between">
+                                                <div class="col-md-10">
+                                                    <span *ngIf="!resourcePool?.capacity"> 0 </span>
+                                                    <span *ngIf="resourcePool?.capacity && resourcePool?.capacity.resources">
+                                                        {{resourcePool.capacity.resources.length}} </span>
+                                                    assigned Resource(s) to the Resource Pool
+                                                </div>
+                                
+                                                <div class="col-md-2 my-md-0 my-2">
+                                                    <button type="button" class="btn btn-success btn-sm btn-block"
+                                                        (click)="openAssignResourceRelationshipDialog()"><i
+                                                            class="fas fa-cart-arrow-down mr-2"></i>Assign</button>
+                                                </div>
+                                            </div>
+                                
+                                            <div class="row mt-3">
+                                                <mat-form-field
+                                                    *ngIf="resourcePool?.capacity && resourcePool?.capacity.resources && resourcePool?.capacity.resources.length > 0"
+                                                    class="col-12">
+                                                    <mat-label>Apply Filter to the assigned Resources...
+                                                    </mat-label>
+                                                    <input matInput [formControl]="assignedResourcesFilterCtrl">
+                                                </mat-form-field>
+                                            </div>
+                                
+                                            <div *ngFor="let assignedResourced of filteredResourceRefs$ | async"
+                                                class="d-flex justify-content-between align-items-center pb-2" [@fadeIn]>
+                                                <a routerLink="/resources/resource/{{assignedResourced.id}}">{{assignedResourced.name}}</a>
+                                                <button class="btn btn-warning btn-sm" routerLink='/resources/resource/{{assignedResourced.id}}'><i
+                                                        class="far fa-edit"></i></button>
+                                            </div>
+                                
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- END OF Capacity Tab -->
+                                
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer"></div>
+            </div>
+        </div>
+    </div>
+</div>

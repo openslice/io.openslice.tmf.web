@@ -1,0 +1,152 @@
+<div class="container-fluid py-5" *ngIf="catalogNotFound" [@fadeIn]>
+    <div class="row align-items-center justify-content-center minh-30vh">
+        <div class="col-12 text-center">
+            <h4>Product Catalog with id #{{catalogID}} is not found</h4>
+        </div>
+    </div>
+</div>
+
+<div class="container py-5" *ngIf="!catalogNotFound && finishedLoading">
+    <div class="row">
+        <div class="col-12">
+
+            <form [formGroup]="editForm">
+                <div class="card card-paper mb-0">
+                    
+                    <div class="card-header">
+                        <div class="container-fluid">
+                            <div class="row justify-content-between align-items-center">
+                                <div>
+                                    <h2 class="shadowed">Product Catalog Designer</h2>
+
+                                    <p class="shadowed mb-0" *ngIf="newCatalog">Design a new Product Catalog</p>
+
+                                    <p class="shadowed" *ngIf="!newCatalog">Edit the design of <dfn><b>{{catalog?.name}}</b></dfn> Product Catalog</p>
+
+                                    <div class="card-stats" *ngIf="!newCatalog">
+                                        <i class="fas fa-sync spin mr-2"></i>Last updated at
+                                        {{catalog?.lastUpdate | date:'short'}} (Local Time)
+                                    </div>
+
+                                </div>
+
+                            </div>                           
+                        </div>
+                    </div>
+
+
+                    <div class="card-body">
+                        <mat-accordion multi="true">
+                            <mat-expansion-panel expanded="true" class="bg-light" [@fadeIn] >
+                                <mat-expansion-panel-header>
+                                    <mat-panel-title>
+                                        Main Product Catalog properties
+                                    </mat-panel-title>
+                                </mat-expansion-panel-header>
+                            
+                                <div class="row align-items-center">
+                            
+                                    <mat-form-field appearance="" class="col-md-6">
+                                        <mat-label>Name</mat-label>
+                                        <input matInput formControlName="name">
+                                    </mat-form-field>
+                    
+                                    <mat-form-field appearance="" class="col-md-6">
+                                        <mat-label>Version</mat-label>
+                                        <input matInput formControlName="version">
+                                    </mat-form-field>
+                    
+                                    <mat-form-field appearance="" class="col-md-12">
+                                        <mat-label>Description</mat-label>
+                                        <textarea cdkTextareaAutosize #autosize="cdkTextareaAutosize" cdkAutosizeMaxRows="5"
+                                        matInput formControlName="description"></textarea>
+                                    </mat-form-field>
+                    
+                                    <mat-form-field appearance="" class="col-md-12">
+                                        <mat-label>Lifecycle Status</mat-label>
+                                        <!-- <input matInput formControlName="lifecycleStatus"> -->
+                                        <mat-select formControlName="lifecycleStatus">
+                                            <mat-option *ngFor="let status of lifecycleStatuses" [value]="status">{{status}}
+                                            </mat-option>
+                                        </mat-select>
+                                    </mat-form-field>
+                    
+                                    <!-- <mat-form-field appearance="" class="col-md-12">
+                                                    <mat-label>Categories</mat-label>
+                                                    <mat-select formControlName="categoryIDs" multiple>
+                                                        <mat-option *ngFor="let category of categories" [value]="category.id">
+                                                            {{category.name}}</mat-option>
+                                                    </mat-select>
+                                                </mat-form-field> -->
+                                    <mat-form-field appearance="" class="col-md-12">
+                                        <mat-label>Assigned categories</mat-label>
+                                        <mat-chip-list #chipList aria-label="Category selection" formControlName="category">
+                                            <mat-chip *ngFor="let category of catalog?.category" [selectable]="selectable" [removable]="removable"
+                                                (removed)="removeChip(category)">
+                                                {{category.name}}
+                                                <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+                                            </mat-chip>
+                                            <input placeholder="New category..." #categoryInput [formControl]="categoryInputCtrl"
+                                                [matAutocomplete]="auto" matInput [matChipInputFor]="chipList"
+                                                [matChipInputAddOnBlur]="addOnBlur" (matChipInputTokenEnd)="addChip($event)"
+                                                (click)="openList()">
+                                        </mat-chip-list>
+                                        
+                                        <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)" autoActiveFirstOption>
+                                            <mat-option *ngFor="let category of filteredCategories | async" [value]="category">
+                                                {{category.name}}
+                                            </mat-option>
+                                        </mat-autocomplete>
+                                    </mat-form-field>
+                    
+                                    <div class="col-12" formGroupName="validFor">
+                                        <div class="row">
+                                            <mat-form-field appearance="" class="col-md-6" [owlDateTimeTrigger]="pickerFrom">
+                                                <mat-label>Valid From</mat-label>
+                                                <!-- <input matInput [matDatepicker]="pickerFrom" formControlName="startDateTime">
+                                                                <mat-datepicker-toggle matSuffix [for]="pickerFrom"></mat-datepicker-toggle>
+                                                                <mat-datepicker #pickerFrom></mat-datepicker> -->
+                    
+                                                <input matInput [owlDateTime]="pickerFrom" placeholder="Date Time"
+                                                    formControlName="startDateTime">
+                                                <mat-icon matSuffix>date_range</mat-icon>
+                                                <!-- <span [owlDateTimeTrigger]="dt1"><i class="fa fa-calendar"></i></span> -->
+                                                <owl-date-time #pickerFrom></owl-date-time>
+                                                <mat-hint>Date is displayed in Local Time <span *ngIf="editForm.value.validFor.startDateTime">(UTC: {{editForm.value.validFor.startDateTime | date:'dd/MM/yy, HH:mm':'UTC'}})</span></mat-hint>
+                                            </mat-form-field>
+                    
+                                            <mat-form-field appearance="" class="col-md-6" [owlDateTimeTrigger]="pickerUntil">
+                                                <mat-label>Valid Until</mat-label>
+                                                <!-- <input matInput [matDatepicker]="pickerUntil" formControlName="endDateTime">
+                                                                <mat-datepicker-toggle matSuffix [for]="pickerUntil"></mat-datepicker-toggle>
+                                                                <mat-datepicker #pickerUntil></mat-datepicker> -->
+                                                <input matInput [owlDateTime]="pickerUntil" placeholder="Date Time"
+                                                    formControlName="endDateTime">
+                                                <mat-icon matSuffix>date_range</mat-icon>
+                                                <!-- <span [owlDateTimeTrigger]="dt1"><i class="fa fa-calendar"></i></span> -->
+                                                <owl-date-time #pickerUntil></owl-date-time>
+                                                <mat-hint>Date is displayed in Local Time <span *ngIf="editForm.value.validFor.endDateTime">(UTC: {{editForm.value.validFor.endDateTime | date:'dd/MM/yy, HH:mm':'UTC'}})</span></mat-hint>
+                                            </mat-form-field>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="container-fluid">
+                                    <div class="row justify-content-end">
+                                            <button type="submit" class="btn btn-primary"
+                                        (click)="updateCatalog()"><i class="fas fa-check mr-2"></i>Submit</button>
+                                    </div>
+                                </div>
+                            </mat-expansion-panel>    
+                        </mat-accordion>
+
+                    </div>
+
+                    <div class="card-footer"></div>
+
+                </div>
+            </form>
+
+        </div>
+    </div>
+</div>

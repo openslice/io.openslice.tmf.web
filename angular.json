@@ -17,24 +17,29 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
+            "allowedCommonJsDependencies": ["jwt-decode"],
             "outputPath": "dist/io-openslice-portal-web",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",
             "tsConfig": "tsconfig.app.json",
-            "aot": false,
+            "aot": true,
             "assets": [
               "src/favicon.ico",
-              "src/assets"
+              {
+                "glob": "**/*",
+                "input": "src/assets/",
+                "output": "/assets/"
+              }
             ],
             "styles": [
               "./node_modules/@angular/material/prebuilt-themes/indigo-pink.css",
-              "src/styles.scss",
               "node_modules/@fortawesome/fontawesome-free/css/all.min.css",
+              "src/styles.scss",
               "node_modules/ngx-toastr/toastr.css"
             ],
             "scripts": [
-              "node_modules/marked/lib/marked.js",
+              "node_modules/marked/marked.min.js",
               "node_modules/blockly/blockly_compressed.js",
               "node_modules/blockly/blocks_compressed.js",
               "node_modules/blockly/msg/js/en.js",
@@ -54,9 +59,7 @@
               "optimization": true,
               "outputHashing": "all",
               "sourceMap": false,
-              "extractCss": true,
               "namedChunks": false,
-              "aot": true,
               "extractLicenses": true,
               "vendorChunk": false,
               "buildOptimizer": true,
@@ -72,6 +75,16 @@
                   "maximumError": "10kb"
                 }
               ]
+            },
+            "development": {
+              "optimization": false,
+              "outputHashing": "all",
+              "sourceMap": true,
+              "namedChunks": true,
+              "extractLicenses": false,
+              "vendorChunk": true,
+              "buildOptimizer": false,
+              "budgets": []
             }
           }
         },
@@ -83,6 +96,9 @@
           "configurations": {
             "production": {
               "browserTarget": "io-openslice-portal-web:build:production"
+            },
+            "development": {
+              "browserTarget": "io-openslice-portal-web:build:development"
             }
           }
         },

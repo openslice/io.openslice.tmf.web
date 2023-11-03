@@ -1,0 +1,217 @@
+<div class="container-fluid py-5" *ngIf="categoryNotFound" [@fadeIn]>
+    <div class="row align-items-center justify-content-center minh-30vh">
+        <div class="col-12 text-center">
+            <h4>Product Category with id #{{categoryID}} is not found</h4>
+        </div>
+    </div>
+</div>
+
+<div class="container py-5" *ngIf="!categoryNotFound && finishedLoading">
+    <div class="row">
+        <div class="col-12">
+
+            <form [formGroup]="editForm">
+                <div class="card card-paper mb-0">
+                    
+                    <div class="card-header">
+                        <div class="container-fluid">
+                            <div class="row justify-content-between align-items-center">
+                                <div>
+                                    <h2 class="shadowed">Product Category Designer</h2>
+
+                                    <p class="shadowed mb-0" *ngIf="newCategory">Design a new Product Category</p>
+
+                                    <p class="shadowed" *ngIf="!newCategory">Edit the design of <dfn><b>{{category?.name}}</b></dfn> Product Category</p>
+
+                                    <div class="card-stats" *ngIf="!newCategory">
+                                        <i class="fas fa-sync spin mr-2"></i>Last updated at
+                                        {{category?.lastUpdate | date:'short'}} (Local Time)
+                                    </div>
+
+                                </div>
+
+                            </div>
+                            
+                            <nav class="row mt-3 " *ngIf="!(category?.isRoot || newCategory)">
+                                <span *ngIf="category?.parentId && !editForm.controls.parentId.value?.isRoot" class="d-flex align-items-center">
+                                    <a mat-button>...</a>
+                                </span>
+                            
+                                <span *ngIf="category?.parentId" class="d-flex align-items-center">
+                                    <mat-icon *ngIf="!editForm.controls.parentId.value?.isRoot">keyboard_arrow_right</mat-icon>
+                                    <a mat-button
+                                        routerLink='/{{appService.portalDomain}}/product_category_update/{{editForm.controls.parentId.value?.id}}'>{{editForm.controls.parentId.value?.name}}
+                                    </a>
+                                </span>
+                            
+                                <span class="d-flex align-items-center">
+                                    <mat-icon>keyboard_arrow_right</mat-icon>
+                                    <a mat-button disabled="true">{{category?.name}}</a>
+                                </span>
+                            </nav>
+                            
+                        </div>
+                    </div>
+
+
+                    <div class="card-body">
+                        <mat-accordion multi="true">
+                            <mat-expansion-panel expanded="true" class="bg-light" [@fadeIn]>
+                                <mat-expansion-panel-header>
+                                    <mat-panel-title>
+                                        Main Product Category properties
+                                    </mat-panel-title>
+                                </mat-expansion-panel-header>
+                            
+                                <div class="row align-items-center">
+                            
+                                    <mat-form-field appearance="" class="col-md-6">
+                                        <mat-label>Name</mat-label>
+                                        <input matInput formControlName="name">
+                                    </mat-form-field>
+                            
+                                    <mat-form-field appearance="" class="col-md-6">
+                                        <mat-label>Version</mat-label>
+                                        <input matInput formControlName="version">
+                                    </mat-form-field>
+                            
+                                    <mat-form-field appearance="" class="col-md-12">
+                                        <mat-label>Description</mat-label>
+                                        <textarea cdkTextareaAutosize #autosize="cdkTextareaAutosize" cdkAutosizeMaxRows="5" cdkAutosizeMinRows="2" matInput
+                                            formControlName="description"></textarea>
+                                    </mat-form-field>
+                            
+                                    <div class="col-md-6">
+                                        <mat-checkbox color="primary" formControlName="isRoot">is Root</mat-checkbox>
+                                    </div>
+                            
+                                    <mat-form-field class="col-md-6">
+                                        <input type="text" placeholder="Parent Category" aria-label="Parent category" matInput
+                                            formControlName="parentId" [matAutocomplete]="auto">
+                                        <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete" [displayWith]="displayFn">
+                                            <mat-option *ngFor="let category of filteredParentCategories$ | async" [value]="category">
+                                                {{category.name}}
+                                            </mat-option>
+                                        </mat-autocomplete>
+                                    </mat-form-field>
+                            
+                                    <mat-form-field appearance="" class="col-md-12">
+                                        <mat-label>Lifecycle Status</mat-label>
+                                        <mat-select formControlName="lifecycleStatus">
+                                            <mat-option *ngFor="let status of lifecycleStatuses" [value]="status">{{status}}
+                                            </mat-option>
+                                        </mat-select>
+                                    </mat-form-field>
+                            
+                                    <div class="col-12" formGroupName="validFor">
+                                        <div class="row">
+                                            <mat-form-field appearance="" class="col-md-6" [owlDateTimeTrigger]="pickerFrom">
+                                                <mat-label>Valid From</mat-label>
+                                                <input matInput [owlDateTime]="pickerFrom" placeholder="Date Time" formControlName="startDateTime">
+                                                <mat-icon matSuffix>date_range</mat-icon>
+                                                <owl-date-time #pickerFrom></owl-date-time>
+                                                <mat-hint>Date is displayed in Local Time <span *ngIf="editForm.value.validFor.startDateTime">(UTC: {{editForm.value.validFor.startDateTime | date:'dd/MM/yy, HH:mm':'UTC'}})</span></mat-hint>
+                                            </mat-form-field>
+                            
+                                            <mat-form-field appearance="" class="col-md-6" [owlDateTimeTrigger]="pickerUntil">
+                                                <mat-label>Valid Until</mat-label>
+                                                <input matInput [owlDateTime]="pickerUntil" placeholder="Date Time" formControlName="endDateTime">
+                                                <mat-icon matSuffix>date_range</mat-icon>
+                                                <owl-date-time #pickerUntil></owl-date-time>
+                                                <mat-hint>Date is displayed in Local Time <span *ngIf="editForm.value.validFor.endDateTime">(UTC: {{editForm.value.validFor.endDateTime | date:'dd/MM/yy, HH:mm':'UTC'}})</span></mat-hint>
+                                            </mat-form-field>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="container-fluid">
+                                    <div class="row justify-content-end">
+                                            <button type="submit" class="btn btn-primary"
+                                        (click)="updateServiceCategory()"><i class="fas fa-check mr-2"></i>Submit</button>
+                                    </div>
+                                </div>
+                            </mat-expansion-panel>
+
+
+                            <mat-expansion-panel [expanded]="!newCategory" [disabled]="newCategory" class="bg-light">
+                                <mat-expansion-panel-header>
+                                    <mat-panel-title>
+                                        Create and assign Subcategories to Product Category
+                                    </mat-panel-title>
+                                </mat-expansion-panel-header>
+                            
+                                <div class="filter-container row align-items-center justify-content-center">
+                                    <mat-form-field *ngIf="category?.subCategory.length > 0" class="col-lg-10">
+                                        <mat-label>Apply Filter to Subcategories...</mat-label>
+                                        <input matInput [formControl]="subCategoryFilterCtrl">
+                                    </mat-form-field>
+                            
+                                    <div *ngIf="category?.subCategory.length === 0" class="col-lg-10 sub-categories-font">
+                                        There are no Subcategories assigned yet
+                                    </div>
+                            
+                            
+                                    <div class="text-right col-lg-2">
+                                        <button type="button" class="btn btn-success btn-sm" (click)="openSubcategoryDialog()"><i
+                                                class="fas fa-plus-circle mr-2"></i>Create</button>
+                                    </div>
+                                </div>
+                            
+                                <div *ngFor="let category of filteredSubCategories$ | async" class="sub-category-container pt-3 px-2">
+                                    <div><a routerLink='/{{appService.portalDomain}}/product_category_update/{{category.id}}'><b>{{category.name}}</b></a></div>
+                                    <div>
+                                        <a routerLink='/{{appService.portalDomain}}/product_category_update/{{category.id}}'>
+                                            <button class="btn btn-warning btn-sm m-1" ><i
+                                                class="far fa-edit"></i></button>
+                                        </a >
+                                        <button class="btn btn-danger btn-sm m-1" (click)="openCategoryDeleteDialog(category)"><i
+                                                class="far fa-trash-alt"></i></button>
+                                    </div>
+                            
+                                </div>
+                            </mat-expansion-panel>
+
+                            
+                            <mat-expansion-panel [expanded]="!newCategory" [disabled]="newCategory" class="bg-light">
+                                <mat-expansion-panel-header>
+                                    <mat-panel-title>
+                                        Manage the assignment of Product Offerings to Product Category
+                                    </mat-panel-title>
+                                </mat-expansion-panel-header>
+                            
+                                <div class="filter-container row align-items-center justify-content-center">
+                                    <mat-form-field *ngIf="category?.productOffering.length > 0" class="col-lg-10">
+                                        <mat-label>Apply Filter to assigned Product Offerings...</mat-label>
+                                        <input matInput [formControl]="productOfferingsFilterCtrl">
+                                    </mat-form-field>
+                            
+                                    <div *ngIf="category?.productOffering.length === 0" class="col-lg-10 sub-categories-font">
+                                        <!-- Category <dfn>{{category.name}}</dfn> has no service specifications assigned yet -->
+                                        There are no Product Offerings assigned yet
+                                    </div>
+                            
+                                    <div class="text-right col-lg-2">
+                                        <button type="button" class="btn btn-success btn-sm" (click)="openAssignOfferingsDialog()"><i
+                                                class="fas fa-cart-arrow-down mr-2"></i>Manage</button>
+                                    </div>
+                                </div>
+                            
+                                <div *ngFor="let offering of filteredProductOfferings$ | async" class="sub-category-container pt-3">
+                                    <div><a routerLink='/{{appService.portalDomain}}/product_offering_update/{{offering.id}}'><b>{{offering.name}}</b></a></div>
+                                    <button class="btn btn-warning btn-sm" routerLink='/{{appService.portalDomain}}/product_offering_update/{{offering.id}}'><i
+                                        class="far fa-edit"></i></button>   
+                                </div>
+                            </mat-expansion-panel>
+
+    
+                        </mat-accordion>
+
+                    </div>
+
+                    <div class="card-footer"></div>
+
+                </div>
+            </form>
+
+        </div>
+    </div>
+</div>

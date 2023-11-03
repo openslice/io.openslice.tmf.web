@@ -2,14 +2,14 @@
 	<div  class="container">
 		<div class="row align-items-center shadowed-dark" >
 		<div class="col-12" >
-				
+
 				<h3>
-					Welcome to the {{config.TITLE}} portal!
+					Welcome to the {{config.TITLE}} portal
 				</h3>
 				<h5>{{config.TITLE}} portal is powered by Openslice, a prototype open source, Operations Support System. It supports VNF/NSD onboarding to OpenSourceMANO (OSM) and NSD deployment management. It also supports TM Forum OpenAPIs regarding Service Catalog Management, Ordering, Resource, etc.</h5>
-				
+
 				<h5>Check <a style="color:#FFFFFF;" class="font-weight-bold" href="http://openslice.io">http://openslice.io</a> for further documentation</h5>
-				
+
 			</div>
 		</div>
 	</div>
@@ -19,15 +19,32 @@
 	<div  class="container">
 		<div class="row align-items-center">
 			<div class="col-sm-12 col-md-6 col-lg-6 text-left text-center text-md-left">
-				<a href="services/"><img src="assets/images/landing/services.png" class="img-fluid text-center"></a>
+				<a routerLink="services/"><img src="assets/images/landing/services.png" class="img-fluid text-center"></a>
 			</div>
-			
+
 			<div class="col-sm-12 col-md-6 col-lg-6 text-center text-md-left">
 				<h2 class="shadowed">Deploy Services by using Standardized Open APIs</h2>
 				<p>Design Service Catalogs, Service Specifications and manage Service Orders</p>
-				<a href="services/" ><button type="button" class="btn btn-info">Services portal</button></a>	
-				<h1>&nbsp;</h1>			 
-			</div>		
+				<a routerLink="services/" ><button type="button" class="btn btn-info">Services Portal</button></a>
+				<h1>&nbsp;</h1>
+			</div>
+		</div>
+	</div>
+</section>
+
+<section class="section_info pt-4" >
+	<div  class="container">
+		<div class="row align-items-center">
+			<div class="col-sm-12 col-md-6 col-lg-6 order-md-1 order-2 text-center text-md-right">
+				<h2 class="shadowed">Manage Resources by using Standardized Open APIs</h2>
+				<p>Design Resource Catalogs, Resource Specifications and manage Resource Orders</p>
+				<a routerLink="resources/" ><button type="button" class="btn btn-info">Resources Portal</button></a>
+				<h1>&nbsp;</h1>
+			</div>
+
+			<div class="col-sm-12 col-md-6 col-lg-6 order-md-2 order-1 text-center text-md-left">
+				<a routerLink="resources/"><img src="assets/images/landing/resources.png" class="img-fluid text-center"></a>
+			</div>
 		</div>
 	</div>
 </section>
@@ -35,14 +52,50 @@
 <section class="section_info" >
 	<div  class="container">
 		<div class="row align-items-center">
-			<div class="col-sm-12 col-md-6 col-lg-6 order-md-1 order-2 text-center text-md-right">
+			<div class="col-sm-12 col-md-6 col-lg-6 text-left text-center text-md-left">
+				<a href="nfvportal/"><img src="assets/images/landing/nfvo.png" class="img-fluid text-center"></a>
+
+			</div>
+			<div class="col-sm-12 col-md-6 col-lg-6 text-center text-md-left">
 				<h2 class="shadowed">Deploy VNFs and NSDs to target NFV Orchestrator</h2>
 				<p>Onboard, manage and share VNFs and Network Services over the target infrastructure</p>
 				<a href="nfvportal/" ><button type="button" class="btn btn-info">NFV Portal</button></a>
 				<h1>&nbsp;</h1>
+
 			</div>
+		</div>
+	</div>
+</section>
+
+<section class="section_info pt-4" >
+	<div  class="container">
+		<div class="row align-items-center">
+			<div class="col-sm-12 col-md-6 col-lg-6 order-md-1 order-2 text-center text-md-right">
+				<h2 class="shadowed">Design tests by using Standardized Open APIs</h2>
+				<p>Design Service Test Specifications rendering them available to the Service Portal</p>
+				<a routerLink="testing/" ><button type="button" class="btn btn-info">Testing Portal</button></a>
+				<h1>&nbsp;</h1>
+			</div>
+
 			<div class="col-sm-12 col-md-6 col-lg-6 order-md-2 order-1 text-center text-md-left">
-				<a href="nfvportal/"><img src="assets/images/landing/nfvo.png" class="img-fluid text-center"></a>
+				<a routerLink="testing/"><img src="assets/images/landing/testing.png" class="img-fluid text-center"></a>
+			</div>
+		</div>
+	</div>
+</section>
+
+<section class="section_info pt-4">
+	<div  class="container">
+		<div class="row align-items-center">
+			<div class="col-sm-12 col-md-6 col-lg-6 text-left text-center text-md-left">
+				<a routerLink="products/"><img src="assets/images/landing/products.png" class="img-fluid text-center"></a>
+
+			</div>
+			<div class="col-sm-12 col-md-6 col-lg-6 text-center text-md-left">
+				<h2 class="shadowed">Design products by using Standardized Open APIs</h2>
+				<p>Design Product Catalogs, Product Offerings, and link them to the available Services</p>
+				<a routerLink="products/" ><button type="button" class="btn btn-info">Products Portal</button></a>
+				<h1>&nbsp;</h1>
 			</div>
 		</div>
 	</div>

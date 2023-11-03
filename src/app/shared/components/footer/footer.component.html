@@ -1,0 +1,25 @@
+<footer id="footer">
+    <section class="section_footer">
+        <div *ngIf="!customFooterHTML" class="container">
+            <div class='row align-items-center'>
+                <div class='col-md-2'><img src='assets/images/eu-commission.png' /></div>
+                <div class='col-md-10 font-weight-light'>openslice.io has received funding from<div class='font-weight-light'>
+                        5GinFIRE | https://5ginfire.eu/ project from the European Horizon 2020 Programme for research, technological
+                        development and demonstration under grant agreement number 732497.</div>
+                    <div class='font-weight-light'>5G-VINNI project | https://5g-vinni.eu/ 5G-VINNI project has received funding
+                        from the European Horizon 2020 Programme for research, technological development and demonstration under
+                        grant agreement number 815279</div>
+                    <div class='font-weight-light'>{{config.TITLE}} running openslice.io version {{config.PORTALVERSION}}| <a
+                            href='https://openslice.io/data-protection-declaration/' class='font-weight-light'>Data Protection
+                            Declaration</a> | &copy; 2019-{{currentYear}} on behalf of <a target='_blank' href='http://openslice.io/'
+                            title='openslice.io' class='font-weight-light'>openslice.io</a></div>
+                </div>
+            </div>
+
+        </div>
+
+        <div *ngIf="customFooterHTML" [innerHTML]="customFooterHTML" class="container"></div>
+    </section>
+
+</footer>
+<!--/#footer-->

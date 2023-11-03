@@ -1,0 +1,118 @@
+<div class="container-fluid py-5" *ngIf="specNotFound" [@fadeIn]>
+    <div class="row align-items-center justify-content-center minh-30vh">
+        <div class="col-12 text-center">
+            <h4>Resource reservation with id #{{resourceReservationID}} is not found</h4>
+        </div>
+    </div>
+</div>
+
+
+
+
+<div class="container-fluid py-5" *ngIf="!specNotFound && finishedLoading ">
+    <div class="row">
+        <div class="col-12">
+            <div class="card card-paper mb-0">
+                <div class="card-header">
+                    <div class="container-fluid">
+                        <div class="row justify-content-between align-items-center">
+                            <div>
+                                <h2 class="shadowed">Resource Reservation Designer</h2>
+
+                                <p class="shadowed mb-0" *ngIf="newReservation">Create a new Resource Reservation</p>
+
+                                <p class="shadowed mb-0" *ngIf="!newReservation">Edit 
+                                    <dfn><b>{{resourceReservation?.name}}</b></dfn> Resource Reservation
+                                </p>
+                                
+
+                                <div class="card-stats" *ngIf="!newReservation">
+                                    <i class="fas fa-sync spin mr-2"></i>Last updated at
+                                    {{resourceReservation?.lastUpdate | date:'short'}} (Local Time)
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+
+
+                <div class="card-body">
+                    <form [formGroup]="editForm">
+                        <div class="row">
+                        
+                            <mat-form-field appearance="" class="col-md-12">
+                                <mat-label>Name</mat-label>
+                                <textarea matTextareaAutosize="true" matAutosizeMinRows="2" matInput formControlName="name"></textarea>
+                            </mat-form-field>
+                        
+                            <mat-form-field appearance="" class="col-md-12">
+                                <mat-label>Description</mat-label>
+                                <textarea matTextareaAutosize="true" matAutosizeMinRows="2" matInput formControlName="description"></textarea>
+                            </mat-form-field>
+                        
+                            <mat-form-field appearance="" class="col-md-6">
+                                <mat-label>From Resource Pool</mat-label>
+                        
+                                <input placeholder="Start typing to filter available Resource Pools..." #resourcePoolInput
+                                    [formControl]="resourcePoolInputCtrl" [matAutocomplete]="autoResourcePool" matInput
+                                    (click)="openResourcePoolList()">
+                        
+                                <mat-autocomplete #autoResourcePool="matAutocomplete" (optionSelected)="selectedRPool($event)"
+                                    autoActiveFirstOption>
+                                    <mat-option *ngFor="let rPool of filteredResourcePools$ | async" [value]="rPool.id">{{ rPool.name
+                                        }}</mat-option>
+                                </mat-autocomplete>                       
+                            </mat-form-field>
+                        
+                            <mat-form-field appearance="" class="col-md-6">
+                                <mat-label>Resources to reserve</mat-label>
+                                <mat-select formControlName="resourceInput" multiple>
+                                    <mat-option *ngFor="let r of filteredResources$ | async" [value]="r.id"
+                                        (optionSelected)="selectedR($event)">
+                                        {{r.name}}
+                                    </mat-option>
+                                </mat-select>                        
+                            </mat-form-field>
+
+                            <div class="col-lg-6">
+                                <mat-form-field [owlDateTimeTrigger]="pickerFrom" class="mb-2">
+                                    <mat-label>Requested Period Start DateTime </mat-label>
+                                    <input matInput [owlDateTime]="pickerFrom" placeholder="Date Time"
+                                        formControlName="requestedPeriodStartDateTime">
+                                    <mat-icon matSuffix>date_range</mat-icon>
+                                    <owl-date-time #pickerFrom></owl-date-time>
+                                    <mat-hint>Date is displayed in Local Time <span *ngIf="editForm.value.requestedPeriodStartDateTime">(UTC:
+                                            {{editForm.value.requestedPeriodStartDateTime | date:'dd/MM/yy, HH:mm':'UTC'}})</span></mat-hint>
+                                </mat-form-field>
+                            </div>
+                        
+                            <div class="col-lg-6">
+                                <mat-form-field [owlDateTimeTrigger]="pickerUntil" class="mb-2">
+                                    <mat-label>Requested Period End DateTime</mat-label>
+                                    <input matInput [owlDateTime]="pickerUntil" placeholder="Date Time"
+                                        formControlName="requestedPeriodEndDateTime">
+                                    <mat-icon matSuffix>date_range</mat-icon>
+                                    <owl-date-time #pickerUntil></owl-date-time>
+                                    <mat-hint>Date is displayed in Local Time <span *ngIf="editForm.value.requestedPeriodEndDateTime">(UTC:
+                                            {{editForm.value.requestedPeriodEndDateTime | date:'dd/MM/yy, HH:mm':'UTC'}})</span></mat-hint>
+                                </mat-form-field>
+                            </div>
+                        
+                        </div>
+                        
+
+                        <div class="container-fluid">
+                            <div class="row justify-content-end">
+                                <button type="submit" class="btn btn-primary" (click)="submitDialog()"><i
+                                        class="fas fa-check mr-2"></i>Submit</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="card-footer"></div>
+            </div>
+        </div>
+    </div>
+</div>

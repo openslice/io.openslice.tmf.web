@@ -1,0 +1,472 @@
+<div class="container-fluid py-5" *ngIf="specNotFound" [@fadeIn]>
+  <div class="row align-items-center justify-content-center minh-30vh">
+      <div class="col-12 text-center">
+          <h4>Resource Specification with id #{{specID}} is not found</h4>
+      </div>
+  </div>
+</div>
+
+<div class="container-fluid py-5" *ngIf="!specNotFound && finishedLoading">
+  <div class="row">
+      <div class="col-12">
+          <div class="card card-paper mb-0">
+              <div class="card-header">
+                  <div class="container-fluid">
+                      <div class="row justify-content-between align-items-center">
+                          <div>
+                              <h2 class="shadowed">Resource Specification Designer</h2>
+
+                              <p class="shadowed mb-0" *ngIf="newSpecification">Design a new resource
+                                  specification</p>
+
+                              <p class="shadowed mb-0" *ngIf="!newSpecification">Edit Design of
+                                  <dfn><b>{{spec?.name}}</b></dfn> Resource Specification
+                              </p>
+                              <p *ngIf="spec"><b class="card-stats shadowed">{{spec['@type']}}</b></p>
+
+                              <div class="card-stats" *ngIf="!newSpecification">
+                                  <i class="fas fa-sync spin mr-2"></i>Last updated at
+                                  {{spec?.lastUpdate | date:'short'}} (Local Time)
+                              </div>
+                          </div>
+
+                      </div>
+                  </div>
+              </div>
+
+              <div class="card-body">
+                  <div class="row">
+
+                      <div class="col-xl-2 col-lg-3">
+                          <div class="nav flex-column nav-pills mb-3 mb-lg-0" role="tablist"
+                              aria-orientation="vertical">
+                              <a class="nav-link " [class.active]="item === activeListItem"
+                                  [class.mat-elevation-z2]="item === activeListItem"
+                                  [class.disabled]="newSpecification" (click)="selectListitem(item)"
+                                  *ngFor="let item of listItems" role="tab" aria-selected="true">{{item}}</a>
+
+                              <!-- editForm.controls.isBundle.value for Resource Specification Relationships -->
+                          </div>
+                      </div>
+
+                      <div class="col-xl-10 col-lg-9">
+                          <div class="tab-content">
+
+                              <!-- Main Properties Tab -->
+                              <div class="tab-pane active" *ngIf="activeListItem === 'Main Properties'"
+                                  role="tabpanel" [@fadeIn]>
+                                  <form [formGroup]="editForm">
+                                      <div class="card mat-elevation-z1 bg-light">
+                                          <div class="card-body">
+                                              <div class="row align-items-center">
+                                                  <mat-form-field class="col-md-6">
+                                                      <mat-label>Name</mat-label>
+                                                      <input matInput formControlName="name">
+                                                  </mat-form-field>
+
+                                                  <mat-form-field class="col-md-4 col-sm-6">
+                                                      <mat-label>Version</mat-label>
+                                                      <input matInput formControlName="version">
+                                                  </mat-form-field>
+
+                                                  <div class="col-md-2 col-sm-6 text-center">
+                                                      <mat-checkbox color="primary" formControlName="isBundle"
+                                                          (change)="bundleCheckboxChanged($event)">Bundle
+                                                      </mat-checkbox>
+                                                  </div>
+
+                                                  <mat-form-field class="col-md-12">
+                                                      <mat-label>Description (supports Markdown)</mat-label>
+                                                      <textarea matTextareaAutosize="true" matAutosizeMinRows="2"
+                                                          matInput formControlName="description"></textarea>
+                                                  </mat-form-field>
+
+                                                  <mat-form-field class="col-md-6">
+                                                      <mat-label>Lifecycle Status</mat-label>
+                                                      <mat-select formControlName="lifecycleStatus">
+                                                          <mat-option *ngFor="let status of lifecycleStatuses"
+                                                              [value]="status">
+                                                              {{status}}
+                                                          </mat-option>
+                                                      </mat-select>
+                                                  </mat-form-field>
+                                                  <mat-form-field class="col-md-6">
+                                                      <mat-label>Category</mat-label>
+                                                      <input matInput formControlName="category">
+                                                  </mat-form-field>
+
+                                                  <div class="col-12" formGroupName="validFor">
+                                                      <div class="row">
+                                                          <mat-form-field class="col-md-6"
+                                                              [owlDateTimeTrigger]="pickerFrom">
+                                                              <mat-label>Valid From</mat-label>
+
+                                                              <input matInput [owlDateTime]="pickerFrom"
+                                                                  placeholder="Date Time"
+                                                                  formControlName="startDateTime">
+                                                              <mat-icon matSuffix>date_range</mat-icon>
+                                                              <owl-date-time #pickerFrom></owl-date-time>
+                                                              <mat-hint>Date is displayed in Local Time <span *ngIf="editForm.value.validFor.startDateTime">(UTC: {{editForm.value.validFor.startDateTime | date:'dd/MM/yy, HH:mm':'UTC'}})</span></mat-hint>
+                                                          </mat-form-field>
+
+                                                          <mat-form-field class="col-md-6"
+                                                              [owlDateTimeTrigger]="pickerUntil">
+                                                              <mat-label>Valid Until</mat-label>
+                                                              <input matInput [owlDateTime]="pickerUntil"
+                                                                  placeholder="Date Time"
+                                                                  formControlName="endDateTime">
+                                                              <mat-icon matSuffix>date_range</mat-icon>
+                                                              <owl-date-time #pickerUntil></owl-date-time>
+                                                              <mat-hint>Date is displayed in Local Time <span *ngIf="editForm.value.validFor.endDateTime">(UTC: {{editForm.value.validFor.endDateTime | date:'dd/MM/yy, HH:mm':'UTC'}})</span></mat-hint>
+                                                          </mat-form-field>
+                                                      </div>
+                                                  </div>
+                                              </div>
+
+                                              <div class="container-fluid mt-2">
+                                                  <div class="row justify-content-end">
+                                                      <button type="submit" class="btn btn-primary"
+                                                          (click)="updateResourceSpecGeneral()"><i
+                                                              class="fas fa-check mr-2"></i>Submit</button>
+                                                  </div>
+                                              </div>
+                                          </div>
+                                          <div class="card-footer"></div>
+                                      </div>
+                                  </form>
+                              </div>
+                              <!-- END OF Main Properties Tab -->
+
+                              <!-- Resource Specification Relationships Tab -->
+                              <div class="tab-pane active disable"
+                                  *ngIf="activeListItem === 'Resource Specification Relationships'" role="tabpanel"
+                                  [@fadeIn]>
+                                  <div class="card mat-elevation-z1 bg-light">
+                                      <div class="card-body">
+                                          <div *ngIf="!editForm.controls.isBundle.value">
+                                              Resource Specification must be checked as <b>Bundle</b> in order to assign Resource Specification Relationships (See Main Properties Tab).
+                                          </div>
+                                        <div *ngIf="editForm.controls.isBundle.value">
+                                            <div class="filter-container row align-items-center justify-content-center">
+                                                <div class="col-md-10">{{spec.resourceSpecRelationship.length}} related Resource Specification(s) assigned</div>
+                                        
+                                                <div class="col-md-2 my-md-0 my-2">
+                                                    <button type="button" class="btn btn-success btn-sm btn-block"
+                                                        (click)="openAssignSpecRelationshipDialog()"><i class="fas fa-cart-arrow-down mr-2"></i>Assign</button>
+                                                </div>
+                                            </div>
+                                        
+                                            <div class="row mt-3">
+                                                <mat-form-field *ngIf="spec?.resourceSpecRelationship.length > 0" class="col-12">
+                                                    <mat-label>Apply Filter to related Resource Specifications...
+                                                    </mat-label>
+                                                    <input matInput [formControl]="resourceRelatedSpecsFilterCtrl">
+                                                </mat-form-field>
+                                            </div>
+                                        
+                                            <div *ngFor="let relatedSpec of filteredRelatedSpecs$ | async" class="spec-relationship-container pb-2" [@fadeIn]>
+                                                <a routerLink='/{{appService.portalDomain}}/resource_spec_update/{{relatedSpec.id}}'>{{relatedSpec.name}}</a>
+                                                <button class="btn btn-warning btn-sm"
+                                                    routerLink='/{{appService.portalDomain}}/resource_spec_update/{{relatedSpec.id}}'><i
+                                                        class="far fa-edit"></i></button>
+                                            </div>
+                                        </div>
+                                      </div>
+                                      <div class="card-footer"></div>
+
+                                  </div>
+                              </div>
+                              <!-- END OF Resource Specification Relationships Tab -->
+
+                              <!-- Related Parties Tab -->
+                              <div class="tab-pane active" *ngIf="activeListItem === 'Related Parties'"
+                                  role="tabpanel" [@fadeIn]>
+                                  <div class="card mat-elevation-z1 bg-light">
+                                      <div class="card-body">
+                                          <div *ngIf="spec?.relatedParty.length === 0">
+                                              There are not any related parties assigned
+                                          </div>
+
+                                          <div *ngIf="spec?.relatedParty.length > 0">
+                                              <h6>Username (Role)</h6>
+                                              <p class="mb-2" *ngFor="let relatedParty of spec?.relatedParty">{{relatedParty.name}} ({{relatedParty.role}})</p>
+                                          </div>
+                                      </div>
+                                      <div class="card-footer"></div>
+
+                                  </div>
+                              </div>
+                              <!-- END OF Related Parties Tab -->
+
+                              <!-- Resource Specification Characteristics Tab -->
+                              <div class="tab-pane active"
+                                  *ngIf="activeListItem === 'Resource Specification Characteristics'" role="tabpanel"
+                                  [@fadeIn]>
+                                  <div class="card mat-elevation-z1 bg-light">
+                                      <div class="card-body">
+                                          <div
+                                              class="filter-container row align-items-center justify-content-center">
+                                              <mat-form-field appearance=""
+                                                  class="white-background col-xl-9 col-lg-8">
+                                                  <mat-label>Apply Filter...</mat-label>
+                                                  <input matInput
+                                                      (keyup)="applySpecCharFilter($event.target.value)">
+                                              </mat-form-field>
+
+                                              <div class="text-right col-xl-3 col-lg-4">
+                                                  <button type="button" class="btn btn-success btn-sm "
+                                                      (click)="openCharacteristicDesignDialog(null)">
+                                                      <i class="fas fa-plus-circle mr-2"></i>Create New
+                                                      Characteristic
+                                                  </button>
+                                              </div>
+                                          </div>
+                                          <div class="mb-3">
+                                              <mat-chip-list>
+                                                  <mat-chip *ngFor="let tag of specCharacteristicsTags"
+                                                      [selected]="tag === tagFiltervalue"
+                                                      (click)="filterCharacteristicsByTag(tag)">{{tag}}</mat-chip>
+                                              </mat-chip-list>
+                                          </div>
+
+                                          <div class="table-responsive">
+                                              <table mat-table [dataSource]="dataSource" matSort #specSort="matSort"
+                                                  matSortActive="name" matSortDirection="asc" matSortDisableClear
+                                                  class="table table-generic">
+                                                  <ng-container matColumnDef="name">
+                                                      <th mat-header-cell *matHeaderCellDef mat-sort-header> Name
+                                                      </th>
+                                                      <td mat-cell *matCellDef="let element"
+                                                          matTooltipClass="universal-tooltip"
+                                                          [matTooltip]="element.description"
+                                                          matTooltipPosition="above">
+                                                          <b>{{element.name}}</b> </td>
+                                                  </ng-container>
+
+                                                  <ng-container matColumnDef="type">
+                                                      <th mat-header-cell *matHeaderCellDef mat-sort-header> Value
+                                                          Type </th>
+                                                      <td mat-cell *matCellDef="let element">
+                                                          {{element.valueType}} </td>
+                                                  </ng-container>
+
+                                                  <ng-container matColumnDef="defaultValues">
+                                                      <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                                                          Default Values </th>
+                                                      <td mat-cell *matCellDef="let element">
+                                                          <span
+                                                              *ngFor="let val of element.resourceSpecCharacteristicValue; let last = last"
+                                                              [class.hidden]="!val || !val.isDefault">
+                                                              <span
+                                                                  *ngIf="val && val.isDefault">{{val.value.value}}
+                                                                  <span
+                                                                      *ngIf="val.value.alias">({{val.value.alias}})</span>
+                                                                  <!-- <span class="comma-separator">, </span> -->
+                                                              </span>
+                                                              <br>
+                                                              <div *ngIf="last" class="value-measureUnits">
+                                                                  {{val.unitOfMeasure}}</div>
+
+                                                          </span>
+                                                      </td>
+                                                  </ng-container>
+
+                                                  <ng-container matColumnDef="configurable">
+                                                      <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                                                          Configurable </th>
+                                                      <td mat-cell *matCellDef="let element">
+                                                          {{element.configurable}} </td>
+                                                  </ng-container>
+
+                                                  <ng-container matColumnDef="actions">
+                                                      <th mat-header-cell *matHeaderCellDef>Actions</th>
+                                                      <td mat-cell *matCellDef="let element">
+                                                          <div class="d-flex">
+                                                              <button class="btn btn-warning btn-sm mr-1"
+                                                                  (click)="openCharacteristicDesignDialog(element)"><i
+                                                                      class="far fa-edit"></i></button>
+                                                              <button class="btn btn-primary btn-sm mr-1"
+                                                                  (click)="cloneResourceSpecCharacteristic(element)"><i
+                                                                      class="far fa-copy"></i></button>
+                                                              <button class="btn btn-danger btn-sm"
+                                                                  (click)="openCharacteristicDeleteDialog(element)"><i
+                                                                      class="far fa-trash-alt"></i></button>
+                                                          </div>
+                                                      </td>
+                                                  </ng-container>
+
+                                                  <tr mat-header-row
+                                                      *matHeaderRowDef="displayedColumnsCharacteristics"></tr>
+                                                  <tr mat-row
+                                                      *matRowDef="let row; columns: displayedColumnsCharacteristics;">
+                                                  </tr>
+                                              </table>
+
+                                              <!-- <mat-paginator [pageSizeOptions]="[10, 20, 50]" showFirstLastButtons>
+                                              </mat-paginator> -->
+                                          </div>
+                                      </div>
+                                      <div class="card-footer"></div>
+                                  </div>
+                              </div>
+                              <!-- END OF Resource Specification Characteristics Tab -->
+
+                              <!-- Attachments Tab -->
+                              <div class="tab-pane active" *ngIf="activeListItem === 'Attachments'" role="tabpanel"
+                                  [@fadeIn]>
+                                  <div class="card mat-elevation-z1 bg-light">
+                                      <div class="card-body space-between">
+                                          <div *ngIf="spec?.attachment.length === 0" class="mb-3 text-center">
+                                              There are not any attachments assigned yet
+                                          </div>
+
+                                          <div *ngIf="spec?.attachment.length > 0" class="mb-3 row">
+                                              <div *ngFor="let attachmentRef of spec.attachment"
+                                                  class="my-1 col-md-6 d-flex align-items-center justify-content-between">
+                                                  <a target="_blank"
+                                                      href="{{specResourceRootUrl}}{{attachmentRef.url}}">
+                                                      <i class="far fa-file mr-1"></i> {{attachmentRef.name}}
+                                                  </a>
+                                                  <button class="file-icon btn btn-sm btn-danger ml-2"
+                                                      (click)="openAttachmentDeleteDialog(attachmentRef)"><i
+                                                          class="far fa-trash-alt"></i>
+                                                  </button>
+                                              </div>
+                                          </div>
+
+                                          <file-upload [control]="attachmentFilesCtrl" multiple="false">
+                                          </file-upload>
+                                          <mat-hint *ngIf="!attachmentFilesCtrl.invalid" class="ml-1">Supported file
+                                              types: .jpg, .png, .pdf, .zip, .yaml, .json,
+                                              .xml, .txt, .tar.gz</mat-hint>
+                                          <mat-error *ngIf="attachmentFilesCtrl.invalid" class="ml-1">Supported file
+                                              types: .jpg, .png, .pdf, .zip, .yaml, .json,
+                                              .xml, .txt, .tar.gz</mat-error>
+
+                                          <div class="container-fluid mt-3">
+                                              <div class="row justify-content-end">
+                                                  <button class="btn btn-secondary mr-2"
+                                                      (click)="clearAttachmentsList()"><i
+                                                          class="fas fa-times mr-2"></i>Clear</button>
+                                                  <button type="submit" class="btn btn-primary"
+                                                      (click)="submitAttachments()"><i
+                                                          class="fas fa-upload mr-2"></i>Upload</button>
+                                              </div>
+                                          </div>
+                                      </div>
+                                      <div class="card-footer"></div>
+                                  </div>
+                              </div>
+                              <!-- END OF Attachments Tab -->
+
+
+                              <!-- LCM Tab -->
+                              <!-- <div class="tab-pane active" *ngIf="activeListItem === 'Life Cycle Rules'" role="tabpanel"
+                                  [@fadeIn]>
+                                  <div class="card mat-elevation-z1 bg-light">
+                                      <div class="card-body">
+                                          <div class="filter-container row align-items-center justify-content-center">
+                                              <mat-form-field appearance=""
+                                                  class="white-background col-xl-9 col-lg-8">
+                                                  <mat-label>Apply Filter...</mat-label>
+                                                  <input matInput
+                                                      (keyup)="applyLCMRuleFilter($event.target.value)">
+                                              </mat-form-field>
+
+                                              <div class="text-right col-xl-3 col-lg-4">
+                                                  <button type="button" class="btn btn-success btn-sm "
+                                                  routerLink='/{{appService.portalDomain}}/resource_rule_design/'
+                                                  [queryParams]="{specid: spec?.id }" >
+                                                      <i class="fas fa-plus-circle mr-2"></i>Create New Rule
+                                                  </button>
+                                              </div>
+
+                                          </div>
+                                          <div class="mb-3">
+                                              <mat-chip-list>
+                                                  <mat-chip *ngFor="let tag of lcmRulesTags"
+                                                      [selected]="tag === lcmRulesTagValue"
+                                                      (click)="filterCMRuleByTag(tag)">{{tag}}</mat-chip>
+                                              </mat-chip-list>
+                                          </div>
+
+                                          <div class="table-responsive">
+                                              <table mat-table [dataSource]="dataSourceLCMRules" matSort #specSort="matSort"
+                                                  matSortActive="name" matSortDirection="asc" matSortDisableClear
+                                                  class="table table-generic">
+                                                  <ng-container matColumnDef="name">
+                                                      <th mat-header-cell *matHeaderCellDef mat-sort-header> Name
+                                                      </th>
+                                                      <td mat-cell *matCellDef="let element"
+                                                          matTooltipClass="universal-tooltip"
+                                                          [matTooltip]="element.description"
+                                                          matTooltipPosition="above">
+                                                          <b>{{element.name}}</b> </td>
+                                                  </ng-container>
+
+                                                  <ng-container matColumnDef="lcmrulephase">
+                                                      <th mat-header-cell *matHeaderCellDef mat-sort-header> Phase </th>
+                                                      <td mat-cell *matCellDef="let element">
+                                                          {{element.lcmrulephase}} </td>
+                                                  </ng-container>
+
+                                                  <ng-container matColumnDef="description">
+                                                      <th mat-header-cell *matHeaderCellDef mat-sort-header> Description </th>
+                                                      <td mat-cell *matCellDef="let element">
+                                                          {{element.description}} </td>
+                                                  </ng-container>
+
+                                                  <ng-container matColumnDef="priority">
+                                                      <th mat-header-cell *matHeaderCellDef mat-sort-header> Priority </th>
+                                                      <td mat-cell *matCellDef="let element">
+                                                          {{element.priority}} </td>
+                                                  </ng-container>
+
+
+                                                  <ng-container matColumnDef="actions">
+                                                      <th mat-header-cell *matHeaderCellDef>Actions</th>
+                                                      <td mat-cell *matCellDef="let element">
+                                                          <div class="d-flex">
+                                                              <button class="btn btn-warning btn-sm mr-1"
+                                                              routerLink='/{{appService.portalDomain}}/resource_rule_design/{{element.id}}'
+                                                              [queryParams]="{specid: spec?.id }">
+                                                              <i class="far fa-edit"></i></button>
+                                                              <button class="btn btn-danger btn-sm"
+                                                                  (click)="openLCMRuleDeleteDialog(element)"><i
+                                                                      class="far fa-trash-alt"></i></button>
+                                                          </div>
+                                                      </td>
+                                                  </ng-container>
+
+                                                  <tr mat-header-row
+                                                      *matHeaderRowDef="displayedColumnsLCMRules"></tr>
+                                                  <tr mat-row
+                                                      *matRowDef="let row; columns: displayedColumnsLCMRules;">
+                                                  </tr>
+                                              </table>
+
+                                              <-!- <mat-paginator [pageSizeOptions]="[10, 20, 50]" showFirstLastButtons>
+                                              </mat-paginator> -!->
+                                          </div>
+
+
+
+
+
+
+
+
+                                       </div>
+                                      <div class="card-footer"></div>
+                              </div>-->
+                              <!-- END OF LCM Tab -->
+
+                          </div>
+                      </div>
+                  </div>
+              </div>
+              <div class="card-footer"></div>
+          </div>
+      </div>
+  </div>
+</div>

@@ -1,0 +1,86 @@
+<div class="container-fluid py-5">
+    <div class="row">
+        <div class="col-12">
+            <div class="jumbotron jumbotron-small bg-light mat-elevation-z5 mb-0">
+                <div class="jumbotron-heading">
+                    <div>
+                        <h2 class="shadowed">Service Inventory</h2>
+                        <p class="shadowed">View and manage Service Inventory</p>
+                    </div>
+                    <!-- <button type="button" class="btn btn-success btn-lg" routerLink='/service'>
+                        <i class="fas fa-clipboard-list mr-2"></i>Create New Service
+                    </button> -->
+                </div>
+
+                <div class="filter-container pt-3 px-3 row">
+                    <!-- <input class="form-control " (keyup)="applyFilter($event.target.value)" placeholder="Apply Filter..."> -->
+                    <mat-form-field appearance="" class="white-background col-12">
+                        <mat-label>Apply Filter...</mat-label>
+                        <input matInput (keyup)="applyFilter($event.target.value)">
+                    </mat-form-field>
+                </div>
+
+                <div class="table-responsive mat-elevation-z1" [@fadeIn]>
+                    <table mat-table [dataSource]="dataSource" matSort class="table table-generic">
+
+
+                        <ng-container matColumnDef="name">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header> Name </th>
+                            <td mat-cell *matCellDef="let element"> <a routerLink="/services/service/{{element.id}}">{{element.name}}</a> </td>
+                        </ng-container>
+
+
+                        <ng-container matColumnDef="category">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header> Category </th>
+                            <td mat-cell *matCellDef="let element"> 
+                                <span *ngIf="element.category === 'ResourceFacingServiceSpecification' ">RFSS</span>
+                                <span *ngIf="element.category === 'CustomerFacingServiceSpecification' ">CFSS</span> 
+                            </td>
+                        </ng-container>
+
+                        
+                        <ng-container matColumnDef="state">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header> State </th>
+                            <td mat-cell *matCellDef="let element"> 
+                                <span [ngClass]="serviceStateClassSelector(element?.state)">{{element.state}}</span> </td>
+                        </ng-container>
+                        
+                        <ng-container matColumnDef="serviceDate">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header> Created (Local Time)</th>
+                            <td mat-cell *matCellDef="let element"> {{element.serviceDate | date:'d MMM y, h:mm a'}}
+                            </td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="serviceOrder">
+                            <th mat-header-cell *matHeaderCellDef> Linked Service Order(s) </th>
+                            <td mat-cell *matCellDef="let element"> 
+                                <div *ngFor="let order of element.serviceOrder">
+                                    <a routerLink='/{{appService.portalDomain}}/service_order/{{order.id}}'
+                                    [queryParams]='{item: order.serviceOrderItemId}'>{{order.id}}</a>
+                                </div>
+                            </td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="actions">
+                            <th mat-header-cell *matHeaderCellDef>Actions</th>
+                            <td mat-cell *matCellDef="let element">
+                                <a routerLink='/{{appService.portalDomain}}/service/{{element.id}}'>
+                                    <button class="btn btn-warning mr-1 btn-sm"><i class="far fa-edit"></i></button>
+                                </a>
+                                <!-- <button class="btn btn-danger btn-sm" (click)="openSpecDeleteDialog(element)"><i
+                                        class="far fa-trash-alt"></i></button> -->
+                            </td>
+                        </ng-container>
+
+
+                        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                    </table>
+
+                    <mat-paginator [pageSizeOptions]="[30, 50, 100]" showFirstLastButtons></mat-paginator>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,358 @@
+<div  class="container-blockly-main py-4 container-fluid">
+    <!-- toolbar -->
+<div class="card card-paper">
+
+  <div class="d-flex align-items-center  card-header" >
+    <h5 class="mr-auto pb-0 mb-0">{{ title }}</h5>
+    <div class = "d-flex align-items-center">
+      <button type="button" class="btn btn-danger mr-3 btn-block" style="width: 80px" (click)="cancelProgram()">Cancel</button>
+      <button type="button" class="btn btn-success m-0 btn-block" style="width: 80px" (click)="saveProgram()">Save</button>
+    </div>
+  </div>
+
+  <!-- main content -->
+  <mat-drawer-container class="container-blockly">
+    <mat-drawer-content>
+      <div class="wrapper-blockly">
+        <div id="blocklyDiv" ></div>
+      
+        <div id="generatedCode" >
+          <mat-tab-group mat-align-tabs="start">
+            <mat-tab label="Properties" >
+              <div class="pt-3 pb-2 bg-white">
+
+                <form [formGroup]="editForm">
+                  <mat-form-field class="col-md-12">
+                    <mat-label>Name</mat-label>
+                    <input matInput formControlName="name">
+                  </mat-form-field>
+                
+                  <mat-form-field class="col-md-12">
+                    <mat-label>Description </mat-label>
+                    <textarea matTextareaAutosize="true" matAutosizeMinRows="2" matInput formControlName="description"></textarea>
+                  </mat-form-field>
+                
+                
+                  <mat-form-field class="col-md-12">
+                    <mat-label>Lifecycle phase</mat-label>
+                    <mat-select formControlName="lcmrulephase">
+                      <mat-option *ngFor="let phase of lcmphases" [value]="phase">
+                        {{phase}}
+                      </mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                
+                
+                  <mat-form-field class="col-md-6 col-sm-6">
+                    <mat-label>Priority</mat-label>
+                    <input matInput formControlName="priority">
+                  </mat-form-field>
+                
+                  <mat-form-field class="col-md-6 col-sm-6">
+                    <mat-label>Version</mat-label>
+                    <input matInput formControlName="version">
+                  </mat-form-field>
+                </form>
+              </div>
+
+
+            </mat-tab>
+
+            <mat-tab label="Java Code" >
+              <textarea readonly class="generated-code">{{ generatedCode }}</textarea>
+            </mat-tab>
+            
+            <mat-tab label="Blockly Code" >
+              <textarea readonly class="generated-code">{{ blocklyCode }}</textarea>
+            </mat-tab>
+
+          </mat-tab-group>
+
+          
+          
+        </div>
+
+      </div>
+
+      <xml id="toolbox" style="display: none">
+
+
+        <variables>
+          <variable id="F;)U+)(_^:3!Z~mxvyWO">zzzzasd</variable>
+        </variables>
+
+        <category name="Service" colour="210">          
+         
+
+      
+          
+            <category name="Characteristics" colour="60" custom="SPECCHARALLVARS" >   
+            </category>
+            <category name="Number" colour="60" custom="SPECCHARVARIABLES_NUM" >   
+            </category>
+            <category name="Text" colour="160" custom="SPECCHARVARIABLES_TEXT" ></category>
+          
+            <category name="Boolean" colour="90" custom="SPECCHARVARIABLES_BOOL" >   
+            </category>
+            <category name="Set" colour="260" custom="SPECCHARVARIABLES_SET" >   
+            </category>
+            
+            <category name="Relationships" colour="210">          
+              <category name="Service Refs" colour="210" custom="SPECSERVICE_RELS" >     
+              </category>
+              <category name="Resource Refs" colour="210" custom="SPECRESOURCE_RELS" >   
+              </category>
+            </category>
+
+            <category name="Context" colour="210"> 
+              <block type="currentServiceOrder"></block>  
+              <block type="currentService"></block>  
+              <block type="setCharacteristicOfCurrentService"></block>  
+              <block type="setCharacteristicOfCurrentService"></block>  
+            </category>
+
+          </category>
+
+
+          <category name="OSM" colour="210">       
+            <block type="osm_nsd_config"></block>  
+            <block type="osm_nsd_config_detailed"></block>
+            <block type="osm_nsd_config_vnf"></block>                
+            <block type="osm_nsd_config_vld"></block>     
+            <block type="osm_nsd_config_paramvnf"></block>
+            <block type="osm_nsd_config_kdu"></block>
+            <block type="param_value_tuple"></block>
+            <block type="computeVariable"></block>
+            
+          </category>
+
+          
+  
+            <category name="Text" colour="160">                    
+              <block type="literal_text"></block>    
+              <block type="variable_declare_string"></block>  
+              <block type="variable_get_string"></block>  
+              <block type="variable_set_string"></block>  
+              <block type="computeVariable"></block> 
+              <block type="text_escape"></block>
+              <block type="text_join"></block>
+              <block type="text_append">
+                <value name="TEXT">
+                  <shadow type="text"></shadow>
+                </value>
+              </block>
+              <block type="text_length">
+                <value name="VALUE">
+                  <shadow type="text">
+                    <field name="TEXT">abc</field>
+                  </shadow>
+                </value>
+              </block>
+              <block type="text_isEmpty">
+                <value name="VALUE">
+                  <shadow type="text">
+                    <field name="TEXT"></field>
+                  </shadow>
+                </value>
+              </block>
+              <block type="text_indexOf">
+                <value name="VALUE">
+                  <block type="variables_get">
+                    <field name="VAR">textVariable</field>
+                  </block>
+                </value>
+                <value name="FIND">
+                  <shadow type="text">
+                    <field name="TEXT">abc</field>
+                  </shadow>
+                </value>
+              </block>
+              <block type="text_charAt">
+                <value name="VALUE">
+                  <block type="variables_get">
+                    <field name="VAR">textVariable</field>
+                  </block>
+                </value>
+              </block>
+              <block type="text_getSubstring">
+                <value name="STRING">
+                  <block type="variables_get">
+                    <field name="VAR">textVariable</field>
+                  </block>
+                </value>
+              </block>
+              <block type="text_changeCase">
+                <value name="TEXT">
+                  <shadow type="text">
+                    <field name="TEXT">abc</field>
+                  </shadow>
+                </value>
+              </block>
+              <block type="text_trim">
+                <value name="TEXT">
+                  <shadow type="text">
+                    <field name="TEXT">abc</field>
+                  </shadow>
+                </value>
+              </block>
+
+
+          </category> 
+          <category name="Number" colour="230">    
+            <block type="literal_integer"></block> 
+            <block type="variable_declare_int"></block>  
+            <block type="variable_declare_float"></block>  
+            <block type="variable_get_int"></block>  
+            <block type="variable_set_int"></block> 
+
+            
+            <block type="string_to_integer" ></block>               
+            <block type="string_to_float" ></block> 
+
+            <block type="math_number" ></block> 
+            <block type="math_arithmetic"></block> 
+            <block type="math_single"></block> 
+            <block type="math_constant"></block> 
+            <block type="math_number_property"></block> 
+            <block type="math_change"></block> 
+            <block type="math_round"></block> 
+            <block type="math_on_list"></block> 
+            <block type="math_modulo"></block> 
+            <block type="math_constrain"></block> 
+            <block type="math_random_int"></block> 
+            <block type="math_random_float"></block> 
+
+
+          </category>     
+        
+            
+
+
+        <sep></sep>
+
+        <category name="Logic" colour="210">
+          
+          <block type="literal_boolean"></block> 
+          <block type="controls_if"></block>
+          <block type="logic_compare"></block>
+          <block type="logic_operation"></block>
+          <block type="logic_compare_strings"></block>
+          <block type="logic_set_contains_string"></block>
+          <block type="logic_negate"></block>
+          <block type="logic_null"></block>
+          
+        </category>
+        <category name="Loops" colour="120">
+          <block type="controls_repeat_ext">
+            <value name="TIMES">
+              <shadow type="math_number">
+                <field name="NUM">10</field>
+              </shadow>
+            </value>
+          </block>
+          <block type="controls_whileUntil"></block>
+          <block type="controls_for">
+            <value name="FROM">
+              <shadow type="math_number">
+                <field name="NUM">1</field>
+              </shadow>
+            </value>
+            <value name="TO">
+              <shadow type="math_number">
+                <field name="NUM">10</field>
+              </shadow>
+            </value>
+            <value name="BY">
+              <shadow type="math_number">
+                <field name="NUM">1</field>
+              </shadow>
+            </value>
+          </block>
+          <block type="controls_foreach_java"></block>
+          <block type="controls_flow_statements"></block>
+        </category>
+        
+
+        <category name="Lists" colour="260">
+          <block type="lists_create_with">
+            <mutation items="0"></mutation>
+          </block>
+          <block type="lists_create_with"></block>
+          <block type="lists_repeat">
+            <value name="NUM">
+              <shadow type="math_number">
+                <field name="NUM">5</field>
+              </shadow>
+            </value>
+          </block>
+          <block type="lists_length"></block>
+          <block type="lists_isEmpty"></block>
+          <block type="lists_indexOf">
+            <value name="VALUE">
+              <block type="variables_get">
+                <field name="VAR">listVariable</field>
+              </block>
+            </value>
+          </block>
+          <block type="lists_getIndex">
+            <value name="VALUE">
+              <block type="variables_get">
+                <field name="VAR">listVariable</field>
+              </block>
+            </value>
+          </block>
+          <block type="lists_setIndex">
+            <value name="LIST">
+              <block type="variables_get">
+                <field name="VAR">listVariable</field>
+              </block>
+            </value>
+          </block>
+          <block type="lists_getSublist">
+            <value name="LIST">
+              <block type="variables_get">
+                <field name="VAR">listVariable</field>
+              </block>
+            </value>
+          </block>
+          <block type="lists_split">
+            <value name="DELIM">
+              <shadow type="text">
+                <field name="TEXT">,</field>
+              </shadow>
+            </value>
+          </block>
+          <block type="lists_sort"></block>
+        </category>
+
+        <sep></sep>
+
+        <!-- <category name="Variables" colour="330" custom="VARIABLE"></category>  -->
+        <!-- <category name="Functions" colour="290" custom="PROCEDURE"></category> -->
+        
+        
+
+
+        <category name="Operations" colour="290">
+          <category name="Generic" colour="290">
+            <block type="so_log_string"></block>      
+            <block type="param_value_tuple" ></block>      
+            <block type="computeVariable"></block>  
+            <block type="valueFromJsonPath"></block>
+          </category>
+          
+        <category name="Openslice" colour="210"> 
+          <block type="createServiceOrder"></block> 
+          <block type="createServiceOrderJson"></block>   
+        </category>
+          <category name="REST" colour="290">
+            <block type="rest_config_client"></block>  
+            <block type="rest_block"></block>  
+            <block type="payloadToService"></block>  
+          </category>
+        </category>
+      </xml>
+    </mat-drawer-content>
+  </mat-drawer-container>
+</div>
+  </div>

@@ -1,0 +1,47 @@
+<section id="contact" class="section_contact bg-secondary">
+
+    <div class="container">
+        <div class="row shadowed-dark">
+            <div class="col-xs-12 col-sm-12 col-md-6">
+                <h3>Who we are</h3>
+                <div *ngIf="!customIntroductionHTML">
+                    <address class='font-weight-light'><span class='font-weight-bold'>openslice.io project</span> | <a
+                            href='http://openslice.io/' class='text-white'>openslice.io</a><br>openslice.io an opensource OSS</address>
+                    <address class='font-weight-light'><span class='font-weight-bold'>{{config.TITLE}}</span> | <a
+                            href='{{config.WEBURL}}' class='text-white'>{{config.WEBURL}}</a><br>A portal that allows 5G
+                        experimenters to deploy experiment descriptors towards the infrastructure.</address>
+                    <address class='font-weight-light'><span class='font-weight-bold'>{{config.TITLE}} wiki</span> | <a
+                            href='{{config.WIKI}}'
+                            class='text-white'>{{config.WIKI}}</a><br>A wiki containing project documentation.
+                    </address>
+                    <address class='font-weight-light'><span class='font-weight-bold'>{{config.TITLE}} Report Issues</span> | <a
+                            href='{{config.BUGZILLA}}' class='text-white'>{{config.BUGZILLA}}</a><br>Our
+                        issue tracking system.</address>
+                </div>
+                <div [innerHTML]="customIntroductionHTML" *ngIf="customIntroductionHTML">
+                </div>
+            </div>
+            
+            <div class="col-xs-12 col-sm-12 col-md-6">
+                <div class="row">
+                    <div class="col-12">
+                        <h3>Connect with us</h3>
+                    </div>
+                </div>
+                <div class="row" *ngIf="!customContactHTML">
+                    <div class='col-xs-12 col-sm-6 col-md-3'>
+                        <div><a href='https://twitter.com/OpensliceOSS' class='font-weight-light text-white'><i
+                                    class='fab fa-twitter mr-2'></i>Twitter</a></div>
+                    </div>
+                    <div class='col-xs-12 col-sm-6 col-md-3'>
+                        <div><a href='https://openslice.slack.com/' class='font-weight-light text-white'><i
+                                    class='fab fa-slack mr-2'></i>Slack</a></div>
+                    </div>
+                </div>
+
+                <div class="row" [innerHTML]="customContactHTML" *ngIf="customContactHTML">
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

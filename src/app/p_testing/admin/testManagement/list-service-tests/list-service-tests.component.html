@@ -1,0 +1,75 @@
+<div class="container-fluid py-5">
+    <div class="row">
+        <div class="col-12">
+            <div class="jumbotron jumbotron-small jumbotron-list-container bg-light mat-elevation-z5 mb-0">
+                <div class="jumbotron-heading align-items-center justify-content-between row">
+                    <div class="col-md-6">
+                        <h2 class="shadowed">Service Test Instances</h2>
+                        <p class="shadowed">View and manage service test instances</p>
+                    </div>
+
+                </div>
+
+                <div class="filter-container pt-3 px-3 row">
+                    <!-- <input class="form-control " (keyup)="applyFilter($event.target.value)" placeholder="Apply Filter..."> -->
+                    <mat-form-field appearance="" class="white-background col-12">
+                        <mat-label>Apply Filter...</mat-label>
+                        <input matInput (keyup)="applyFilter($event.target.value)">
+                    </mat-form-field>
+                </div>
+
+                <div class="table-responsive mat-elevation-z1" [@fadeIn]>
+
+                    <table mat-table [dataSource]="dataSource" matSort matSortActive="lastUpdate" matSortDirection="desc" class="table table-generic">
+
+                        <ng-container matColumnDef="name">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header> Name </th>
+                            <td mat-cell *matCellDef="let element"> <a routerLink="/testing/service_test/{{element.id}}">{{element.name}}</a> </td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="description">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header> Description </th>
+                            <td mat-cell *matCellDef="let element"> 
+                                <span *ngIf="element.description && element.description.length <= 49">{{element.description}}</span> 
+                                <span *ngIf="element.description && element.description.length > 49" [matTooltip]="element.description">{{element.description | slice:0:49}}...</span>
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="lastUpdate">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header> Last Update (Local Time)</th>
+                            <td mat-cell *matCellDef="let element"> {{element.lastUpdate | date:'d MMM y, h:mm a'}} </td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="testSpecification">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header> Instance of Test Specification </th>
+                            <td mat-cell *matCellDef="let element"> 
+                                <a *ngIf="element.testSpecification && element.testSpecification.id" routerLink="/testing/service_test_spec/{{element.testSpecification.id}}">{{element.testSpecification.id}}</a>
+                            </td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="service">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header> Linked Service </th>
+                            <td mat-cell *matCellDef="let element"> 
+                                <a *ngIf="element.relatedService && element.relatedService.id" routerLink="/services/service/{{element.relatedService.id}}">{{element.relatedService.id}}</a>
+                            </td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="actions">
+                            <th mat-header-cell *matHeaderCellDef>Actions</th>
+                            <td mat-cell *matCellDef="let element">
+                                <a routerLink='/{{appService.portalDomain}}/service_test/{{element.id}}'>
+                                    <button class="btn btn-warning btn-sm m-1"><i class="far fa-edit"></i></button>
+                                </a>
+                                <button class="btn btn-danger btn-sm m-1" (click)="openTestDeleteDialog(element)"><i class="far fa-trash-alt"></i></button>
+                            </td>
+                        </ng-container>
+
+                        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                    </table>
+
+                    <mat-paginator [pageSizeOptions]="[20, 50, 100]" showFirstLastButtons></mat-paginator>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

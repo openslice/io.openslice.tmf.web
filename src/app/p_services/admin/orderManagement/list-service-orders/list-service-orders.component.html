@@ -1,0 +1,130 @@
+<div class="container-fluid py-5">
+        <div class="row">
+
+            <div class="col-lg-6">
+                <div class="jumbotron jumbotron-small jumbotron-list-container bg-light mat-elevation-z5 mb-0">
+                    <div class="jumbotron-heading">
+                        <div>
+                            <h2 class="shadowed">Service Orders</h2>
+                            <p class="shadowed">View and manage service orders</p>
+                        </div>
+
+                        
+                    </div>
+    
+                    <div class="filter-container pt-3 px-3" [formGroup]="filterForm">
+                        <div class="row">
+                            <mat-form-field appearance="" class="white-background col-12">
+                                <mat-label>Filter Order User</mat-label>
+                                <input matInput (keyup)="applyTextFilter($event.target.value)" formControlName="text">
+                            </mat-form-field>
+                        </div>
+     
+                        <div class="row mb-3 mb-lg-0 d-flex align-items-center justify-content-center">
+                            <mat-form-field class="col-xl-4" [owlDateTimeTrigger]="pickerFrom">
+                                <mat-label>Orders from (datetime)</mat-label>
+                        
+                                <input matInput [owlDateTime]="pickerFrom" placeholder="Date Time" formControlName="fromDate">
+                                <mat-icon matSuffix>date_range</mat-icon>
+                                <owl-date-time #pickerFrom></owl-date-time>
+                            </mat-form-field>
+                        
+                            <mat-form-field class="col-xl-4" [owlDateTimeTrigger]="pickerUntil">
+                                <mat-label>Orders to (datetime)</mat-label>
+                                <input matInput [owlDateTime]="pickerUntil" placeholder="Date Time" formControlName="toDate">
+                                <mat-icon matSuffix>date_range</mat-icon>
+                                <owl-date-time #pickerUntil></owl-date-time>
+                            </mat-form-field>
+                        
+                            <div class="col-xl-4">
+                                <button color="primary" class="btn btn-primary btn-sm btn-block" (click)="applyPeriodFilter()">Apply Date
+                                    Filter</button>
+                            </div>
+                        </div>
+                        
+                    </div>
+    
+    
+                    <div class="table-responsive mat-elevation-z1" [@fadeIn]>
+                        <table mat-table [dataSource]="dataSource" matSort class="table table-generic">
+                    
+                            <ng-container matColumnDef="id">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header> Order ID</th>
+                                <td mat-cell *matCellDef="let element"> <a routerLink="/services/service_order/{{element.id}}">{{element.id}}</a>
+                                </td>
+                            </ng-container>
+                    
+                            <ng-container matColumnDef="placed_by">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header> Placed By </th>
+                                <td mat-cell *matCellDef="let element"> {{element.relatedParty[0].name}} ({{element.relatedParty[0].role}})</td>
+                            </ng-container>
+                    
+                            <ng-container matColumnDef="order_date">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header> Order Date (Local Time)</th>
+                                <td mat-cell *matCellDef="let element"> {{element.orderDate | date:'d MMM y, h:mm a'}}
+                                </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="state">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header> State </th>
+                                <td mat-cell *matCellDef="let element"> {{element.state}}
+                                </td>
+                            </ng-container>
+                            <!--
+                            <ng-container matColumnDef="requested_startdate">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header> Requested Start Date (Local Time) </th>
+                                <td mat-cell *matCellDef="let element"> {{element.requestedStartDate | date:'d MMM y, h:mm a'}} </td>
+                            </ng-container>
+                    
+                            <ng-container matColumnDef="requested_enddate">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header> Requested Completion Date (Local Time)</th>
+                                <td mat-cell *matCellDef="let element"> {{element.requestedCompletionDate | date:'d MMM y, h:mm a'}} </td>
+                            </ng-container>
+                            -->
+                            <ng-container matColumnDef="actions">
+                                <th mat-header-cell *matHeaderCellDef>Actions</th>
+                                <td mat-cell *matCellDef="let element">
+                                    <a routerLink='/{{appService.portalDomain}}/service_order/{{element.id}}'>
+                                        <button class="btn btn-primary btn-sm m-1" ><i class="fas fa-search"></i></button>
+                                    </a>
+                                    <button class="btn btn-danger btn-sm m-1" (click)="openOrderDeleteDialog(element)"><i class="far fa-trash-alt"></i></button>
+                                </td>
+                            </ng-container>
+                    
+                    
+                            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                        </table>
+                    
+                        <mat-paginator [pageSizeOptions]="[20, 50, 100]" showFirstLastButtons></mat-paginator>
+                    
+                    </div>
+    
+                </div>
+            </div>
+
+            <div class="col-lg-6 mt-4 mt-lg-0">
+                <div class="jumbotron jumbotron-small jumbotron-list-container bg-light mat-elevation-z5 mb-0">
+                    <div class="jumbotron-heading align-items-center justify-content-between row">
+                        <div class="col-md-12">
+                            <h2 class="shadowed">Service Orders Calendar</h2>
+                            <p class="shadowed">View Service Orders</p>
+                        </div>
+                        
+                    </div>
+    
+                        <full-calendar [options]='calendarOptions'></full-calendar>
+    
+                </div>
+            </div>
+            
+        </div>
+
+        
+    </div>
+    
+    
+    
+    
+    
+    

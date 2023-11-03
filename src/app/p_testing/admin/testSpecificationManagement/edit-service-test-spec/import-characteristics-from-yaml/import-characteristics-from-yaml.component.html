@@ -1,0 +1,17 @@
+<h4 mat-dialog-title class="shadowed mb-3">
+    <i class="fas fa-file-export mr-2"></i>
+    <span>Auto export user defined parameters from yaml file</span>
+</h4>
+<div mat-dialog-content>
+    It appears that {{this.data.variablesArray.length}} user-defined parameter(s) were found in the provided file.<br> 
+    Do you want to export these parameters as specification's characteristics automatically?<br>
+    <i>Common user-defined parameters will be merged to a single specification characteristic.</i><br>
+    <hr>
+    You may override the past characteristics or append them to the newly found.
+</div>
+
+<div mat-dialog-actions class="d-flex justify-content-end">
+    <button type="button" class="btn btn-danger m-2" (click)="closeDialog('no')">No</button>
+    <button type="button" class="btn btn-success m-2" (click)="closeDialog('override')">Override</button>
+    <button type="button" class="btn btn-outline-success m-2" (click)="closeDialog('append')">Append</button>
+</div>

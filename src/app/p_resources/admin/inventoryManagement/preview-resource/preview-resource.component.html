@@ -1,0 +1,304 @@
+<div class="container-fluid py-5" *ngIf="resourceNotFound" [@fadeIn]>
+  <div class="row align-items-center justify-content-center minh-30vh">
+    <div class="col-12 text-center">
+      <h4>Resource with id #{{ resourceID }} is not found</h4>
+    </div>
+  </div>
+</div>
+<div class="container-fluid py-5" *ngIf="!resourceNotFound && finishedLoading">
+  <div class="row minh-30vh">
+    <div class="col-12">
+      <div class="card card-paper mb-0">
+        <div class="card-header">
+          <div class="container-fluid">
+            <div class="row justify-content-between align-items-center">
+              <div>
+                <h2 class="shadowed" *ngIf="newResource">New Resource</h2>
+                <h2 class="shadowed" *ngIf="!newResource">Resource Overview And Management</h2>
+                <p class="shadowed mb-0" *ngIf="!newResource">
+                  Overview and Manage
+                  <dfn><b>{{ resource?.name }}</b></dfn>
+                  resource
+                </p>
+                <p *ngIf="!newResource && resource">
+                  <b class="card-stats shadowed">{{ resource["@type"] }}</b>
+                </p>
+
+
+                <div class="card-stats" *ngIf="!newResource">
+                  <i class="far fa-plus-square mr-2"></i>Resource started operating at {{ resource?.startOperatingDate | date: "short" }} (Local Time)
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card-body">
+          <div class="row">
+            <div class="col-xl-2 col-lg-3">
+              <div class="nav flex-column nav-pills mb-3 mb-lg-0" role="tablist" aria-orientation="vertical">
+                <a class="nav-link" [class.active]="item === activeListItem"
+                  [class.mat-elevation-z2]="item === activeListItem" [class.disabled]="newResource"
+                  (click)="selectListitem(item)" *ngFor="let item of listItems" role="tab" aria-selected="true">{{ item
+                  }}</a>
+              </div>
+            </div>
+
+            <div class="col-xl-10 col-lg-9">
+              <div class="tab-content">
+                <div class="tab-pane active" *ngIf="activeListItem === 'Main Properties'" role="tabpanel" [@fadeIn]>
+                  <form>
+                    <div class="card mat-elevation-z1 bg-light">
+                      <div class="card-body">
+                        <div class="row">
+                          <div class="col-lg-4">
+                            <h6>Name</h6>
+                            <p>{{ resource?.name }}</p>
+                          </div>
+
+                          <div class="col-lg-4">
+                            <h6>Category</h6>
+                            <p>{{ resource?.category }}
+                              <!-- ({({resource['@type']}}) -->
+                            </p>
+                          </div>
+
+                          <div class="col-lg-4" *ngIf="!newResource">
+                            <h6>Resource Version</h6>
+                            <p>{{ resource?.resourceVersion }}</p>
+                          </div>
+
+                          <div class="col-lg-4">
+                            <h6>Description</h6>
+                            <p>{{ resource?.description }}</p>
+                          </div>
+
+
+                          <div class="col-lg-4" *ngIf="!newResource">
+                            <h6>Resource Specification</h6>
+                            <p>
+                              <a routerLink="/{{
+                                  appService.portalDomain
+                                }}/resource_spec_update/{{
+                                  resource?.resourceSpecification?.id
+                                }}">{{ resource?.resourceSpecification?.name }}</a>
+                            </p>
+                          </div>
+
+                          <div class="col-lg-4">
+                            <h6>Resource Status</h6>
+                            <p>{{ resource?.resourceStatus }}</p>
+                          </div>
+
+                        </div>
+
+                        <div class="row">
+                          <div class="col-lg-4">
+                            <h6>Operational State</h6>
+                            <p>{{ resource?.operationalState }}</p>
+                          </div>
+
+                          <div class="col-lg-4">
+                            <h6>Administrative State</h6>
+                            <p>{{ resource?.administrativeState }}</p>
+                          </div>
+
+                          <div class="col-lg-4">
+                            <h6>Usage State</h6>
+                            <p>{{ resource?.usageState }}</p>
+                          </div>
+                        </div>
+
+                        <div class="row">
+                          <div class="col-lg-4">
+                            <ng-container>
+                              <h6>Starting Date</h6>
+                              <p [class.mb-0]="resource?.startOperatingDate" *ngIf="resource?.startOperatingDate">
+                                {{ resource?.startOperatingDate | date: "d MMM y, h:mm a" }} - Local Time
+                              </p>
+                              <p *ngIf="resource?.startOperatingDate">
+                                {{ resource?.startOperatingDate | date: "d MMM y, h:mm a":"UTC" }} - UTC
+                              </p>
+                            </ng-container>
+                          </div>
+
+                          <div class="col-lg-4">
+                            <ng-container>
+                              <h6>Ending Date</h6>
+                              <p [class.mb-0]="resource?.endOperatingDate" *ngIf="resource?.endOperatingDate">
+                                {{ resource?.endOperatingDate | date: "d MMM y, h:mm a" }} - Local Time
+                              </p>
+                              <p *ngIf="resource?.endOperatingDate">
+                                {{ resource?.endOperatingDate | date: "d MMM y, h:mm a":"UTC" }} - UTC
+                              </p>
+                            </ng-container>
+                          </div>
+
+                        </div>
+
+                        <div class="row">
+                          <div class="col-lg-12">
+                            <h6>Notes</h6>
+                            <div class="notes-container">
+                              <div *ngFor="let note of resource?.note">
+                                <div class="card card-paper mb-2 bg-white">
+                                  <div class="p-2">
+                                    {{ note.text }}
+                                    <div class="small">
+                                      written by {{ note.author }} @
+                                      {{ note.date | date: "d MMM y, h:mm a" }}
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="card-footer">
+                        <!-- <div class="container-fluid mt-2">
+                          <div class="row justify-content-end">
+                            <button type="button" *ngIf="!editMode" class="btn btn-warning"
+                              (click)="enableResourceEditing()">
+                              <i class="far fa-edit mr-1"></i>edit
+                            </button>
+                            <button type="button" *ngIf="editMode&&newResource" class="btn btn-danger mr-2"
+                              (click)="cancelResourceCreation()">
+                              Cancel
+                            </button>
+                            <button type="button" *ngIf="editMode&&!newResource" class="btn btn-danger mr-2"
+                              (click)="cancelResourceEditing()">
+                              Cancel
+                            </button>
+                            <button type="button" *ngIf="editMode" class="btn btn-success"
+                              (click)="submitResourceEditing()">
+                              Submit
+                            </button>
+                          </div>
+                        </div> -->
+                      </div>
+                    </div>
+                  </form>
+                </div>
+
+                <div class="tab-pane active" *ngIf="activeListItem === 'Resource Characteristics'" role="tabpanel"
+                  [@fadeIn]>
+                  <div class="card mat-elevation-z1 bg-light">
+                    <div class="card-body">
+                      <div *ngIf="resource?.resourceCharacteristic.length === 0">
+                        There are not any Resource Characteristics
+                        allocated.
+                      </div>
+
+                      <div class="table-responsive" *ngIf="resource?.resourceCharacteristic.length > 0">
+                        <table class="table table-inverse bg-white mb-0">
+                          <thead class="thead-inverse">
+                            <tr class="table-light">
+                              <th>
+                                <h6 class="mb-0">Characteristic</h6>
+                              </th>
+                              <th>
+                                <h6 class="mb-0">Value (Alias)</h6>
+                              </th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr *ngFor="
+                                let specCharacteristic of resource?.resourceCharacteristic
+                              ">
+                              <td class="align-middle">
+                                <b>{{ specCharacteristic.name }}</b>
+                              </td>
+                              <ng-container [ngSwitch]="specCharacteristic.valueType">
+                                <ng-container *ngSwitchCase="'SET'">
+                                  <ng-container *ngTemplateOutlet="iterables">
+                                  </ng-container>
+                                </ng-container>
+
+                                <ng-container *ngSwitchCase="'ARRAY'">
+                                  <ng-container *ngTemplateOutlet="iterables">
+                                  </ng-container>
+                                </ng-container>
+
+                                <ng-container *ngSwitchDefault>
+                                  <td class="align-middle">
+                                    {{ specCharacteristic.value.value }}
+                                    <span *ngIf="specCharacteristic.value.alias">({{
+                                      specCharacteristic.value.alias
+                                      }})</span>
+                                  </td>
+                                </ng-container>
+
+                                <ng-template #iterables>
+                                  <td class="align-middle">
+                                    <table class="table-borderless">
+                                      <tbody>
+                                        <tr *ngFor="
+                                            let value of specCharacteristic
+                                              .value.value | jsonParse
+                                          ">
+                                          <td>
+                                            {{ value.value }}
+                                            <span *ngIf="value.alias">({{ value.alias }})</span>
+                                          </td>
+                                        </tr>
+                                      </tbody>
+                                    </table>
+                                  </td>
+                                </ng-template>
+                              </ng-container>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                    <div class="card-footer">
+                      <!-- <div class="container-fluid mt-3">
+                        <div class="row justify-content-end">
+                          <button class="btn btn-block btn-warning" (click)="openCharacteristicsEditDialog()">
+                            <i class="far fa-edit mr-1"></i>Edit Resource
+                            Characteristics
+                          </button>
+                        </div>
+                      </div> -->
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!-- Resource Relationships Tab -->
+              <div class="tab-pane active disable" *ngIf="activeListItem === 'Resource Relationships'" role="tabpanel"
+                [@fadeIn]>
+                <div class="card mat-elevation-z1 bg-light">
+                  <div class="card-body">
+                    <div class="row">
+                      <div class="col-12">{{resource.resourceRelationship.length}} related Resources assigned</div>
+                    </div>
+                    <div class="row mt-3">
+                      <mat-form-field *ngIf="resource?.resourceRelationship.length > 0" class="col-12">
+                        <mat-label>Apply Filter to related Resources...
+                        </mat-label>
+                        <input matInput [formControl]="relatedResourcesFilterCtrl">
+                      </mat-form-field>
+                    </div>
+
+                    <div *ngFor="let relatedResource of filteredResourceRelationships$ | async" class="pb-2" [@fadeIn]>
+                      <a routerLink="/resources/resource/{{relatedResource.resource.id}}">
+                        <span *ngIf="relatedResource.resource.name">{{relatedResource.resource.name}}</span>
+                        <span *ngIf="!relatedResource.resource.name">{{relatedResource.resource.id}}</span>
+                      </a>
+
+                    </div>
+                  </div>
+                  <div class="card-footer"></div>
+                </div>
+                <!-- END OF Resource Relationships Tab -->
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="card-footer"></div>
+      </div>
+    </div>
+  </div>
+</div>

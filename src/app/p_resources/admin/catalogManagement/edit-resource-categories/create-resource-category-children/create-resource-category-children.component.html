@@ -1,0 +1,82 @@
+<div class="container">
+  <h4 mat-dialog-title class="row shadowed mb-3">
+      <i class="far fa-clipboard mr-2"></i>
+      <span>Create new Subcategory and assign it to the Resource Category</span>
+  </h4>
+  <form [formGroup]="editForm">
+
+      <mat-dialog-content>
+          <div class="row align-items-center">
+              <mat-form-field appearance="" class="col-md-6">
+                  <mat-label>Name</mat-label>
+                  <input matInput formControlName="name">
+              </mat-form-field>
+
+              <mat-form-field appearance="" class="col-md-6">
+                  <mat-label>Version</mat-label>
+                  <input matInput formControlName="version">
+              </mat-form-field>
+
+              <mat-form-field appearance="" class="col-md-12">
+                  <mat-label>Description</mat-label>
+                  <textarea matTextareaAutosize="true" matAutosizeMaxRows="3" matInput
+                      formControlName="description"></textarea>
+              </mat-form-field>
+<!--
+              <div class="col-md-6">
+                  <mat-checkbox color="primary" formControlName="isRoot">is Root</mat-checkbox>
+              </div>
+
+              <mat-form-field class="col-md-6">
+                  <input type="text" placeholder="Parent Category" aria-label="Parent category" matInput
+                      formControlName="parentId" [matAutocomplete]="auto">
+                  <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete" [displayWith]="displayFn">
+                      <mat-option *ngFor="let category of filteredCategories$ | async" [value]="category">
+                          {{category.name}}
+                      </mat-option>
+                  </mat-autocomplete>
+              </mat-form-field> -->
+
+              <mat-form-field appearance="" class="col-md-12">
+                  <mat-label>Lifecycle Status</mat-label>
+                  <mat-select formControlName="lifecycleStatus">
+                      <mat-option *ngFor="let status of lifecycleStatuses" [value]="status">{{status}}
+                      </mat-option>
+                  </mat-select>
+              </mat-form-field>
+
+              <div class="col-12" formGroupName="validFor">
+                  <div class="row">
+                      <mat-form-field appearance="" class="col-md-6" [owlDateTimeTrigger]="pickerFrom">
+                          <mat-label>Valid From</mat-label>
+                          <input matInput [owlDateTime]="pickerFrom" placeholder="Date Time"
+                              formControlName="startDateTime">
+                          <mat-icon matSuffix>date_range</mat-icon>
+                          <owl-date-time #pickerFrom></owl-date-time>
+                      </mat-form-field>
+
+                      <mat-form-field appearance="" class="col-md-6" [owlDateTimeTrigger]="pickerUntil">
+                          <mat-label>Valid Until</mat-label>
+                          <input matInput [owlDateTime]="pickerUntil" placeholder="Date Time"
+                              formControlName="endDateTime">
+                          <mat-icon matSuffix>date_range</mat-icon>
+                          <owl-date-time #pickerUntil></owl-date-time>
+                      </mat-form-field>
+                  </div>
+              </div>
+
+          </div>
+
+
+
+      </mat-dialog-content>
+
+      <div class="container-fluid">
+          <div class="row justify-content-end">
+              <button type="button" class="btn btn-danger m-2" (click)="closeDialog()">Cancel</button>
+              <button type="submit" class="btn btn-success m-2" (click)="submitDialog()">Submit</button>
+          </div>
+      </div>
+  </form>
+
+</div>

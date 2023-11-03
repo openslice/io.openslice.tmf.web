@@ -1,0 +1,30 @@
+.jumbotron-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.isRoot-class td:first-of-type{
+  // color:#3f51b5
+  text-decoration: underline;
+}
+
+mat-hint {
+  background: #fff;
+}
+
+.isRootDecoration {
+  text-decoration: underline;
+}
+
+.checked {
+  color: green
+}
+
+.crossed {
+  color: red
+}
+
+.table td:first-child {
+  border-top: 0 !important;
+}

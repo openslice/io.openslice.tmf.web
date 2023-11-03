@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { IAppConfig } from 'src/app/models/app-config.model';
+import { Router } from '@angular/router';
+import { IAppConfig } from 'src/app/shared/models/app-config.model';
 import { AppService } from 'src/app/shared/services/app.service';
 import { AuthService } from 'src/app/shared/services/auth.service';
 
@@ -11,8 +12,8 @@ import { AuthService } from 'src/app/shared/services/auth.service';
 export class PortalsComponent implements OnInit {
 
   constructor(
-    private appService: AppService,
-    public authService: AuthService 
+    public appService: AppService,
+    public authService: AuthService
   ) { }
 
   config: IAppConfig

@@ -1,0 +1,44 @@
+<div class="container">
+
+    <h4 mat-dialog-title class="row shadowed mb-3" *ngIf="newSpec">
+        <i class="far fa-clipboard mr-2"></i>
+        <span>Create Organization Characteristic</span>
+    </h4>
+
+    <h4 mat-dialog-title class=" shadowed mb-3" *ngIf="!newSpec">
+        <i class="far fa-edit mr-2"></i>
+        <span>Edit Organization Characteristic</span>
+    </h4>
+
+    <form [formGroup]="editCharacteristicForm">
+        <mat-dialog-content>
+
+            <div class="row justify-content-center align-items-center">
+                <mat-form-field class="col-md-12">
+                    <mat-label>Name</mat-label>
+                    <input matInput formControlName="name">
+                </mat-form-field>
+
+                <div class="col-md-12" formGroupName="value">
+                    <div class="row">
+                        <mat-form-field class="col-md-6">
+                            <mat-label>Alias</mat-label>
+                            <input matInput formControlName="alias">
+                        </mat-form-field>
+                        <mat-form-field class="col-md-6">
+                            <mat-label>Value</mat-label>
+                            <input matInput formControlName="value">
+                        </mat-form-field>
+                    </div>
+                </div>
+            </div>
+
+        </mat-dialog-content>
+        <div class="container-fluid">
+            <div class="row justify-content-end">
+                <button type="button" class="btn btn-danger m-2" (click)="closeDialog()">Cancel</button>
+                <button type="submit" class="btn btn-success m-2" (click)="submitDialog()">Submit</button>
+            </div>
+        </div>
+    </form>
+</div>

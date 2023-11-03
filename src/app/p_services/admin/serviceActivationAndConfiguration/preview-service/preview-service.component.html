@@ -5,7 +5,7 @@
       </div>
   </div>
 </div>
-<div class="container-fluid py-5" *ngIf="!serviceNotFound">
+<div class="container-fluid py-5" *ngIf="!serviceNotFound && finishedLoading">
   <div class="row minh-30vh">
       <div class="col-12">
           <div class="card card-paper mb-0">
@@ -351,16 +351,18 @@
 
                               <div class="tab-pane active" *ngIf="activeListItem === 'Supporting Resources'"
                                   role="tabpanel" [@fadeIn]>
-                                  <div class="card mat-elevation-z1 bg-light">
-                                      <div class="card-body">
-                                          <div *ngIf="service?.supportingResource.length === 0">
-                                              There are not any Supporting Resources allocated.
-                                          </div>
-                                          <p *ngFor="let resource of service?.supportingResource" class="mb-2">
-                                              {{resource.name}}</p>
-                                      </div>
-                                      <div class="card-footer"></div>
-                                  </div>
+                                <div class="card mat-elevation-z1 bg-light">
+                                    <div class="card-body">
+                                        <div *ngIf="service?.supportingResource.length === 0">
+                                            There are not any Supporting Resources allocated.
+                                        </div>
+                                        <p *ngFor="let resource of service?.supportingResource" class="mb-2">
+                                            <a *ngIf="resource.id" routerLink='/resources/resource_inventory/{{resource.id}}'>{{resource.name}}</a>
+                                            <span *ngIf="!resource.id">{{resource.name}}</span>
+                                        </p>
+                                    </div>
+                                    <div class="card-footer"></div>
+                                </div>
                               </div>
 
                           </div>

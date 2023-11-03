@@ -36,7 +36,8 @@ export class PreviewServiceComponent implements OnInit {
   serviceID: string
   service: Service
   newService: boolean = false
-  serviceNotFound: boolean
+  serviceNotFound: boolean = false
+  finishedLoading: boolean = false
 
   editForm = new FormGroup({
     state: new FormControl(),
@@ -138,6 +139,7 @@ export class PreviewServiceComponent implements OnInit {
         console.error(error)
       },
       () => {
+        this.finishedLoading = true
         if (!this.service) {
           this.serviceNotFound = true
         }

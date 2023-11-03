@@ -159,9 +159,11 @@
                                 <div *ngFor="let category of filteredSubCategories$ | async" class="sub-category-container pt-3 px-2">
                                     <div><a routerLink='/{{appService.portalDomain}}/product_category_update/{{category.id}}'><b>{{category.name}}</b></a></div>
                                     <div>
-                                        <button class="btn btn-warning btn-sm mr-1" routerLink='/{{appService.portalDomain}}/product_category_update/{{category.id}}'><i
+                                        <a routerLink='/{{appService.portalDomain}}/product_category_update/{{category.id}}'>
+                                            <button class="btn btn-warning btn-sm m-1" ><i
                                                 class="far fa-edit"></i></button>
-                                        <button class="btn btn-danger btn-sm" (click)="openCategoryDeleteDialog(category)"><i
+                                        </a >
+                                        <button class="btn btn-danger btn-sm m-1" (click)="openCategoryDeleteDialog(category)"><i
                                                 class="far fa-trash-alt"></i></button>
                                     </div>
                             

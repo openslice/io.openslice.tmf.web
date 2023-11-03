@@ -169,9 +169,9 @@
                                                 <div *ngFor="let relatedServiceSpecification of filteredServiceSpecificationRel$ | async"
                                                     class="spec-relationship-container pt-3">
                                                     <div><a routerLink="/services/service_spec_update/{{relatedServiceSpecification.id}}"><b>{{relatedServiceSpecification.name}}</b></a></div>
-                                                    <button class="btn btn-warning btn-sm"
-                                                        routerLink='/services/service_spec_update/{{relatedServiceSpecification.id}}'><i
-                                                            class="far fa-edit"></i></button>
+                                                    <a routerLink='/services/service_spec_update/{{relatedServiceSpecification.id}}'>
+                                                        <button class="btn btn-warning btn-sm"><i class="far fa-edit"></i></button>
+                                                    </a>
                                                 </div>
                            
                                         </div>

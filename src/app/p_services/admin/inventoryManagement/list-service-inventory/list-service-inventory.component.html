@@ -64,8 +64,9 @@
                         <ng-container matColumnDef="actions">
                             <th mat-header-cell *matHeaderCellDef>Actions</th>
                             <td mat-cell *matCellDef="let element">
-                                <button class="btn btn-warning mr-1 btn-sm" routerLink='/{{appService.portalDomain}}/service/{{element.id}}'><i
-                                        class="far fa-edit"></i></button>
+                                <a routerLink='/{{appService.portalDomain}}/service/{{element.id}}'>
+                                    <button class="btn btn-warning mr-1 btn-sm"><i class="far fa-edit"></i></button>
+                                </a>
                                 <!-- <button class="btn btn-danger btn-sm" (click)="openSpecDeleteDialog(element)"><i
                                         class="far fa-trash-alt"></i></button> -->
                             </td>

@@ -42,9 +42,10 @@
                         <ng-container matColumnDef="actions">
                             <th mat-header-cell *matHeaderCellDef>Actions</th>
                             <td mat-cell *matCellDef="let element">
-                                <button class="btn btn-warning btn-sm mr-1" routerLink='/{{appService.portalDomain}}/individual_update/{{element.id}}'><i
-                                        class="far fa-edit"></i></button>
-                                <button class="btn btn-danger btn-sm" (click)="openIndividualDeleteDialog(element)"><i
+                                <a routerLink='/{{appService.portalDomain}}/individual_update/{{element.id}}'>
+                                    <button class="btn btn-warning btn-sm m-1"><i class="far fa-edit"></i></button>
+                                </a>
+                                <button class="btn btn-danger btn-sm m-1" (click)="openIndividualDeleteDialog(element)"><i
                                         class="far fa-trash-alt"></i></button>
                             </td>
                         </ng-container>

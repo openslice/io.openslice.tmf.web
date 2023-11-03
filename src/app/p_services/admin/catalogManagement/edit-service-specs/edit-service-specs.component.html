@@ -173,9 +173,9 @@
                                                     class="spec-relationship-container pb-2" [@fadeIn]>
                                                     <a routerLink="/services/service_spec_update/{{relatedSpec.id}}">{{relatedSpec.name}}</a>
                                                     <!-- <div><b>{{relatedSpec.name}}</b></div> -->
-                                                    <button class="btn btn-warning btn-sm"
-                                                        routerLink='/{{appService.portalDomain}}/service_spec_update/{{relatedSpec.id}}'><i
-                                                            class="far fa-edit"></i></button>
+                                                    <a routerLink='/{{appService.portalDomain}}/service_spec_update/{{relatedSpec.id}}'>
+                                                        <button class="btn btn-warning btn-sm"><i class="far fa-edit"></i></button>
+                                                    </a>
                                                 </div>
                                             </div>
                                         </div>
@@ -214,9 +214,9 @@
                                                 class="spec-relationship-container pb-2" [@fadeIn]>
                                                 <a routerLink="/resources/resource_spec_update/{{relatedSpec.id}}">{{relatedSpec.name}}</a>
                                                 <!-- <div><b>{{relatedSpec.name}}</b></div> -->
-                                                <button class="btn btn-warning btn-sm"
-                                                    routerLink='/resources/resource_spec_update/{{relatedSpec.id}}'><i
-                                                        class="far fa-edit"></i></button>
+                                                <a routerLink='/resources/resource_spec_update/{{relatedSpec.id}}'>
+                                                    <button class="btn btn-warning btn-sm"><i class="far fa-edit"></i></button>
+                                                </a>
                                             </div>
                                         </div>
                                         <div class="card-footer"></div>

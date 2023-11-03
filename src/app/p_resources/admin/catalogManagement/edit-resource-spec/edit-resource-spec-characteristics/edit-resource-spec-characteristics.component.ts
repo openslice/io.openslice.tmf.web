@@ -2,7 +2,7 @@ import { Component, OnInit, Inject } from '@angular/core';
 import { MatCheckboxChange } from '@angular/material/checkbox';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { ResourceSpecificationCharacteristicRes, ResourceSpecification, ResourceSpecificationUpdate, ResourceSpecificationCharacteristicValue } from 'src/app/openApis/resourceCatalogManagement/models';
-import { FormGroup, FormControl, FormArray } from '@angular/forms';
+import { FormGroup, FormControl, FormArray, Validators } from '@angular/forms';
 import { ResourceSpecificationService } from 'src/app/openApis/resourceCatalogManagement/services';
 import { ToastrService } from 'ngx-toastr';
 import { Subject } from 'rxjs';
@@ -30,7 +30,7 @@ export class EditResourceSpecCharacteristicsComponent implements OnInit {
     ) { }
 
   editFormCharacteristic = new FormGroup({
-    name: new FormControl(),
+    name: new FormControl("", Validators.required),
     description: new FormControl(),
     configurable: new FormControl(),
     extensible: new FormControl(),
@@ -40,13 +40,13 @@ export class EditResourceSpecCharacteristicsComponent implements OnInit {
       endDateTime: new FormControl(new Date(new Date().setFullYear(new Date().getFullYear()+20))),
       startDateTime: new FormControl(new Date())
     }),
-    valueType: new FormControl(),
+    valueType: new FormControl("", Validators.required),
     resourceSpecCharacteristicValue: new FormArray([])
   })
 
   subValueTypeCtrl = new FormControl('INTEGER')
 
-  valueTypes = ['INTEGER', 'SMALLINT', 'LONGINT', 'FLOAT', 'BINARY', 'BOOLEAN', 'ARRAY', 'SET', 'TEXT', 'LONGTEXT', 'ENUM', 'TIMESTAMP']
+  valueTypes = ['INTEGER', 'SMALLINT', 'LONGINT', 'FLOAT', 'BINARY', 'BOOLEAN', 'OBJECT', 'ARRAY', 'SET', 'TEXT', 'LONGTEXT', 'ENUM', 'TIMESTAMP']
   subValueTypes = ['INTEGER', 'SMALLINT', 'LONGINT', 'FLOAT', 'BINARY', 'BOOLEAN', 'TEXT', 'LONGTEXT', 'TIMESTAMP']
 
   // valueSubType = new FormControl()
@@ -182,25 +182,24 @@ export class EditResourceSpecCharacteristicsComponent implements OnInit {
   }
 
   submitDialog() {
-    console.log('submit')
-
-    if (this.newSpec) {
-      this.data.resourceSpec.resourceSpecCharacteristic.push(this.editFormCharacteristic.getRawValue())
-    } else {
-      const updateCharacteristIndex = this.data.resourceSpec.resourceSpecCharacteristic.findIndex(char => char.uuid === this.data.specToBeUpdated.uuid)
-      this.data.resourceSpec.resourceSpecCharacteristic[updateCharacteristIndex] = this.editFormCharacteristic.getRawValue()
+    if (this.editFormCharacteristic.valid) {
+      if (this.newSpec) {
+        this.data.resourceSpec.resourceSpecCharacteristic.push(this.editFormCharacteristic.getRawValue())
+      } else {
+        const updateCharacteristIndex = this.data.resourceSpec.resourceSpecCharacteristic.findIndex(char => char.uuid === this.data.specToBeUpdated.uuid)
+        this.data.resourceSpec.resourceSpecCharacteristic[updateCharacteristIndex] = this.editFormCharacteristic.getRawValue()
+      }
+  
+      const updateCharacteristicObj: ResourceSpecificationUpdate = {
+        resourceSpecCharacteristic: this.data.resourceSpec.resourceSpecCharacteristic
+      }
+  
+      this.specService.patchResourceSpecification({id: this.data.resourceSpec.id, serviceSpecification: updateCharacteristicObj}).subscribe(
+        data => {},
+        error => { console.error(error); this.toast.error("An error occurred upon updating Spec Characteristics") },
+        () => {this.dialogRef.close('updated')}
+      )
     }
-
-    const updateCharacteristicObj: ResourceSpecificationUpdate = {
-      resourceSpecCharacteristic: this.data.resourceSpec.resourceSpecCharacteristic
-    }
-
-    console.log(updateCharacteristicObj)
-    this.specService.patchResourceSpecification({id: this.data.resourceSpec.id, serviceSpecification: updateCharacteristicObj}).subscribe(
-      data => console.log(data),
-      error => { console.error(error); this.toast.error("An error occurred upon updating Spec Characteristics") },
-      () => {this.dialogRef.close('updated')}
-    )
   }
 
   ngOnDestroy(): void {

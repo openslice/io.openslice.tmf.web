@@ -28,7 +28,7 @@ export class ListResourceInventoryComponent implements OnInit {
     public appService: AppService
   ) { }
 
-  displayedColumns = ['name', 'resourceType', 'resourceCategory', 'status', 'startOperatingDate', 'actions']
+  displayedColumns = ['name', '@type', 'category', 'resourceStatus', 'startOperatingDate', 'actions']
   dataSource  = new MatTableDataSource<Resource>()
 
   resources: Resource[]

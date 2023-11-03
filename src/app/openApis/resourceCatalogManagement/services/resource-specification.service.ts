@@ -295,8 +295,12 @@ class ResourceSpecificationService extends __BaseService {
     let __params = this.newParams();
     let __headers = new HttpHeaders();
     let __body: any = null;
+    let __formData = new FormData();
+    __body = __formData;
+    
+    // EDIT: editing auto-generated services from ng-swagger-gen
+    if (params.afile != null) { __formData.append('afile', params.afile as string | Blob);}
 
-    __body = params.afile;
     let req = new HttpRequest<any>(
       'POST',
       this.rootUrl + `/resourceCatalogManagement/v4/resourceSpecification/${encodeURIComponent(params.id)}/attachment`,
@@ -512,7 +516,9 @@ module ResourceSpecificationService {
     /**
      * The Attachment file to be added
      */
-    afile?: string;
+
+    //EDIT: Manually editing auto-generated property
+    afile: Blob;
   }
 
   /**

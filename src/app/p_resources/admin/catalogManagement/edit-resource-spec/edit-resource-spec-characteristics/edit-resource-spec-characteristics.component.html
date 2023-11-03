@@ -6,7 +6,7 @@
   </h4>
 
   <h4  mat-dialog-title class=" shadowed mb-3" *ngIf="!newSpec">
-          <i class="row far fa-edit mr-2"></i>
+          <i class="far fa-edit mr-2"></i>
           <span>Edit Resource Characteristic</span>
   </h4>
 
@@ -17,6 +17,7 @@
               <mat-form-field class="col-md-12">
                   <mat-label>Name</mat-label>
                   <input matInput formControlName="name">
+                  <mat-error *ngIf="editFormCharacteristic.get('name').invalid">This field is required</mat-error>
               </mat-form-field>
 
               <mat-form-field class="col-md-12">
@@ -57,6 +58,7 @@
                       <mat-option *ngFor="let type of valueTypes" [value]="type">
                           {{type}}</mat-option>
                   </mat-select>
+                  <mat-error *ngIf="editFormCharacteristic.get('valueType').invalid">This field is required</mat-error>
               </mat-form-field>
 
               <mat-form-field class="col-md-2" *ngIf="subTypeSelection">

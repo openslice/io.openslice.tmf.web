@@ -189,7 +189,6 @@ export class EditResourceCategoriesComponent implements OnInit, OnDestroy {
 
     dialogRef.afterClosed().subscribe (
       result => {
-        console.log(result)
         if (result){
           this.toast.success("Subcategories list is successfully updated")
           this.retrieveResourceCategory()
@@ -218,7 +217,6 @@ export class EditResourceCategoriesComponent implements OnInit, OnDestroy {
 
     dialogRef.afterClosed().subscribe (
       result => {
-        console.log(result)
         if (result) {
           this.toast.success("Resource Specifications list is successfully updated")
           this.retrieveResourceCategory()
@@ -251,16 +249,15 @@ export class EditResourceCategoriesComponent implements OnInit, OnDestroy {
       validFor: this.editForm.value.validFor,
     }
 
-    //Εδώ πρέπει να πάρουμε το parentid από το name του parent resource category
+    //we are taking parentID from the name of parent resource category
     if (!this.editForm.get('isRoot').value)
     {
-      // console.log("Received parent id:"+this.editForm.get('parentId').value)
       updateObj.parentId = this.editForm.get('parentId').value.id
       updateObj.isRoot=false
     }
 
     let updatedCategory: ResourceCategory
-    // console.log("Updated object to be sent "+JSON.stringify(updateObj))
+
     if (this.newCategory) {
       this.categoryService.createResourceCategory(updateObj).subscribe(
         data => { updatedCategory = data },

@@ -43,7 +43,6 @@ export class AssignResourceCandidatesComponent implements OnInit {
   candidateInputCtrl = new FormControl()
 
   ngOnInit() {
-    console.log(this.data)
     this.listResourceCandidates()
   }
 
@@ -89,7 +88,6 @@ export class AssignResourceCandidatesComponent implements OnInit {
   }
 
   private _filter(value: string): ResourceCandidate[] {
-      console.log(value)
       const filterValue = value.toLowerCase();
       return this.availableCandidates.filter(cat => cat.name && cat.name.toLowerCase().indexOf(filterValue) !== -1);
   }
@@ -99,7 +97,6 @@ export class AssignResourceCandidatesComponent implements OnInit {
   }
 
   removeResourceCandidate(spec:ResourceCandidate) {
-    console.log(spec)
     const index = this.assignedCandidates.indexOf(spec);
     if (index >= 0) {
       this.assignedCandidates.splice(index, 1);
@@ -113,14 +110,10 @@ export class AssignResourceCandidatesComponent implements OnInit {
   }
 
   submitDialog() {
-    console.log('submit')
-    console.log(this.assignedCandidates)
     const updateCandidatesObj: ResourceCategoryUpdate = { resourceCandidate: this.assignedCandidates.map(cand => {return {id: cand.id, name: cand.name}}) }
-    console.log(updateCandidatesObj)
-    console.log(this.resourceCategory.id)
     this.categoryService.patchResourceCategory({id: this.resourceCategory.id, resourceCategory: updateCandidatesObj}).subscribe(
-      data => console.log(data),
-      error => console.log(error),
+      data => {},
+      error => console.error(error),
       () => { this.dialogRef.close('updated') }
     )
   }

@@ -72,7 +72,6 @@ export class EditResourceCatalogsComponent implements OnInit {
   newCatalog: boolean = false
 
   ngOnInit() {
-    // this.editForm.get('category').valueChanges.subscribe( val => console.log(val))
     this.retrieveResourceCategories()
 
     if (this.data)
@@ -93,8 +92,6 @@ export class EditResourceCatalogsComponent implements OnInit {
         this.filteredCategories = this.categoryInputCtrl.valueChanges.pipe(
           startWith(null),
           map( (category: string | ResourceCategory) => typeof(category) === 'string' ? this._filter(category) : this.nonSelectedRootCategories.slice() ));
-
-        // console.log(this.nonSelectedCategories)
       }
     )
   }
@@ -182,7 +179,7 @@ export class EditResourceCatalogsComponent implements OnInit {
 
     if (this.newCatalog) {
       this.catalogService.createResourceCatalog(updateObj).subscribe(
-        data => console.log(data),
+        data => {},
         error => console.error(error),
         () => this.dialogRef.close('created')
       )
@@ -190,7 +187,7 @@ export class EditResourceCatalogsComponent implements OnInit {
 
     else {
       this.catalogService.patchResourceCatalog({id: this.catalogID, body: updateObj}).subscribe(
-        data => console.log(data),
+        data => {},
         error => console.error(error),
         () => this.dialogRef.close('updated')
       )

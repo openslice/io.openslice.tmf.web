@@ -1,13 +1,13 @@
-import { SortingService } from './../../../../shared/functions/sorting.service';
+import { SortingService } from '../../../../../shared/functions/sorting.service';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatAutocomplete, MatAutocompleteSelectedEvent, MatAutocompleteTrigger } from '@angular/material/autocomplete';
-import { ResourcePoolUpdate } from '../../../../openApis/resourcePoolManagement/models/resource-pool-update';
-import { ResourceRef } from '../../../../openApis/serviceInventoryManagement/models/resource-ref';
+import { ResourcePoolUpdate } from '../../../../../openApis/resourcePoolManagement/models/resource-pool-update';
+import { ResourceRef } from '../../../../../openApis/serviceInventoryManagement/models/resource-ref';
 import { ResourceService } from 'src/app/openApis/resourceInventoryManagement/services';
 import { Resource } from 'src/app/openApis/resourceInventoryManagement/models';
-import { ResourcePool } from '../../../../openApis/resourcePoolManagement/models/resource-pool';
+import { ResourcePool } from '../../../../../openApis/resourcePoolManagement/models/resource-pool';
 import { ResourcePoolService } from 'src/app/openApis/resourcePoolManagement/services';
 import { Component, OnInit, Inject, ViewChild, ElementRef } from '@angular/core';
 import { Observable } from 'rxjs';
@@ -72,7 +72,6 @@ export class AssignPoolResourceRelationshipsComponent implements OnInit {
         }
 
         this.selectedResources = this.resourcePool.capacity.resources.slice()
-        console.log("Getting this"+ JSON.stringify(this.selectedResources))
         this.dataSource.data = this.selectedResources
         if (this.selectedResources){
           this.dataSource.sort = this.sort
@@ -130,7 +129,6 @@ export class AssignPoolResourceRelationshipsComponent implements OnInit {
       }
       
     }
-    console.info("this.resourcePool.id = " + this.resourcePool.id),
     this.resourcePoolService.patchResourcePool({id: this.resourcePool.id ,  body : updateRelationshipsObj}).subscribe(
       data => {},
       error => console.error(error),

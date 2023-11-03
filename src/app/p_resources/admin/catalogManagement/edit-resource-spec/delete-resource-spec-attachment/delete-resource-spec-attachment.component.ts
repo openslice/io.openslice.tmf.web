@@ -30,11 +30,8 @@ export class DeleteResourceSpecAttachmentComponent implements OnInit {
       attachment: this.data.resourceSpecAttachmentArray
     }
 
-
-    console.log(this.data)
-
     this.specService.patchResourceSpecification({ id: this.data.resourceSpec.id, serviceSpecification: updateSpecObj }).subscribe(
-      data => console.log(data),
+      data => {},
       error => console.error(error),
       () => this.dialogRef.close('deleted')
     )

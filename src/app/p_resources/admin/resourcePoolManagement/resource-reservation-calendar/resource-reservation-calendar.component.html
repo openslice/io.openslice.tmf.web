@@ -7,11 +7,15 @@
                         <h2 class="shadowed">Resource Reservation Calendar</h2>
                         <p class="shadowed">View resource reservations..</p>
                     </div>
+
+                    <div class="col-md-6 text-md-right">
+                        <button type="button" class="btn btn-success" routerLink="/{{appService.portalDomain}}/resource_reservations">
+                            <i class="fas fa-compress-alt mr-2"></i>Reservation list view
+                        </button>
+                    </div>
                     
                 </div>
-
-                    <full-calendar [options]='calendarOptions'></full-calendar>
-
+                    <full-calendar class="mt-4" [options]='calendarOptions'></full-calendar>
             </div>
         </div>
     </div>

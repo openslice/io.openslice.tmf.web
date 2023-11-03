@@ -5,7 +5,7 @@
     </div>
   </div>
 </div>
-<div class="container-fluid py-5" *ngIf="!resourceNotFound">
+<div class="container-fluid py-5" *ngIf="!resourceNotFound && finishedLoading">
   <div class="row minh-30vh">
     <div class="col-12">
       <div class="card card-paper mb-0">
@@ -24,10 +24,10 @@
                   <b class="card-stats shadowed">{{ resource["@type"] }}</b>
                 </p>
 
-                <!-- <div class="card-stats" *ngIf="!newResource">
-                  <i class="far fa-plus-square mr-2"></i>Resource created at
-                  {{ resource?.resourceDate | date: "short" }} (Local Time)
-                </div> -->
+
+                <div class="card-stats" *ngIf="!newResource">
+                  <i class="far fa-plus-square mr-2"></i>Resource started operating at {{ resource?.startOperatingDate | date: "short" }} (Local Time)
+                </div>
               </div>
             </div>
           </div>
@@ -47,207 +47,93 @@
             <div class="col-xl-10 col-lg-9">
               <div class="tab-content">
                 <div class="tab-pane active" *ngIf="activeListItem === 'Main Properties'" role="tabpanel" [@fadeIn]>
-                  <form [formGroup]="editForm">
+                  <form>
                     <div class="card mat-elevation-z1 bg-light">
                       <div class="card-body">
                         <div class="row">
-                          <div class="col-lg-4" *ngIf="!newResource||!editMode">
+                          <div class="col-lg-4">
                             <h6>Name</h6>
                             <p>{{ resource?.name }}</p>
                           </div>
-                          <div class="col-lg-4" *ngIf="newResource&&editMode">
-                            <mat-form-field *ngIf="newResource&&editMode">
-                              <mat-label>Name (Mandatory)</mat-label>
-                              <input matInput formControlName="resourceName">
-                            </mat-form-field>
-                          </div>
 
-                          <div class="col-lg-4" *ngIf="!newResource||!editMode">
+                          <div class="col-lg-4">
                             <h6>Category</h6>
                             <p>{{ resource?.category }}
-                               <!-- ({({resource['@type']}}) -->
-                              </p>
-                          </div>
-                          <div class="col-lg-4" *ngIf="newResource&&editMode">
-                            <mat-form-field *ngIf="editMode">
-                              <mat-label>Category (Mandatory)</mat-label>
-                              <mat-select formControlName="resourceCategory">
-                                <mat-option *ngFor="
-                                    let categoryName of availableCategories
-                                  " [value]="categoryName">
-                                  {{ categoryName }}
-                                </mat-option>
-                              </mat-select>
-                            </mat-form-field>
+                              <!-- ({({resource['@type']}}) -->
+                            </p>
                           </div>
 
+                          <div class="col-lg-4" *ngIf="!newResource">
+                            <h6>Resource Version</h6>
+                            <p>{{ resource?.resourceVersion }}</p>
+                          </div>
 
-                          <div class="col-lg-4" *ngIf="!editMode">
+                          <div class="col-lg-4">
                             <h6>Description</h6>
                             <p>{{ resource?.description }}</p>
                           </div>
-                          <div class="col-lg-4" *ngIf="editMode">
-                            <mat-form-field *ngIf="editMode">
-                              <mat-label>Description</mat-label>
-                              <input matInput formControlName="resourceDescription">
-                            </mat-form-field>
-                          </div>
 
-                          <div class="col-lg-4" *ngIf="!newResource||!editMode">
-                            <h6>Resource Id</h6>
-                            <p>{{ resource?.id }}</p>
-                          </div>
-                          <div class="col-lg-4" *ngIf="!newResource||!editMode">
+
+                          <div class="col-lg-4" *ngIf="!newResource">
                             <h6>Resource Specification</h6>
                             <p>
                               <a routerLink="/{{
                                   appService.portalDomain
                                 }}/resource_spec_update/{{
-                                  resource?.resourceSpecification.id
-                                }}">{{ resource?.resourceSpecification.name }}</a>
+                                  resource?.resourceSpecification?.id
+                                }}">{{ resource?.resourceSpecification?.name }}</a>
                             </p>
                           </div>
-                          <div class="col-lg-4" *ngIf="!newResource||!editMode">
-                            <h6>Resource Version</h6>
-                            <p>{{ resource?.resourceVersion }}</p>
-                          </div>
-                        </div>
-                        <div class="row">
-                          <div class="col-lg-4" *ngIf="!editMode">
-                            <h6>Operational State</h6>
-                            <p>{{ resource?.operationalState }}</p>
-                          </div>
-                          <div class="col-lg-4" *ngIf="editMode">
-                            <mat-form-field *ngIf="editMode">
-                              <mat-label>Operational State</mat-label>
-                              <mat-select formControlName="operationalState">
-                                <mat-option *ngFor="
-                                    let operationalState of availableOperationalStates
-                                  " [value]="operationalState">
-                                  {{ operationalState }}
-                                </mat-option>
-                              </mat-select>
-                            </mat-form-field>
-                          </div>
-                          <div class="col-lg-4" *ngIf="!editMode">
-                            <h6>Administrative State</h6>
-                            <p>{{ resource?.administrativeState }}</p>
-                          </div>
-                          <div class="col-lg-4" *ngIf="editMode">
-                            <mat-form-field *ngIf="editMode">
-                              <mat-label>Administrative State</mat-label>
-                              <mat-select formControlName="administrativeState">
-                                <mat-option *ngFor="
-                                    let administrativeState of availableAdministrativeStates
-                                  " [value]="administrativeState">
-                                  {{ administrativeState }}
-                                </mat-option>
-                              </mat-select>
-                            </mat-form-field>
-                          </div>
-                          <div class="col-lg-4" *ngIf="!editMode">
-                            <h6>Usage State</h6>
-                            <p>{{ resource?.usageState }}</p>
-                          </div>
-                          <div class="col-lg-4" *ngIf="editMode">
-                            <mat-form-field *ngIf="editMode">
-                              <mat-label>Usage State</mat-label>
-                              <mat-select formControlName="usageState">
-                                <mat-option *ngFor="
-                                    let usageState of availableUsageStates
-                                  " [value]="usageState">
-                                  {{ usageState }}
-                                </mat-option>
-                              </mat-select>
-                            </mat-form-field>
-                          </div>
-                        </div>
-                        <div class="row">
-                          <div class="col-lg-4">
-                            <ng-container *ngIf="!editMode">
-                              <h6>Starting Date</h6>
-                              <p [class.mb-0]="resource?.startOperatingDate" *ngIf="resource?.startOperatingDate">
-                                {{
-                                resource?.startOperatingDate
-                                | date: "d MMM y, h:mm a"
-                                }}
-                                - Local Time
-                              </p>
-                              <p *ngIf="resource?.startOperatingDate">
-                                {{
-                                resource?.startOperatingDate
-                                | date: "d MMM y, h:mm a":"UTC"
-                                }}
-                                - UTC
-                              </p>
-                            </ng-container>
-
-                            <mat-form-field *ngIf="editMode" [owlDateTimeTrigger]="pickerFrom" class="mb-2">
-                              <mat-label>Starting Date</mat-label>
-                              <input matInput [owlDateTime]="pickerFrom" placeholder="Date Time"
-                                formControlName="startOperatingDate" />
-                              <mat-icon matSuffix>date_range</mat-icon>
-                              <owl-date-time #pickerFrom></owl-date-time>
-                              <mat-hint>Date is displayed in Local Time
-                                <span *ngIf="editForm.value.startOperatingDate">(UTC:
-                                  {{
-                                  editForm.value.startOperatingDate
-                                  | date: "dd/MM/yy, HH:mm":"UTC"
-                                  }})</span>
-                              </mat-hint>
-                            </mat-form-field>
-                          </div>
 
                           <div class="col-lg-4">
-                            <ng-container *ngIf="!editMode">
-                              <h6>Ending Date</h6>
-                              <p [class.mb-0]="resource?.endOperatingDate" *ngIf="resource?.endOperatingDate">
-                                {{
-                                resource?.endOperatingDate
-                                | date: "d MMM y, h:mm a"
-                                }}
-                                - Local Time
-                              </p>
-                              <p *ngIf="resource?.endOperatingDate">
-                                {{
-                                resource?.endOperatingDate
-                                | date: "d MMM y, h:mm a":"UTC"
-                                }}
-                                - UTC
-                              </p>
-                            </ng-container>
-
-                            <mat-form-field *ngIf="editMode" [owlDateTimeTrigger]="pickerFrom" class="mb-2">
-                              <mat-label>Ending Date</mat-label>
-                              <input matInput [owlDateTime]="pickerFrom" placeholder="Date Time"
-                                formControlName="endOperatingDate" />
-                              <mat-icon matSuffix>date_range</mat-icon>
-                              <owl-date-time #pickerFrom></owl-date-time>
-                              <mat-hint>Date is displayed in Local Time
-                                <span *ngIf="editForm.value.endOperatingDate">(UTC:
-                                  {{
-                                  editForm.value.endOperatingDate
-                                  | date: "dd/MM/yy, HH:mm":"UTC"
-                                  }})</span>
-                              </mat-hint>
-                            </mat-form-field>
-                          </div>
-                          <div class="col-lg-4" *ngIf="!editMode">
                             <h6>Resource Status</h6>
                             <p>{{ resource?.resourceStatus }}</p>
                           </div>
-                          <div class="col-lg-4" *ngIf="editMode">
-                            <mat-form-field *ngIf="editMode">
-                              <mat-label>Resource Status</mat-label>
-                              <mat-select formControlName="resourceStatus">
-                                <mat-option *ngFor="
-                                    let resourceStatus of availableResourceStatuses
-                                  " [value]="resourceStatus">
-                                  {{ resourceStatus }}
-                                </mat-option>
-                              </mat-select>
-                            </mat-form-field>
+
+                        </div>
+
+                        <div class="row">
+                          <div class="col-lg-4">
+                            <h6>Operational State</h6>
+                            <p>{{ resource?.operationalState }}</p>
                           </div>
+
+                          <div class="col-lg-4">
+                            <h6>Administrative State</h6>
+                            <p>{{ resource?.administrativeState }}</p>
+                          </div>
+
+                          <div class="col-lg-4">
+                            <h6>Usage State</h6>
+                            <p>{{ resource?.usageState }}</p>
+                          </div>
+                        </div>
+
+                        <div class="row">
+                          <div class="col-lg-4">
+                            <ng-container>
+                              <h6>Starting Date</h6>
+                              <p [class.mb-0]="resource?.startOperatingDate" *ngIf="resource?.startOperatingDate">
+                                {{ resource?.startOperatingDate | date: "d MMM y, h:mm a" }} - Local Time
+                              </p>
+                              <p *ngIf="resource?.startOperatingDate">
+                                {{ resource?.startOperatingDate | date: "d MMM y, h:mm a":"UTC" }} - UTC
+                              </p>
+                            </ng-container>
+                          </div>
+
+                          <div class="col-lg-4">
+                            <ng-container>
+                              <h6>Ending Date</h6>
+                              <p [class.mb-0]="resource?.endOperatingDate" *ngIf="resource?.endOperatingDate">
+                                {{ resource?.endOperatingDate | date: "d MMM y, h:mm a" }} - Local Time
+                              </p>
+                              <p *ngIf="resource?.endOperatingDate">
+                                {{ resource?.endOperatingDate | date: "d MMM y, h:mm a":"UTC" }} - UTC
+                              </p>
+                            </ng-container>
+                          </div>
+
                         </div>
 
                         <div class="row">
@@ -256,7 +142,7 @@
                             <div class="notes-container">
                               <div *ngFor="let note of resource?.note">
                                 <div class="card card-paper mb-2 bg-white">
-                                  <div class="note-card-body">
+                                  <div class="p-2">
                                     {{ note.text }}
                                     <div class="small">
                                       written by {{ note.author }} @
@@ -266,34 +152,12 @@
                                 </div>
                               </div>
                             </div>
-
-                            <div *ngIf="editMode">
-                              <button type="button" *ngIf="!newNote" class="btn btn-primary btn-sm btn-block mb-2"
-                                (click)="triggerNewNote()">
-                                <i class="far fa-sticky-note mr-2"></i>Add Note
-                              </button>
-                              <div class="card card-paper mb-2 bg-white" *ngIf="newNote">
-                                <div class="note-card-body pb-0">
-                                  <div class="d-flex justify-content-center align-items-center">
-                                    <mat-form-field>
-                                      <mat-label>New Note</mat-label>
-                                      <textarea cdkTextareaAutosize #autosize="cdkTextareaAutosize"
-                                        cdkAutosizeMinRows="2" matInput formControlName="note"></textarea>
-                                    </mat-form-field>
-                                    <button type="button" class="btn btn-danger btn-sm ml-2 mb-1"
-                                      (click)="triggerNewNote()">
-                                      <i class="fas fa-times fa"></i>
-                                    </button>
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
                           </div>
                         </div>
                       </div>
 
                       <div class="card-footer">
-                        <div class="container-fluid mt-2">
+                        <!-- <div class="container-fluid mt-2">
                           <div class="row justify-content-end">
                             <button type="button" *ngIf="!editMode" class="btn btn-warning"
                               (click)="enableResourceEditing()">
@@ -312,7 +176,7 @@
                               Submit
                             </button>
                           </div>
-                        </div>
+                        </div> -->
                       </div>
                     </div>
                   </form>
@@ -390,14 +254,14 @@
                       </div>
                     </div>
                     <div class="card-footer">
-                      <div class="container-fluid mt-3">
+                      <!-- <div class="container-fluid mt-3">
                         <div class="row justify-content-end">
                           <button class="btn btn-block btn-warning" (click)="openCharacteristicsEditDialog()">
                             <i class="far fa-edit mr-1"></i>Edit Resource
                             Characteristics
                           </button>
                         </div>
-                      </div>
+                      </div> -->
                     </div>
                   </div>
                 </div>
@@ -407,72 +271,28 @@
                 [@fadeIn]>
                 <div class="card mat-elevation-z1 bg-light">
                   <div class="card-body">
-                    <div>
-                      <!-- <h4 mat-dialog-title class="row shadowed mb-3">
-                        <i class="row far fa-clipboard mr-2"></i>
-                        <span>Assign Related Resources</span>
-                      </h4> -->
-                        <div class="row dialog-content-container">
-                          <mat-form-field appearance="" class="col-md-12">
+                    <div class="row">
+                      <div class="col-12">{{resource.resourceRelationship.length}} related Resources assigned</div>
+                    </div>
+                    <div class="row mt-3">
+                      <mat-form-field *ngIf="resource?.resourceRelationship.length > 0" class="col-12">
+                        <mat-label>Apply Filter to related Resources...
+                        </mat-label>
+                        <input matInput [formControl]="relatedResourcesFilterCtrl">
+                      </mat-form-field>
+                    </div>
 
-                            <input placeholder="Add Resource Relationship From Available Resources" #resourceInput
-                              [formControl]="resourceInputCtrl" [matAutocomplete]="auto" matInput (click)="openList()">
+                    <div *ngFor="let relatedResource of filteredResourceRelationships$ | async" class="pb-2" [@fadeIn]>
+                      <a routerLink="/resources/resource/{{relatedResource.resource.id}}">
+                        <span *ngIf="relatedResource.resource.name">{{relatedResource.resource.name}}</span>
+                        <span *ngIf="!relatedResource.resource.name">{{relatedResource.resource.id}}</span>
+                      </a>
 
-                            <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)"
-                              autoActiveFirstOption>
-                              <mat-option *ngFor="let filteredResource of filteredResources$ | async" [value]="filteredResource">
-                                {{filteredResource.resource.name}}
-                              </mat-option>
-                            </mat-autocomplete>
-                          </mat-form-field>
-                        </div>
-
-
-                        <div class="table-responsive">
-                          <table mat-table [dataSource]="dataSource" class="table table-generic">
-                            <ng-container matColumnDef="name">
-                              <th mat-header-cell *matHeaderCellDef> Assigned Resources </th>
-                              <td mat-cell *matCellDef="let element" matTooltipClass="universal-tooltip"
-                                [matTooltip]="element.description" matTooltipPosition="above">
-                                <b>{{element.resource.name}}</b>
-                              </td>
-                            </ng-container>
-                            <ng-container matColumnDef="relationshipType">
-                              <th mat-header-cell *matHeaderCellDef> Relationship Type </th>
-                              <td mat-cell *matCellDef="let element">
-                                <div class="d-flex justify-content-center col-md-4">
-                                  <mat-form-field>
-                                    <select matNativeControl [(ngModel)]="element.relationshipType" name="relationshipType">
-                                      <option *ngFor="let relationshipType of relationshipTypes" [value]="relationshipType.viewValue">
-                                        {{relationshipType.viewValue}}
-                                      </option>
-                                    </select>
-                                  </mat-form-field>
-                                </div>
-                              </td>
-                            </ng-container>
-                            <ng-container matColumnDef="actions">
-                              <th mat-header-cell *matHeaderCellDef >Actions</th>
-                              <td mat-cell *matCellDef="let element">
-                                  <button class="btn btn-warning mr-1 btn-sm" (click)="onClickEdit(element)" routerLink='/{{appService.portalDomain}}/resource/{{element.resource.id}}'><i
-                                    class="far fa-edit"></i></button>
-                                  <button class="btn btn-danger btn-sm" (click)="removeResource(element)"><i
-                                      class="far fa-trash-alt"></i></button>
-                              </td>
-                            </ng-container>
-                            <tr mat-header-row *matHeaderRowDef="displayedColumnsResourceRelationships"></tr>
-                            <tr mat-row *matRowDef="let row; columns: displayedColumnsResourceRelationships;"></tr>
-                          </table>
-                        </div>
-                        <div class="d-flex justify-content-end">
-                          <!-- <button type="button" class="btn btn-danger m-2" (click)="closeDialog()">Cancel</button> -->
-                          <button type="button" class="btn btn-success m-2" (click)="confirmAssignment()">Submit</button>
-                        </div>
                     </div>
                   </div>
                   <div class="card-footer"></div>
                 </div>
-                <!-- END OF Service Specification Relationships Tab -->
+                <!-- END OF Resource Relationships Tab -->
               </div>
             </div>
           </div>

@@ -160,8 +160,13 @@
                           <!-- <a class="dropdown-item">More</a> -->
                           <div class="dropdown-divider"></div>
                           <!-- <div class="optgroup-label">Order Management</div> -->
-                          <li><a class="dropdown-item" tabindex="0" routerLink="/{{appService.portalDomain}}/new_resource">New Resource</a></li>
+                          <!-- <li><a class="dropdown-item" tabindex="0" routerLink="/{{appService.portalDomain}}/new_resource">New Resource</a></li> -->
                           <li><a class="dropdown-item" tabindex="0" routerLink="/{{appService.portalDomain}}/resource_inventory">Resource Inventory</a></li>
+
+                          <div class="dropdown-divider"></div>
+                          <li><a class="dropdown-item" tabindex="0" routerLink="/{{appService.portalDomain}}/resource_pools">Resource Pools</a></li>
+                          <li><a class="dropdown-item" tabindex="0" routerLink="/{{appService.portalDomain}}/resource_reservations">Resource Reservations</a></li>
+  
 
                       </ul>
                   </a>
@@ -170,14 +175,14 @@
 
               
                 
-              <li class="nav-item dropdown" ngbDropdown *ngIf="(authService.isAuthenticated$ | async) && authService.portalUserJWT?.realm_access.roles.includes('ADMIN')" [@fadeIn]>
-                <a class="nav-link dropdown-toggle" id="navbarDropdown" aria-haspopup="true" ngbDropdownToggle tabindex="0">Reservation
+              <!-- <li class="nav-item dropdown" ngbDropdown *ngIf="(authService.isAuthenticated$ | async) && authService.portalUserJWT?.realm_access.roles.includes('ADMIN')" [@fadeIn]>
+                <a class="nav-link dropdown-toggle" id="navbarDropdown" aria-haspopup="true" ngbDropdownToggle tabindex="0">ManageReservation
                     <ul class="dropdown-menu" aria-labelledby="navbarDropdown" ngbDropdownMenu>
-                        <li><a class="dropdown-item" tabindex="0" routerLink="/{{appService.portalDomain}}/resource-pool-management">Resource Pools management</a></li>
+                        <li><a class="dropdown-item" tabindex="0" routerLink="/{{appService.portalDomain}}/list-resource-pools">Resource Pools management</a></li>
                         <li><a class="dropdown-item" tabindex="0" routerLink="/{{appService.portalDomain}}/resource-reservation-management">Reservation management</a></li>
                     </ul>
                 </a>
-             </li>
+             </li> -->
 
           </ul>
           <!-- ENDOF Resources Portal Menu -->

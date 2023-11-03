@@ -22,7 +22,7 @@ export class DeleteResourceCatalogsComponent implements OnInit {
 
   confirmDelete() {
     this.catalogService.deleteResourceCatalog(this.data.id).subscribe(
-      data => console.log(data),
+      data => {},
       error => console.error(error),
       () => this.dialogRef.close('deleted')
     )

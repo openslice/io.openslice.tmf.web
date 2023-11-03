@@ -59,7 +59,7 @@ export class CreateResourceCategoryChildrenComponent implements OnInit {
     let createdChildCategory: ResourceCategory
     this.categoryService.createResourceCategory(creationObj).subscribe(
       data => {createdChildCategory = data},
-      error => console.log(error),
+      error => console.error(error),
       () => {
         this.parentCategory.category.push({id: createdChildCategory.id})
         const updateObj: ResourceCategoryUpdate = {
@@ -67,8 +67,8 @@ export class CreateResourceCategoryChildrenComponent implements OnInit {
         }
 
         this.categoryService.patchResourceCategory({resourceCategory: updateObj, id: this.parentCategory.id}).subscribe(
-          data => console.log(data),
-          error =>  console.log(error),
+          data => {},
+          error =>  console.error(error),
           () => this.dialogRef.close('created')
         )
       }

@@ -48,7 +48,6 @@ export class AssignResourceSpecRelationshipsComponent implements OnInit {
   filteredSpecs$: Observable<ResourceSpecification[]>
 
   ngOnInit() {
-    console.log(this.data)
     this.listResourceSpecs()
   }
 
@@ -87,7 +86,6 @@ export class AssignResourceSpecRelationshipsComponent implements OnInit {
   }
 
   private _filter(value: string): ResourceSpecification[] {
-      console.log(value)
       const filterValue = value.toLowerCase();
       return this.nonSelectedSpecs.filter(cat => cat.name.toLowerCase().indexOf(filterValue) !== -1);
   }
@@ -97,7 +95,6 @@ export class AssignResourceSpecRelationshipsComponent implements OnInit {
   }
 
   removeResourceSpec(spec:ResourceSpecification) {
-    console.log(spec)
     const index = this.selectedSpecs.indexOf(spec);
     if (index >= 0) {
       this.selectedSpecs.splice(index, 1);
@@ -117,9 +114,8 @@ export class AssignResourceSpecRelationshipsComponent implements OnInit {
       resourceSpecRelationship: this.selectedSpecs.map(spec =>{ return {id: spec.id, name: spec.name}})
     }
 
-    console.log(updateRelationshipsObj)
     this.specService.patchResourceSpecification({id: this.data.resourceSpec.id, serviceSpecification: updateRelationshipsObj}).subscribe(
-      data => console.log(data),
+      data => {},
       error => console.error(error),
       () => {this.dialogRef.close('updated')}
     )

@@ -14,13 +14,13 @@ import { AppService } from 'src/app/shared/services/app.service';
 
 
 @Component({
-  selector: 'resource-pool-management',
-  templateUrl: './resource-pool-management.component.html',
-  styleUrls: ['./resource-pool-management.component.scss'],
+  selector: 'list-resource-pools',
+  templateUrl: './list-resource-pools.component.html',
+  styleUrls: ['./list-resource-pools.component.scss'],
   animations: [ trigger('fadeIn', fadeIn()) ]
 })
 
-export class ResourcePoolManagementComponent implements OnInit {
+export class ListResourcePoolsComponent implements OnInit {
 
 
   constructor(
@@ -31,7 +31,7 @@ export class ResourcePoolManagementComponent implements OnInit {
     ) { }
 
   //displayedColumns = ['name', 'description', 'version', 'lastUpdate',  'lifecycleStatus', 'actions']
-  displayedColumns = ['name', 'description',  'actions']
+  displayedColumns = ['name', 'description', 'resources_allocated', 'actions']
   dataSource  = new MatTableDataSource<ResourcePool>()
   resourcePools: ResourcePool[]
 
@@ -55,6 +55,7 @@ export class ResourcePoolManagementComponent implements OnInit {
         this.dataSource.sortingDataAccessor = (item, property): string | number => {
           switch (property) {
             case 'lastUpdate': return new Date(item.lastUpdate).getTime();
+            case 'resources_allocated': {return item.capacity ? item.capacity.resources.length : 0};
             default: return item[property];
           }
         }

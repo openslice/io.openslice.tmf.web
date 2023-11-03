@@ -112,7 +112,6 @@ export class EditResourceSpecsComponent implements OnInit {
     this.subscriptions.add(this.router.events.subscribe(
       event => {
         if (event instanceof ActivationEnd && event.snapshot.params && event.snapshot.params.id) {
-          console.log(event.snapshot.params.id)
           this.specID = this.activatedRoute.snapshot.params.id
           this.retrieveResourceSpec()
         }
@@ -158,7 +157,11 @@ export class EditResourceSpecsComponent implements OnInit {
 
           //populate Specification Characteristic Panel Info
           // filter Spec Characteristic that does not have defined Value Type (parent spec char)
-          this.dataSource.data = this.spec.resourceSpecCharacteristic.filter(specCharacteristic => specCharacteristic.valueType)
+          // this.dataSource.data = this.spec.resourceSpecCharacteristic.filter(specCharacteristic => specCharacteristic.valueType)
+          
+          // update 17/10/2023: This filter was applied for the GST parent characteristic like "energy efficiency", not to show. But the designer/admin would need to see/edit these also
+          this.dataSource.data = this.spec.resourceSpecCharacteristic.slice()
+          
           // this.dataSource.paginator = this.paginator;
 
 
@@ -188,7 +191,7 @@ export class EditResourceSpecsComponent implements OnInit {
 
   retrieveResourceDesriptor(specId) {
     this.specResource.retrieveResourceSpecification(specId).subscribe(
-      data => console.log(data),
+      data => {},
       error => console.error(error)
     )
   }
@@ -233,7 +236,6 @@ export class EditResourceSpecsComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe (
       result => {
-        console.log(result)
         if (result) {
           this.toast.success("Resource Specification Relationship list was successfully updated")
           this.retrieveResourceSpec()
@@ -253,7 +255,6 @@ export class EditResourceSpecsComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe (
       result => {
-        console.log(result)
         if (result) {
           this.toast.success("Resource Specification Characteristics list was successfully updated")
           this.retrieveResourceSpec()
@@ -279,7 +280,6 @@ export class EditResourceSpecsComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe (
       result => {
-        console.log(result)
         if (result){
           this.toast.success("Resource Specification Characteristics list was successfully updated")
           this.retrieveResourceSpec()
@@ -303,7 +303,6 @@ export class EditResourceSpecsComponent implements OnInit {
       valueType: characteristic.valueType
     }
 
-    console.log("cloneCharacteristic"+JSON.stringify(cloneCharacteristic))
     this.spec.resourceSpecCharacteristic.push(cloneCharacteristic)
 
     const updateCharacteristicObj: ResourceSpecificationUpdate = {
@@ -311,7 +310,7 @@ export class EditResourceSpecsComponent implements OnInit {
     }
 
     this.specResource.patchResourceSpecification({id: this.specID, serviceSpecification: updateCharacteristicObj}).subscribe(
-      data => console.log(data),
+      data => {},
       error => console.error(error),
       () => {
         this.toast.success("Resource Specification Characteristics list was successfully updated")
@@ -336,7 +335,10 @@ export class EditResourceSpecsComponent implements OnInit {
     if (this.newSpecification) {
       this.specResource.createResourceSpecification(updateObj).subscribe(
         data => { updatedSpec = data },
-        error => console.error(error),
+        error => {
+          console.error(error)
+          this.toast.error("An error occurred while creating the new Resource Specification")
+        },
         () => {
           this.newSpecification = false
           this.toast.success("Resource Specification was successfully created")
@@ -348,7 +350,10 @@ export class EditResourceSpecsComponent implements OnInit {
     else {
       this.specResource.patchResourceSpecification({ id: this.specID, serviceSpecification: updateObj }).subscribe(
         data => { updatedSpec = data },
-        error => console.error(error),
+        error => {
+          console.error(error)
+          this.toast.error("An error occurred while updating the Resource Specification")
+        },
         () => {
           this.toast.success("Resource Specification was successfully updated")
           this.refreshResourceSpecification(updatedSpec)
@@ -364,13 +369,12 @@ export class EditResourceSpecsComponent implements OnInit {
 
   submitAttachments() {
     if (this.attachmentFilesCtrl.valid) {
-      console.log("submitAttachments:"+this.specID)
-      const reader = new FileReader();
-      tmp: File
-      reader.readAsBinaryString(this.attachmentFilesCtrl.value[0])
-      console.log("Reader result as string:"+reader.result as string)
-      this.specResource.addAttachmentToResourceSpec({id: this.specID, afile: reader.result as string}).subscribe(
-        data => { console.log(data) },
+      // const reader = new FileReader();
+      // tmp: File
+      // reader.readAsBinaryString(this.attachmentFilesCtrl.value[0])
+      // this.specResource.addAttachmentToResourceSpec({id: this.specID, afile: reader.result as string}).subscribe(
+      this.specResource.addAttachmentToResourceSpec({id: this.specID, afile: this.attachmentFilesCtrl.value[0]}).subscribe(
+        data => { },
         error => {
           console.error(error)
           this.toast.error("An error occurred while uploading attachment")
@@ -415,7 +419,6 @@ export class EditResourceSpecsComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe (
       result => {
-        console.log(result)
         if (result){
           this.toast.success("Resource Specification Characteristics list was successfully updated")
           this.retrieveResourceSpec()

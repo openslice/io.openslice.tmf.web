@@ -1,4 +1,4 @@
-import { AssignPoolResourceRelationshipsComponent } from './p_resources/admin/resourcePoolManagement/assign-resources/assign-pool-resources.component';
+import { AssignPoolResourceRelationshipsComponent } from './p_resources/admin/resourcePoolManagement/edit-resource-pool/assign-resources/assign-pool-resources.component';
 import { NgModule, NO_ERRORS_SCHEMA } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
@@ -8,7 +8,6 @@ import { AppResourcesRoutingModule } from './app-resources-routing.module';
 
 import { SharedModule } from './shared.module';
 import { EditResourceCatalogsComponent } from './p_resources/admin/catalogManagement/edit-resource-catalogs/edit-resource-catalogs.component';
-import { ResourceOsmAddComponent } from './p_resources/admin/catalogManagement/resource-osm-add/resource-osm-add.component';
 import { DeleteResourceCatalogsComponent } from './p_resources/admin/catalogManagement/delete-resource-catalogs/delete-resource-catalogs.component';
 import { ListResourceCategoriesComponent } from './p_resources/admin/catalogManagement/list-resource-categories/list-resource-categories.component';
 import { EditResourceCategoriesComponent } from './p_resources/admin/catalogManagement/edit-resource-categories/edit-resource-categories.component';
@@ -25,15 +24,10 @@ import { DeleteResourceSpecAttachmentComponent } from './p_resources/admin/catal
 import { AssignResourceSpecRelationshipsComponent } from './p_resources/admin/catalogManagement/edit-resource-spec/assign-resource-spec-relationships/assign-resource-spec-relationships.component';
 import { DeleteResourceComponent } from './p_resources/admin/catalogManagement/delete-resource/delete-resource.component';
 import { PreviewResourceComponent } from './p_resources/admin/inventoryManagement/preview-resource/preview-resource.component';
-import { EditResourceComponent } from './p_resources/admin/inventoryManagement/edit-resource/edit-resource.component';
-import { EditResourceRelationshipsComponent } from './p_resources/admin/inventoryManagement/edit-resource/edit-resource-relationships/edit-resource-relationships.component';
-import { AssignResourceRelationshipsComponent } from './p_resources/admin/inventoryManagement/edit-resource/assign-resource-relationships/assign-resource-relationships.component';
 
-
-import { ResourcePoolManagementComponent } from './p_resources/admin/resourcePoolManagement/resource-pool-management/resource-pool-management.component';
+import { ListResourcePoolsComponent } from './p_resources/admin/resourcePoolManagement/list-resource-pools/list-resource-pools.component';
 import { EditResourcePoolComponent } from './p_resources/admin/resourcePoolManagement/edit-resource-pool/edit-resource-pool.component';
 import { DeleteResourcePoolComponent } from './p_resources/admin/resourcePoolManagement/delete-resource-pool/delete-resource-pool.component';
-import { ResourceReservationManagementComponent } from './p_resources/admin/resourcePoolManagement/resource-reservation-management/resource-reservation-management.component';
 import { EditResourceReservationComponent } from './p_resources/admin/resourcePoolManagement/edit-resource-reservation/edit-resource-reservation.component';
 
 import { FullCalendarModule } from '@fullcalendar/angular';
@@ -45,6 +39,8 @@ import resourceTimelinePlugin  from '@fullcalendar/resource-timeline';
 
 
 import { ResourceReservationCalendarComponent } from './p_resources/admin/resourcePoolManagement/resource-reservation-calendar/resource-reservation-calendar.component';
+import { ListResourceReservationsComponent } from './p_resources/admin/resourcePoolManagement/list-resource-reservations/list-resource-reservations.component';
+import { ResourceReservationsCalendarComponent } from './p_resources/admin/resourcePoolManagement/list-resource-reservations/resource-reservations-calendar/resource-reservations-calendar.component';
 
 
 FullCalendarModule.registerPlugins([ // register FullCalendar plugins
@@ -69,7 +65,6 @@ FullCalendarModule.registerPlugins([ // register FullCalendar plugins
     AssignResourceCandidatesComponent,
     EditResourceSpecsComponent,
     EditResourceSpecCharacteristicsComponent,
-    ResourceOsmAddComponent,
     DiscardChangesComponent,
     ListResourceSpecsComponent,
     DeleteResourceSpecComponent,
@@ -77,16 +72,14 @@ FullCalendarModule.registerPlugins([ // register FullCalendar plugins
     AssignResourceSpecRelationshipsComponent,
     DeleteResourceComponent,
     PreviewResourceComponent,
-    EditResourceComponent,
-    EditResourceRelationshipsComponent,
-    AssignResourceRelationshipsComponent,
-    ResourcePoolManagementComponent,
+    ListResourcePoolsComponent,
     EditResourcePoolComponent,
     DeleteResourcePoolComponent,
-    ResourceReservationManagementComponent,
     EditResourceReservationComponent,
     ResourceReservationCalendarComponent,
-    AssignPoolResourceRelationshipsComponent
+    AssignPoolResourceRelationshipsComponent,
+    ListResourceReservationsComponent,
+    ResourceReservationsCalendarComponent
   ],
   imports: [
     CommonModule,
@@ -99,7 +92,6 @@ FullCalendarModule.registerPlugins([ // register FullCalendar plugins
     DeleteResourceSpecCharacteristicsComponent,
     EditResourceCategoriesComponent,
     DeleteResourceSpecAttachmentComponent,
-    ResourceOsmAddComponent,
     DiscardChangesComponent,
     EditResourceSpecsComponent,
     DeleteResourceCategoriesComponent,
@@ -109,7 +101,6 @@ FullCalendarModule.registerPlugins([ // register FullCalendar plugins
     DeleteResourceCatalogsComponent,
     DeleteResourceSpecComponent,
     AssignResourceSpecRelationshipsComponent,
-    EditResourceComponent,
     EditResourcePoolComponent,
     DeleteResourcePoolComponent,
     EditResourceReservationComponent,

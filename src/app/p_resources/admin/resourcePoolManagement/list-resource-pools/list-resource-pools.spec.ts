@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { EditResourceComponent } from './edit-resource.component';
+import { ListResourcePoolsComponent } from './list-resource-pools.component';
 
-describe('EditResourceComponent', () => {
-  let component: EditResourceComponent;
-  let fixture: ComponentFixture<EditResourceComponent>;
+describe('ListResourcePoolsComponent', () => {
+  let component: ListResourcePoolsComponent;
+  let fixture: ComponentFixture<ListResourcePoolsComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ EditResourceComponent ]
+      declarations: [ ListResourcePoolsComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(EditResourceComponent);
+    fixture = TestBed.createComponent(ListResourcePoolsComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

@@ -15,11 +15,11 @@ import { ResourceOrderUpdate } from '../models/resource-order-update';
   providedIn: 'root',
 })
 class ResourceOrderService extends __BaseService {
-  static readonly listResourceOrderPath = '/tmf-api/resourceOrderingManagement/v4/resourceOrder';
-  static readonly createResourceOrderPath = '/tmf-api/resourceOrderingManagement/v4/resourceOrder';
-  static readonly retrieveResourceOrderPath = '/tmf-api/resourceOrderingManagement/v4/resourceOrder/{id}';
-  static readonly deleteResourceOrderPath = '/tmf-api/resourceOrderingManagement/v4/resourceOrder/{id}';
-  static readonly patchResourceOrderPath = '/tmf-api/resourceOrderingManagement/v4/resourceOrder/{id}';
+  static readonly listResourceOrderPath = '/resourceOrderingManagement/v4/resourceOrder';
+  static readonly createResourceOrderPath = '/resourceOrderingManagement/v4/resourceOrder';
+  static readonly retrieveResourceOrderPath = '/resourceOrderingManagement/v4/resourceOrder/{id}';
+  static readonly deleteResourceOrderPath = '/resourceOrderingManagement/v4/resourceOrder/{id}';
+  static readonly patchResourceOrderPath = '/resourceOrderingManagement/v4/resourceOrder/{id}';
 
   constructor(
     config: __Configuration,
@@ -51,7 +51,7 @@ class ResourceOrderService extends __BaseService {
     if (params.fields != null) __params = __params.set('fields', params.fields.toString());
     let req = new HttpRequest<any>(
       'GET',
-      this.rootUrl + `/tmf-api/resourceOrderingManagement/v4/resourceOrder`,
+      this.rootUrl + `/resourceOrderingManagement/v4/resourceOrder`,
       __body,
       {
         headers: __headers,
@@ -106,7 +106,7 @@ class ResourceOrderService extends __BaseService {
     if (params.name != null) __params = __params.set('name', params.name.toString());
     let req = new HttpRequest<any>(
       'POST',
-      this.rootUrl + `/tmf-api/resourceOrderingManagement/v4/resourceOrder`,
+      this.rootUrl + `/resourceOrderingManagement/v4/resourceOrder`,
       __body,
       {
         headers: __headers,
@@ -159,7 +159,7 @@ class ResourceOrderService extends __BaseService {
     if (params.fields != null) __params = __params.set('fields', params.fields.toString());
     let req = new HttpRequest<any>(
       'GET',
-      this.rootUrl + `/tmf-api/resourceOrderingManagement/v4/resourceOrder/${encodeURIComponent(params.id)}`,
+      this.rootUrl + `/resourceOrderingManagement/v4/resourceOrder/${encodeURIComponent(params.id)}`,
       __body,
       {
         headers: __headers,
@@ -206,7 +206,7 @@ class ResourceOrderService extends __BaseService {
 
     let req = new HttpRequest<any>(
       'DELETE',
-      this.rootUrl + `/tmf-api/resourceOrderingManagement/v4/resourceOrder/${encodeURIComponent(id)}`,
+      this.rootUrl + `/resourceOrderingManagement/v4/resourceOrder/${encodeURIComponent(id)}`,
       __body,
       {
         headers: __headers,
@@ -254,7 +254,7 @@ class ResourceOrderService extends __BaseService {
     __body = params.body;
     let req = new HttpRequest<any>(
       'PATCH',
-      this.rootUrl + `/tmf-api/resourceOrderingManagement/v4/resourceOrder/${encodeURIComponent(params.id)}`,
+      this.rootUrl + `/resourceOrderingManagement/v4/resourceOrder/${encodeURIComponent(params.id)}`,
       __body,
       {
         headers: __headers,
